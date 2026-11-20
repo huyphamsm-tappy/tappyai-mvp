@@ -132,7 +132,9 @@ import { sumCosts, type CostLine } from '@/lib/ai/consultative/planCosts'
 import { tierOf as turnTierOf, budgetOf, spendLookup, newBudgetState, type TurnTier } from '@/lib/ai/consultative/turnBudget'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { explainFeature } from '@/lib/features/explainFeature'
+import { toolsForFreePlan } from '@/lib/features/freeTools'
+import { ONE_BRAIN_CORE, EXPLAIN_FEATURE_DESCRIPTION, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { verifyDeclaredFacts } from '@/lib/ai/answerV4/factSense'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
@@ -458,7 +460,7 @@ export async function POST(req: Request) {
   // CONSULT_PLAN_V2 (default OFF): present_plan carries who it is for, every cost line, the total and its assumptions as required fields (consultative/planV2.ts)
   const planV2On = oneBrain && consultPlanV2On()
   const resultLedger = new ResultLedger()
-  const RESULT_ID_SKIP: ReadonlySet<string> = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'think_deeper', 'save_price_watch'])
+  const RESULT_ID_SKIP: ReadonlySet<string> = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'think_deeper', 'save_price_watch', 'explain_feature'])
   const presentBlockProviders: ReadonlySet<string> = new Set(PROVIDER_REGISTRY.map(p => p.providerId))
   const presentBlockProviderOf = makeProviderOfUrl(PROVIDER_REGISTRY)
   const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
@@ -2534,7 +2536,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * ungated in silence. Only Consultative V1 turns (`situation` set) are judged.
    */
   const gateTools = <T extends Record<string, unknown>>(tools: T): T => {
-    if (!planHasTools) return {} as T // Free plan (plans on sale): the model's own ability only, no tool at all
+    if (!planHasTools) return toolsForFreePlan(tools) as T // Free plan (plans on sale): the model's own ability only, no paid tool; only explain_feature (Tappy's own guide, free of cost) stays (lib/features/freeTools.ts)
     for (const [name, t] of Object.entries(tools)) {
       const def = t as { execute?: (...a: unknown[]) => Promise<unknown> }
       const orig = def.execute
@@ -3184,6 +3186,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         description: 'Internal. The system uses this when a card or plan call could not be built. Never call it yourself.',
         parameters: z.object({}),
         execute: async () => ({ error: 'presentation_failed', note: 'The card could not be built. Write the answer in plain text now, in the language of the person, with the key facts, figures and sources you already have.' }),
+      }) } : {}),
+      // 20/11 (owner: Tappy explains its own features to people who do not know how to use it): reads Tappy's own guide (lib/features/explainFeature.ts), calls no provider, costs nothing, is not a
+      // lookup (consultFlags NOT_A_LOOKUP) and is the one tool a Free turn keeps (lib/features/freeTools.ts).
+      ...(oneBrain ? { explain_feature: tool({
+        description: EXPLAIN_FEATURE_DESCRIPTION,
+        parameters: z.object({ topic: z.string().describe('what the person asks about, in a few words (e.g. "deep research", "share a trip plan", "upgrade my plan", "save a place")') }),
+        execute: async ({ topic }) => explainFeature(String(topic ?? '').slice(0, 200), lang === 'en' ? 'en' : 'vi'),
       }) } : {}),
       ...(oneBrain ? { present_plan: tool({
         description: PRESENT_PLAN_DESCRIPTION,

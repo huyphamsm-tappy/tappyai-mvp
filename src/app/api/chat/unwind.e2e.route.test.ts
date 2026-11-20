@@ -467,7 +467,8 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   const cases: Array<[string, Msg[], Record<string, unknown>]> = [['review', REVIEW, intent('chat', [])], ['trip', TRIP, TRIP_INTENT], ['pick', PICK, PICK_INTENT], ['know', KNOW, KNOW_INTENT], ['hello', [{ role: 'user', content: 'chao ban' }], intent('chat', [])]]
   // 31/10 (owner approved the option cards): present_options joins the one-brain tool set.
   // 19/11: present_failed (the no-op a refused presentation call is turned into by the repair hook; never called by the model) is part of the one-brain set.
-  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'present_failed', 'present_plan', 'present_options', 'get_gold_price', 'get_market_rate', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
+  // 20/11 (owner: Tappy explains its own features): explain_feature (Tappy's own guide, no provider, no cost) is part of the one-brain set.
+  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'explain_feature', 'present_failed', 'present_plan', 'present_options', 'get_gold_price', 'get_market_rate', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
   const reply = 'Trả lời của mô hình.'
   it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 8 steps, 8000 tokens', async () => {
     for (const [name, m, l] of cases) {
@@ -876,7 +877,9 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   it('14/11 (owner: "Gói free: chỉ trả lời bằng năng lực của model"): with the plans on sale a Free turn has NO tool and the model is told so; Trial / Pro keep every tool; plans off = unchanged', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'thoi tiet Da Lat cuoi tuan nay the nao' }]
     const free = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
-    expect(free.toolNames).toEqual([])
+    // 20/11 (owner: a person who does not know how to use Tappy most needs to be told): the ONE tool a Free turn keeps is explain_feature (Tappy's own guide: no provider, no cost); no paid tool
+    expect(free.toolNames).toEqual(['explain_feature'])
+    expect(free.system).toContain('the explain_feature tool is available')
     expect(free.system).toContain('Mode: Plain')
     expect(free.system).not.toContain('Mode: Chat.')
     for (const plan of ['momo', 'coco']) {

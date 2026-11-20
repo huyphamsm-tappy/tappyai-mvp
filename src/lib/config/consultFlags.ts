@@ -155,7 +155,8 @@ export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSte
  * left is composing it. Pure. A lookup is any tool that fetches (search, places, products, hotels, flights, weather, read_page ...); what composes the answer or switches a mode is not one.
  */
 export const HEAVY_TURN_LOOKUPS = 9
-const NOT_A_LOOKUP = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'calculate', 'think_deeper', 'save_price_watch'])
+// explain_feature (20/11) reads Tappy's own guide: no provider, no cost, so it never uses up the lookups, rounds or time of a turn
+const NOT_A_LOOKUP = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'calculate', 'think_deeper', 'save_price_watch', 'explain_feature'])
 export function isLookupTool(tool: string): boolean { return !NOT_A_LOOKUP.has(tool) }
 export function heavyTurnReached(lookupCalls: number, heavy: number = HEAVY_TURN_LOOKUPS): boolean { return lookupCalls >= heavy }
 /**
