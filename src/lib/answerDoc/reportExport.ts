@@ -11,7 +11,7 @@ export interface ReportLink { id: number; title: string; url: string }
 export interface ReportImage { title: string; src: string }
 
 /** A file name from the report title: letters, digits, spaces and dashes only, at most 60 characters. */
-export function reportFileName(title: string, ext: 'md' | 'docx' | 'pdf'): string {
+export function reportFileName(title: string, ext: 'md' | 'docx' | 'pdf' | 'html'): string {
   const base = title.normalize('NFC').replace(/[^\p{L}\p{N} -]+/gu, ' ').replace(/\s+/g, ' ').trim().slice(0, 60).trim()
   return `${base || 'report'}.${ext}`
 }

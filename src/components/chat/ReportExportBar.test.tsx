@@ -26,7 +26,26 @@ describe('ReportExportBar', () => {
     setLocale('vi')
     const { container, getByTestId } = render(<ReportExportBar report={'# T\n\n## A\nx'} format={s => s} />)
     expect(container.textContent).toContain('Tải báo cáo')
-    for (const k of ['md', 'docx', 'pdf']) expect(getByTestId(`report-export-${k}`)).toBeTruthy()
+    for (const k of ['md', 'docx', 'pdf', 'html']) expect(getByTestId(`report-export-${k}`)).toBeTruthy()
+  })
+  it('HTML (owner 20/11): one click downloads a standalone .html page with the report text, its title and no script', async () => {
+    let blob: Blob | null = null
+    let name = ''
+    Object.defineProperty(URL, 'createObjectURL', { value: (b: Blob) => { blob = b; return 'blob:x' }, configurable: true })
+    Object.defineProperty(URL, 'revokeObjectURL', { value: () => {}, configurable: true })
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) { name = this.download })
+    setLocale('vi')
+    const { getByTestId } = render(<ReportExportBar report={'# Thị trường chip\n\n## Mục A\nNội dung có dấu tiếng Việt.'} format={s => s} />)
+    await act(async () => { fireEvent.click(getByTestId('report-export-html')) })
+    await waitFor(() => expect(click).toHaveBeenCalledTimes(1))
+    expect(name).toBe('Thị trường chip.html')
+    const html = await (blob as unknown as Blob).text()
+    expect((blob as unknown as Blob).type).toContain('text/html')
+    expect(html).toContain('<!doctype html>')
+    expect(html).toContain('Thị trường chip')
+    expect(html).toContain('Nội dung có dấu tiếng Việt.')
+    expect(html).not.toMatch(/<script/i)
+    click.mockRestore()
   })
   it('PDF is a FILE that downloads on one click (owner 15/11): a .pdf with the PDF header, and no print frame is opened', async () => {
     let blob: Blob | null = null

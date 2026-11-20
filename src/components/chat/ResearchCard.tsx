@@ -5,7 +5,7 @@
 // Owner 31/10: a finished report downloads as Markdown, Word or PDF (lib/answerDoc/reportExport.ts - built here, nothing is sent anywhere).
 import { useState } from 'react'
 import type { ResearchChart, ResearchStatus } from '@/lib/ai/research/deepResearch'
-import { downloadBlob, reportFileName, reportMarkdown, withChartTables, type ReportImage } from '@/lib/answerDoc/reportExport'
+import { downloadBlob, reportFileName, reportHtml, reportMarkdown, withChartTables, type ReportImage } from '@/lib/answerDoc/reportExport'
 import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
 import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -29,6 +29,8 @@ export default function ResearchCard({ status, report, images = [], charts = [],
     setBusy(true)
     try { await downloadReportPdf(withChartTables(report!, charts, locale), links, title, pdfCoverOf(t, locale, title, status.tier, links.length || status.sources)) } finally { setBusy(false) }
   }
+  // 20/11 (owner): a standalone .html page with the report, its pictures and its charts
+  const asHtml = () => downloadBlob(new Blob([reportHtml(report!, { title, images, links, format: format!, lang: locale, charts, design: 'a' })], { type: 'text/html;charset=utf-8' }), reportFileName(title, 'html'))
   const asWord = async () => {
     setBusy(true)
     try {
@@ -75,6 +77,7 @@ export default function ResearchCard({ status, report, images = [], charts = [],
             { key: 'md', label: 'Markdown', act: asMarkdown },
             { key: 'docx', label: 'Word', act: asWord },
             { key: 'pdf', label: 'PDF', act: asPdf },
+            { key: 'html', label: 'HTML', act: asHtml },
           ] as const).map(b => (
             <button key={b.key} type="button" disabled={busy} onClick={() => { void b.act() }} data-testid={`research-export-${b.key}`}
               className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800">

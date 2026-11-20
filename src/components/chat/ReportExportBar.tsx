@@ -4,7 +4,7 @@
 // not there. It exports from the message text alone: Markdown, Word, PDF (built in the browser, nothing is sent anywhere). The sources are already inside the text; pictures and charts,
 // which come from the live annotation, are not in these files.
 import { useState } from 'react'
-import { downloadBlob, reportFileName, reportMarkdown, sourceCountOf } from '@/lib/answerDoc/reportExport'
+import { downloadBlob, reportFileName, reportHtml, reportMarkdown, sourceCountOf } from '@/lib/answerDoc/reportExport'
 import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
 import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -29,6 +29,8 @@ export default function ReportExportBar({ report, format }: { report: string; fo
   const [busy, setBusy] = useState(false)
   const title = reportTitleOf(report)
   const asMarkdown = () => downloadBlob(new Blob([reportMarkdown(report, [])], { type: 'text/markdown;charset=utf-8' }), reportFileName(title, 'md'))
+  // 20/11 (owner): a standalone .html page (the same page the print view builds, no script), built in the browser from the answer text
+  const asHtml = () => downloadBlob(new Blob([reportHtml(report, { title, images: [], links: [], format, lang: locale, design: 'a' })], { type: 'text/html;charset=utf-8' }), reportFileName(title, 'html'))
   // 15/11 (owner): a PDF file that downloads on one click, not the browser's print dialog
   const asPdf = async () => {
     setBusy(true)
@@ -44,7 +46,7 @@ export default function ReportExportBar({ report, format }: { report: string; fo
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2" data-testid="report-export-bar">
       <span className="text-xs text-gray-500 dark:text-gray-400">{t('research.download')}</span>
-      {([{ key: 'md', label: 'Markdown', act: asMarkdown }, { key: 'docx', label: 'Word', act: asWord }, { key: 'pdf', label: 'PDF', act: asPdf }] as const).map(b => (
+      {([{ key: 'md', label: 'Markdown', act: asMarkdown }, { key: 'docx', label: 'Word', act: asWord }, { key: 'pdf', label: 'PDF', act: asPdf }, { key: 'html', label: 'HTML', act: asHtml }] as const).map(b => (
         <button key={b.key} type="button" disabled={busy} onClick={() => { void b.act() }} data-testid={`report-export-${b.key}`}
           className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800">
           {b.label}

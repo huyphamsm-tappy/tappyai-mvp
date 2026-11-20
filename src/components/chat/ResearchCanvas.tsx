@@ -12,7 +12,7 @@ import { ArticleAnswer, type Presentation } from '@/components/chat/ArticleAnswe
 import { reportTitleOf } from '@/components/chat/ReportExportBar'
 import type { ResearchChart, ResearchStatus } from '@/lib/ai/research/deepResearch'
 import type { DocItemImage } from '@/lib/answerDoc/media'
-import { downloadBlob, reportFileName, reportMarkdown, sourceCountOf, withChartTables } from '@/lib/answerDoc/reportExport'
+import { downloadBlob, reportFileName, reportHtml, reportMarkdown, sourceCountOf, withChartTables } from '@/lib/answerDoc/reportExport'
 import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
 import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import {
@@ -299,12 +299,15 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
       downloadBlob(await reportDocx(withChartTables(p.text, charts, locale), links, exportTitle), reportFileName(exportTitle, 'docx'))
     } finally { setBusy(false) }
   }
+  // 20/11 (owner): a standalone .html page with the report, its pictures and its charts
+  const asHtml = () => downloadBlob(new Blob([reportHtml(p.text, { title: exportTitle, images: p.images ?? [], links, format: p.format, lang: locale, charts, design: 'a' })], { type: 'text/html;charset=utf-8' }), reportFileName(exportTitle, 'html'))
   const toolbar = !p.streaming && (
     // on a phone the buttons are icons (the bar is sticky: it must stay one short row); the words stay for screen readers and from the `sm` width up
     <div role="group" aria-label={t('pres.toolbar.label')} className="flex shrink-0 items-center gap-1.5" data-testid="research-toolbar">
       <button type="button" className="tappy-doc-btn" onClick={asMd} data-testid="research-export-md" title="Markdown"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">Markdown</span></button>
       <button type="button" className="tappy-doc-btn" onClick={() => { void asWord() }} disabled={busy} data-testid="research-export-docx" title="Word"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">Word</span></button>
       <button type="button" className="tappy-doc-btn" onClick={() => { void asPdf() }} disabled={busy} data-testid="research-export-pdf" title="PDF"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">PDF</span></button>
+      <button type="button" className="tappy-doc-btn" onClick={asHtml} data-testid="research-export-html" title="HTML"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">HTML</span></button>
       {p.onShare && <button type="button" className="tappy-doc-btn" onClick={p.onShare} data-testid="research-share" title={t('pres.share')}><Share2 size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">{t('pres.share')}</span></button>}
     </div>
   )
