@@ -110,6 +110,66 @@ describe('the group page draws what the server says the caller may see', () => {
     expect(calls.some(c => c.init?.method === 'DELETE')).toBe(false)
     confirm.mockRestore()
   })
+  const cards = [
+    { id: '1', name: 'Lau Be Man', address: '1 Le Loi, Quan 1', rating: 4.6, why: 'Co lau', maps_link: 'https://www.google.com/maps?q=1' },
+    { id: '2', name: 'Bun Bo 3 Thang', address: '2 Nguyen Hue', rating: 4.2, why: 'Hop ngan sach' },
+  ]
+  const withVotes = (over: Record<string, unknown> = {}, votes: Record<string, unknown> = {}, state = 'member') => ({
+    state, id: 'g-1', name: 'Bua toi thu 6', creator_id: state === 'creator' ? 'me' : 'boss', status: 'open', suggestion: 'text', members: [member('m1', 'Linh')], suggestion_options: cards, chosen_option: null,
+    votes: { counts: { '1': 1, '2': 0 }, mine: null, voted: 1, participants: 3, majority: null, allVoted: false, ...votes }, ...over,
+  })
+  it('the suggestion is three cards: place, rating, address, why, map link, and the votes each has; a member votes and the page reloads', async () => {
+    groupReply = { status: 200, body: withVotes() }
+    render(<GroupPage />)
+    const list = await screen.findAllByTestId('group-card')
+    expect(list).toHaveLength(2)
+    expect(list[0].textContent).toContain('Lau Be Man')
+    expect(list[0].textContent).toContain('4.6')
+    expect(list[0].textContent).toContain('Co lau')
+    expect(list[0].querySelector('a')!.getAttribute('href')).toBe('https://www.google.com/maps?q=1')
+    expect(screen.getAllByTestId('group-card-votes').map(e => e.textContent)).toEqual(['1 phiếu', '0 phiếu'])
+    expect(screen.getByTestId('group-progress').textContent).toContain('1/3 người đã bình chọn')
+    fireEvent.click(screen.getAllByRole('button', { name: 'Bình chọn quán này' })[1])
+    await waitFor(() => expect(JSON.parse(String(calls.find(c => c.url === '/api/group/g-1/vote')!.init?.body))).toEqual({ optionId: '2' }))
+  })
+  it('your own vote is marked; after the decision the chosen place is announced and nobody can vote any more', async () => {
+    groupReply = { status: 200, body: withVotes({}, { mine: '1', counts: { '1': 1, '2': 0 } }) }
+    const a = render(<GroupPage />)
+    expect((await screen.findByRole('button', { name: 'Bạn đã chọn quán này' }))).toBeTruthy()
+    a.unmount()
+    groupReply = { status: 200, body: withVotes({ chosen_option: '2' }, { majority: '2', counts: { '1': 1, '2': 2 }, voted: 3 }) }
+    render(<GroupPage />)
+    expect((await screen.findByTestId('group-chosen')).textContent).toContain('Bun Bo 3 Thang')
+    expect(screen.queryByRole('button', { name: 'Bình chọn quán này' })).toBeNull()
+    expect(screen.queryByTestId('group-progress')).toBeNull()
+  })
+  it('everyone voted and nobody has more than half: the leader gets "Chốt quán này", the others are told to wait', async () => {
+    const tie = { allVoted: true, majority: null, voted: 3, counts: { '1': 1, '2': 1 } }
+    groupReply = { status: 200, body: withVotes({ creator_id: 'me', pendingRequests: [] }, tie, 'creator') }
+    const a = render(<GroupPage />)
+    expect((await screen.findByTestId('group-tie')).textContent).toContain('Trưởng nhóm chọn quán')
+    fireEvent.click(screen.getAllByRole('button', { name: 'Chốt quán này' })[0])
+    await waitFor(() => expect(JSON.parse(String(calls.find(c => c.url === '/api/group/g-1/choose')!.init?.body))).toEqual({ optionId: '1' }))
+    a.unmount()
+    groupReply = { status: 200, body: withVotes({}, tie) }
+    render(<GroupPage />)
+    expect((await screen.findByTestId('group-tie')).textContent).toContain('Chờ trưởng nhóm')
+    expect(screen.queryByRole('button', { name: 'Chốt quán này' })).toBeNull()
+  })
+  it('the leader can suggest again (after a confirmation); a suggestion with no cards is shown as text', async () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    groupReply = { status: 200, body: withVotes({ creator_id: 'me', pendingRequests: [] }, {}, 'creator') }
+    const a = render(<GroupPage />)
+    fireEvent.click(await screen.findByTestId('group-resuggest'))
+    await waitFor(() => expect(calls.some(c => c.url === '/api/group/g-1/suggest')).toBe(true))
+    expect(confirm).toHaveBeenCalledTimes(1)
+    a.unmount()
+    groupReply = { status: 200, body: withVotes({ suggestion_options: null, suggestion: 'Goi y bang van ban' }) }
+    render(<GroupPage />)
+    await waitFor(() => expect(document.body.textContent).toContain('Goi y bang van ban'))
+    expect(screen.queryByTestId('group-cards')).toBeNull()
+    confirm.mockRestore()
+  })
   it('an accepted member sees the members count and no request list, and no request form', async () => {
     groupReply = { status: 200, body: { state: 'member', id: 'g-1', name: 'Bua toi thu 6', creator_id: 'boss', status: 'open', suggestion: null, members: [member('m1', 'Linh'), member('m3', 'Cuong')] } }
     render(<GroupPage />)

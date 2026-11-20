@@ -19,6 +19,8 @@ vi.mock('@/lib/auth/getRequestUser', () => ({
 }))
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true }) }))
 vi.mock('@/lib/ai/llm', () => ({ AI: { generate: (o: { prompt: string }) => h.generate(o) } }))
+// 20/11: the suggestion also searches for real places (cards); this test is about what reaches the MODEL, so the search finds nothing and the text suggestion runs, as it always did
+vi.mock('@/lib/ai/tools/food', () => ({ searchPlaces: async () => ({ results: [] }) }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => admin() }))
 
 /** A chainable stand-in for a Supabase query. The awaited value depends on the table. */

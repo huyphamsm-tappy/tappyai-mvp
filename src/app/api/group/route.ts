@@ -9,6 +9,7 @@ import { isServableMediaUrl } from '@/lib/media/servableMedia'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { clipField } from '@/lib/group/fields'
+import { optionIdsOf, voteSummary } from '@/lib/group/voteSummary'
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
@@ -83,5 +84,19 @@ export async function GET(req: NextRequest) {
   // the person's own account id never leaves: the others see names and tastes, not who they are on Tappy
   const view = ({ user_id: _u, status: _s, ...rest }: Record<string, unknown>) => rest
   const members = all.filter(r => r.status === 'member').map(view)
-  return NextResponse.json({ ...group, state: isCreator ? 'creator' : 'member', members, ...(isCreator ? { pendingRequests: all.filter(r => r.status === 'pending').map(view) } : {}) })
+
+  // the suggestion cards, the vote and the decision (20261205): read apart so that a database without that migration still answers with the group as before
+  const { data: extra } = await supabase.from('groups').select('suggestion_options, chosen_option, decided_at').eq('id', id).single()
+  const options = optionIdsOf(extra?.suggestion_options)
+  let votes: Awaited<ReturnType<typeof voteSummary>> | null = null
+  if (options.length) { try { votes = await voteSummary(supabase, id, options, user.id) } catch { votes = null } }
+  return NextResponse.json({
+    ...group,
+    state: isCreator ? 'creator' : 'member',
+    members,
+    ...(isCreator ? { pendingRequests: all.filter(r => r.status === 'pending').map(view) } : {}),
+    suggestion_options: options.length ? extra?.suggestion_options : null,
+    chosen_option: extra?.chosen_option ?? null,
+    ...(votes ? { votes } : {}),
+  })
 }

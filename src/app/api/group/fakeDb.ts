@@ -35,6 +35,7 @@ export function fakeClient(getDb: () => FakeDb) {
         select(_cols?: string, o?: { count?: string; head?: boolean }) { if (o?.count) count = { head: !!o.head }; return q },
         eq(k: string, v: unknown) { filters.push(r => r[k] === v); return q },
         in(k: string, vs: unknown[]) { filters.push(r => vs.includes(r[k])); return q },
+        is(k: string, v: null) { filters.push(r => (r[k] ?? null) === v); return q },
         gt(k: string, v: unknown) { filters.push(r => String(r[k]) > String(v)); return q },
         order(col: string, o?: { ascending?: boolean }) { orderBy = { col, asc: o?.ascending !== false }; return q },
         limit(n: number) { limitN = n; return q },

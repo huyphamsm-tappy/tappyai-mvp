@@ -30,7 +30,14 @@ type Group = {
   members: Member[]
   /** the leader alone gets the requests that wait for an answer (owner 20/11: a group is private) */
   pendingRequests?: Member[]
+  /** the suggestion as cards of real places, the vote and the decision (owner 20/11: one vote each, more than half decides) */
+  suggestion_options?: Card[] | null
+  chosen_option?: string | null
+  votes?: VoteState
 }
+
+type Card = { id: string; name: string; address?: string; rating?: number; why: string; maps_link?: string; photo_url?: string }
+type VoteState = { counts: Record<string, number>; mine: string | null; voted: number; participants: number; majority: string | null; allVoted: boolean }
 
 /** What a person who is NOT yet a member is told: the group's name and whether their request waits. */
 type Gate = { state: 'pending' | 'none'; id: string; name: string }
@@ -139,12 +146,34 @@ export default function GroupPage() {
         return
       }
       const data = await res.json()
-      setGroup(prev => prev ? { ...prev, suggestion: data.suggestion } : prev)
+      // a new suggestion starts a new vote
+      setGroup(prev => prev ? { ...prev, suggestion: data.suggestion, suggestion_options: data.options?.length ? data.options : null, chosen_option: null, votes: undefined } : prev)
+      if (data.options?.length) fetchGroup()
     } catch {
       alert('Lỗi kết nối, vui lòng thử lại')
     } finally {
       setSuggesting(false)
     }
+  }
+
+  /** One vote (the same call changes it), or the leader's choice when everyone has voted and nobody has more than half. */
+  async function castVote(optionId: string, kind: 'vote' | 'choose') {
+    setActionBusy(`${kind}-${optionId}`)
+    setActionError('')
+    try {
+      const res = await fetch(`/api/group/${id}/${kind}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ optionId }) })
+      if (!res.ok) { const err = await res.json().catch(() => ({})); setActionError(err.message || t('groupDining.actionFailed')); await fetchGroup(); return }
+      await fetchGroup()
+    } catch {
+      setActionError(t('groupDining.actionFailed'))
+    } finally {
+      setActionBusy(null)
+    }
+  }
+
+  function handleResuggest() {
+    if (!window.confirm(t('groupDining.confirmResuggest'))) return
+    void handleSuggest()
   }
 
   /** The leader accepts or declines a request, or removes an accepted member. */
@@ -338,7 +367,7 @@ export default function GroupPage() {
             )}
 
             {/* Suggest button */}
-            {group.members.length > 0 && !group.suggestion && (
+            {group.members.length > 0 && !(group.suggestion_options && group.suggestion_options.length > 0) && (
               <button
                 onClick={handleSuggest}
                 disabled={suggesting}
@@ -471,8 +500,60 @@ export default function GroupPage() {
         )}
         {actionError && !isCreator && <p role="alert" className="text-sm text-red-500 text-center">{actionError}</p>}
 
-        {/* Suggestion result — visible to everyone */}
-        {group.suggestion && (
+        {/* Suggestion as CARDS of real places: one vote each, more than half decides (owner 20/11) */}
+        {!gate && group.suggestion_options && group.suggestion_options.length > 0 && (
+          <div className="space-y-3" data-testid="group-cards">
+            <div className="flex items-center gap-2 px-1">
+              <span className="text-2xl">🍽️</span>
+              <h2 className="font-bold text-gray-900 dark:text-white">{t('groupDining.suggestTitle')}</h2>
+            </div>
+            {group.chosen_option && (
+              <div className="card p-4 border-2 border-primary-400" data-testid="group-chosen">
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary-600">{t('groupDining.chosenTitle')}</p>
+                <p className="font-bold text-gray-900 dark:text-white text-lg">{group.suggestion_options.find(c => c.id === group.chosen_option)?.name}</p>
+              </div>
+            )}
+            {group.votes && !group.chosen_option && (
+              <p className="text-xs text-content-secondary px-1" data-testid="group-progress">{t('groupDining.progress', { voted: String(group.votes.voted), total: String(group.votes.participants) })}</p>
+            )}
+            {!group.chosen_option && group.votes?.allVoted && !group.votes.majority && (
+              <p className="text-sm text-amber-700 dark:text-amber-300 px-1" data-testid="group-tie">{t(isCreator ? 'groupDining.tieNote' : 'groupDining.tieWait')}</p>
+            )}
+            {group.suggestion_options.map(c => {
+              const n = group.votes?.counts?.[c.id] ?? 0
+              const mine = group.votes?.mine === c.id
+              const isChosen = group.chosen_option === c.id
+              return (
+                <div key={c.id} className={`card p-4 ${isChosen ? 'ring-2 ring-primary-400' : ''}`} data-testid="group-card">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 dark:text-white">{c.name}{typeof c.rating === 'number' ? ` · ⭐ ${c.rating}` : ''}</p>
+                      {c.address && <p className="text-xs text-content-secondary mt-0.5">📍 {c.address}</p>}
+                      {c.why && <p className="text-sm text-gray-700 dark:text-gray-300 mt-1.5 leading-relaxed">{c.why}</p>}
+                      {c.maps_link && <a href={c.maps_link} target="_blank" rel="noopener noreferrer" className="text-link text-xs font-medium mt-1 inline-block">{t('groupDining.openMap')}</a>}
+                    </div>
+                    <span className="shrink-0 rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300" data-testid="group-card-votes">{t('groupDining.votesCount', { n: String(n) })}</span>
+                  </div>
+                  {!group.chosen_option && (isCreator || !gate) && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <button type="button" disabled={actionBusy === `vote-${c.id}`} onClick={() => castVote(c.id, 'vote')} className={`px-3 py-1.5 rounded-xl text-sm font-semibold disabled:opacity-60 ${mine ? 'bg-primary-100 text-primary-700 border border-primary-300' : 'bg-interactive text-white'}`}>{mine ? t('groupDining.yourVote') : t('groupDining.vote')}</button>
+                      {isCreator && group.votes?.allVoted && !group.votes.majority && (
+                        <button type="button" disabled={actionBusy === `choose-${c.id}`} onClick={() => castVote(c.id, 'choose')} className="px-3 py-1.5 rounded-xl text-sm font-semibold border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 disabled:opacity-60">{t('groupDining.choose')}</button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+            {isCreator && (
+              <button type="button" disabled={suggesting} onClick={handleResuggest} className="w-full text-center text-sm text-link font-medium py-2 disabled:opacity-60" data-testid="group-resuggest">{t('groupDining.resuggest')}</button>
+            )}
+            {actionError && <p role="alert" className="text-sm text-red-500 text-center">{actionError}</p>}
+          </div>
+        )}
+
+        {/* Suggestion result as plain text — visible to everyone, for a suggestion with no cards */}
+        {group.suggestion && !(group.suggestion_options && group.suggestion_options.length > 0) && (
           <div className="card p-5">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-2xl">🍽️</span>
