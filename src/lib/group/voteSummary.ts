@@ -15,8 +15,9 @@ export function optionIdsOf(options: unknown): string[] {
 /** participants = the creator + the accepted members. */
 export async function voteSummary(admin: unknown, groupId: string, optionIds: readonly string[], userId: string): Promise<VoteSummary> {
   const db = admin as Reader
-  const { count } = await (db.from('group_members').select('id', { count: 'exact', head: true }) as unknown as { eq(k: string, v: string): { eq(k: string, v: string): Promise<{ count: number | null }> } }).eq('group_id', groupId).eq('status', 'member')
-  const participants = 1 + (count ?? 0)
+  // a member row with no account (a legacy row from before joining needed one) can not vote, so it is not a participant
+  const { data: members } = await (db.from('group_members').select('user_id') as unknown as { eq(k: string, v: string): { eq(k: string, v: string): Promise<{ data: Array<{ user_id: string | null }> | null }> } }).eq('group_id', groupId).eq('status', 'member')
+  const participants = 1 + (members ?? []).filter(m => m.user_id).length
   const { data } = await (db.from('group_votes').select('user_id, option_id') as unknown as { eq(k: string, v: string): Promise<{ data: Array<{ user_id: string; option_id: string }> | null }> }).eq('group_id', groupId)
   const votes = data ?? []
   const t = tally(participants, votes, optionIds)

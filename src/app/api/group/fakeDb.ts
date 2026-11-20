@@ -17,7 +17,8 @@ export function fakeClient(getDb: () => FakeDb) {
         const db = getDb()
         const rows = (db[table] ??= [])
         if (op === 'insert' || op === 'upsert') {
-          const uniq = ['group_members', 'group_votes'].includes(table) ? rows.find(r => r.group_id === payload.group_id && r.user_id === payload.user_id) : undefined
+          const uniq = ['group_members', 'group_votes'].includes(table) ? rows.find(r => r.group_id === payload.group_id && r.user_id === payload.user_id)
+            : table === 'group_bills' ? rows.find(r => r.group_id === payload.group_id) : undefined
           if (uniq && op === 'insert') return { data: null, error: { code: '23505' }, count: null }
           if (uniq) { Object.assign(uniq, payload); return { data: [uniq], error: null, count: null } }
           const row = { id: `${table}-${rows.length + 1}`, created_at: new Date().toISOString(), ...payload }

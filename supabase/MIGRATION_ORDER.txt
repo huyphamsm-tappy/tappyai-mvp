@@ -176,3 +176,4 @@ supabase/migrations/20261202_age_adult_declaration.sql
 supabase/migrations/20261203_payments_no_refund.sql
 supabase/migrations/20261204_group_join_approval.sql
 supabase/migrations/20261205_group_suggestion_votes.sql
+supabase/migrations/20261206_group_bills.sql

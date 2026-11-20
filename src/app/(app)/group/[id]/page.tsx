@@ -8,6 +8,7 @@ import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import BottomNav from '@/components/BottomNav'
 import { Copy, Check, Users, Loader2 } from 'lucide-react'
 import GroupAvatarPicker from '../GroupAvatarPicker'
+import GroupBill, { type BillPerson, type BillShape } from './GroupBill'
 import { uploadGroupAvatar } from '@/lib/groups/avatarClient'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
@@ -34,6 +35,9 @@ type Group = {
   suggestion_options?: Card[] | null
   chosen_option?: string | null
   votes?: VoteState
+  /** the people of the meal by opaque key, and the bill of the meal (owner 20/11) */
+  people?: BillPerson[]
+  bill?: BillShape | null
 }
 
 type Card = { id: string; name: string; address?: string; rating?: number; why: string; maps_link?: string; photo_url?: string }
@@ -550,6 +554,11 @@ export default function GroupPage() {
             )}
             {actionError && <p role="alert" className="text-sm text-red-500 text-center">{actionError}</p>}
           </div>
+        )}
+
+        {/* The bill of the meal: whoever paid enters it, everyone sees what they owe the payer (owner 20/11) */}
+        {!gate && group.people && group.people.length >= 2 && (
+          <GroupBill groupId={id} people={group.people} bill={group.bill ?? null} onChanged={fetchGroup} />
         )}
 
         {/* Suggestion result as plain text — visible to everyone, for a suggestion with no cards */}
