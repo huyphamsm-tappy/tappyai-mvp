@@ -6,8 +6,9 @@
 // database creates the order atomically: code TAPPY + 6, 15-minute expiry, at
 // most 3 live pending orders per user. Price and length come from PLAN_CONFIG —
 // the client only names the plan. The plan is granted ONLY by the SePay webhook.
-// SUBSCRIPTIONS (p8/subscriptions, security session): with SUBSCRIPTIONS_ENABLED an account with an
-// active plan gets 409; after it ends it buys again (web plans are one payment per period).
+// SUBSCRIPTIONS (p8/subscriptions, security session): with SUBSCRIPTIONS_ENABLED an account with a
+// running plan can top it up with the same kind of web plan (owner 20/11: the days add up); a store plan,
+// the one-time trial or another kind gets 409. Web plans are one payment per period, no auto-renew.
 
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -15,7 +16,7 @@ import { requirePayer } from '@/lib/payments/authGuard'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
-import { mySubscription, type SubscriptionRowForState } from '@/lib/payments/subscriptionState'
+import { mySubscription, canBuyPlan, type SubscriptionRowForState } from '@/lib/payments/subscriptionState'
 import { MY_PLAN_COLUMNS } from '@/lib/payments/myPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -72,8 +73,9 @@ export async function POST(req: Request) {
     const { data: row } = await auth.supabase.from('subscriptions')
       .select(MY_PLAN_COLUMNS).eq('user_id', auth.user.id).maybeSingle()
     const mine = mySubscription(row as SubscriptionRowForState | null)
-    if (mine.state === 'ACTIVE') {
-      const key = mine.manage ? 'payments.manageInStore' : 'payments.alreadyActive'
+    // owner 20/11: a running WEB plan is topped up with the same kind of plan and the days add up (the database adds the time); everything else is refused with the reason
+    if (mine.state === 'ACTIVE' && !canBuyPlan(mine, plan.id)) {
+      const key = mine.manage ? 'payments.manageInStore' : mine.canBuy ? 'payments.stackSameKind' : 'payments.alreadyActive'
       return NextResponse.json({ error: 'already_active', message: serverMessage(key, locale) }, { status: 409 })
     }
   }

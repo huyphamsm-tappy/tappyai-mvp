@@ -217,21 +217,33 @@ describe('the purchase flow (web): order → bank → verified webhook → ACTIV
     expect((await send()).status).toBe(200)
     const r = await myPlan()
     // Owner 01/11/2026: the stored id `momo` is shown as Coco (1 month).
-    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'momo', name: 'Coco' }, channel: 'web', autoRenew: false, canBuy: false })
+    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'momo', name: 'Coco' }, channel: 'web', autoRenew: false, canBuy: true }) // owner 20/11: a running web plan can be topped up
     expect(r.quota).toMatchObject({ limit: PAID_DAILY_CEILING, period: 'day' })
     const end = r.subscription.periodEnd as string
     expect((await send()).status).toBe(200)
     expect((await myPlan()).subscription.periodEnd).toBe(end)
   })
 
-  it('no second purchase while ACTIVE (409), even in the last days; after it ends, buy again (Pip too)', async () => {
+  it('while ACTIVE the same kind of plan tops it up (the days ADD UP, owner 20/11), the trial is refused (409); after it ends, buy again (Pip too)', async () => {
     const res = await newOrder('pip')
     expect(res.status).toBe(409)
-    expect((await res.json()).message).toMatch(/mua lại|buy again/)
+    expect((await res.json()).message).toMatch(/cùng loại|same kind/)
+    // 10 days left + one more Coco month (30 days) = about 40 days left, not 30
+    await t.db.query(`SELECT set_config('p8.entitlement_writer', 'on', false)`)
+    await t.db.query(`UPDATE public.subscriptions SET current_period_end = now() + interval '10 days' WHERE user_id = $1`, [BOB])
+    await t.db.query(`SELECT set_config('p8.entitlement_writer', '', false)`)
+    const more = await newOrder('momo')
+    expect(more.status).toBe(201)
+    await bankPays((await more.json()).order.code, 225_000)
+    const topped = (await myPlan()).subscription
+    expect(topped).toMatchObject({ state: 'ACTIVE', plan: { id: 'momo' } })
+    expect((Date.parse(topped.periodEnd as string) - Date.now()) / DAY).toBeCloseTo(40, 0)
+    // even in the last hour it can still be topped up
     await t.db.query(`SELECT set_config('p8.entitlement_writer', 'on', false)`)
     await t.db.query(`UPDATE public.subscriptions SET current_period_end = now() + interval '1 hour' WHERE user_id = $1`, [BOB])
     await t.db.query(`SELECT set_config('p8.entitlement_writer', '', false)`)
-    expect((await newOrder('momo')).status).toBe(409)
+    expect((await newOrder('momo')).status).toBe(201)
+    await t.db.query(`UPDATE public.payment_orders SET status = 'expired' WHERE status = 'pending'`) // that order is never paid: no pending order may colour the next state
     await t.db.query(`SELECT set_config('p8.entitlement_writer', 'on', false)`)
     await t.db.query(`UPDATE public.subscriptions SET current_period_end = now() - interval '1 minute' WHERE user_id = $1`, [BOB])
     await t.db.query(`SELECT set_config('p8.entitlement_writer', '', false)`)
@@ -539,7 +551,7 @@ describe('Tappy (promax) - the purchase flow (20261102_plans_promax)', () => {
     expect(order.amountVnd).toBe(300_000) // Owner 01/11/2026; price raised 18/11/2026 (promax1m = 12 USD)
     expect((await bankPays(order.code, 300_000)).status).toBe(200)
     const r = await myPlan()
-    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'promax1m', name: 'Tappy' }, channel: 'web', canBuy: false })
+    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'promax1m', name: 'Tappy' }, channel: 'web', canBuy: true }) // owner 20/11: a running web plan can be topped up
     expect((Date.parse(r.subscription.periodEnd as string) - Date.now()) / DAY).toBeCloseTo(30, 0)
     expect(r.quota).toMatchObject({ limit: PAID_DAILY_CEILING, period: 'day' })
     expect((await t.one<{ plan: string; status: string }>(`SELECT plan, status FROM public.subscriptions WHERE user_id = $1`, [CAROL])))

@@ -10,11 +10,11 @@ describe('mySubscription', () => {
     expect(mySubscription(null, { now: NOW, pendingOrder: true })).toMatchObject({ state: 'PENDING', canBuy: true })
   })
 
-  it('ACTIVE web plan: never auto-renews, nothing to buy until it ends; then EXPIRED and buyable again', () => {
+  it('ACTIVE web plan: never auto-renews, can be topped up while it runs (owner 20/11: the days add up); then EXPIRED and buyable again', () => {
     const row = { plan: 'pip', status: 'active', current_period_end: inDays(2), source: 'web_sepay' }
     expect(mySubscription(row, { now: NOW })).toMatchObject({
       // Owner 01/11/2026: new plan catalog (plan `pip` is shown as MoMo)
-      state: 'ACTIVE', plan: { id: 'pip', name: 'MoMo' }, channel: 'web', autoRenew: false, canBuy: false, manage: null,
+      state: 'ACTIVE', plan: { id: 'pip', name: 'MoMo' }, channel: 'web', autoRenew: false, canBuy: true, manage: null,
     })
     expect(mySubscription({ ...row, current_period_end: inDays(-0.01) }, { now: NOW })).toMatchObject({ state: 'EXPIRED', canBuy: true, autoRenew: false })
   })

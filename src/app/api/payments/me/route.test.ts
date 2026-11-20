@@ -186,7 +186,7 @@ describe('GET /api/payments/me — Signed-in User State', () => {
       periodEnd: future,
       channel: 'web',
       autoRenew: false,
-      canBuy: false,
+      canBuy: true, // owner 20/11: a running web plan can be topped up (the days add up)
       manage: null,
     })
     expect(body.quota.limit).toBe(30)
