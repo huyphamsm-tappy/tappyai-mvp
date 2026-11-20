@@ -108,6 +108,25 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
               </dl>
             </section>
 
+            {snapshot.costs && snapshot.costs.length > 0 && (
+              <section className="v3-pb-panel" aria-labelledby="pb-costs-title" data-pb-costs>
+                <h2 id="pb-costs-title" className="v3-pb-panel-title">{s.costsTitle}</h2>
+                <dl className="v3-pb-rows">
+                  {snapshot.costs.map((c, i) => <div key={i} className="v3-pb-row v3-pb-row-wide"><dd><span className="v3-pb-row-k">{c.label}</span>{c.value}</dd></div>)}
+                  {snapshot.budget_total && <div className="v3-pb-row v3-pb-row-wide"><dd><span className="v3-pb-row-k">{s.budget}</span><strong>{snapshot.budget_total}</strong></dd></div>}
+                </dl>
+              </section>
+            )}
+
+            {snapshot.tips && snapshot.tips.length > 0 && (
+              <section className="v3-pb-panel" aria-labelledby="pb-tips-title" data-pb-tips>
+                <h2 id="pb-tips-title" className="v3-pb-panel-title">{s.tipsTitle}</h2>
+                <ul className="v3-pb-tips">
+                  {snapshot.tips.map((tip, i) => <li key={i}>{tip}</li>)}
+                </ul>
+              </section>
+            )}
+
             {highlights.length > 0 && (
               <section className="v3-pb-panel" aria-labelledby="pb-highlights-title" data-pb-highlights>
                 <h2 id="pb-highlights-title" className="v3-pb-panel-title">{s.highlights}</h2>

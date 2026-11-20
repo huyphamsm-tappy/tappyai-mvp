@@ -43,7 +43,9 @@ describe('toPlanShareSnapshot — the whitelist', () => {
   it('keeps exactly the public plan fields and drops everything else', () => {
     const snap = toPlanShareSnapshot(quyNhon())!
     expect(snap).toBeTruthy()
-    expect(Object.keys(snap).sort()).toEqual(['budget_total', 'days', 'people', 'summary', 'title', 'type', 'v'])
+    // 20/11 (owner): the shared page now carries the plan's cost lines (`costs`) and its tips (`tips`), link-free: a deliberate addition to the public fields
+    expect(Object.keys(snap).sort()).toEqual(['budget_total', 'costs', 'days', 'people', 'summary', 'title', 'type', 'v'])
+    expect(snap.costs?.length).toBeGreaterThan(0)
     expect(snap.title).toBe('Quy Nhơn 3 ngày 2 đêm')
     expect(snap.people).toBe(2)
     expect(snap.budget_total).toBe('5.000.000đ')
@@ -176,7 +178,7 @@ describe('toPlanShareSnapshot — the whitelist', () => {
 
   it('canonical JSON is key-order independent', () => {
     const a = toPlanShareSnapshot(quyNhon())!
-    const shuffled = JSON.parse(JSON.stringify(a, Object.keys(a).reverse().concat(['label', 'items', 'time', 'name', 'photo_url', 'address', 'description', 'emoji', 'category', 'price', 'maps_link', 'booking_link'])))
+    const shuffled = JSON.parse(JSON.stringify(a, Object.keys(a).reverse().concat(['label', 'value', 'items', 'time', 'name', 'photo_url', 'address', 'description', 'emoji', 'category', 'price', 'maps_link', 'booking_link'])))
     expect(canonicalPlanShareJson(shuffled)).toBe(canonicalPlanShareJson(a))
   })
 })
