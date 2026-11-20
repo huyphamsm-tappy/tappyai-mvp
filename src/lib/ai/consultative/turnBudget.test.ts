@@ -45,16 +45,18 @@ describe('spendLookup', () => {
     if (!v.ok) expect(v.reason).toBe('time')
     expect(s.lookups).toBe(1) // a refused call is not counted
   })
-  it('lookups belong in at most maxRounds steps: a plan gets two, the same step may hold as many calls as the caps allow', () => {
+  it('lookups belong in at most maxRounds steps: a plan gets one (measured 20/11: the second round cost 15 s), a place question three; the same step may hold as many calls as the caps allow', () => {
     const b = budgetOf('plan'), s = newBudgetState()
     expect(spendLookup(b, s, 'search_places', 0, 1).ok).toBe(true)
     expect(spendLookup(b, s, 'get_hotel_prices', 0, 1).ok).toBe(true)
-    expect(spendLookup(b, s, 'get_weather_forecast', 0, 2).ok).toBe(true)
-    const v = spendLookup(b, s, 'web_search', 0, 3)
+    expect(spendLookup(b, s, 'web_search', 0, 1).ok).toBe(true)
+    const v = spendLookup(b, s, 'web_search', 0, 2)
     expect(v.ok).toBe(false)
     if (!v.ok) { expect(v.reason).toBe('rounds'); expect(v.note).toMatch(/Write the answer now/) }
-    expect(spendLookup(b, s, 'web_search', 0, 2).ok).toBe(true) // a later call of an allowed step still goes
-    expect(s.lookups).toBe(4)
+    expect(s.lookups).toBe(3)
+    const p = budgetOf('lookup'), t = newBudgetState()
+    for (const step of [1, 2, 3]) expect(spendLookup(p, t, 'web_search', 0, step).ok).toBe(true)
+    expect(spendLookup(p, t, 'get_weather', 0, 4).ok).toBe(false)
   })
   it('the time counts from the first lookup: a turn that was slow to begin still gets its lookups', () => {
     const b = budgetOf('lookup'), s = newBudgetState()

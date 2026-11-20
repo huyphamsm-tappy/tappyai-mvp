@@ -25,7 +25,7 @@ const BUDGETS: Readonly<Record<TurnTier, TurnBudget>> = {
   // a place, a product, a price, news, a recommendation or comparison: each lookup a different need
   lookup: { tier: 'lookup', maxLookups: 6, perTool: { web_search: 3, search_places: 3, search_products: 2, get_hotel_prices: 2, get_transport_options: 1, get_flight_prices: 2, get_news: 1, get_weather: 1 }, timeMs: 45_000, maxRounds: 3 },
   // a trip or an evening: the places, the stay, the fare and the weather together, in the first step
-  plan: { tier: 'plan', maxLookups: 12, perTool: { web_search: 4, search_places: 6, search_products: 1, get_hotel_prices: 2, get_transport_options: 2, get_flight_prices: 2, get_news: 1, get_weather: 2 }, timeMs: 55_000, maxRounds: 2 },
+  plan: { tier: 'plan', maxLookups: 12, perTool: { web_search: 4, search_places: 6, search_products: 1, get_hotel_prices: 2, get_transport_options: 2, get_flight_prices: 2, get_news: 1, get_weather: 2 }, timeMs: 55_000, maxRounds: 1 },
 }
 
 export interface TurnReading { intent?: string | null; answer_shape?: string | null; needs_fresh_data?: boolean | null }
@@ -65,4 +65,4 @@ export function spendLookup(budget: TurnBudget, state: BudgetState, tool: string
 }
 
 /** The same limits in words, for the system prompt: the model plans inside what the code will enforce. */
-export const TURN_BUDGET_PROMPT = 'Lookup budget, held by the app: a fact, an explanation or advice - at most 3 lookups, usually none or one; a place, product, price, news or comparison - at most 6, each one a different need; a trip or evening plan - up to 12, and in the FIRST step: the places (up to 6 search_places), the stay (get_hotel_prices), the fare (get_transport_options or get_flight_prices) and the weather. A call over the budget is refused, and lookups are allowed in at most two steps (three for a place, product or price question), so decide what you need first, make ALL the calls together in the same step, then write.'
+export const TURN_BUDGET_PROMPT = 'Lookup budget, held by the app: a fact, an explanation or advice - at most 3 lookups, usually none or one; a place, product, price, news or comparison - at most 6, each one a different need; a trip or evening plan - up to 12, and in the FIRST step: the places (up to 6 search_places), the stay (get_hotel_prices), the fare (get_transport_options or get_flight_prices) and the weather. A call over the budget is refused, and lookups are allowed in ONE step for a plan, two for a fact and three for a place, product or price question, so decide what you need first, make ALL the calls together in the same step, then write.'
