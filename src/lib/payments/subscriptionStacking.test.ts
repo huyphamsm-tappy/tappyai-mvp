@@ -26,9 +26,16 @@ describe('canBuyPlan: which plan may be bought while one runs', () => {
     expect(canBuyPlan(web('promax1m'), 'promax3m')).toBe(true)
     expect(canBuyPlan(web('promax3m'), 'promax1m')).toBe(true)
   })
-  it('another kind is refused for now (the account would be switched to it for the whole period)', () => {
-    expect(canBuyPlan(web('coco'), 'promax1m')).toBe(false)
+  // owner 20/11 (second ruling): an UPGRADE is allowed (Coco -> Tappy: the account moves to Tappy and the Coco days left are added to the end date), a downgrade never
+  it('an upgrade is allowed: Coco (or the trial) can buy Tappy', () => {
+    expect(canBuyPlan(web('coco'), 'promax1m')).toBe(true)
+    expect(canBuyPlan(web('momo'), 'promax3m')).toBe(true)
+    expect(canBuyPlan(web('pip'), 'promax1m')).toBe(true)
+  })
+  it('a downgrade is refused: Tappy can not buy Coco, MoMo or the trial', () => {
     expect(canBuyPlan(web('promax1m'), 'coco')).toBe(false)
+    expect(canBuyPlan(web('promax3m'), 'momo')).toBe(false)
+    expect(canBuyPlan(web('promax1m'), 'pip')).toBe(false)
   })
   it('the one-time trial (pip) is never bought on top of a running plan, but a running trial can be topped up with Coco', () => {
     expect(canBuyPlan(web('coco'), 'pip')).toBe(false)

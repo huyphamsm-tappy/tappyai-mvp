@@ -557,6 +557,25 @@ describe('Tappy (promax) - the purchase flow (20261102_plans_promax)', () => {
     expect((await t.one<{ plan: string; status: string }>(`SELECT plan, status FROM public.subscriptions WHERE user_id = $1`, [CAROL])))
       .toMatchObject({ plan: 'promax1m', status: 'active' })
   })
+
+  // owner 20/11 (second ruling): an upgrade is allowed, a downgrade never; the days left on the lower plan are kept and added
+  it('an upgrade: Coco with 10 days left buys Tappy -> Tappy for about 40 days; a downgrade is refused', async () => {
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [CAROL])
+    h.user = { id: CAROL }
+    const coco = await newOrder('momo')
+    expect(coco.status).toBe(201)
+    await bankPays((await coco.json()).order.code, 225_000)
+    await t.db.query(`SELECT set_config('p8.entitlement_writer', 'on', false)`)
+    await t.db.query(`UPDATE public.subscriptions SET current_period_end = now() + interval '10 days' WHERE user_id = $1`, [CAROL])
+    await t.db.query(`SELECT set_config('p8.entitlement_writer', '', false)`)
+    const up = await newOrder('promax1m')
+    expect(up.status).toBe(201)
+    await bankPays((await up.json()).order.code, 300_000)
+    const r = await myPlan()
+    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'promax1m', name: 'Tappy' } })
+    expect((Date.parse(r.subscription.periodEnd as string) - Date.now()) / DAY).toBeCloseTo(40, 0)
+    expect((await newOrder('momo')).status).toBe(409)
+  })
 })
 
 describe('payment history', () => {

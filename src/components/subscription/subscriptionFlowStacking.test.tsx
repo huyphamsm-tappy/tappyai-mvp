@@ -57,6 +57,17 @@ describe('the purchase screen while a plan runs', () => {
     const expected = formatDay(new Date(Date.parse(me.subscription.periodEnd!) + coco.durationDays * DAY).toISOString(), 'vi')
     expect(text).toContain(`hết ngày ${expected}`)
   })
+  it('an upgrade (Coco -> Tappy) says the account moves up and the days left are kept and added', () => {
+    render(<SubscriptionFlow catalog={catalog} initialMe={activeWeb(10)} initial={{ screen: 'home' }} />)
+    fireEvent.click(document.querySelector('[data-plan="promax1m"]')!)
+    fireEvent.click(screen.getByRole('button', { name: 'Chọn Tappy' }))
+    const text = screen.getByTestId('sub-disclosure').textContent!
+    expect(text).toContain('nâng lên Tappy')
+    expect(text).toContain('cộng vào hạn hiện tại')
+  })
+  it('the same kind of plan does not say the account moves up', () => {
+    expect(open(activeWeb(10))).not.toContain('nâng lên')
+  })
   it('a visitor with no plan sees no such line and the end date counted from today', () => {
     const text = open(free)
     expect(text).not.toContain('cộng vào hạn hiện tại')

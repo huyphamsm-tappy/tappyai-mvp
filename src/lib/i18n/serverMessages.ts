@@ -413,8 +413,8 @@ const MESSAGES = {
     en: 'You already have an active plan. You can buy again once it ends.',
   },
   'payments.stackSameKind': {
-    vi: 'Bạn đang có gói còn hạn. Muốn cộng dồn thêm ngày, hãy mua thêm gói cùng loại; gói khác có thể mua khi gói hiện tại hết hạn.',
-    en: 'You already have an active plan. To add more days, buy the same kind of plan; a different plan can be bought once this one ends.',
+    vi: 'Bạn đang có gói còn hạn. Bạn có thể mua thêm gói cùng loại để cộng dồn ngày, hoặc nâng cấp lên gói cao hơn; gói thấp hơn và gói dùng thử chỉ mua được khi gói hiện tại hết hạn.',
+    en: 'You already have an active plan. You can buy the same kind of plan to add days, or upgrade to a higher plan; a lower plan and the trial can be bought once this one ends.',
   },
   'payments.pipUsed': {
     vi: 'Bạn đã sử dụng gói Pip. Gói dùng thử này chỉ có thể mua một lần cho mỗi tài khoản.',

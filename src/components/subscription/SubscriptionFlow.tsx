@@ -30,6 +30,7 @@ import { VietQrScreen, formatVnd, type CreatedOrder } from '@/components/payment
 import { TappyMascot } from '@/components/TappyMascot'
 import type { SubscriptionCatalog, SubscriptionPlanCard } from '@/lib/payments/subscriptionCatalog'
 import { canBuyPlan, type MySubscription } from '@/lib/payments/subscriptionState'
+import { tierOf } from '@/lib/plans/tiers'
 import { PlanAvatar } from './PlanAvatar'
 import { planStyle } from './planStyle'
 
@@ -349,6 +350,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
           <p>{t('sub.disclose.noAutoDebit')}</p>
           <p>{t('sub.disclose.until', { date: formatDay(endIfBoughtNow(plan, Date.now(), me.subscription.state === 'ACTIVE' ? me.subscription.periodEnd : null), locale) })}</p>
           {me.subscription.state === 'ACTIVE' && <p>{t('sub.disclose.stack')}</p>}
+          {me.subscription.state === 'ACTIVE' && me.subscription.plan && tierOf(plan.id) !== tierOf(me.subscription.plan.id) && <p>{t('sub.disclose.upgrade', { plan: plan.name })}</p>}
           <p className="text-xs text-content-secondary">
             {t('sub.disclose.agree')} <Link href="/terms" className="underline">{t('sub.disclose.terms')}</Link> {t('sub.disclose.and')}{' '}
             <Link href="/privacy" className="underline">{t('sub.disclose.privacy')}</Link>.

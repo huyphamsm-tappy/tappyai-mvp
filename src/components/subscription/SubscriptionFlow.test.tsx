@@ -86,12 +86,13 @@ describe('plan list', () => {
   })
 
   // owner 20/11: a running web plan can be topped up with the SAME kind of plan (the days add up); the other kind and the one-time trial stay disabled (the old rule disabled every button)
-  it('ACTIVE: opens on "Gói của tôi"; in the list only the same kind of plan can be bought again, and the plan says "Gói hiện tại"', () => {
+  it('ACTIVE: opens on "Gói của tôi"; in the list the same or a higher plan can be bought, and the plan says "Gói hiện tại"', () => {
     const { unmount } = render(<SubscriptionFlow catalog={catalog} initialMe={activeWeb()} />)
     expect(screen.getByTestId('sub-manage')).toBeTruthy()
     unmount()
     render(<SubscriptionFlow catalog={catalog} initialMe={activeWeb()} initial={{ screen: 'home' }} />)
-    for (const b of document.querySelectorAll('[data-plan]')) expect((b as HTMLButtonElement).disabled).toBe(!['momo', 'coco'].includes(b.getAttribute('data-plan')!))
+    // (the same kind AND the higher kind - owner 20/11, second ruling: an upgrade is allowed; the trial never)
+    for (const b of document.querySelectorAll('[data-plan]')) expect((b as HTMLButtonElement).disabled).toBe(!['momo', 'coco', 'promax1m', 'promax3m'].includes(b.getAttribute('data-plan')!))
     expect(screen.getAllByText('Gói hiện tại').length).toBeGreaterThanOrEqual(2) // the summary card + Momo's card(s)
   })
 })

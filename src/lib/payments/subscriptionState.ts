@@ -63,11 +63,16 @@ function planInfo(plan: string | null): { id: string; name: string } | null {
   return { id: plan, name: PLAN_CONFIG[plan].label }
 }
 
-/** May this plan be bought now? Anything on sale when no plan runs; while a web plan runs only the same kind (Coco: momo/coco, Tappy: promax1m/promax3m), never the one-time trial. Pure. */
+const TIER_RANK = { free: 0, pro: 1, promax: 2 } as const
+
+/**
+ * May this plan be bought now? Anything on sale when no plan runs. While a web plan runs: the same kind (Coco: momo/coco, Tappy: promax1m/promax3m) or a HIGHER one (owner 20/11: Coco -> Tappy
+ * moves the account to Tappy and the Coco days left are added to the end date), never a lower one, never the one-time trial. Pure.
+ */
 export function canBuyPlan(mine: MySubscription, planId: string): boolean {
   if (mine.state !== 'ACTIVE') return true
   if (!mine.canBuy || !mine.plan || planId === 'pip') return false
-  return tierOf(planId) === tierOf(mine.plan.id)
+  return TIER_RANK[tierOf(planId)] >= TIER_RANK[tierOf(mine.plan.id)]
 }
 
 export function mySubscription(

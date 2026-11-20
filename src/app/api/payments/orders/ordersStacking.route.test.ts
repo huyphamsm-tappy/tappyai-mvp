@@ -41,21 +41,32 @@ describe('buying while a web plan is running', () => {
     rpc.mockResolvedValue(created('promax3m'))
     expect((await post('promax3m')).status).toBe(201)
   })
-  it('another kind of plan, the trial, or a store plan is refused with 409 already_active and no order', async () => {
+  // owner 20/11 (second ruling): an upgrade (Coco -> Tappy) creates an order; the days left are added to the end date and the account moves to the higher plan
+  it('an upgrade creates an order', async () => {
     h.row = running('coco', 'web_sepay')
-    for (const plan of ['promax1m', 'pip']) {
+    rpc.mockResolvedValue(created('promax1m'))
+    expect((await post('promax1m')).status).toBe(201)
+    rpc.mockResolvedValue(created('promax3m'))
+    expect((await post('promax3m')).status).toBe(201)
+  })
+  it('a downgrade, the trial on top of a plan, or a store plan is refused with 409 already_active and no order', async () => {
+    h.row = running('promax1m', 'web_sepay')
+    for (const plan of ['coco', 'momo', 'pip']) {
       const res = await post(plan)
       expect(res.status).toBe(409)
       expect((await res.json()).error).toBe('already_active')
     }
+    h.row = running('coco', 'web_sepay')
+    expect((await post('pip')).status).toBe(409)
     h.row = running('coco', 'google_play')
     const store = await post('coco')
     expect(store.status).toBe(409)
     expect(rpc).not.toHaveBeenCalled()
   })
-  it('the refusal for another kind says how to top up (the same kind of plan)', async () => {
-    h.row = running('coco', 'web_sepay')
-    const body = await (await post('promax1m')).json() as { message: string }
+  it('the refusal of a downgrade says what can be bought: the same kind of plan, or an upgrade', async () => {
+    h.row = running('promax1m', 'web_sepay')
+    const body = await (await post('coco')).json() as { message: string }
     expect(body.message).toContain('cùng loại')
+    expect(body.message).toContain('nâng cấp')
   })
 })
