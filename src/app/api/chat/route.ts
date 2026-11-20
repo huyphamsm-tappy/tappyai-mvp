@@ -3214,6 +3214,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           })).min(1),
           cost_breakdown: z.record(z.string()).optional(),
           local_tips: z.array(z.object({ text: z.string(), basis: z.enum(['tool', 'general']) })).optional(),
+          // 20/11: where to stay and what to eat, as their own sections. All optional and lenient on purpose (a refused argument ends the whole turn); the app keeps only what the turn's lookups support (consultative/planStaysDishes.ts)
+          stays: z.array(z.object({ name: z.string().describe('the hotel, named exactly as get_hotel_prices returned it'), why: z.string().optional().describe('one short reason it suits this person') })).optional().describe('2-3 recommended hotels; the app adds the price per night and the booking page from the lookup'),
+          dishes: z.array(z.object({ dish: z.string().describe('the dish or specialty'), venue: z.string().optional().describe('the place to eat it, named exactly as search_places returned it'), price: z.string().optional().describe('only from the tool results'), note: z.string().optional().describe('what makes it worth trying, a few words') })).optional().describe('up to 6 dishes worth trying, each at a venue from the lookups'),
           // CONSULT_PLAN_V2 (default OFF): who the plan is for, every cost line, the total and the assumptions are REQUIRED fields (they replace the optional budget_total above)
           ...(planV2On ? planV2Shape : {}),
         }),

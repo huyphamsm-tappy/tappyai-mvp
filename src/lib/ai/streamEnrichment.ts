@@ -103,6 +103,7 @@ import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import { systemLinkLines } from './consultative/systemLinkRow'
 import { withPartnerLinks } from './consultative/planPartnerLinks'
+import { withStaysAndDishes } from './consultative/planStaysDishes'
 import { onlyMatchingCards, cardsConsistentWithAnswer } from './consultative/cardsMatchRequest'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
@@ -2818,7 +2819,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // 20/11 (owner): the plan's hotel stop carries the Agoda page and nightly price of the hotel it names, its coach / train stop the Vexere page - the partners the platform looked up this turn (planPartnerLinks.ts)
     const itemized0 = planItems ? planItems.text : tipped
     const itemized = collector?.oneBrain === true && itemized0.includes('[TAPPY_PLAN]')
-      ? itemized0.replace(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/, (_m, body: string) => `[TAPPY_PLAN]${withPartnerLinks(body, { stays: collector.stayLinks ?? [], transport: systemLinks.filter(l => /vexere/i.test(l.name) || /vexere\.com/i.test(l.url)), lang })}[/TAPPY_PLAN]`)
+      ? itemized0.replace(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/, (_m, body: string) => `[TAPPY_PLAN]${withStaysAndDishes(withPartnerLinks(body, { stays: collector.stayLinks ?? [], transport: systemLinks.filter(l => /vexere/i.test(l.name) || /vexere\.com/i.test(l.url)), lang }), { stays: collector.stayLinks ?? [], places: latestPlaces.flatMap(p => (typeof p.name === 'string' && p.name ? [{ name: p.name, ...(typeof (p as { address?: unknown }).address === 'string' ? { address: (p as { address: string }).address } : {}) }] : [])), lang })}[/TAPPY_PLAN]`)
       : itemized0
     const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText], collector?.consultative === true ? { assumeLegs: true } : {}) : null
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))

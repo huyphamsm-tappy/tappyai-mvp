@@ -112,6 +112,8 @@ const T: Record<string, [string, string]> = {
   'v206.trip.pdfCost': ['Chi phí', 'Cost'],
   'v206.trip.pdfTotal': ['Tổng', 'Total'],
   'v206.trip.pdfTips': ['Mẹo khi đi theo kế hoạch', 'Tips for following the plan'],
+  'v206.trip.stays': ['Chỗ ở gợi ý', 'Where to stay'],
+  'v206.trip.dishes': ['Món nên thử', 'What to try'],
   'v206.trip.costNote': ['Số liệu do chính kế hoạch đưa ra; chưa kiểm chứng riêng.', 'Figures are the plan\'s own; not separately verified.'],
   'v206.budget.colItem': ['Hạng mục chi phí', 'Cost item'],
   'v206.budget.colBasis': ['Cơ sở', 'Basis'],

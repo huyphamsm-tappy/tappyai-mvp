@@ -108,6 +108,44 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
               </dl>
             </section>
 
+            {snapshot.stays && snapshot.stays.length > 0 && (
+              <section className="v3-pb-panel" aria-labelledby="pb-stays-title" data-pb-stays>
+                <h2 id="pb-stays-title" className="v3-pb-panel-title">{s.staysTitle}</h2>
+                <ul className="v3-pb-tips">
+                  {snapshot.stays.map((st, i) => (
+                    <li key={i}>
+                      <strong>{st.name}</strong>
+                      {st.why && <> — {st.why}</>}
+                      {st.address && <><br /><MapPin size={12} aria-hidden="true" /> {st.address}</>}
+                      {(st.price || st.booking_link) && (
+                        <><br />
+                          {st.price && <span className="v3-pb-card-price">{st.price}</span>}
+                          {st.booking_link && <> <a href={st.booking_link} target="_blank" rel="noopener noreferrer"><Ticket size={12} aria-hidden="true" /> {s.booking}</a></>}
+                        </>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {snapshot.dishes && snapshot.dishes.length > 0 && (
+              <section className="v3-pb-panel" aria-labelledby="pb-dishes-title" data-pb-dishes>
+                <h2 id="pb-dishes-title" className="v3-pb-panel-title">{s.dishesTitle}</h2>
+                <ul className="v3-pb-tips">
+                  {snapshot.dishes.map((d, i) => (
+                    <li key={i}>
+                      <strong>{d.dish}</strong>
+                      {d.venue && <> — {d.venue}</>}
+                      {d.note && <><br />{d.note}</>}
+                      {d.address && <><br /><MapPin size={12} aria-hidden="true" /> {d.address}</>}
+                      {d.price && <><br /><span className="v3-pb-card-price">{d.price}</span></>}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
             {snapshot.costs && snapshot.costs.length > 0 && (
               <section className="v3-pb-panel" aria-labelledby="pb-costs-title" data-pb-costs>
                 <h2 id="pb-costs-title" className="v3-pb-panel-title">{s.costsTitle}</h2>

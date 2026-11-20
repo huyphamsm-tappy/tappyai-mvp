@@ -112,7 +112,7 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
     try {
       const f = tripFacts(plan)
       const facts = [t('v206.trip.days', { n: String(f.days) }), t('v206.trip.stops', { n: String(f.stops) }), ...(f.people ? [t('v206.trip.people', { n: String(f.people) })] : []), ...(f.budget ? [f.budget] : [])].join(' · ')
-      const text = planMarkdown(plan as TappyPlan, { facts, budget: t('v206.trip.budget'), item: t('v206.trip.pdfItem'), cost: t('v206.trip.pdfCost'), tips: t('v206.trip.pdfTips'), total: t('v206.trip.pdfTotal') })
+      const text = planMarkdown(plan as TappyPlan, { facts, budget: t('v206.trip.budget'), item: t('v206.trip.pdfItem'), cost: t('v206.trip.pdfCost'), tips: t('v206.trip.pdfTips'), total: t('v206.trip.pdfTotal'), stays: t('v206.trip.stays'), dishes: t('v206.trip.dishes') })
       const date = new Date().toLocaleDateString(locale === 'en' ? 'en-GB' : 'vi-VN')
       const cover: PdfCover = {
         eyebrow: t('v206.trip.pdfEyebrow'), title: plan.title, facts: [facts, t('report.updated', { date })].filter(Boolean),
@@ -251,6 +251,41 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
         {/* the mockup closes the whole trip with its budget table; one day alone does not */}
         {(current === 'budget' || current === 'all') && rows.length > 0 && <BudgetTable plan={plan} total={facts.budget} />}
         {(current === 'budget' || current === 'all') && rows.length > 0 && <p className="v206-note">{t('v206.trip.costNote')}</p>}
+
+        {/* owner 20/11: where to sleep and what to eat as their own sections (the server kept only what the turn's lookups support) */}
+        {(current === 'budget' || current === 'all' || plan.days.length === 1) && Array.isArray(plan.stays) && plan.stays.length > 0 && (
+          <div data-testid="v206-stays">
+            <h4 className="v206-day-title">{t('v206.trip.stays')}</h4>
+            <ul>
+              {plan.stays.map((s, i) => {
+                const book = s.booking_link && isSafeHttpsUrl(s.booking_link) ? s.booking_link : null
+                return (
+                  <li key={i} className="mt-2">
+                    <div className="v206-stop-head"><h5 className="v206-stop-name">{s.name}</h5>{s.price && <span className="v206-price">{s.price}</span>}</div>
+                    {s.why && <p className="v206-desc">{s.why}</p>}
+                    {s.address && <p className="v206-addr"><MapPin size={12} aria-hidden="true" className="mr-1 inline" />{s.address}</p>}
+                    {book && <div className="v206-links"><a href={book} target="_blank" rel="noopener noreferrer" className="v206-link" data-primary="true"><ExternalLink size={13} aria-hidden="true" />{t('v206.trip.book')}</a></div>}
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )}
+        {(current === 'budget' || current === 'all' || plan.days.length === 1) && Array.isArray(plan.dishes) && plan.dishes.length > 0 && (
+          <div data-testid="v206-dishes">
+            <h4 className="v206-day-title">{t('v206.trip.dishes')}</h4>
+            <ul>
+              {plan.dishes.map((d, i) => (
+                <li key={i} className="mt-2">
+                  <div className="v206-stop-head"><h5 className="v206-stop-name">{d.dish}</h5>{d.price && <span className="v206-price">{d.price}</span>}</div>
+                  {d.venue && <p className="v206-desc">{d.venue}{d.note ? ` · ${d.note}` : ''}</p>}
+                  {!d.venue && d.note && <p className="v206-desc">{d.note}</p>}
+                  {d.address && <p className="v206-addr"><MapPin size={12} aria-hidden="true" className="mr-1 inline" />{d.address}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="v206-actions">

@@ -2,7 +2,8 @@
 // one "##" section per day, the budget as a table and the tips. Only what the plan itself states is written; nothing is added or summed. Pure.
 import type { TappyPlan } from '@/components/TripPlanCard'
 
-export interface PlanMarkdownLabels { facts: string; budget: string; item: string; cost: string; tips: string; total: string }
+/** `stays` and `dishes` are the section headings; without them those sections are not written. */
+export interface PlanMarkdownLabels { facts: string; budget: string; item: string; cost: string; tips: string; total: string; stays?: string; dishes?: string }
 
 const clean = (s: unknown): string => (typeof s === 'string' ? s.replace(/\s+/g, ' ').replace(/\|/g, '/').trim() : '')
 
@@ -18,6 +19,10 @@ export function planMarkdown(plan: TappyPlan, labels: PlanMarkdownLabels): strin
     }
     out.push('')
   }
+  const stays = labels.stays ? (plan.stays ?? []).flatMap(s => { const name = clean(s?.name); return name ? [`- **${name}**${[clean(s.why), clean(s.price), clean(s.address)].filter(Boolean).join(' ') ? ` - ${[clean(s.why), clean(s.price), clean(s.address)].filter(Boolean).join(' ')}` : ''}`] : [] }) : []
+  if (labels.stays && stays.length) out.push(`## ${labels.stays}`, '', ...stays, '')
+  const dishes = labels.dishes ? (plan.dishes ?? []).flatMap(d => { const dish = clean(d?.dish); const tail = [clean(d.venue), clean(d.address), clean(d.price), clean(d.note)].filter(Boolean).join(' '); return dish ? [`- **${dish}**${tail ? ` - ${tail}` : ''}`] : [] }) : []
+  if (labels.dishes && dishes.length) out.push(`## ${labels.dishes}`, '', ...dishes, '')
   const rows = Object.entries(plan.cost_breakdown ?? {}).map(([k, v]) => [clean(k), clean(v)]).filter(([k, v]) => k && v)
   if (rows.length || plan.budget_total) {
     out.push(`## ${labels.budget}`, '', `| ${labels.item} | ${labels.cost} |`, '| --- | --- |')
