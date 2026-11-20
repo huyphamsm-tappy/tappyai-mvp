@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { nextMonthStartVn, deepExhaustedBlock } from './deepResearchNotice'
+import { nextMonthStartVn, displayResetDate, DEEP_RESET_HEADER } from './deepResearchNotice'
 
 describe('nextMonthStartVn', () => {
   it('is the first day of the next month, in Vietnam time', () => {
@@ -9,19 +9,13 @@ describe('nextMonthStartVn', () => {
   it('rolls the year over in December', () => { expect(nextMonthStartVn('2026-12-15')).toBe('2027-01-01') })
 })
 
-describe('deepExhaustedBlock', () => {
-  const b = deepExhaustedBlock({ limit: 15, resetOn: '2026-12-01' })
-  it('states the facts the model needs: the allowance is used up, when it comes back, and that this turn runs as Thinking', () => {
-    expect(b).toContain('15')
-    expect(b).toContain('2026-12-01')
-    expect(b).toMatch(/Thinking/)
+describe('displayResetDate', () => {
+  it('shows the day first, as people write it in Vietnam', () => {
+    expect(displayResetDate('2026-12-01')).toBe('01/12/2026')
+    expect(displayResetDate('not a date')).toBe('not a date')
   })
-  it('tells the model to say it once, briefly, in the person\'s language, and still answer fully', () => {
-    expect(b).toMatch(/once/i)
-    expect(b).toMatch(/language/i)
-    expect(b).toMatch(/answer/i)
-  })
-  it('never names two kinds of report: the person knows only one allowance', () => {
-    expect(b).not.toMatch(/standard|advanced/i)
-  })
+})
+
+describe('the header', () => {
+  it('is lower case (HTTP headers are read case-insensitively; the page reads it by this name)', () => { expect(DEEP_RESET_HEADER).toBe('x-tappy-deep-reset') })
 })

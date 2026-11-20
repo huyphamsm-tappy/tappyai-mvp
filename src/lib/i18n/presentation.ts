@@ -176,6 +176,7 @@ const T: Record<string, [string, string]> = {
   'groupDining.confirmLeave': ['Bạn muốn rời nhóm này?', 'Leave this group?'],
   'groupDining.confirmDelete': ['Xóa nhóm này? Mọi thành viên và gợi ý sẽ mất, không khôi phục được.', 'Delete this group? All members and suggestions are lost for good.'],
   'groupDining.waitingSuggest': ['Chờ trưởng nhóm gợi ý nhé.', 'Waiting for the leader to ask Tappy for suggestions.'],
+  'chat.deepExhausted': ['Bạn đã dùng hết lượt Nghiên cứu sâu của tháng này nên Tappy trả lời ở chế độ Suy nghĩ. Lượt mới có từ {date}.', 'You have used all your Deep Research reports this month, so Tappy answered in Thinking mode. New reports arrive on {date}.'],
   'groupDining.notFound': ['Không tìm thấy nhóm này', 'This group was not found'],
   'groupDining.joinFailed': ['Lỗi tham gia nhóm', 'Could not join the group'],
   'groupDining.connFailed': ['Lỗi kết nối, vui lòng thử lại', 'Connection error, please try again'],

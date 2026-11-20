@@ -112,6 +112,7 @@ import ReportExportBar from '@/components/chat/ReportExportBar'
 import HomeGreeting from '@/components/chat/HomeGreeting'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import { showsExportBar } from '@/lib/chat/fileRequest'
+import { DEEP_RESET_HEADER, displayResetDate } from '@/lib/plans/deepResearchNotice'
 import ReportViewBar from '@/components/chat/ReportViewBar'
 import { reportViewOf } from '@/lib/chat/reportView'
 import ReportInChat from '@/components/chat/ReportInChat'
@@ -888,6 +889,9 @@ function TappyAvatar({ category, active, searching, error: isError, listening }:
   )
 }
 
+/** owner 20/11/2026: the note "the Deep Research reports are used up" belongs to the question it answered; it survives the rebuild of this component when a new chat moves to /chat/<id> (module state lives as long as the page). */
+let deepResetMemo: { date: string; userText: string } | null = null
+
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
@@ -1079,6 +1083,8 @@ export default function ChatInterface({
   const resultIdsRef = useRef<Map<string, string>>(new Map())
   // CONSULTATIVE_IN_AGENT: the server asked (x-tappy-reveal) for the settled reply to be revealed progressively — display only (lib/chat/useFinishReveal).
   const [revealMode, setRevealMode] = useState(false)
+  // owner 20/11/2026: the date the monthly Deep Research reports come back, sent by the server (x-tappy-deep-reset) when the last question asked for a report with none left and ran as Thinking
+  const [deepResetOn, setDeepResetOn] = useState<string | null>(null)
   // C2 P2 6.2 (lib/chat/streamedText, NEXT_PUBLIC_C2_KEEP_STREAMED_TEXT): when the reply being received first showed text, and — once per reply,
   // at its finish — whether it is kept exactly as streamed. Flag off: keep() is always false (the default path is unchanged).
   const streamKeeperRef = useRef<StreamedTextKeeper | null>(null)
@@ -1117,6 +1123,11 @@ export default function ChatInterface({
       // 31/10: a deep research is one question (as ChatGPT's); the composer goes back to Chat once the request is accepted
       setChatMode(m => (m === 'deep' ? 'auto' : m))
       setRevealMode(response.headers.get('x-tappy-reveal') === '1')
+      const deepReset = response.headers.get(DEEP_RESET_HEADER)
+      setDeepResetOn(deepReset)
+      // the first message of a new chat moves the page to /chat/<id> and rebuilds this component: remember which question the note belongs to so the rebuilt page can draw it again
+      const askedLast = [...messagesRef.current].reverse().find(m => m.role === 'user')
+      deepResetMemo = deepReset && askedLast ? { date: deepReset, userText: String(askedLast.content) } : null
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
       if (eid) setEvidenceKey(eid)
@@ -2384,6 +2395,15 @@ export default function ChatInterface({
                 </div>
               </div>
             )}
+            {/* owner 20/11/2026: a report asked for with none left this month ran as Thinking: say so, and when the reports come back (fixed text, never the model's) */}
+            {(() => {
+              const lastMsg = messages[messages.length - 1]
+              const lastAsked = [...messages].reverse().find(m => m.role === 'user')
+              const date = deepResetOn ?? (deepResetMemo && lastMsg?.role === 'assistant' && lastAsked && String(lastAsked.content) === deepResetMemo.userText ? deepResetMemo.date : null)
+              return date && !isLoading && !error
+                ? <p role="status" data-testid="deep-exhausted-note" className="ml-11 text-xs text-gray-500 dark:text-gray-400">{t('chat.deepExhausted', { date: displayResetDate(date) })}</p>
+                : null
+            })()}
             {/* Error recovery — explain plainly, preserve the user's message, offer a way forward (MUXS 8) */}
             {error && !isLoading && (
               <div className="flex gap-3 animate-fade-in">

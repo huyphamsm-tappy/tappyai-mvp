@@ -214,10 +214,11 @@ async function turn(messages: Msg[], o: TurnOpts) {
   const lines: string[] = []
   const spy = vi.spyOn(console, 'log').mockImplementation((...a: unknown[]) => { lines.push(String(a[0])) })
   let raw = ''
-  try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
+  let resHeaders = new Headers()
+  try { const res = await POST(req as never); resHeaders = res.headers; raw = await res.text() } finally { spy.mockRestore() }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
   const logs = lines.map(l => { try { return JSON.parse(l) as Record<string, any> } catch { return null } }).filter((x): x is Record<string, any> => !!x)
-  return { places: [...h.state.placesCalls], raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], opts: { ...h.state.opts }, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
+  return { places: [...h.state.placesCalls], raw, headers: resHeaders, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], opts: { ...h.state.opts }, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
 }
 
 /** A page as long as a real article (the real pages read on 28/10 gave 2 500 - 7 000 characters): a one-line page is read as "thin". */
@@ -867,16 +868,16 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(coco.raw).toContain('tappy.research.v1')
     expect(coco.logs.some(x => x.type === 'tappyai_mode_tier')).toBe(false)
     const used = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, plan: 'momo', subscriptionsOn: true, preSpendDeep: 15, luna: intent('chat', []), reply: 'x' })
-    // owner 20/11/2026: one allowance (Coco 15). With none left the turn is NOT refused: it runs as Thinking, and the model gets the plan fact (when the reports come back)
+    // owner 20/11/2026: one allowance (Coco 15). With none left the turn is NOT refused: it runs as Thinking, the PERSON is told by a header the page draws (the model is told nothing)
     expect(used.raw).not.toContain('deep_research_limit_reached')
     expect(used.raw).not.toContain('tappy.research.v1')
     expect(used.logs.find(x => x.type === 'tappyai_mode_tier')).toMatchObject({ asked: 'deep', ran: 'think', tier: 'pro', why: 'deep_research_month_used' })
     expect(used.opts.thinkEffort).toBe('medium')
-    expect(used.system).toContain('[Plan fact]')
-    expect(used.system).toContain('all 15 of its Deep Research reports')
+    expect(used.headers.get('x-tappy-deep-reset')).toBe('2026-11-01') // the clock of this suite is 28/10/2026: the reports come back on the first of the next month
+    expect(used.system).not.toContain('Plan fact') // the model is told nothing about the allowance
     expect(used.streamCalled).toBe(1)
-    // a run with one left still starts as a real report, and the plan fact is absent
-    expect(coco.system ?? '').not.toContain('[Plan fact]')
+    // a run with one left still starts as a real report, and carries no such header
+    expect(coco.headers.get('x-tappy-deep-reset')).toBeNull()
     // with the plans not on sale (the flag off): every mode for everyone, as before
     const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
     expect(off.opts.thinkEffort).toBe('medium')

@@ -1,5 +1,8 @@
-// The one fact a turn needs when the account has used up its monthly Deep Research reports (owner 20/11/2026). The chat then runs the question in Thinking mode (a full, careful answer) instead of
-// refusing it, and gives the model this plan fact so the person is told, once and briefly, why and when the reports come back. Pure. Plan data only: it carries no rule about HOW to answer.
+// When an account has used up its monthly Deep Research reports (owner 20/11/2026) the chat runs the question in Thinking mode instead of refusing it, and tells the PERSON (not the model) with one
+// fixed note under the answer: the server sends the date the reports come back in the `x-tappy-deep-reset` header and the page draws the sentence in the person's language. The model is told
+// nothing: a first real run showed it names the limit sometimes and forgets it the next time, and the brain stays exactly as it was. Pure.
+
+export const DEEP_RESET_HEADER = 'x-tappy-deep-reset'
 
 /** The first day of the next month, for a VN date `YYYY-MM-DD`. */
 export function nextMonthStartVn(today: string): string {
@@ -8,11 +11,8 @@ export function nextMonthStartVn(today: string): string {
   return `${ny}-${String(nm).padStart(2, '0')}-01`
 }
 
-export function deepExhaustedBlock(o: { limit: number; resetOn: string }): string {
-  return [
-    '[Plan fact]',
-    `This account has used all ${o.limit} of its Deep Research reports for this month; they come back on ${o.resetOn} (Vietnam time).`,
-    'This turn runs in Thinking mode: answer the question fully and carefully.',
-    'Mention the report allowance once, in one short sentence, in the language of the person\'s message. Do not dwell on it.',
-  ].join('\n')
+/** `2026-12-01` → `01/12/2026` (Vietnam day-first), for the note. A value that is not a date comes back unchanged. */
+export function displayResetDate(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso)
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : iso
 }

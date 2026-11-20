@@ -112,7 +112,7 @@ import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT, vnToday } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, peekDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { deepExhaustedBlock, nextMonthStartVn } from '@/lib/plans/deepResearchNotice'
+import { nextMonthStartVn, DEEP_RESET_HEADER } from '@/lib/plans/deepResearchNotice'
 import { tierOf, modeForTier, TIER_HAS_TOOLS, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
@@ -2471,12 +2471,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   // Owner 20/11/2026: a report asked for when none is left this month is not refused: the question runs as Thinking (a full, careful answer) and the model gets one plan fact so the person is told, once and
   // briefly, when the reports come back. `peek` does not spend; the atomic spend still happens at the start of a real report (below), and a race there falls back to the old refusal.
-  let deepExhaustedNote = ''
+  // The PERSON is told by a fixed note the page draws from the `x-tappy-deep-reset` header (the model is told nothing: it named the limit on one turn and forgot it on the next).
+  let deepResetOn: string | null = null
   if (chatMode === 'deep' && authedUserId) {
     const deepLimit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
     if (deepLimit > 0 && (await peekDeepResearch(authedUserId, deepLimit)).remaining === 0) {
       chatMode = 'think'
-      deepExhaustedNote = deepExhaustedBlock({ limit: deepLimit, resetOn: nextMonthStartVn(vnToday()) })
+      deepResetOn = nextMonthStartVn(vnToday())
       console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'deep_research_month_used' }))
     }
   }
@@ -2487,7 +2488,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const autoThinkEffortEnv = (process.env.CONSULT_AUTOTHINK_EFFORT ?? '').trim().toLowerCase()
   const autoThink: { on: boolean; effort: 'none' | 'low' | 'medium' } = { on: false, effort: autoThinkEffortEnv === 'none' || autoThinkEffortEnv === 'low' ? autoThinkEffortEnv : 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock, deepExhaustedNote], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   // The Free plan (no tools) gets no picture lookups either: the model's own ability only
@@ -4609,6 +4610,8 @@ ${finalWriteInstruction(lang)}` },
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
   finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
+  // owner 20/11/2026: a report asked for with none left this month ran as Thinking; the page tells the person when the reports come back
+  if (deepResetOn) finalResponse.headers.set(DEEP_RESET_HEADER, deepResetOn)
   // CONSULTATIVE_IN_AGENT: ask the web client to reveal the (already settled) reply progressively — display only. Emergency off: CONSULT_REVEAL=off
   // on the server (read per request); a user can also opt out on the client (localStorage tappy_reveal=off, or reduced motion).
   if (consultativeAgent && !/^(?:off|0|false|no)$/i.test((process.env.CONSULT_REVEAL ?? '').trim())) finalResponse.headers.set('x-tappy-reveal', '1')
