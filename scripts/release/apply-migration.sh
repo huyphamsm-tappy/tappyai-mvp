@@ -134,6 +134,11 @@ policy_of() {
     # becomes time too. One additive column (payment_orders.bonus_seconds) and a replaced p8_payments_apply_sepay (same signature and grants). Needs 20261011_p8_payments.sql first.
     20261203_payments_no_refund.sql)
       echo APPLY ;;
+    # Group dining is private (owner 20/11/2026): a join is a request the leader accepts (status pending|member, a trigger forces pending on a self-insert, RLS read boundary), then votes on the
+    # suggested venues and the bill split. Three files in this order: 20261204 (join approval), 20261205 (suggestion votes), 20261206 (bills). Applied to UAT only; each has a rollback in
+    # supabase/migrations/rollback/. The new web code needs all three (it reads the new tables); apply them just before the single web deploy.
+    20261204_group_join_approval.sql|20261205_group_suggestion_votes.sql|20261206_group_bills.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

@@ -33,5 +33,6 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(r.body, { status: r.status, headers: r.headers })
 }
 
-export async function GET(_req?: NextRequest) { return mcpGatewayOn() ? notAllowed() : notFound() }
-export async function DELETE(_req?: NextRequest) { return mcpGatewayOn() ? notAllowed() : notFound() }
+// The request parameter is NOT optional: `next build` rejects a route handler whose first parameter may be undefined (found by the first real production build in CI, 20/11/2026).
+export async function GET(_req: NextRequest) { return mcpGatewayOn() ? notAllowed() : notFound() }
+export async function DELETE(_req: NextRequest) { return mcpGatewayOn() ? notAllowed() : notFound() }
