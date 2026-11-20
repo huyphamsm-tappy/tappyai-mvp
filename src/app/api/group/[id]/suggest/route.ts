@@ -36,6 +36,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .from('group_members')
     .select('user_id, name, budget, food_preferences, dietary_restrictions, area')
     .eq('group_id', groupId)
+    .eq('status', 'member') // owner 20/11: a pending request is not a member; its details are not read, not sent to the AI
     .order('created_at', { ascending: true })
 
   if (!members || members.length === 0) {

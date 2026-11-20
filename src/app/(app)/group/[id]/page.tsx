@@ -28,7 +28,12 @@ type Group = {
   suggestion: string | null
   avatar_url?: string | null
   members: Member[]
+  /** the leader alone gets the requests that wait for an answer (owner 20/11: a group is private) */
+  pendingRequests?: Member[]
 }
+
+/** What a person who is NOT yet a member is told: the group's name and whether their request waits. */
+type Gate = { state: 'pending' | 'none'; id: string; name: string }
 
 const BUDGET_OPTIONS = ['Dưới 100k', '100–200k', 'Trên 200k']
 
@@ -45,7 +50,10 @@ export default function GroupPage() {
   const [loading, setLoading] = useState(true)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [authChecked, setAuthChecked] = useState(false)
-  const [joinSuccess, setJoinSuccess] = useState(false)
+  const [gate, setGate] = useState<Gate | null>(null)
+  const [needLogin, setNeedLogin] = useState(false)
+  const [actionBusy, setActionBusy] = useState<string | null>(null)
+  const [actionError, setActionError] = useState('')
   const [suggesting, setSuggesting] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -60,9 +68,17 @@ export default function GroupPage() {
   const fetchGroup = useCallback(async () => {
     try {
       const res = await fetch(`/api/group?id=${id}`)
+      if (res.status === 401) { setNeedLogin(true); return }
       if (!res.ok) return
       const data = await res.json()
-      setGroup(data)
+      if (data.state === 'pending' || data.state === 'none') {
+        // not a member (yet): only the name is known; the page draws the request form or the "waiting" card around it
+        setGate({ state: data.state, id: data.id, name: data.name })
+        setGroup({ id: data.id, name: data.name, creator_id: '', status: 'open', suggestion: null, members: [] })
+      } else {
+        setGate(null)
+        setGroup(data)
+      }
     } finally {
       setLoading(false)
     }
@@ -78,9 +94,6 @@ export default function GroupPage() {
         setCurrentUserId(data.user?.id ?? null)
       })
       .finally(() => setAuthChecked(true))
-
-    const joined = localStorage.getItem(`joined_group_${id}`)
-    if (joined) setJoinSuccess(true)
 
     fetchGroup()
   }, [id, fetchGroup])
@@ -107,8 +120,7 @@ export default function GroupPage() {
         setJoinError(err.message || err.error || 'Lỗi tham gia nhóm')
         return
       }
-      localStorage.setItem(`joined_group_${id}`, 'true')
-      setJoinSuccess(true)
+      // opening the link only filed a REQUEST: the server says where the person stands (waiting for the leader)
       fetchGroup()
     } catch {
       setJoinError('Lỗi kết nối, vui lòng thử lại')
@@ -132,6 +144,21 @@ export default function GroupPage() {
       alert('Lỗi kết nối, vui lòng thử lại')
     } finally {
       setSuggesting(false)
+    }
+  }
+
+  /** The leader accepts or declines a request, or removes an accepted member. */
+  async function decide(memberId: string, action: 'approve' | 'decline' | 'remove') {
+    setActionBusy(memberId)
+    setActionError('')
+    try {
+      const res = await fetch(`/api/group/${id}/members`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ memberId, action }) })
+      if (!res.ok) { const err = await res.json().catch(() => ({})); setActionError(err.message || t('groupDining.actionFailed')); return }
+      await fetchGroup()
+    } catch {
+      setActionError(t('groupDining.actionFailed'))
+    } finally {
+      setActionBusy(null)
     }
   }
 
@@ -159,6 +186,17 @@ export default function GroupPage() {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <Loader2 className="animate-spin text-link" size={32} />
+      </div>
+    )
+  }
+
+  if (needLogin) {
+    return (
+      <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center gap-3 px-4 text-center" data-testid="group-need-login">
+        <Users className="text-link" size={36} />
+        <h1 className="font-bold text-gray-900 dark:text-white text-lg">{t('groupDining.needLogin')}</h1>
+        <p className="text-sm text-content-secondary max-w-sm">{t('groupDining.needLoginBody')}</p>
+        <a href={`/login?returnTo=${encodeURIComponent(`/group/${id}`)}`} className="px-5 py-2.5 bg-interactive text-white font-semibold rounded-2xl">{t('groupDining.signIn')}</a>
       </div>
     )
   }
@@ -192,9 +230,7 @@ export default function GroupPage() {
             </div>
             <div>
               <h1 className="font-bold text-gray-900 dark:text-white text-lg">{group.name}</h1>
-              <p className="text-sm text-content-secondary">
-                {group.members.length} thành viên đã tham gia
-              </p>
+              {!gate && <p className="text-sm text-content-secondary">{t('groupDining.memberCount', { count: String(group.members.length) })}</p>}
             </div>
           </div>
         </div>
@@ -230,6 +266,33 @@ export default function GroupPage() {
               </div>
             </div>
 
+            <p className="text-xs text-content-secondary px-1" data-testid="group-private-note">{t('groupDining.privateNote')}</p>
+
+            {/* Requests waiting for the leader's answer (owner 20/11: the leader accepts who comes in) */}
+            {(group.pendingRequests?.length ?? 0) > 0 && (
+              <div className="card p-4" data-testid="group-requests">
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">{t('groupDining.requestsTitle', { count: String(group.pendingRequests!.length) })}</p>
+                <div className="space-y-3">
+                  {group.pendingRequests!.map(m => (
+                    <div key={m.id} className="pb-3 border-b border-gray-100 dark:border-gray-800 last:border-0" data-testid="group-request">
+                      <p className="font-semibold text-gray-900 dark:text-white">{m.name}</p>
+                      <div className="mt-1 space-y-0.5 text-sm text-content-secondary">
+                        {m.budget && <p>💰 {m.budget}</p>}
+                        {m.food_preferences && <p>🍽️ {m.food_preferences}</p>}
+                        {m.dietary_restrictions && <p>🚫 {m.dietary_restrictions}</p>}
+                        {m.area && <p>📍 {m.area}</p>}
+                      </div>
+                      <div className="mt-2 flex gap-2">
+                        <button type="button" disabled={actionBusy === m.id} onClick={() => decide(m.id, 'approve')} className="px-3 py-1.5 rounded-xl bg-interactive text-white text-sm font-semibold disabled:opacity-60">{t('groupDining.approve')}</button>
+                        <button type="button" disabled={actionBusy === m.id} onClick={() => decide(m.id, 'decline')} className="px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-sm font-semibold text-gray-700 dark:text-gray-200 disabled:opacity-60">{t('groupDining.decline')}</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {actionError && <p role="alert" className="mt-2 text-sm text-red-500">{actionError}</p>}
+              </div>
+            )}
+
             {/* Member list */}
             {group.members.length > 0 ? (
               <div className="card p-4">
@@ -247,6 +310,7 @@ export default function GroupPage() {
                         {m.dietary_restrictions && <p>🚫 Kiêng: {m.dietary_restrictions}</p>}
                         {m.area && <p>📍 Khu vực: {m.area}</p>}
                       </div>
+                      <button type="button" disabled={actionBusy === m.id} onClick={() => decide(m.id, 'remove')} className="mt-1.5 text-xs text-red-500 font-medium disabled:opacity-60">{t('groupDining.remove')}</button>
                     </div>
                   ))}
                 </div>
@@ -274,10 +338,11 @@ export default function GroupPage() {
           </>
         )}
 
-        {/* NON-CREATOR: join form */}
-        {!isCreator && !joinSuccess && (
-          <div className="card p-5">
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Điền thông tin của bạn</h2>
+        {/* NOT A MEMBER YET: the request form (opening the link only asks to join) */}
+        {gate?.state === 'none' && (
+          <div className="card p-5" data-testid="group-request-form">
+            <h2 className="font-semibold text-gray-900 dark:text-white mb-1">{t('groupDining.requestTitle', { name: group.name })}</h2>
+            <p className="text-sm text-content-secondary mb-4">{t('groupDining.requestBody')}</p>
             <form onSubmit={handleJoin} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
@@ -360,18 +425,25 @@ export default function GroupPage() {
                 className="w-full py-3 bg-interactive text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95"
               >
                 {joining ? <Loader2 size={18} className="animate-spin" /> : null}
-                Tham gia nhóm
+                {t('groupDining.requestButton')}
               </button>
             </form>
           </div>
         )}
 
-        {/* NON-CREATOR: joined, waiting */}
-        {!isCreator && joinSuccess && !group.suggestion && (
+        {/* REQUEST SENT: waiting for the leader to accept */}
+        {gate?.state === 'pending' && (
+          <div className="card p-6 text-center" data-testid="group-pending">
+            <div className="text-4xl mb-3">⏳</div>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{t('groupDining.pendingTitle')}</h2>
+            <p className="text-sm text-content-secondary mt-1">{t('groupDining.pendingBody')}</p>
+          </div>
+        )}
+
+        {/* ACCEPTED MEMBER: waiting for the leader's suggestion */}
+        {!isCreator && !gate && !group.suggestion && (
           <div className="card p-6 text-center">
-            <div className="text-4xl mb-3">🎉</div>
-            <h2 className="font-semibold text-gray-900 dark:text-white">Đã tham gia!</h2>
-            <p className="text-sm text-content-secondary mt-1">Chờ trưởng nhóm gợi ý nhé 🎉</p>
+            <p className="text-sm text-content-secondary">{t('groupDining.waitingSuggest')}</p>
           </div>
         )}
 

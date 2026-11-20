@@ -37,20 +37,14 @@ export async function GET(req: NextRequest) {
   const id = searchParam(req, 'id')
   if (!id) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
-  // S-1. Read through the service role, keyed by the id the caller supplied.
-  //
-  // The share link IS the capability — `/group/{uuid}` is what the page tells
-  // the creator to send — and this route has always been the way a link holder
-  // reads the group. What it used to rely on was the RLS policy
-  // `"Anyone can read group members" USING (true)`, and that policy could not
-  // tell "asked for one id" from "asked for every row": with the PUBLIC anon
-  // key it also served `GET /rest/v1/group_members?select=*`, i.e. every
-  // member's name, area, budget and dietary restrictions, platform-wide, to
-  // anyone. 20260904_group_read_boundary.sql closes that path.
-  //
-  // So the capability moves to where it can be checked — a UUID this handler
-  // requires and filters on — instead of a policy that granted it to everyone.
-  // Both reads below are pinned to that single id; nothing here can enumerate.
+  // Owner 20/11: a group is PRIVATE. It needs a Tappy account (no account: 401) and the leader's acceptance: the link only lets a person ASK to join. So, by who is asking:
+  //   creator           the group, the accepted members and the pending requests (to accept or decline them)
+  //   accepted member   the group and the accepted members
+  //   pending person    only that their request waits, and the group name
+  //   anyone else       only the group name, so they can ask to join
+  // (S-1, 20260904: the read goes through the service role keyed by the one id the caller gave; nothing here can enumerate.)
+  const { user } = await getRequestUser(req)
+  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const supabase = createAdminClient()
 
   const { data: group, error: groupError } = await supabase
@@ -65,11 +59,18 @@ export async function GET(req: NextRequest) {
   if (groupError || !group) return NextResponse.json({ error: 'group_not_found', message: serverMessage('group.notFound', requestLocale(req)) }, { status: 404 })
   group.avatar_url = isServableMediaUrl(group.avatar_url) ? group.avatar_url : null
 
-  const { data: members } = await supabase
+  const { data: rows } = await supabase
     .from('group_members')
-    .select('id, name, budget, food_preferences, dietary_restrictions, area, created_at')
+    .select('id, user_id, name, budget, food_preferences, dietary_restrictions, area, created_at, status')
     .eq('group_id', id)
     .order('created_at', { ascending: true })
+  const all = (rows ?? []) as Array<Record<string, unknown>>
+  const mine = all.find(r => r.user_id === user.id)
+  const isCreator = group.creator_id === user.id
+  if (!isCreator && mine?.status !== 'member') return NextResponse.json({ state: mine ? 'pending' : 'none', id: group.id, name: group.name })
 
-  return NextResponse.json({ ...group, members: members || [] })
+  // the person's own account id never leaves: the others see names and tastes, not who they are on Tappy
+  const view = ({ user_id: _u, status: _s, ...rest }: Record<string, unknown>) => rest
+  const members = all.filter(r => r.status === 'member').map(view)
+  return NextResponse.json({ ...group, state: isCreator ? 'creator' : 'member', members, ...(isCreator ? { pendingRequests: all.filter(r => r.status === 'pending').map(view) } : {}) })
 }
