@@ -10,6 +10,7 @@ import '../v206.css'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import ShareMenu from '@/components/share/ShareMenu'
 import { buildPlanArtifact } from '@/lib/share/shareArtifact'
+import { PLAN_SHARE_ID_RE, planShareUrl } from '@/lib/plans/share/planShare'
 import { withPlacePhotos, type PlacePhotoSource } from '@/lib/plans/share/planPhotos'
 import { plainTextDeep } from '@/lib/chat/markdownNormalize'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
@@ -91,6 +92,20 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
   const [tab, setTab] = useState<Tab>('all')
   const [shareOpen, setShareOpen] = useState(false)
   const [pdfBusy, setPdfBusy] = useState(false)
+  const [shareBusy, setShareBusy] = useState(false)
+  const [shareNote, setShareNote] = useState<string | null>(null)
+  // owner 20/11: sharing a plan is a LINK to its page (/plan/<id>: photos, stops, cost lines, tips), not a picture (the picture was cut and missed most stops). Signed out or no link: the old share sheet.
+  const shareAsLink = async () => {
+    setShareBusy(true)
+    try {
+      const r = await fetch('/api/plans/share', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan: withPlacePhotos(plan as TappyPlan, places) }) })
+      const body = r.ok ? ((await r.json()) as { id?: unknown }) : null
+      if (!body || typeof body.id !== 'string' || !PLAN_SHARE_ID_RE.test(body.id)) { setShareOpen(true); return }
+      const url = planShareUrl(body.id)
+      try { await navigator.clipboard.writeText(url); setShareNote(t('v206.trip.linkCopied')) } catch { setShareNote(url) }
+      window.setTimeout(() => setShareNote(null), 6000)
+    } catch { setShareOpen(true) } finally { setShareBusy(false) }
+  }
   // the plan as the designed PDF page (the same layout as a research report): built in the browser, nothing is sent anywhere
   const downloadPlanPdf = async () => {
     setPdfBusy(true)
@@ -240,7 +255,8 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
 
       <div className="v206-actions">
         <TipsButton n={tips.length} />
-        <button type="button" className="v206-link" data-primary="true" onClick={() => setShareOpen(true)} data-testid="v206-share"><Share2 size={14} aria-hidden="true" />{t('v206.trip.share')}</button>
+        <button type="button" className="v206-link" data-primary="true" disabled={shareBusy} onClick={() => { void shareAsLink() }} data-testid="v206-share"><Share2 size={14} aria-hidden="true" />{t('v206.trip.share')}</button>
+        {shareNote && <span className="v206-note" role="status" data-testid="v206-share-note">{shareNote}</span>}
         <button type="button" className="v206-link" disabled={pdfBusy} onClick={() => { void downloadPlanPdf() }} data-testid="v206-pdf"><Download size={14} aria-hidden="true" />{t('v206.trip.pdf')}</button>
       </div>
       <ShareMenu artifact={artifact} variant="plan" profileName={plan.title} open={shareOpen} onClose={() => setShareOpen(false)} />
