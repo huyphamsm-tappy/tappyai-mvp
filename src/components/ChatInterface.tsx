@@ -111,6 +111,7 @@ import ReportCover, { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 import ReportExportBar from '@/components/chat/ReportExportBar'
 import HomeGreeting from '@/components/chat/HomeGreeting'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
+import { showsExportBar } from '@/lib/chat/fileRequest'
 import ReportViewBar from '@/components/chat/ReportViewBar'
 import { reportViewOf } from '@/lib/chat/reportView'
 import ReportInChat from '@/components/chat/ReportInChat'
@@ -2054,7 +2055,8 @@ export default function ChatInterface({
                     <div className="flex-1 min-w-0">
                       {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} compact={isDoc} />}
                       {research && REPORT_LAYOUT_A && !isDoc && <ReportCover status={research} />}
-                      {!research && !(isLoading && isLastMessage) && !isDoc && looksLikeReport(msg.content) && <ReportExportBar report={msg.content} format={formatMessage} />}
+                      {/* 20/11 (owner, after a real run): a person who ASKS for a file ("xuất ra file", "tải về PDF") gets the download bar under the answer whatever its length (lib/chat/fileRequest.ts) */}
+                      {!research && !isDoc && showsExportBar({ answer: msg.content, previousUserText: typeof messages[msgIdx - 1]?.content === 'string' && messages[msgIdx - 1]?.role === 'user' ? (messages[msgIdx - 1].content as string) : '', streaming: isLoading && isLastMessage }) && <ReportExportBar report={msg.content} format={formatMessage} />}
                       <div className={`text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5${research && REPORT_LAYOUT_A && !isDoc && research.phase === 'done' ? ' tappy-report' : ''}`}>
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);

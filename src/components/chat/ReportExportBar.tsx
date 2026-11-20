@@ -9,10 +9,19 @@ import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
 import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
-/** The report's title: its first "# " heading, else its first line. */
+/** A line that reads as a title written in capitals: at least 10 letters, all upper case, no sentence punctuation, few digits (a figure line is not a title). */
+const isCapsTitle = (l: string): boolean => {
+  const s = l.replace(/[*_`]/g, '').trim()
+  const letters = s.replace(/[^\p{L}]/gu, '')
+  return letters.length >= 10 && letters === letters.toUpperCase() && !/[:.?!]/.test(s) && (s.match(/\d/g) ?? []).length <= 3 && s.length <= 120
+}
+
+/** The report's title: its first "# " heading, else a title line written in capitals, else its first line. */
 export function reportTitleOf(text: string): string {
-  const h = text.split('\n').find(l => /^#\s/.test(l))
-  return (h ? h.replace(/^#\s+/, '') : text.split('\n').find(l => l.trim()) ?? 'report').replace(/[*_`]/g, '').trim().slice(0, 120)
+  const lines = text.split('\n')
+  const h = lines.find(l => /^#\s/.test(l))
+  const caps = h ? undefined : lines.find(isCapsTitle)
+  return (h ? h.replace(/^#\s+/, '') : caps ?? lines.find(l => l.trim()) ?? 'report').replace(/[*_`]/g, '').trim().slice(0, 120)
 }
 
 export default function ReportExportBar({ report, format }: { report: string; format: (s: string) => string }) {

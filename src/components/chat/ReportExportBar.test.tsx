@@ -14,6 +14,11 @@ describe('reportTitleOf', () => {
     expect(reportTitleOf('# ' + 'x'.repeat(300)).length).toBe(120)
     expect(reportTitleOf('')).toBe('report')
   })
+  it('20/11: with no "# " heading, a title written in capitals beats a chatty first line (the real answer opened with a sentence about files)', () => {
+    expect(reportTitleOf('Mình gửi bản báo cáo ngắn bên dưới nhé.\nBÁO CÁO DỰ TRÙ CHI PHÍ DU LỊCH ĐÀ LẠT 3 NGÀY 2 ĐÊM\nĐối tượng: 2 người')).toBe('BÁO CÁO DỰ TRÙ CHI PHÍ DU LỊCH ĐÀ LẠT 3 NGÀY 2 ĐÊM')
+    expect(reportTitleOf('Mình gửi bản báo cáo.\nTổng cộng: 4.490.000 ĐỒNG\nHết')).toBe('Mình gửi bản báo cáo.') // a figure line in capitals is not a title
+    expect(reportTitleOf('# Tiêu đề thật\nBÁO CÁO PHỤ KHÁC NHAU')).toBe('Tiêu đề thật') // the "# " heading still wins
+  })
 })
 
 describe('ReportExportBar', () => {
