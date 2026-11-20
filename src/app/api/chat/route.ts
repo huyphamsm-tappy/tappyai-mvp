@@ -4086,7 +4086,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         if (budgeting && isLookupTool(name)) {
           const tier = await tierP
           if (tier) {
-            const verdict = spendLookup(budgetOf(tier), budgetState, name, Date.now() - startTime)
+            const verdict = spendLookup(budgetOf(tier), budgetState, name, Date.now() - startTime, stepsFinishedN)
             if (!verdict.ok) {
               console.log(JSON.stringify({ type: 'tappyai_turn_budget_refused', tier, tool: name, reason: verdict.reason, lookups: budgetState.lookups, elapsedMs: Date.now() - startTime }))
               return { error: 'search_budget_used', note: verdict.note }
