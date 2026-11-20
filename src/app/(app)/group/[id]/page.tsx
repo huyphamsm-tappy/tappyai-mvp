@@ -496,13 +496,6 @@ export default function GroupPage() {
             <p className="text-sm text-content-secondary">{t('groupDining.waitingSuggest')}</p>
           </div>
         )}
-        {!isCreator && !gate && (
-          <button type="button" disabled={actionBusy === 'leave'} onClick={() => endGroup('leave')} className="w-full text-center text-sm text-red-500 font-medium py-2 disabled:opacity-60" data-testid="group-leave">{t('groupDining.leave')}</button>
-        )}
-        {isCreator && (
-          <button type="button" disabled={actionBusy === 'delete'} onClick={() => endGroup('delete')} className="w-full text-center text-sm text-red-500 font-medium py-2 disabled:opacity-60" data-testid="group-delete">{t('groupDining.delete')}</button>
-        )}
-        {actionError && !isCreator && <p role="alert" className="text-sm text-red-500 text-center">{actionError}</p>}
 
         {/* Suggestion as CARDS of real places: one vote each, more than half decides (owner 20/11) */}
         {!gate && group.suggestion_options && group.suggestion_options.length > 0 && (
@@ -573,6 +566,14 @@ export default function GroupPage() {
             </div>
           </div>
         )}
+        {/* the way out, at the very end of the page: a member leaves, the leader deletes the group (each asks first) */}
+        {!isCreator && !gate && (
+          <button type="button" disabled={actionBusy === 'leave'} onClick={() => endGroup('leave')} className="w-full text-center text-sm text-red-500 font-medium py-2 disabled:opacity-60" data-testid="group-leave">{t('groupDining.leave')}</button>
+        )}
+        {isCreator && (
+          <button type="button" disabled={actionBusy === 'delete'} onClick={() => endGroup('delete')} className="w-full text-center text-sm text-red-500 font-medium py-2 disabled:opacity-60" data-testid="group-delete">{t('groupDining.delete')}</button>
+        )}
+        {actionError && !isCreator && <p role="alert" className="text-sm text-red-500 text-center">{actionError}</p>}
       </main>
       <BottomNav />
     </div>
