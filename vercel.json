@@ -88,6 +88,14 @@
     {
       "path": "/api/cron/scam-shield-sync",
       "schedule": "0 3 * * 1"
+    },
+    {
+      "path": "/api/cron/moderation-snapshot-purge",
+      "schedule": "30 18 * * *"
+    },
+    {
+      "path": "/api/cron/business-order-expiry",
+      "schedule": "0 18 * * *"
     }
   ]
 }
