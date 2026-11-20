@@ -113,6 +113,7 @@ import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT, vnToday } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, peekDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { nextMonthStartVn, DEEP_RESET_HEADER } from '@/lib/plans/deepResearchNotice'
+import { fileExportNoteFor } from '@/lib/chat/fileRequest'
 import { tierOf, modeForTier, TIER_HAS_TOOLS, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
@@ -2488,7 +2489,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const autoThinkEffortEnv = (process.env.CONSULT_AUTOTHINK_EFFORT ?? '').trim().toLowerCase()
   const autoThink: { on: boolean; effort: 'none' | 'low' | 'medium' } = { on: false, effort: autoThinkEffortEnv === 'none' || autoThinkEffortEnv === 'low' ? autoThinkEffortEnv : 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock, fileExportNoteFor(lastText)], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   // The Free plan (no tools) gets no picture lookups either: the model's own ability only

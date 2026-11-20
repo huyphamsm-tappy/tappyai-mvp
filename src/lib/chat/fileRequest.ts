@@ -28,3 +28,12 @@ export function showsExportBar(o: { answer: string; previousUserText: string; st
   if (looksLikeReport(o.answer)) return true
   return o.answer.length >= 400 && wantsFileExport(o.previousUserText)
 }
+
+/**
+ * Owner 20/11/2026 (approved): on a turn where the person asks for a file, ONE line tells the model the app draws the download buttons under its answer, so it writes the document and does not open
+ * with "I cannot attach a file" (seen in a real run, next to the buttons it could not see). Empty on every other turn: nothing is added to the model's context unless a file was asked for.
+ */
+export function fileExportNoteFor(userText: string): string {
+  if (!wantsFileExport(userText)) return ''
+  return 'The app shows Markdown, Word and PDF download buttons under your answer when the person asks for a file. Do not say you cannot attach or send a file: write the document in full as your answer.'
+}

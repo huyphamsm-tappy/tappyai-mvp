@@ -1,5 +1,19 @@
 import { describe, it, expect } from 'vitest'
-import { wantsFileExport, showsExportBar } from './fileRequest'
+import { wantsFileExport, showsExportBar, fileExportNoteFor } from './fileRequest'
+
+describe('fileExportNoteFor (owner 20/11/2026: the app draws the download buttons, so the model must not say it cannot send a file)', () => {
+  it('is empty unless the person asked for a file: no other turn gets any added line', () => {
+    expect(fileExportNoteFor('Viết báo cáo ngắn về Đà Lạt')).toBe('')
+    expect(fileExportNoteFor('')).toBe('')
+  })
+  it('on a turn that asks for a file it says the buttons exist and to write the document in full', () => {
+    const n = fileExportNoteFor('viết báo cáo rồi xuất ra file pdf')
+    expect(n).toMatch(/Markdown, Word and PDF/)
+    expect(n).toMatch(/Do not say you cannot attach or send a file/)
+    expect(n).toMatch(/in full/)
+    expect(n.length).toBeLessThan(400)
+  })
+})
 
 describe('wantsFileExport', () => {
   it.each([

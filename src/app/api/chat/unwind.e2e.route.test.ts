@@ -882,6 +882,13 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
     expect(off.opts.thinkEffort).toBe('medium')
   }, 60000)
+  it('20/11 (owner approved): a turn that asks for a file tells the model the download buttons exist; every other turn carries no such line', async () => {
+    const withFile = await turn([{ role: 'user', content: 'viết báo cáo ngắn về chi phí đi Đà Lạt rồi xuất ra file pdf cho mình' }], { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
+    expect(withFile.system).toContain('Markdown, Word and PDF download buttons')
+    expect(withFile.system).toContain('Do not say you cannot attach or send a file')
+    const plain = await turn([{ role: 'user', content: 'viết báo cáo ngắn về chi phí đi Đà Lạt' }], { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
+    expect(plain.system).not.toContain('download buttons')
+  }, 60000)
   it('14/11 (owner: "Gói free: chỉ trả lời bằng năng lực của model"): with the plans on sale a Free turn has NO tool and the model is told so; Trial / Pro keep every tool; plans off = unchanged', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'thoi tiet Da Lat cuoi tuan nay the nao' }]
     const free = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
