@@ -2,7 +2,7 @@
 // with the Android and iOS strings by a parity test, so a feature that exists only on the web lives HERE, and the explain_feature tool reads both. Every number is read from the code that enforces
 // it (plan prices, Deep Research allowances, the visitor limit), never typed again, so a change of a price or a limit changes the explanation too. Every sentence describes what exists today.
 import { PLAN_CONFIG } from '@/lib/plans/planConfig'
-import { STANDARD_RESEARCH_MONTHLY, ADVANCED_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
 import { ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 
 export interface FeatureText { title: string; what: string; steps: string[]; more: string[] }
@@ -20,8 +20,7 @@ const vnd = (n: number): string => `${n.toLocaleString('vi-VN')}đ`
 const usd = (n: number): string => `${n.toLocaleString('en-US')} VND`
 
 export function webFeatures(): WebFeature[] {
-  const stdPro = STANDARD_RESEARCH_MONTHLY.pro, advPro = ADVANCED_RESEARCH_MONTHLY.pro
-  const stdMax = STANDARD_RESEARCH_MONTHLY.promax, advMax = ADVANCED_RESEARCH_MONTHLY.promax
+  const repPro = DEEP_RESEARCH_MONTHLY.pro, repMax = DEEP_RESEARCH_MONTHLY.promax
   const P = Object.fromEntries((['pip', 'momo', 'coco', 'promax1m', 'promax3m'] as const).map(id => [id, { priceVnd: PLAN_CONFIG[id].priceVnd ?? 0 }])) as Record<'pip' | 'momo' | 'coco' | 'promax1m' | 'promax3m', { priceVnd: number }>
   return [
     {
@@ -71,7 +70,7 @@ export function webFeatures(): WebFeature[] {
           'Đọc báo cáo trong khung riêng; có nút Tải PDF để lưu lại.',
         ],
         more: [
-          `Mỗi tháng gói Coco có ${stdPro} báo cáo Standard và ${advPro} báo cáo Advanced; gói Tappy có ${stdMax} Standard và ${advMax} Advanced.`,
+          `Mỗi tháng gói Coco có ${repPro} lượt Nghiên cứu sâu, gói Tappy có ${repMax} lượt. Hết lượt, Tappy vẫn trả lời bằng chế độ Suy nghĩ và cho bạn biết khi nào có lượt mới.`,
           'Tài khoản miễn phí và khách chưa có Nghiên cứu sâu.',
           'Báo cáo chỉ dựa trên nguồn đã đọc; điều chưa chắc được ghi rõ trong báo cáo.',
         ],
@@ -86,7 +85,7 @@ export function webFeatures(): WebFeature[] {
           'Read the report in its own panel; a Download PDF button saves it.',
         ],
         more: [
-          `Each month the Coco plan has ${stdPro} Standard and ${advPro} Advanced reports; the Tappy plan has ${stdMax} Standard and ${advMax} Advanced.`,
+          `Each month the Coco plan has ${repPro} Deep Research reports and the Tappy plan has ${repMax}. When they run out, Tappy still answers in Thinking mode and tells you when new ones arrive.`,
           'Free accounts and visitors do not have Deep Research.',
           'A report rests only on the sources it read; what is uncertain is said so in the report.',
         ],

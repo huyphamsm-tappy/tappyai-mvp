@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { tierTurnFor, researchAdvancedOn, standardTurnFor } from './researchTurn'
 import { ADVANCED_RUN_BOUNDS, ADVANCED_BOUNDS } from './researchController'
 import { STANDARD_RUN_BOUNDS } from './researchAdmission'
-import { ADVANCED_RESEARCH_MONTHLY, DEEP_RESEARCH_MONTHLY, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { claudeCallCost, SONNET55_MODEL_ID, HAIKU55_MODEL_ID } from '@/lib/ai/llm/providers/claude'
 import { withThinkingDisabled } from '@/lib/ai/llm/providers/anthropicTransport'
 
@@ -40,19 +39,6 @@ describe('Advanced bounds', () => {
   it('up to the Controller gap-round cap, with the report checked against the question parts', () => {
     expect(ADVANCED_RUN_BOUNDS.gapRounds).toBe(ADVANCED_BOUNDS.maxGapRounds)
     expect(ADVANCED_RUN_BOUNDS.repairParts).toBe(true)
-  })
-})
-
-describe('the Advanced sub-allowance', () => {
-  it('sits inside the month allowance, never above it, and Free has none', () => {
-    for (const t of ['free', 'pro', 'promax'] as const) expect(ADVANCED_RESEARCH_MONTHLY[t]).toBeLessThanOrEqual(DEEP_RESEARCH_MONTHLY[t])
-    expect(ADVANCED_RESEARCH_MONTHLY.free).toBe(0)
-  })
-  it('plans on: the tier own number; plans off: a signed-in account gets the Coco number, a visitor none', () => {
-    expect(advancedResearchMonthlyLimit('promax', { subscriptionsOn: true, signedIn: true })).toBe(ADVANCED_RESEARCH_MONTHLY.promax)
-    expect(advancedResearchMonthlyLimit('free', { subscriptionsOn: true, signedIn: true })).toBe(0)
-    expect(advancedResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: true })).toBe(ADVANCED_RESEARCH_MONTHLY.pro)
-    expect(advancedResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: false })).toBe(0)
   })
 })
 

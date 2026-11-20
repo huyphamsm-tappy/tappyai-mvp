@@ -60,8 +60,8 @@ describe('quota reads the entitlement only — the channel never matters', () =>
   it.each(['web_sepay', 'google_play', 'apple_iap', 'manual'])(`a %s grant = paid, hidden ceiling of ${PAID_DAILY_CEILING} AI questions a day`, (source) => {
     const ent = entitlementFromRow({ plan: 'momo', status: 'active', current_period_end: future, source })
     expect(ent).toMatchObject({ paid: true, plan: 'momo', source })
-    // owner 11/11/2026: 1000 -> 500 (Pro and Promax: 500 questions)
-    expect(PAID_DAILY_CEILING).toBe(500)
+    // owner 11/11/2026: 1000 -> 500; owner 20/11/2026: back to 1000 (Coco, Tappy, Trial: 1000 questions a day)
+    expect(PAID_DAILY_CEILING).toBe(1000)
     expect(aiQuotaFor(ent.plan)).toEqual({ limit: PAID_DAILY_CEILING, period: 'day' })
   })
 })

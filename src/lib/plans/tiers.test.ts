@@ -1,10 +1,10 @@
-// Owner 01/11/2026: plan tiers - Pip (Free) chats with Luna 6.0; MoMo (Trial) and Coco (Pro) have every mode; reports per month (owner 11/11/2026):
-// Pro 5 Standard + 5 Advanced, Promax (Tappy) 10 Standard + 15 Advanced. The ids stored in subscriptions stay as they are.
+// Owner 01/11/2026: plan tiers - Pip (Free) chats with Luna 6.0; MoMo (Trial) and Coco (Pro) have every mode; reports per month (owner 20/11/2026):
+// ONE allowance: Pro (Coco, the Trial) 15, Promax (Tappy) 30, Free none. The ids stored in subscriptions stay as they are.
 import { describe, it, expect, beforeEach } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY, STANDARD_RESEARCH_MONTHLY, ADVANCED_RESEARCH_MONTHLY, deepResearchMonthlyLimit, standardResearchMonthlyLimit } from './tiers'
-import { consumeDeepResearch, refundAiQuestion, __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY, deepResearchMonthlyLimit } from './tiers'
+import { consumeDeepResearch, peekDeepResearch, refundAiQuestion, __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 
 describe('tierOf', () => {
   it('free, guest and no plan are Free; promax plans Promax; every other paid plan Pro', () => {
@@ -27,20 +27,8 @@ describe('modeForTier', () => {
     expect(modeForTier('auto', 'pro')).toBe('auto')
     expect(modeForTier('auto', 'promax')).toBe('auto')
   })
-  it('reports per month (owner 11/11/2026): Pro 5 Standard + 5 Advanced, Promax 10 Standard + 15 Advanced, Free none; the total is the sum', () => {
-    expect(STANDARD_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 5, promax: 10 })
-    expect(ADVANCED_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 5, promax: 15 })
-    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 25 })
-    for (const t of ['free', 'pro', 'promax'] as const) expect(DEEP_RESEARCH_MONTHLY[t]).toBe(STANDARD_RESEARCH_MONTHLY[t] + ADVANCED_RESEARCH_MONTHLY[t])
-  })
-})
-
-describe('standardResearchMonthlyLimit: the Standard allowance is its own, not the total (owner 11/11/2026)', () => {
-  it('plans on sale: the tier\'s own Standard allowance; plans off: a signed-in account gets the Pro one, a visitor none', () => {
-    for (const tier of ['free', 'pro', 'promax'] as const) expect(standardResearchMonthlyLimit(tier, { subscriptionsOn: true, signedIn: true })).toBe(STANDARD_RESEARCH_MONTHLY[tier])
-    expect(standardResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: true })).toBe(5)
-    expect(standardResearchMonthlyLimit('promax', { subscriptionsOn: false, signedIn: true })).toBe(10)
-    for (const tier of ['free', 'pro', 'promax'] as const) expect(standardResearchMonthlyLimit(tier, { subscriptionsOn: false, signedIn: false })).toBe(0)
+  it('reports per month (owner 20/11/2026): ONE allowance: Pro 15, Promax 30, Free none', () => {
+    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 15, promax: 30 })
   })
 })
 
@@ -51,21 +39,22 @@ describe('deepResearchMonthlyLimit (security audit 04/11, W-01: the meter does n
     }
   })
   it('plans off: a signed-in account is metered at the Coco allowance (never unlimited), Promax keeps its own', () => {
-    expect(deepResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: true })).toBe(10)
-    expect(deepResearchMonthlyLimit('pro', { subscriptionsOn: false, signedIn: true })).toBe(10)
-    expect(deepResearchMonthlyLimit('promax', { subscriptionsOn: false, signedIn: true })).toBe(25)
+    expect(deepResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: true })).toBe(15)
+    expect(deepResearchMonthlyLimit('pro', { subscriptionsOn: false, signedIn: true })).toBe(15)
+    expect(deepResearchMonthlyLimit('promax', { subscriptionsOn: false, signedIn: true })).toBe(30)
   })
   it('plans off: a visitor gets none, so the turn runs as Chat', () => {
     for (const tier of ['free', 'pro', 'promax'] as const) expect(deepResearchMonthlyLimit(tier, { subscriptionsOn: false, signedIn: false })).toBe(0)
   })
-  it('the chat route meters every signed-in run (an Advanced run on its own allowance, any other on the Standard one) and downgrades a visitor, with no plan-flag condition left on the meter', () => {
+  it('the chat route meters every signed-in run on the ONE allowance, turns a turn with none left into Thinking, and downgrades a visitor, with no plan-flag condition left on the meter', () => {
     const route = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
     expect(route).not.toContain('if (subscriptionsEnabled() && authedUserId) {\n      const limit')
-    // 11/11/2026 (owner: 5 Standard + 5 Advanced for Pro, 10 + 15 for Promax): the old guard asked for ONE total meter taken before the tier is known; the assertions that mattered are kept
-    // (signed-in only, no plan-flag condition, a visitor's turn runs as Chat) and the meter is now two, one per kind of report
-    expect(route).toContain('const limit = standardResearchMonthlyLimit(planTier')
-    expect(route).toContain("const adv = authedUserId ? await consumeDeepResearch(authedUserId, advLimit, 'advanced')")
-    expect(route).toContain('if (authedUserId && !advancedRefund) {')
+    // 20/11/2026 (owner: one allowance, Coco 15 / Tappy 30, no kinds named to the person): the assertions that mattered are kept (signed-in only, no plan-flag condition, a visitor's turn runs as Chat)
+    // and the meter is ONE counter; a turn with none left is peeked first and runs as Thinking
+    expect(route).toContain('const limit = deepResearchMonthlyLimit(planTier')
+    expect(route).toContain('const spent = await consumeDeepResearch(authedUserId, limit)')
+    expect(route).toContain('(await peekDeepResearch(authedUserId, deepLimit)).remaining === 0')
+    expect(route).not.toContain("'advanced')")
     expect(route).toContain("signedIn: !!authedUserId }) <= 0) {")
   })
 })
@@ -86,16 +75,14 @@ describe('consumeDeepResearch (in-process store)', () => {
     expect((await consumeDeepResearch('u1', 10)).ok).toBe(true)
     expect((await consumeDeepResearch('u1', 10)).ok).toBe(false)
   })
-  it('Standard and Advanced are two counters (owner 11/11/2026): all 5 Advanced of a Pro account leave its 5 Standard, and the sixth of either is refused; a refunded Standard unit does not touch Advanced', async () => {
-    const pro = { s: STANDARD_RESEARCH_MONTHLY.pro, a: ADVANCED_RESEARCH_MONTHLY.pro }
-    for (let i = 0; i < pro.a; i++) expect((await consumeDeepResearch('u3', pro.a, 'advanced')).ok).toBe(true)
-    expect((await consumeDeepResearch('u3', pro.a, 'advanced')).ok).toBe(false)
-    const std: Array<Awaited<ReturnType<typeof consumeDeepResearch>>> = []
-    for (let i = 0; i < pro.s; i++) { const r = await consumeDeepResearch('u3', pro.s); expect(r.ok).toBe(true); std.push(r) }
-    expect((await consumeDeepResearch('u3', pro.s)).ok).toBe(false)
-    await refundAiQuestion(std[0].refund)
-    expect((await consumeDeepResearch('u3', pro.s)).ok).toBe(true)
-    expect((await consumeDeepResearch('u3', pro.a, 'advanced')).ok).toBe(false)
+  it('peek reads what is left without spending, and says 0 only when the allowance is used up (owner 20/11/2026: that turn runs as Thinking)', async () => {
+    expect(await peekDeepResearch('u5', 15)).toMatchObject({ limit: 15, used: 0, remaining: 15 })
+    for (let i = 0; i < 15; i++) expect((await consumeDeepResearch('u5', 15)).ok).toBe(true)
+    expect(await peekDeepResearch('u5', 15)).toMatchObject({ used: 15, remaining: 0 })
+    expect((await consumeDeepResearch('u5', 15)).ok).toBe(false)
+    expect(await peekDeepResearch('u5', 15)).toMatchObject({ used: 15, remaining: 0 }) // a refused spend records nothing
+    expect(await peekDeepResearch('u6', 15)).toMatchObject({ remaining: 15 }) // accounts never share it
+    expect(await peekDeepResearch('u5', 0)).toEqual({ limit: 0, used: 0, remaining: 0 })
   })
   it('a tier without Deep Research is refused without spending', async () => {
     expect(await consumeDeepResearch('u1', 0)).toMatchObject({ ok: false, refund: null })

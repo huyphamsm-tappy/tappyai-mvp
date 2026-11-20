@@ -235,14 +235,22 @@ export async function peekAiQuestionQuota(identity: AiQuotaIdentity): Promise<Ai
   return { limit: b.limit, period: b.period, used, remaining: used === null ? null : Math.max(0, b.limit - used) }
 }
 
-// ── Deep Research runs per VN calendar month (owner 01/11/2026: Coco/Pro 10, Tappy/Promax 69) ──────────────────────────────────────────────
+// ── Deep Research reports per VN calendar month (owner 20/11/2026: ONE allowance per account, Coco 15, Tappy 30; tiers.ts) ─────────────────
 // The same store, the same atomic admit-and-record, the same refund and fail-closed rules as the question pool above; its own key per
 // account and month (`ai:dr:u:<id>:<YYYY-MM>` in Vietnam time), a 32-day window so the key's month is the whole window.
 const MONTH_WINDOW_MS = 32 * ONE_DAY_MS
+const deepKey = (userId: string): string => `ai:dr:u:${userId}:${vnToday().slice(0, 7)}`
 
-export async function consumeDeepResearch(userId: string, limit: number, kind: 'standard' | 'advanced' = 'standard'): Promise<AiQuotaSpend> {
-  // `advanced` (R13): the sub-allowance of Advanced reports inside the month's Deep Research allowance, counted under its own key
-  const key = `${kind === 'advanced' ? 'ai:dra' : 'ai:dr'}:u:${userId}:${vnToday().slice(0, 7)}`
+/** Reports left this month, WITHOUT spending one (the chat asks before it picks a mode). `remaining` is null when the shared store did not answer: the caller then lets the run try (it is metered again at the start). */
+export async function peekDeepResearch(userId: string, limit: number): Promise<{ limit: number; used: number | null; remaining: number | null }> {
+  if (limit <= 0) return { limit: 0, used: 0, remaining: 0 }
+  const key = deepKey(userId)
+  const used = isDistributedStoreConfigured() ? await distributedCountInWindow(key, MONTH_WINDOW_MS) : localCount(key, MONTH_WINDOW_MS)
+  return { limit, used, remaining: used === null ? null : Math.max(0, limit - used) }
+}
+
+export async function consumeDeepResearch(userId: string, limit: number): Promise<AiQuotaSpend> {
+  const key = deepKey(userId)
   if (limit <= 0) return { ok: false, limit: 0, period: 'day', used: 0, remaining: 0, scope: 'instance', refund: null }
   if (!isDistributedStoreConfigured()) {
     const r = localSpend(key, MONTH_WINDOW_MS, limit)

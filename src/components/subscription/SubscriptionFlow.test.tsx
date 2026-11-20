@@ -116,7 +116,7 @@ describe('purchase (web)', () => {
   })
 
   // Owner 01/11/2026: new plan catalog - Sunny (the only "about …/month" plan) is not sold, so no detail shows a monthly figure
-  it('Tappy (promax1m) detail: plan name alone, 30 Deep Research line, no monthly figure; Coco detail: 10 Deep Research line', () => {
+  it('Tappy (promax1m) detail: plan name alone, 30 Deep Research line, no monthly figure; Coco detail: 15 Deep Research line', () => {
     expect(catalog.plans.some((p) => p.id === 'sunny' || p.id === 'milo')).toBe(false)
     const { unmount } = render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     fireEvent.click(document.querySelector('[data-plan="promax1m"]')!)
@@ -135,7 +135,7 @@ describe('purchase (web)', () => {
     expect(screen.queryByTestId('sub-monthly')).toBeNull()
     // Huy 2026-10-02: non-Sunny plans show 3 lines (no "dùng chung số câu hỏi" line)
     const lines = [...screen.getByTestId('sub-detail').querySelectorAll('li')].map((li) => li.textContent)
-    expect(lines).toEqual(['Không giới hạn câu hỏi AI', 'Dùng cho mọi tính năng AI của Tappy', 'Suy nghĩ, Tìm web và 10 lượt Nghiên cứu sâu mỗi tháng'])
+    expect(lines).toEqual(['Không giới hạn câu hỏi AI', 'Dùng cho mọi tính năng AI của Tappy', 'Suy nghĩ, Tìm web và 15 lượt Nghiên cứu sâu mỗi tháng'])
   })
 
   it('the order row says paid but the server does not show ACTIVE → failure, not success', async () => {

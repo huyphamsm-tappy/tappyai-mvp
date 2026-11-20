@@ -110,9 +110,10 @@ import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CA
 import { guardShareFollowUp } from '@/lib/share/followUpGuard'
 import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
-import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
-import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, TIER_HAS_TOOLS, deepResearchMonthlyLimit, standardResearchMonthlyLimit, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT, vnToday } from '@/lib/config/product'
+import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, peekDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { deepExhaustedBlock, nextMonthStartVn } from '@/lib/plans/deepResearchNotice'
+import { tierOf, modeForTier, TIER_HAS_TOOLS, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
@@ -2468,6 +2469,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     chatMode = 'chat'
     console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'visitor' }))
   }
+  // Owner 20/11/2026: a report asked for when none is left this month is not refused: the question runs as Thinking (a full, careful answer) and the model gets one plan fact so the person is told, once and
+  // briefly, when the reports come back. `peek` does not spend; the atomic spend still happens at the start of a real report (below), and a race there falls back to the old refusal.
+  let deepExhaustedNote = ''
+  if (chatMode === 'deep' && authedUserId) {
+    const deepLimit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
+    if (deepLimit > 0 && (await peekDeepResearch(authedUserId, deepLimit)).remaining === 0) {
+      chatMode = 'think'
+      deepExhaustedNote = deepExhaustedBlock({ limit: deepLimit, resetOn: nextMonthStartVn(vnToday()) })
+      console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'deep_research_month_used' }))
+    }
+  }
   // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
   // 18/11 (Phase 1): CONSULT_AUTOTHINK_EFFORT = none | low | medium (default medium = unchanged). Measured on the real UI: think_deeper was called in 100% of the baseline turns, so every later step reasoned at
@@ -2475,7 +2487,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const autoThinkEffortEnv = (process.env.CONSULT_AUTOTHINK_EFFORT ?? '').trim().toLowerCase()
   const autoThink: { on: boolean; effort: 'none' | 'low' | 'medium' } = { on: false, effort: autoThinkEffortEnv === 'none' || autoThinkEffortEnv === 'low' ? autoThinkEffortEnv : 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock, deepExhaustedNote], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   // The Free plan (no tools) gets no picture lookups either: the model's own ability only
@@ -3809,18 +3821,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const deepStop = new AbortController()
     if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
     // R13 Standard tier (RESEARCH_ADMISSION, off by default, locked in production): a simple report runs the bounded Haiku path; everything else, and a plan the tier cannot hold, runs as before
-    // R13 Advanced (RESEARCH_ADVANCED, dearer: Sonnet leads) additionally spends from the account's Advanced sub-allowance; an account past it gets the existing engine for this request.
-    let tierPlan = tierTurnFor(lastText, { claudeAvailable: claudeWriterAvailable() })
-    let advancedRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
-    if (tierPlan?.tier === 'ADVANCED_RESEARCH_REPORT') {
-      const advLimit = advancedResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: !!authedUserId })
-      const adv = authedUserId ? await consumeDeepResearch(authedUserId, advLimit, 'advanced') : null
-      if (adv?.ok) advancedRefund = adv.refund
-      else { console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.tier, advanced_allowance: 'used_or_none', ran: 'legacy' })); tierPlan = null }
-    }
-    // the Standard allowance: every signed-in run that did not take an Advanced one (a Standard report, the existing engine, an Advanced request past its allowance)
-    if (authedUserId && !advancedRefund) {
-      const limit = standardResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
+    // R13 Advanced (RESEARCH_ADVANCED, dearer: Sonnet leads). Owner 20/11/2026: there is ONE monthly allowance (tiers.ts DEEP_RESEARCH_MONTHLY); people ask by behaviour and never see a "standard" or "advanced" kind.
+    const tierPlan = tierTurnFor(lastText, { claudeAvailable: claudeWriterAvailable() })
+    // the one allowance: every signed-in report spends one unit, whatever depth it runs at. (The chat already turned a turn with none left into Thinking; this is the atomic spend, and the race fallback.)
+    if (authedUserId) {
+      const limit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
       const spent = await consumeDeepResearch(authedUserId, limit)
       if (!spent.ok) {
         await refundQuotaOnFailure('deep_research_month_used')
@@ -3837,13 +3842,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // R13 §4.2.3: a Standard plan that needs more than 3 steps is an Advanced request; promoted once, taking the account's Advanced allowance at that moment (none left = the existing engine, as before)
       ...(tierPlan?.tier === 'STANDARD_REPORT' && researchAdvancedOn() ? {
         promote: async () => {
-          const advLimit = advancedResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: !!authedUserId })
-          const adv = authedUserId ? await consumeDeepResearch(authedUserId, advLimit, 'advanced') : null
-          if (!adv?.ok) { console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', advanced_allowance: 'used_or_none', ran: 'legacy' })); return null }
-          advancedRefund = adv.refund
-          // the report is Advanced now: it is charged to the Advanced allowance only, so the Standard unit taken at the start is given back
-          const standardUnit = deepRefund; deepRefund = null
-          await refundAiQuestion(standardUnit)
+          // one allowance: the unit taken at the start already covers the report, whatever depth it runs at
           console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', from: 'STANDARD_REPORT', reason: 'PLAN_OVER_STANDARD_STEPS' }))
           return { deps: createDeepResearchDeps({ ...deepDeps, advanced: true }), bounds: { ...ADVANCED_RUN_BOUNDS } }
         },
@@ -3853,7 +3852,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const d = serperDelta(serperAtStart)
         return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
       },
-      onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund); await refundAiQuestion(advancedRefund) },
+      onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund) },
       onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: u.model, tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }

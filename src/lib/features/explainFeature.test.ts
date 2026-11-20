@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { explainFeature, featureTopics } from './explainFeature'
 import { webFeatures } from '@/lib/i18n/features'
 import { PLAN_CONFIG } from '@/lib/plans/planConfig'
-import { STANDARD_RESEARCH_MONTHLY, ADVANCED_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
 import { ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 
 // Owner 20/11: "Tappy tu giai thich moi tinh nang cho nguoi khong biet dung". The tool answers from ONE place: the shared how-to-use guide (the page /how-to-use, held equal with the mobile apps)
@@ -73,7 +73,8 @@ describe('the numbers come from the code that enforces them', () => {
     expect(text).toContain(`${ANON_LIFETIME_LIMIT} câu`)
     const dr = explainFeature('nghiên cứu sâu', 'vi').matches[0]
     const t2 = dr.more.join(' ')
-    expect(t2).toContain(`${STANDARD_RESEARCH_MONTHLY.promax} Standard và ${ADVANCED_RESEARCH_MONTHLY.promax} Advanced`)
+    expect(t2).toContain(`${DEEP_RESEARCH_MONTHLY.pro} lượt Nghiên cứu sâu, gói Tappy có ${DEEP_RESEARCH_MONTHLY.promax} lượt`)
+    expect(t2).not.toMatch(/Standard|Advanced/) // owner 20/11/2026: one allowance, no kinds named to the person
   })
   it('the upgrade rule is explained as the code enforces it: up yes (days kept), down no', () => {
     const t = explainFeature('nâng cấp gói', 'vi').matches.find(m => m.id === 'plans_billing')!.more.join(' ')

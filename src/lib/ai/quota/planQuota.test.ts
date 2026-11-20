@@ -49,8 +49,8 @@ describe('limits by identity', () => {
 
   it.each([...PAID_PLAN_IDS])(`plan %s: hidden ceiling of ${PAID_DAILY_CEILING} questions a day, the ${PAID_DAILY_CEILING + 1}th is refused`, async (plan) => {
     const id = aiQuotaIdentity(USER, IP, plan)
-    // owner 11/11/2026: Pro and Promax 500 questions (was the 1000 hidden ceiling); the numbers a plan states, still metered per VN day
-    expect(PAID_DAILY_CEILING).toBe(500)
+    // owner 20/11/2026: Coco, Tappy and the Trial 1000 questions a day (11/11 it was 500); the numbers a plan states, still metered per VN day
+    expect(PAID_DAILY_CEILING).toBe(1000)
     expect(quotaFor(id)).toEqual({ limit: PAID_DAILY_CEILING, period: 'day' })
     const r = await spendAll(id, PAID_DAILY_CEILING + 1)
     expect(r.filter((x) => x.ok)).toHaveLength(PAID_DAILY_CEILING)

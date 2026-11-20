@@ -12,8 +12,8 @@ describe('subscriptionCatalog', () => {
     expect(c.plans.map((p) => p.id)).toEqual(['pip', 'momo', 'promax1m', 'coco', 'promax3m'])
     expect(c.plans.map((p) => p.durationDays)).toEqual([7, 30, 30, 90, 90])
     for (const p of c.plans) {
-      // owner 11/11/2026: 1000 -> 500 (Pro and Promax: 500 questions)
-      expect(PAID_DAILY_CEILING).toBe(500)
+      // owner 20/11/2026: 1000 questions a day (11/11 it was 500)
+      expect(PAID_DAILY_CEILING).toBe(1000)
       expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
       expect(p).not.toHaveProperty('popular')
       // Owner 01/11/2026: new plan catalog - no plan has a badge any more

@@ -13,11 +13,11 @@ import { ACCOUNT_QUESTIONS_UNLIMITED, ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, PAI
 const read = (p: string) => readFileSync(p, 'utf8')
 
 describe('the values', () => {
-  it('anonymous = 5 lifetime, registered = no visible limit (ceiling Free 300/day, paid 500/day)', () => {
-    // owner 01/11/2026: Free 10 -> 300 (accounts have no visible limit); owner 11/11/2026: anon 10 -> 5, paid 1000 -> 500
+  it('anonymous = 5 lifetime, registered = no visible limit (ceiling Free 300/day, paid 1000/day)', () => {
+    // owner 01/11/2026: Free 10 -> 300 (accounts have no visible limit); owner 11/11/2026: anon 10 -> 5, paid 1000 -> 500; owner 20/11/2026: paid 500 -> 1000
     expect(ANON_LIFETIME_LIMIT).toBe(5)
     expect(FREE_DAILY_LIMIT).toBe(300)
-    expect(PAID_DAILY_CEILING).toBe(500)
+    expect(PAID_DAILY_CEILING).toBe(1000)
     expect(ACCOUNT_QUESTIONS_UNLIMITED).toBe(true)
   })
 })

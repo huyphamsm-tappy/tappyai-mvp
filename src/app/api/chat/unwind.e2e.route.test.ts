@@ -855,7 +855,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(free.logs.find(x => x.type === 'tappyai_mode_tier')).toMatchObject({ asked: 'auto', ran: 'chat', tier: 'free' })
     expect(free.toolNames).not.toContain('think_deeper')
   }, 60000)
-  it('01/11 plan tiers (with the plans on sale): Pip (Free) asks for Thinking or Deep Research and gets Chat; Coco gets them; the 11th Deep Research of the month is refused', async () => {
+  it('01/11 plan tiers (with the plans on sale): Pip (Free) asks for Thinking or Deep Research and gets Chat; Coco gets them; a Deep Research asked for with none left this month runs as Thinking, not refused (owner 20/11/2026)', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'nghien cuu gia dien sinh hoat 2026' }]
     const plan = { title: 'Giá điện', steps: [{ title: 'Biểu giá hiện hành', queries: ['bieu gia dien'] }] }
     const freeThink = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
@@ -866,10 +866,17 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const coco = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, plan: 'momo', subscriptionsOn: true, luna: intent('chat', []), reply: '# Giá điện\n## Biểu giá hiện hành\nx [1]' })
     expect(coco.raw).toContain('tappy.research.v1')
     expect(coco.logs.some(x => x.type === 'tappyai_mode_tier')).toBe(false)
-    const used = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, plan: 'momo', subscriptionsOn: true, preSpendDeep: 10, luna: intent('chat', []), reply: 'x' })
-    expect(used.raw).toContain('deep_research_limit_reached')
+    const used = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, plan: 'momo', subscriptionsOn: true, preSpendDeep: 15, luna: intent('chat', []), reply: 'x' })
+    // owner 20/11/2026: one allowance (Coco 15). With none left the turn is NOT refused: it runs as Thinking, and the model gets the plan fact (when the reports come back)
+    expect(used.raw).not.toContain('deep_research_limit_reached')
     expect(used.raw).not.toContain('tappy.research.v1')
-    expect(used.streamCalled).toBe(0)
+    expect(used.logs.find(x => x.type === 'tappyai_mode_tier')).toMatchObject({ asked: 'deep', ran: 'think', tier: 'pro', why: 'deep_research_month_used' })
+    expect(used.opts.thinkEffort).toBe('medium')
+    expect(used.system).toContain('[Plan fact]')
+    expect(used.system).toContain('all 15 of its Deep Research reports')
+    expect(used.streamCalled).toBe(1)
+    // a run with one left still starts as a real report, and the plan fact is absent
+    expect(coco.system ?? '').not.toContain('[Plan fact]')
     // with the plans not on sale (the flag off): every mode for everyone, as before
     const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
     expect(off.opts.thinkEffort).toBe('medium')

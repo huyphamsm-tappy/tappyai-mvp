@@ -4,8 +4,8 @@
 // they are (free / pip / momo / coco / milo / sunny / pro); this maps them to a TIER, and the tier decides the composer modes the server
 // runs and the Deep Research allowance per VN calendar month:
 //   free   (guest, anonymous, free)                       - Chat only, answered by the model's own ability (14/11/2026: NO tools — no search, no realtime, no partner links); no Web / Thinking / Deep Research
-//   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, Deep Research 5 Standard + 5 Advanced a month
-//   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 10 Standard + 15 Advanced a month (owner 11/11/2026; the numbers are STANDARD_/ADVANCED_RESEARCH_MONTHLY below)
+//   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, 15 Deep Research reports a month
+//   promax (promax1m / promax3m = Tappy)                   - every mode, 30 Deep Research reports a month (owner 20/11/2026; the numbers are DEEP_RESEARCH_MONTHLY below)
 // The SERVER enforces it (a mode the tier does not have runs as Chat); the client only hides what it cannot use. Pure.
 import type { ChatMode } from '@/lib/ai/security/clientInput'
 
@@ -37,26 +37,10 @@ export function modeForTier(mode: ChatMode, tier: Tier): ChatMode {
 }
 
 /**
- * Owner 11/11/2026: two separate monthly allowances of reports, each metered on its own counter. Pro (Coco and the trial): 5 Standard + 5 Advanced; Promax (Tappy): 10 Standard + 15 Advanced; Free none.
- * (Before: one total of 10 / 30 with Advanced a sub-allowance of 3 / 10, so an account that never asked for Advanced could run 10 Standard.) An Advanced request past its allowance runs as the existing
- * engine and spends from the Standard one; a Standard request past its allowance is refused, never silently turned into a thinner report.
+ * Owner 20/11/2026: ONE monthly allowance of Deep Research reports per account, however deep the report turns out (people ask by behaviour, they do not know "standard" or "advanced"):
+ * Coco (Pro and the Trial) 15, Tappy (Promax) 30, Free none. Every report spends one unit from this one counter.
  */
-export const STANDARD_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 5, promax: 10 }
-export const ADVANCED_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 5, promax: 15 }
-/** Reports of both kinds per VN month: the sum, for display and for "has any allowance at all". */
-export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: STANDARD_RESEARCH_MONTHLY.pro + ADVANCED_RESEARCH_MONTHLY.pro, promax: STANDARD_RESEARCH_MONTHLY.promax + ADVANCED_RESEARCH_MONTHLY.promax }
-
-/** Standard reports an account may start per VN month, by the same plans-on / plans-off rule as the other limits. Pure. */
-export function standardResearchMonthlyLimit(tier: Tier, opts: { subscriptionsOn: boolean; signedIn: boolean }): number {
-  if (opts.subscriptionsOn) return STANDARD_RESEARCH_MONTHLY[tier]
-  return opts.signedIn ? STANDARD_RESEARCH_MONTHLY[tier === 'free' ? 'pro' : tier] : 0
-}
-
-/** Advanced reports an account may start per VN month, by the same plans-on / plans-off rule as deepResearchMonthlyLimit. Pure. */
-export function advancedResearchMonthlyLimit(tier: Tier, opts: { subscriptionsOn: boolean; signedIn: boolean }): number {
-  if (opts.subscriptionsOn) return ADVANCED_RESEARCH_MONTHLY[tier]
-  return opts.signedIn ? ADVANCED_RESEARCH_MONTHLY[tier === 'free' ? 'pro' : tier] : 0
-}
+export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 15, promax: 30 }
 
 /**
  * The Deep Research runs an account may start per VN month. Security audit 04/11 (W-01): this used to be metered only with the plans on sale
