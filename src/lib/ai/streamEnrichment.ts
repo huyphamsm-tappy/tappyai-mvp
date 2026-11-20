@@ -101,7 +101,7 @@ import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
-import { compactSystemLinks } from './consultative/systemLinkRow'
+import { systemLinkLines } from './consultative/systemLinkRow'
 import { onlyMatchingCards, cardsConsistentWithAnswer } from './consultative/cardsMatchRequest'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
@@ -4181,8 +4181,12 @@ export function applyPlaceEnrichmentStreamFilter(
       : (lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:')
     // 18/11 (owner: the booking platform first and 2-3 others beside it, for fairness): on one brain the platform links the answer does not carry yet are added even when the model
     // already linked one of them in its own sentence (a hotel answer that linked Agoda inline lost every other platform's link: the row was all-or-nothing).
+    const linkMd = (l: { name: string; url: string }) => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`
     const systemLinksSuffix = systemLinks.length > 0 && (missingSystemLinks.length === systemLinks.length || (collector?.oneBrain === true && missingSystemLinks.length > 0))
-      ? `\n\n${linksLabel} ${(collector?.oneBrain === true ? compactSystemLinks(missingSystemLinks) : missingSystemLinks).map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+      ? `\n\n${collector?.oneBrain === true
+        // 20/11 (owner): Agoda / Vexere / Lazada on their own line, every other platform under "Tham khảo thêm"
+        ? systemLinkLines(missingSystemLinks, { main: linksLabel, more: lang === 'vi' ? '📎 Tham khảo thêm:' : '📎 More options:' }, linkMd)
+        : `${linksLabel} ${missingSystemLinks.map(linkMd).join(' · ')}`}`
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
