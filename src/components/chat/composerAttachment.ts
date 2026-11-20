@@ -3,6 +3,7 @@
 // 15/11 (owner: "chen nhieu anh/file hon"): SEVERAL files per message. The real ceiling is the request body (4.5 MB, readCappedBody; base64 adds a third),
 // so the COMBINED size is what is limited, and photos are shrunk in the browser first (a phone photo is 3-8 MB, a 1600 px JPEG ~300 KB and just as readable
 // for the model). Counts match the server's per-message caps (clientInput.ts maxImagePartsPerMessage / maxPdfPartsPerMessage).
+import { TEXT_ACCEPT } from '@/lib/chat/textFile'
 export const PDF_MAX_BYTES = 3_000_000
 export const ATTACH_MAX_IMAGES = 5
 export const ATTACH_MAX_PDFS = 3
@@ -15,7 +16,8 @@ const IMAGE_TYPE = /^image\/(png|jpeg|webp|gif)$/
 export const DOCX_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 export const XLSX_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 /** The file input's accept list: pictures and the three document kinds. */
-export const ATTACH_ACCEPT = `image/png,image/jpeg,image/webp,image/gif,application/pdf,${DOCX_TYPE},${XLSX_TYPE},.docx,.xlsx`
+// 20/11/2026 (owner): plain text files (.txt, .md, .csv, .json, .log) are read in the browser and put into the message (lib/chat/textFile.ts), so the picker offers them too.
+export const ATTACH_ACCEPT = `image/png,image/jpeg,image/webp,image/gif,application/pdf,${DOCX_TYPE},${XLSX_TYPE},.docx,.xlsx,${TEXT_ACCEPT}`
 const isDocType = (t: string) => t === 'application/pdf' || t === DOCX_TYPE || t === XLSX_TYPE
 /** Some systems give an Office file no type: its extension then says which. */
 export function normalizedType(file: Pick<File, 'type' | 'name'>): string {

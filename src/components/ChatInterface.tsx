@@ -112,6 +112,9 @@ import ReportExportBar from '@/components/chat/ReportExportBar'
 import HomeGreeting from '@/components/chat/HomeGreeting'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import { showsExportBar } from '@/lib/chat/fileRequest'
+import { composerSizeFor } from '@/lib/chat/composerSize'
+import { isTextFile, readTextFile } from '@/lib/chat/textFile'
+import CollapsibleUserText from '@/components/chat/CollapsibleUserText'
 import { DEEP_RESET_HEADER, displayResetDate } from '@/lib/plans/deepResearchNotice'
 import ReportViewBar from '@/components/chat/ReportViewBar'
 import { reportViewOf } from '@/lib/chat/reportView'
@@ -894,6 +897,14 @@ function TappyAvatar({ category, active, searching, error: isError, listening }:
 /** owner 20/11/2026: the note "the Deep Research reports are used up" belongs to the question it answered; it survives the rebuild of this component when a new chat moves to /chat/<id> (module state lives as long as the page). */
 let deepResetMemo: { date: string; userText: string } | null = null
 
+/** owner 20/11/2026: the typing box grows to a cap and then SCROLLS (it was capped with overflow hidden: a long question could not be scrolled). */
+function fitComposer(el: HTMLTextAreaElement): void {
+  el.style.height = 'auto'
+  const s = composerSizeFor(el.scrollHeight)
+  el.style.height = s.heightPx + 'px'
+  el.style.overflowY = s.scrollable ? 'auto' : 'hidden'
+}
+
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
@@ -1188,6 +1199,10 @@ export default function ChatInterface({
   // Keep messagesRef current so onFinish persists the full transcript
   // (see the messagesRef declaration above for why the closure is unsafe).
   useEffect(() => { messagesRef.current = messages }, [messages])
+  // a text set from outside the box (a chip, the voice, a text file) is fitted too, not only what is typed
+  // (typing already fitted the box in onChange: skip that pass, so a keystroke does not pay for a second layout)
+  const composerTyped = useRef(false)
+  useEffect(() => { if (composerTyped.current) { composerTyped.current = false; return } if (inputRef.current) fitComposer(inputRef.current) }, [input])
 
   // Rotating "thinking" hint shown while we wait for the first token — gives the
   // sense Tappy is working (searching / synthesising) rather than frozen.
@@ -1620,8 +1635,7 @@ export default function ChatInterface({
       const pos = start + emoji.length
       ta.selectionStart = pos
       ta.selectionEnd = pos
-      ta.style.height = 'auto'
-      ta.style.height = Math.min(ta.scrollHeight, 160) + 'px'
+      fitComposer(ta)
     })
   }
 
@@ -1631,6 +1645,14 @@ export default function ChatInterface({
   const acceptAttachments = useCallback(async (files: File[]) => {
     let error: string | null = null
     for (const original of files) {
+      // 20/11/2026 (owner): a plain text file (.txt, .md, .csv, .json, .log) is read here and its text goes into the message; nothing is uploaded
+      if (isTextFile(original)) {
+        const r = await readTextFile(original)
+        if (!r.ok) { error = t(r.error); continue }
+        setInput(prev => prev + r.block)
+        if (r.truncated) error = t('chatui.textTruncated')
+        continue
+      }
       const first = checkAttachment(original)
       if (!first.ok) { error = t(first.error); continue }
       const type = normalizedType(original)
@@ -2340,7 +2362,7 @@ export default function ChatInterface({
                     ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
                       <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
-                        <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
+                        <CollapsibleUserText text={typeof msg.content === 'string' ? msg.content : ''} onClick={onMessageLinkClick} html={formatMessage(typeof msg.content === 'string' ? msg.content : '')} />
                       </div>
                     )}
                     {/* look flag: when the person sent it, under their bubble (the message's own time; no delivery tick is drawn, the app has no read receipt to show) */}
@@ -2708,9 +2730,9 @@ export default function ChatInterface({
               onChange={(e) => {
                 if (voiceError) setVoiceError(null)
                 if (pendingSend) cancelAutoSend()
+                composerTyped.current = true
                 handleInputChange(e)
-                e.target.style.height = 'auto'
-                e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
+                fitComposer(e.target)
               }}
               onKeyDown={handleKeyDown}
               onPaste={onComposerPaste}
