@@ -127,6 +127,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, lookupTimeUp, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
 import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
 import { daysWithoutNight, NIGHT_RETRY_NOTE } from '@/lib/ai/consultative/planNight'
+import { PLAN_COSTS_RETRY_NOTE } from '@/lib/ai/consultative/planCosts'
 import { sumCosts, type CostLine } from '@/lib/ai/consultative/planCosts'
 import { tierOf as turnTierOf, budgetOf, spendLookup, newBudgetState, type TurnTier } from '@/lib/ai/consultative/turnBudget'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
@@ -3219,10 +3220,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         execute: async (plan) => {
           // owner 19/11: a plan whose day closes at dinner goes back to the model once (the night is part of the first plan); the second call is shown as it is
           const noNight = plan.type === 'trip' ? daysWithoutNight(plan.days as Array<{ items?: Array<{ time?: unknown }> }>, { gentle: (plan as { gentle?: boolean }).gentle === true }) : []
-          if (noNight.length > 0 && planNightRetries < 1) {
+          // 20/11: a trip plan sent with its own written total and breakdown instead of the numeric cost lines (costs_vnd) is sent back too, in the SAME retry as the night (one extra plan call at most): the lines and the total must be the code's sum
+          const own = plan as { costs_vnd?: unknown[]; budget_total?: unknown; cost_breakdown?: Record<string, unknown> }
+          const noCosts = plan.type === 'trip' && !planV2On && !(own.costs_vnd ?? []).length && (!!own.budget_total || Object.keys(own.cost_breakdown ?? {}).length > 0)
+          if ((noNight.length > 0 || noCosts) && planNightRetries < 1) {
             planNightRetries++
-            console.log(JSON.stringify({ type: 'tappyai_plan_night_retry', days: noNight }))
-            return { ok: false, note: NIGHT_RETRY_NOTE(noNight) }
+            console.log(JSON.stringify({ type: 'tappyai_plan_night_retry', days: noNight, missing_costs: noCosts }))
+            return { ok: false, note: [noNight.length > 0 ? NIGHT_RETRY_NOTE(noNight) : '', noCosts ? PLAN_COSTS_RETRY_NOTE : ''].filter(Boolean).join(' ') }
           }
           // the total is added up here, from the numbers the model gave: lines and total can never disagree (planCosts.ts)
           const summed = sumCosts((plan as { costs_vnd?: CostLine[] }).costs_vnd, plan.people, lang === 'en' ? 'en' : 'vi')

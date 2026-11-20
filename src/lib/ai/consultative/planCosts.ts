@@ -6,6 +6,9 @@
 import { vi as VI, en as EN } from '@/lib/i18n/presentation'
 const translate = (loc: 'vi' | 'en', key: string, vars: Record<string, string>): string => Object.entries(vars).reduce((s, [k, v]) => s.replace(`{${k}}`, v), (loc === 'en' ? EN : VI)[key] ?? VI[key] ?? key)
 
+/** What the model reads when it sent a trip plan without the numeric cost lines (the plan is not shown yet). */
+export const PLAN_COSTS_RETRY_NOTE = 'Not shown yet: give the cost lines as NUMBERS in costs_vnd (one line each for transport, stay, food, activities and local travel: low and high in VND, per_person true when the figure is for one person) and leave budget_total and cost_breakdown out: the app adds the lines up and writes the total itself. Then call present_plan again with the whole plan.'
+
 export interface CostLine { item: string; low: number; high?: number; per_person?: boolean; note?: string }
 export interface PlanCostResult { cost_breakdown: Record<string, string>; budget_total: string; totalLow: number; totalHigh: number }
 

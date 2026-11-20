@@ -746,6 +746,13 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(Object.keys(card.cost_breakdown)).toEqual(['Xe', 'Phòng'])
     expect(card.costs_vnd).toBeUndefined()
   }, 60000)
+  it('a trip plan that writes its own total instead of the numeric cost lines is sent back once, with the note to give costs_vnd (owner 20/11)', async () => {
+    const plan = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', budget_total: '9.999.999đ', cost_breakdown: { Xe: '1đ' }, days: [{ label: 'Ngày 1', items: [{ time: '08:00', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }] }
+    const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'ok' })
+    expect(on.text).not.toContain('[TAPPY_PLAN]')
+    expect(JSON.stringify(on.results.find(r => r.name === 'present_plan')?.result ?? {})).toContain('costs_vnd')
+    expect(on.logs.some(x => x.type === 'tappyai_plan_night_retry' && x.missing_costs === true)).toBe(true)
+  }, 60000)
   it('31/10 option cards: options handed to present_options reach the user as a [TAPPY_MEDIA] options block after the text; a link the turn\'s tools gave stays, any other link is dropped (the card stays)', async () => {
     const ASK: Msg[] = [{ role: 'user', content: 'tour thai lan 7 ngay nao dang tien' }]
     const options = [
