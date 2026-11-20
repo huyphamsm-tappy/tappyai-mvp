@@ -200,6 +200,8 @@ export interface EnrichmentCollector {
   oneBrain?: boolean
   /** CONSULT_ONE_BRAIN: the plan the model passed to present_plan (TappyPlan JSON); appended as [TAPPY_PLAN] before the plan guards run. */
   planBlock?: string
+  /** 20/11: the Agoda page (and price per night) of each hotel the turn's get_hotel_prices looked up; the plan's hotel stop takes the page of the hotel it names (planPartnerLinks.ts). */
+  stayLinks?: Array<{ name: string; url: string; perNight?: number }>
   /** CONSULT_ONE_BRAIN (31/10): the options the model passed to present_options (MediaBlock 'options' JSON); emitted as [TAPPY_MEDIA] after the link guards, with only this turn's tool links. */
   optionsBlock?: string
   /** CONSULT_PRESENT_BLOCKS (14/11): the blocks the model declared through present_blocks, already checked against the turn (presentation/declare.ts); sent as one live `8:` annotation after the prose. */

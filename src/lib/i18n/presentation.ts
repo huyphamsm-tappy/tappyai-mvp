@@ -103,6 +103,7 @@ const T: Record<string, [string, string]> = {
   'v206.trip.pdfLine': ['TAPPYAI  /  DU LỊCH', 'TAPPYAI  /  TRAVEL'],
   'v206.trip.pdfNote': ['KẾ HOẠCH', 'TRIP PLAN'],
   'v206.trip.pdfFooter': ['TAPPYAI DU LỊCH', 'TAPPYAI TRAVEL'],
+  'plan.stayPerNight': ['{price}/đêm', '{price}/night'],
   'plan.cost.perPerson': ['{amount}/người', '{amount} per person'],
   'v206.trip.pdf': ['Tải PDF', 'Download PDF'],
   'v206.trip.pdfEyebrow': ['Kế hoạch du lịch · TappyAI', 'Trip plan · TappyAI'],

@@ -102,6 +102,7 @@ import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import { systemLinkLines } from './consultative/systemLinkRow'
+import { withPartnerLinks } from './consultative/planPartnerLinks'
 import { onlyMatchingCards, cardsConsistentWithAnswer } from './consultative/cardsMatchRequest'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
@@ -2814,7 +2815,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // masked from the prose guards and restored intact after them.
     // TRIP FACTS (owner 2026-09-28, B4): a trip plan never states a date, a departure city or an
     // inter-city leg the user did not give — the reply asks for them instead (planTripFactsGuard).
-    const itemized = planItems ? planItems.text : tipped
+    // 20/11 (owner): the plan's hotel stop carries the Agoda page and nightly price of the hotel it names, its coach / train stop the Vexere page - the partners the platform looked up this turn (planPartnerLinks.ts)
+    const itemized0 = planItems ? planItems.text : tipped
+    const itemized = collector?.oneBrain === true && itemized0.includes('[TAPPY_PLAN]')
+      ? itemized0.replace(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/, (_m, body: string) => `[TAPPY_PLAN]${withPartnerLinks(body, { stays: collector.stayLinks ?? [], transport: systemLinks.filter(l => /vexere/i.test(l.name) || /vexere\.com/i.test(l.url)), lang })}[/TAPPY_PLAN]`)
+      : itemized0
     const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText], collector?.consultative === true ? { assumeLegs: true } : {}) : null
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
     // A travel turn never states a travel DATE the user did not give (c40 O8: 'giả sử … hôm nay (28/9)'

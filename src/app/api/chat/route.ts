@@ -3361,6 +3361,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             }
           }
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
+          // 20/11: the Agoda page and nightly price of every hotel this lookup priced, kept for the plan's hotel stop (planPartnerLinks.ts)
+          {
+            const rows = (result as { hotel_list?: unknown })?.hotel_list
+            if (Array.isArray(rows)) {
+              enrichment.stayLinks = [...(enrichment.stayLinks ?? []), ...rows.flatMap((h: unknown) => {
+                const x = h as { name?: unknown; agoda_offer_url?: unknown; agoda_offer_price?: { amount?: unknown; unit?: unknown } }
+                return typeof x?.name === 'string' && typeof x.agoda_offer_url === 'string'
+                  ? [{ name: x.name, url: x.agoda_offer_url, ...(x.agoda_offer_price?.unit === 'per_night' && typeof x.agoda_offer_price.amount === 'number' ? { perNight: x.agoda_offer_price.amount } : {}) }]
+                  : []
+              })]
+            }
+          }
           // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
