@@ -227,7 +227,16 @@ describe('releaseText: only checked text is shown', () => {
     expect(r.text).toContain('Nhưng đó là mức ổn định')
     expect(r.dropped).toBe(2)
   })
-  it('a sentence that points back, or a fragment of six words or fewer, goes with the dropped one before it; a paragraph that lost half of its sentences goes whole', () => {
+  it('a sentence whose own arithmetic is wrong is dropped even when its sources are right (429/434 is not 90,70%)', () => {
+    // the source itself carries these figures, so the source check passes them: only the arithmetic can refuse the sentence
+    const withVote = [...sources, { id: 4, title: 'S4', snippet: '', text: 'Có 429/434 đại biểu tán thành (90,70%).' }]
+    const report = '## 1. A\nCó 700 cửa hàng [2]. Số phiếu là 429/434 (90,70%) [4]. Có 700 cửa hàng nữa [2]. Có 700 cửa hàng thêm [2].'
+    const r = releaseText(report, withVote)
+    expect(r.text).not.toContain('429/434')
+    expect(r.text).toContain('Có 700 cửa hàng')
+    expect(r.dropped).toBe(1)
+  })
+  it('a sentence that points back, or a cross-reference or fragment of three words or fewer, goes with the dropped one before it; a paragraph that lost half of its sentences goes whole', () => {
     const a = releaseText('## 1. A\nDoanh thu đạt 99.999 tỷ đồng [1]. Các số này cũ hơn nhiều [2]. Có 700 cửa hàng [2]. Có 700 cửa hàng nữa [2]. Mức này ổn định [2].', sources)
     expect(a.text).not.toContain('Các số này')
     expect(a.text).toContain('Có 700 cửa hàng')

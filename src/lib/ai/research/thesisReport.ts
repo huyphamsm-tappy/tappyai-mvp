@@ -10,6 +10,7 @@ import { pickForAnalyst, type EvidenceCard } from './evidenceCards'
 import { verifyReport, written, type VerifierSource } from './claimVerifier'
 import { lenientArray } from './lenientSchema'
 import { fold } from './researchSignals'
+import { arithmeticIssues } from './arithmeticCheck'
 
 export interface OutlinePoint { claim: string; cards: string[] }
 export interface OutlineSection { title: string; points: OutlinePoint[] }
@@ -225,6 +226,8 @@ export function filterVerified(report: string, sources: readonly (VerifierSource
         const refused = r.flagged.flatMap(f => f.figures)
         if (refused.length && refused.every(f => written(f, trusted))) bad = false
       }
+      // arithmetic the sentence itself contradicts ("429/434 (90.70%)"): wrong whatever the source says, so it is not shown (arithmeticCheck.ts)
+      if (!bad && arithmeticIssues(s).length > 0) bad = true
       // a sentence that leans on the one before it ("But only 1.8% ...", "Also ...") is left with nothing to lean on when that one was dropped (judge, 20/11: a summary opening "Nhung chi 1,8%..."): it goes with it
       // the same for a sentence that points back ("Các số này cũ hơn...", "Dải này cho thấy...") and for a cross-reference or a fragment of three words or fewer ("Xem mục 3.", "Cần theo dõi văn bản ban hành."): what they pointed at or finished is gone
       const f = fold(s.trim())
