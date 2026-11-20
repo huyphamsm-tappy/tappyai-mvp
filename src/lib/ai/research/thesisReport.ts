@@ -204,7 +204,8 @@ export function wordCiteStream(): { push(delta: string): string; end(): string }
 }
 
 /** Words that start a sentence resting on the previous one (folded: no accents, lower case). */
-const DEPENDENT_START = /^(nhung|tuy nhien|tuy vay|tuy|song|cung|ngoai ra|ben canh do|theo do|do do|vi vay|vi the|nhu vay|trong khi do|trong khi|dong thoi|con|however|but|also|moreover|therefore|thus|meanwhile|in addition|by contrast)\b/
+// (only unambiguous connectors: a bare "con", "song" or "cung" opens ordinary sentences too - "Con nguoi...", "Song Hong...", "Cung cap dien...")
+const DEPENDENT_START = /^(nhung|tuy nhien|tuy vay|tuy|cung vay|cung nhu vay|cung nhu the|con ve|con lai|ngoai ra|ben canh do|theo do|do do|vi vay|vi the|nhu vay|trong khi do|trong khi|dong thoi|however|but|also|moreover|therefore|thus|meanwhile|in addition|by contrast)\b/
 /** A sentence that opens by pointing back: "this range", "these figures", "those two" (folded). The first two or three words, then "nay" / "tren" / "vua", or a word and then "do" (this/that). */
 const DEICTIC_START = /^(?:\S+\s+){0,2}(?:nay|tren|vua)\b|^(?:\S+\s+){1,2}do\b/
 /** A cross-reference or a pointer that says nothing by itself ("Xem mục 3.", "Cần theo dõi văn bản ban hành.", "See section 3."), folded. */

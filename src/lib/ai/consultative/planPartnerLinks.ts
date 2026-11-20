@@ -12,7 +12,8 @@ export const fold = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g
 const https = (u: unknown): u is string => typeof u === 'string' && /^https:\/\//i.test(u) && u.length <= 1500
 
 const STAY_WORD = /\b(khach san|resort|homestay|hotel|villa|hostel|nha nghi|bungalow|retreat)\b/
-const TRAIN_WORD = /\b(tau hoa|tau|train|duong sat)\b/
+// a bare "tau" is also a ship or a ferry ("tau cao toc", "ga tau" in a taxi stop): only a train is a train
+const TRAIN_WORD = /\b(tau hoa|tau thong nhat|tau se\d*|tau tn\d*|train|duong sat)\b/
 const COACH_WORD = /\b(xe khach|xe giuong nam|giuong nam|limousine|bus|coach|nha xe)\b/
 
 export const sameName = (a: string, b: string): boolean => {

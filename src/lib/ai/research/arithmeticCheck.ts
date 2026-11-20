@@ -60,12 +60,14 @@ export function arithmeticIssues(sentence: string): ArithIssue[] {
       if (said !== null && Math.abs(Math.abs(B - A) - said) > Math.max(0.15, Math.abs(B - A) * 0.03)) out.push({ kind: 'points', said, computed: Math.abs(B - A) })
       continue
     }
-    const pct = new RegExp(String.raw`^[^\d%;\n]{0,40}?(tang|giam|\+|-)?\s*(?:khoang\s*)?(${N})\s*%`).exec(rest)
+    const pct = new RegExp(String.raw`^([^\d%;\n]{0,40}?)(tang|giam|\+|-)?\s*(?:khoang\s*)?(${N})\s*%`).exec(rest)
     if (!pct) continue
-    const said = parseNumber(pct[2])
+    // with no rise/fall word the percentage must stand right after the two levels ("(20%)", ", tuc 20%"): any other percentage nearby is another figure ("chiem 15% thi phan"), not the growth rate
+    if (!pct[2] && !/^[\s(,~:]*(?:tuc la|tuc|tuong duong|hay|khoang|dat)?[\s(~]*$/.test(pct[1])) continue
+    const said = parseNumber(pct[3])
     if (said === null) continue
     const change = (B - A) / A * 100
-    const word = pct[1] === 'tang' || pct[1] === '+' ? 'up' : pct[1] === 'giam' || pct[1] === '-' ? 'down' : null
+    const word = pct[2] === 'tang' || pct[2] === '+' ? 'up' : pct[2] === 'giam' || pct[2] === '-' ? 'down' : null
     const wrongWay = (word === 'up' && change < 0) || (word === 'down' && change > 0)
     if (wrongWay || Math.abs(Math.abs(change) - said) > Math.max(1, Math.abs(change) * 0.03)) out.push({ kind: 'growth', said, computed: change })
   }
