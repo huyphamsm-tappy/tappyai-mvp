@@ -1293,7 +1293,7 @@ export async function POST(req: Request) {
         if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
-      // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
+      // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 1000 model turns since owner 01/11/2026; the value lives in lib/security/chatCaps.ts) bounds the
       // worst day of one account; canned turns ($0) are not counted.
       if (isPro && !quotaExempt) {
         const proDay = await publicDailyRateLimit(`chat:pro:${user.id}`, PRO_DAILY_CHAT_CAP)

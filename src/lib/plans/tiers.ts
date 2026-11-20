@@ -4,8 +4,8 @@
 // they are (free / pip / momo / coco / milo / sunny / pro); this maps them to a TIER, and the tier decides the composer modes the server
 // runs and the Deep Research allowance per VN calendar month:
 //   free   (guest, anonymous, free)                       - Chat only, answered by the model's own ability (14/11/2026: NO tools — no search, no realtime, no partner links); no Web / Thinking / Deep Research
-//   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, Deep Research 10 a month
-//   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 30 a month
+//   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, Deep Research 5 Standard + 5 Advanced a month
+//   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 10 Standard + 15 Advanced a month (owner 11/11/2026; the numbers are STANDARD_/ADVANCED_RESEARCH_MONTHLY below)
 // The SERVER enforces it (a mode the tier does not have runs as Chat); the client only hides what it cannot use. Pure.
 import type { ChatMode } from '@/lib/ai/security/clientInput'
 
