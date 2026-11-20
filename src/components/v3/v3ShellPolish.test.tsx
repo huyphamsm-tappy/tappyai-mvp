@@ -338,7 +338,7 @@ describe('the AI-first chrome', () => {
     const { container } = renderShell()
     const hrefs = [...container.querySelectorAll('aside a[href]')].map(a => a.getAttribute('href'))
     for (const route of ['/', '/reviews', '/deals', '/profile/notifications', '/tools', '/planner',
-                         '/recommendations', '/social', '/profile', '/subscription']) {
+                         '/social', '/profile', '/subscription']) {
       expect(hrefs, `${route} must stay in the sidebar`).toContain(route)
     }
     // ...and must not have duplicated one.

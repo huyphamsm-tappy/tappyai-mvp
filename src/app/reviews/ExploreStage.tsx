@@ -23,6 +23,7 @@ import { ClipStage, useClipActions, Avatar, type Me } from './clipStage'
 export { shortCount, slotTransform, slotRole } from './clipStage'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
+import { SHOW_RECOMMENDATIONS } from '@/lib/config/product'
 
 // ── V3 Web · EXPLORE — the approved three-column composition (≥ 768px) ─────
 //
@@ -325,7 +326,7 @@ function RightColumn({ rows, me, onFollow, t }: {
         <section className="v3-xp-panel" data-xp-recs>
           <div className="flex items-center justify-between">
             <h2 className="v3-xp-panel-title">{t('v3.explore.recTitle')}</h2>
-            <Link href="/recommendations" className="v3-xp-panel-link">{t('v3.explore.seeAll')}</Link>
+            {SHOW_RECOMMENDATIONS && <Link href="/recommendations" className="v3-xp-panel-link">{t('v3.explore.seeAll')}</Link>}
           </div>
           <div className="mt-1">
             {recs.map(r => (

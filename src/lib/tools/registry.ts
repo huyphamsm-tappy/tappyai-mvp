@@ -2,7 +2,7 @@ import {
   ScanText, Calculator, Languages, ArrowLeftRight, ShieldCheck,
   Star, Users, Music2, Sparkle, PenLine,
 } from 'lucide-react'
-import { SHOW_SCAM_SHIELD, SHOW_MUSIC, SHOW_TRANSLATE, SHOW_FORTUNE } from '@/lib/config/product'
+import { SHOW_SCAM_SHIELD, SHOW_MUSIC, SHOW_TRANSLATE, SHOW_FORTUNE, SHOW_RECOMMENDATIONS, SHOW_VIET_CONTENT, SHOW_CURRENCY, SHOW_SCAN } from '@/lib/config/product'
 
 // ── Smart Tools — THE registry ──────────────────────────────────────────────
 //
@@ -104,6 +104,11 @@ export function smartTools(): SmartTool[] {
     // Translate and fortune telling hidden (owner decision 18/11/2026); routes answer 404, modules stay.
     if (tool.id === 'translate') return SHOW_TRANSLATE
     if (tool.id === 'fortune') return SHOW_FORTUNE
+    // Owner 20/11/2026: "Quét", "Tỷ giá", "Gợi ý cho bạn" and "Viết" hidden (routes answer 404, modules stay).
+    if (tool.id === 'scan') return SHOW_SCAN
+    if (tool.id === 'currency') return SHOW_CURRENCY
+    if (tool.id === 'suggest') return SHOW_RECOMMENDATIONS
+    if (tool.id === 'captions') return SHOW_VIET_CONTENT
     return true
   })
 }

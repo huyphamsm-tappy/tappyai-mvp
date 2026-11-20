@@ -109,7 +109,9 @@ describe('Smart Tools is utilities, never a marketplace taxonomy', () => {
 describe('Home curates; it does not mirror the catalogue', () => {
   it('offers the curated tools (five, minus Translate while it is hidden), all of which are in the full registry', () => {
     const home = homeSmartTools()
-    expect(home.length).toBe(4)
+    expect(home.length).toBe(2) // Scam Alerts and Split the Bill: Translate (18/11), Scan and Currency (20/11) are hidden
+    expect(smartTools().map((t) => t.id)).not.toEqual(expect.arrayContaining(['scan']))
+    for (const hidden of ['scan', 'currency', 'suggest', 'captions']) expect(smartTools().map((t) => t.id), `${hidden} is hidden (owner 20/11/2026)`).not.toContain(hidden)
     expect(home.map((t) => t.id)).not.toContain('translate') // SHOW_TRANSLATE = false (owner decision 18/11/2026)
     expect(smartTools().map((t) => t.id)).not.toContain('fortune') // SHOW_FORTUNE = false
     const all = new Set(smartTools().map((t) => t.id))

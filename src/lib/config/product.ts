@@ -131,6 +131,15 @@ export const SHOW_TRANSLATE = false
  */
 export const SHOW_FORTUNE = false
 /**
+ * Owner 20/11/2026: four web entry points are HIDDEN, NOT DELETED (same convention as SHOW_TRANSLATE): "Gợi ý cho bạn" (/recommendations), "Viết" (/viet-content), "Tỷ giá" (/currency) and "Quét" (/scan).
+ * The pages and their APIs stay; every entry point (Smart Tools, Home, the sidebar, the Explore panel link) is gated off and each route answers 404 while its flag is `false`. WEB ONLY: these are not
+ * exported in GET /api/config and the apps are untouched (mobile comes later).
+ */
+export const SHOW_RECOMMENDATIONS = false
+export const SHOW_VIET_CONTENT = false
+export const SHOW_CURRENCY = false
+export const SHOW_SCAN = false
+/**
  * Marketplace — HIDDEN, NOT DELETED.
  *
  * 🚨 The V3 shell advertised Marketplace in the sidebar AND the top tab bar, and

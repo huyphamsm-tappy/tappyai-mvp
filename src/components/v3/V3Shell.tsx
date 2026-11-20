@@ -14,7 +14,7 @@ import {
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC, SHOW_FORTUNE } from '@/lib/config/product'
+import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC, SHOW_FORTUNE, SHOW_RECOMMENDATIONS, SHOW_VIET_CONTENT } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
@@ -89,7 +89,7 @@ const GROUPS: NavGroup[] = [
       // class of bug as the two below. Phase 7: it now carries the destination's own name,
       // the one the Smart Tools tile and Home's "see all" use (`v3.tool.suggest`), so one
       // page has one name wherever it is reached from.
-      { href: '/recommendations', labelKey: 'v3.tool.suggest', icon: Sparkles },
+      ...(SHOW_RECOMMENDATIONS ? [{ href: '/recommendations', labelKey: 'v3.tool.suggest', icon: Sparkles }] : []), // hidden 20/11/2026 (owner)
       // 🚨 THIS WAS `/#smart-tools`, AN ANCHOR NOTHING CARRIED. No element in the codebase
       // had `id="smart-tools"`, so the row scrolled to the top of Home and read as working.
       // `/tools` is the real page — the "Page 7 (Tools)" the debt note below names.
@@ -131,7 +131,7 @@ const GROUPS: NavGroup[] = [
       // Same shape as SHOW_MARKETPLACE/SHOW_WALLET below; route + module left intact.
       ...(SHOW_MUSIC ? [{ href: '/music', labelKey: 'v3.tool.music', icon: Music2 }] : []),
       ...(SHOW_FORTUNE ? [{ href: '/boi', labelKey: 'v3.tool.fortune', icon: Sparkle }] : []), // hidden 18/11/2026 (owner)
-      { href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine },
+      ...(SHOW_VIET_CONTENT ? [{ href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine }] : []), // hidden 20/11/2026 (owner)
     ],
   },
   {

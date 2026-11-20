@@ -13,6 +13,7 @@ import { promoCountdown } from '@/lib/deals/countdown'
 import AskTappyButton from '@/components/chat/AskTappyButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import { ChipRow } from '@/components/v3/Panel'
+import { onlyAllowedPartners } from '@/lib/deals/partnerAllowlist'
 
 // ── V3 Web redesign · §4 Deals ──────────────────────────────────────────────
 //
@@ -125,7 +126,8 @@ export default function DealsView() {
     setLoading(true)
     fetch(`/api/deals?lang=${encodeURIComponent(locale)}`)
       .then((r) => r.json())
-      .then((d) => (Array.isArray(d?.deals) ? d.deals as PartnerDeal[] : []))
+      // owner 20/11/2026: the web page shows only the deals of Accesstrade, Lazada, Agoda and Vexere (the shared feed is unchanged)
+      .then((d) => (Array.isArray(d?.deals) ? onlyAllowedPartners(d.deals as PartnerDeal[]) : []))
       .catch(() => [] as PartnerDeal[])
       .then(async (list) => {
         if (cancelled) return
@@ -136,7 +138,7 @@ export default function DealsView() {
           try {
             const r = await fetch(`/api/deals/partners?lang=${encodeURIComponent(locale)}`, { cache: 'no-store' })
             const body = r.ok ? await r.json() : null
-            found = Array.isArray(body?.partners) ? body.partners : []
+            found = Array.isArray(body?.partners) ? onlyAllowedPartners(body.partners as PartnerCardItem[]) : []
           } catch { found = [] }
         }
         if (!cancelled) { setPartners(found); setLoading(false) }

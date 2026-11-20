@@ -63,9 +63,10 @@ describe('the page renders the real registry, exactly', () => {
     const { container } = renderTools()
     // English dictionary in jsdom. Both lines render, which is the whole point of the redesign:
     // the descriptions existed and were shown nowhere.
-    const scan = within(container.querySelector('[data-tool="scan"]') as HTMLElement)
-    expect(scan.getByText('Scan Documents')).toBeTruthy()
-    expect(scan.getByText('Photograph a document or receipt and extract it')).toBeTruthy()
+    // Scan is hidden since 20/11/2026 (owner); Split the Bill carries the same two-line identity
+    const split = within(container.querySelector('[data-tool="split"]') as HTMLElement)
+    expect(split.getByText('Split the Bill')).toBeTruthy()
+    expect(split.getByText('Split a bill evenly, by person or by item')).toBeTruthy()
   })
 
   it('groups them under the three authored utility headings', () => {
