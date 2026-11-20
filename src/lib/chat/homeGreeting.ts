@@ -25,15 +25,16 @@ export function greetingKey(now: Date): string {
 }
 
 /**
- * The name to greet by: the FIRST word of the name the person gave in their profile (owner 20/11: in Vietnam the given name is what people are called by, "Huy Phạm" -> "Huy").
+ * The name to greet by: the LAST word of the name the person gave in their profile (owner 20/11: in Vietnam people are called by the given name, which comes last, "Nguyễn Văn An" -> "An").
  * Nothing when the profile has no name, when it looks like an address or contains digits or symbols, or when the word is very long.
  */
 export function givenNameOf(full: unknown): string | null {
   if (typeof full !== 'string') return null
   const t = full.trim()
   if (!t || /[@\d_/\\<>{}[\]|]/.test(t)) return null
-  const first = t.split(/\s+/)[0]
-  return first.length >= 1 && first.length <= 20 ? first : null
+  const words = t.split(/\s+/)
+  const last = words[words.length - 1]
+  return last.length >= 1 && last.length <= 20 ? last : null
 }
 
 /** The line with the name in front ("Huy ơi, ..."): the first letter of the line goes to lower case after the name. */

@@ -9,8 +9,10 @@ describe('dayPartOf', () => {
 })
 
 describe('given name and the line with it', () => {
-  it('the first word of the profile name; nothing for an empty name, an address, digits or a very long word', () => {
-    expect(givenNameOf('Huy Phạm')).toBe('Huy')
+  // owner 20/11 (second ruling): a Vietnamese is called by the given name, which is the LAST word of the full name ("Nguyễn Văn An" -> "An"); the first-word rule it replaces greeted "Nguyễn ơi"
+  it('the last word of the profile name; nothing for an empty name, an address, digits or a very long word', () => {
+    expect(givenNameOf('Nguyễn Văn An')).toBe('An')
+    expect(givenNameOf('Phạm Quang Huy')).toBe('Huy')
     expect(givenNameOf('  Lan  ')).toBe('Lan')
     for (const bad of [undefined, null, '', '   ', 'a@b.com', 'user123', 'x'.repeat(30), 42]) expect(givenNameOf(bad)).toBeNull()
   })
