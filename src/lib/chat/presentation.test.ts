@@ -163,8 +163,9 @@ describe('footnotes (4.2: numbered citations linked to the sources list)', () =>
     expect(out).not.toContain('[1]')
     expect(out).toContain('title="Ngành &quot;trà&quot;"')
   })
-  it('leaves an unknown number, a markdown-looking link and the inside of tags and links alone', () => {
-    expect(linkCitations('xem [9]', 'm1', known)).toBe('xem [9]')
+  it('drops a mark that names no source of the arrived list, keeps it while the list is still coming, and leaves a markdown-looking link and the inside of tags and links alone', () => {
+    expect(linkCitations('xem [9]', 'm1', known)).toBe('xem ')
+    expect(linkCitations('xem [9]', 'm1', known, false)).toBe('xem [9]')
     const html = '<a href="https://x.vn/[1]" title="[1]">chip [1]</a> và [1]'
     const out = linkCitations(html, 'm1', known)
     expect(out.startsWith('<a href="https://x.vn/[1]" title="[1]">chip [1]</a>')).toBe(true)

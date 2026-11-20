@@ -513,7 +513,8 @@ export function sourcesBlock(evidence: readonly Evidence[], findings: readonly F
   const used = citedEvidence(evidence, findings)
   if (!used.length) return ''
   const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
-  const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)
+  // the em dash is the list's own separator between the title and the site: one inside a title would split the line wrongly (the reader's list parse), so it becomes a plain hyphen
+  const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/—/g, '-').replace(/\s+/g, ' ').trim().slice(0, 140)
   const head = heading || (lang === 'en' ? 'Sources' : 'Nguồn')
   return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(weakSourceTitle(e.title, host(e.url)) ? titleFromUrl(e.url) ?? e.title : e.title) || e.site || host(e.url)} — ${e.site ?? host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
 }

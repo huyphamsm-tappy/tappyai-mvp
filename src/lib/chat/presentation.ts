@@ -130,13 +130,24 @@ export function footnotesOf(text: string, links: ReadonlyArray<{ id: number; url
   lines.forEach((l, i) => { if (/^\s{0,3}#{1,6}\s/.test(l)) last = i })
   const byId = new Map(links.filter(l => /^https:\/\//i.test(l.url)).map(l => [l.id, l.url]))
   const out: Footnote[] = []
-  for (const l of lines.slice(last + 1)) {
+  const tail = lines.slice(last + 1)
+  // a source line that lost its " — site" part is still a source of the list (final UAT 19/11: two such lines dropped out of the list, their numbers [9] and [24] stayed in the text, and the text list was drawn a second time) - read loosely when the list is mostly well-formed
+  const loose = isMostlySourceLines(tail)
+  for (const l of tail) {
     const m = SOURCE_LINE.exec(l)
-    if (!m) continue
-    const n = Number(m[1])
-    out.push({ n, title: plainHeading(m[2]), site: m[3].trim(), ...(byId.has(n) ? { href: byId.get(n) } : {}) })
+    if (m) { const n = Number(m[1]); out.push({ n, title: plainHeading(m[2]), site: m[3].trim(), ...(byId.has(n) ? { href: byId.get(n) } : {}) }); continue }
+    const lm = loose ? NUMBERED_LINE.exec(l) : null
+    if (lm) { const n = Number(lm[1]); out.push({ n, title: plainHeading(lm[2]), site: '', ...(byId.has(n) ? { href: byId.get(n) } : {}) }) }
   }
   return out
+}
+
+const NUMBERED_LINE = /^\s{0,3}(\d{1,3})\.\s+(\S.*)$/
+/** Two or more non-empty lines, every one numbered "n. ...", at least four fifths of them in the full "n. title — site" shape: the sources list, even with a line or two that lost its site. Pure. */
+function isMostlySourceLines(lines: readonly string[]): boolean {
+  const body = lines.filter(l => l.trim())
+  if (body.length < 2 || !body.every(l => NUMBERED_LINE.test(l))) return false
+  return body.filter(l => SOURCE_LINE.test(l)).length >= Math.ceil(body.length * 0.8)
 }
 
 /**
@@ -149,14 +160,13 @@ export function withoutTrailingSources(sectionText: string): string | null {
   lines.forEach((l, i) => { if (/^\s{0,3}#{1,6}\s/.test(l)) last = i })
   if (last <= 0) return null
   const tail = lines.slice(last + 1).filter(l => l.trim())
-  if (tail.length < 2 || !tail.every(l => SOURCE_LINE.test(l))) return null
+  if (!isMostlySourceLines(tail)) return null
   return lines.slice(0, last).join('\n').replace(/\s+$/, '') + '\n'
 }
 
 /** Is this whole section the sources list (two or more numbered "n. title — site" lines and nothing else but its heading)? Pure. */
 export function isSourcesSection(sectionText: string): boolean {
-  const body = sectionText.split('\n').filter(l => l.trim() && !/^\s{0,3}#{1,6}\s/.test(l))
-  return body.length >= 2 && body.every(l => SOURCE_LINE.test(l))
+  return isMostlySourceLines(sectionText.split('\n').filter(l => !/^\s{0,3}#{1,6}\s/.test(l)))
 }
 
 const escAttr = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -171,7 +181,8 @@ export function linkCitations(html: string, prefix: string, known: ReadonlyMap<n
     if (anchor || tag || d === undefined) return m
     const n = Number(d)
     const name = known.get(n)
-    if (name === undefined) return m
+    // a mark that names no source of the list that has arrived is dropped (it pointed at nothing: "[9]" in the text, no 9 in the list); while the list is still being written it stays as written
+    if (name === undefined) return linked ? '' : m
     // the list the mark points at has not arrived yet (a report still being written): the mark is drawn, not linked
     if (!linked) return `<span class="tappy-cite">${n}</span>`
     return `<a href="#${safeId(prefix)}-fn${n}" data-cite="${n}" class="tappy-cite" title="${escAttr(name)}">${n}</a>`

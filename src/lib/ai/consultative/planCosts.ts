@@ -1,7 +1,10 @@
 // The plan's total is added up by CODE (owner 19/11: totals in the plan did not match its own lines: "5.35 million per person" over lines that add to 3.1).
 // The model gives the cost lines as numbers (VND, low and high, one person or the whole group); this module sums them, writes the cost_breakdown rows and the total. The model's own
 // text for the total is replaced, so the lines and the total can never disagree. Pure.
-import { translate } from '@/lib/i18n/useTranslation'
+// The words come from the plain dictionary map, NOT from useTranslation: that module is a client one ('use client'), and the server build gives a server file a placeholder for its functions
+// (final UAT 20/11: "translate is not a function" ended every plan answer with an error, while the unit tests, which do not have that boundary, passed).
+import { vi as VI, en as EN } from '@/lib/i18n/presentation'
+const translate = (loc: 'vi' | 'en', key: string, vars: Record<string, string>): string => Object.entries(vars).reduce((s, [k, v]) => s.replace(`{${k}}`, v), (loc === 'en' ? EN : VI)[key] ?? VI[key] ?? key)
 
 export interface CostLine { item: string; low: number; high?: number; per_person?: boolean; note?: string }
 export interface PlanCostResult { cost_breakdown: Record<string, string>; budget_total: string; totalLow: number; totalHigh: number }
