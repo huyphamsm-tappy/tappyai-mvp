@@ -42,3 +42,12 @@ export function shareNotice(lang: SocialLang, name: string, placeName: string | 
     body: placeName || (lang === 'en' ? 'See it now' : 'Xem ngay'),
   }
 }
+
+/** To a group leader (owner 20/11/2026): someone asked to join the group. Carries the person's short name and the group's name only: never their budget, tastes or area. */
+export function groupRequestNotice(lang: SocialLang, name: string, groupName: string | null | undefined): { title: string; body: string } {
+  const g = (groupName ?? '').trim().slice(0, 60)
+  return {
+    title: lang === 'en' ? `👥 ${name} asked to join your group` : `👥 ${name} xin vào nhóm của bạn`,
+    body: g ? (lang === 'en' ? `${g}: open the group to accept or decline.` : `${g}: mở nhóm để chấp nhận hoặc từ chối.`) : (lang === 'en' ? 'Open the group to accept or decline.' : 'Mở nhóm để chấp nhận hoặc từ chối.'),
+  }
+}

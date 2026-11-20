@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 type Row = Record<string, unknown>
-const h = vi.hoisted(() => ({ user: null as { id: string; is_anonymous?: boolean } | null, db: { groups: [] as Row[], group_members: [] as Row[] }, denyRate: false }))
+const h = vi.hoisted(() => ({ user: null as { id: string; is_anonymous?: boolean } | null, db: { groups: [] as Row[], group_members: [] as Row[] }, denyRate: false, emitted: [] as Array<Record<string, unknown>>, emitFails: false }))
 
 // a tiny query builder over h.db: select / insert / update / delete, eq filters, order, single / maybeSingle, exact counts with head
 function fakeClient(opts: { userScoped?: boolean } = {}) {
@@ -46,6 +46,8 @@ function fakeClient(opts: { userScoped?: boolean } = {}) {
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: h.user, supabase: fakeClient({ userScoped: true }) }) }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => fakeClient() }))
 vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: async () => ({ ok: !h.denyRate, retryAfter: 5, scope: 'instance' }) }))
+vi.mock('@/lib/notifications/emit', () => ({ emitNotification: async (input: Record<string, unknown>) => { if (h.emitFails) throw new Error('push down'); h.emitted.push(input); return { id: 'n1' } } }))
+vi.mock('@/lib/priceWatch/messages', () => ({ resolveUserLang: async () => 'vi' }))
 
 import { GET } from './route'
 import { POST as join } from './[id]/join/route'
@@ -62,6 +64,7 @@ const joinReq = (body: Record<string, unknown> = { name: 'Cuong', area: 'Quan 3'
 const decideReq = (body: Record<string, unknown>) => decide(new NextRequest(`http://t.test/api/group/${G}/members`, { method: 'POST', body: JSON.stringify(body), headers: { 'content-type': 'application/json' } }), { params: { id: G } })
 
 beforeEach(() => {
+  h.emitted = []; h.emitFails = false
   h.denyRate = false
   h.user = { id: CREATOR }
   h.db.groups = [{ id: G, name: 'Bua toi thu 6', creator_id: CREATOR, status: 'open', suggestion: null, created_at: '2026-11-20T00:00:00Z', avatar_url: null }]
@@ -123,6 +126,27 @@ describe('POST /api/group/[id]/join: opening the link files a REQUEST', () => {
     h.user = { id: CREATOR }
     expect(await (await joinReq()).json()).toMatchObject({ ok: true, alreadyJoined: true })
     expect(h.db.group_members).toHaveLength(2)
+  })
+  it('tells the leader once (owner 20/11): a notification to the creator that points at the group, naming the person but never their budget, tastes or area', async () => {
+    h.user = { id: OUTSIDER }
+    expect((await joinReq({ name: 'Cuong Pham', area: 'Quan 3 rieng tu', budget: '200k', food_preferences: 'sushi bi mat', dietary_restrictions: 'di ung dau phong' })).status).toBe(200)
+    expect(h.emitted).toHaveLength(1)
+    const n = h.emitted[0]
+    expect(n).toMatchObject({ userId: CREATOR, actorId: OUTSIDER, entityUrl: `/group/${G}` })
+    const text = JSON.stringify(n)
+    expect(text).toContain('Pham') // the short name (last word, the Vietnamese given name), as every social notice shows it
+    for (const secret of ['Quan 3 rieng tu', 'sushi bi mat', 'di ung dau phong', '200k']) expect(text).not.toContain(secret)
+    // a repeat request, the creator's own tap and an accepted member's tap send nothing more
+    await joinReq()
+    h.user = { id: CREATOR }; await joinReq()
+    h.user = { id: MEMBER }; await joinReq()
+    expect(h.emitted).toHaveLength(1)
+  })
+  it('a failing push never fails the request (best effort)', async () => {
+    h.user = { id: OUTSIDER }; h.emitFails = true
+    const res = await joinReq()
+    expect(res.status).toBe(200)
+    expect(h.db.group_members.find(r => r.user_id === OUTSIDER)).toMatchObject({ status: 'pending' })
   })
   it('a full group (10 accepted members) takes no new request; pending requests do not count toward the 10', async () => {
     for (let i = 0; i < 9; i++) h.db.group_members.push({ id: `x${i}`, group_id: G, user_id: `00000000-0000-4000-8000-0000000000${10 + i}`, name: `P${i}`, status: 'member', created_at: '2026-11-20T03:00:00Z' })

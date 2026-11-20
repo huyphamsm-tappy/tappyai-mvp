@@ -6,6 +6,11 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { clipField } from '@/lib/group/fields'
 import { MAX_MEMBERS, MAX_PENDING } from '@/lib/group/limits'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { emitNotification } from '@/lib/notifications/emit'
+import { resolveUserLang } from '@/lib/priceWatch/messages'
+import { actorShortName, groupRequestNotice } from '@/lib/i18n/socialNotices'
 
 // POST /api/group/[id]/join — opening the invite link FILES A REQUEST (owner 20/11: a group is private; a Tappy account and the leader's acceptance are both needed).
 // The person is written as 'pending'; they read nothing of the group until the leader accepts them (POST /api/group/[id]/members). Opening the link never makes a membership.
@@ -20,6 +25,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   // B17 — an anonymous session is authenticated but is not an account; social writes need one.
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+  // a request now pushes to the group leader, so a caller is capped (shared store): 20 requests per 10 minutes
+  const rl = await publicRateLimit(`group-join:${user.id}`, 20, 600_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'group_join')
 
   let name: string, budget: string, food_preferences: string, dietary_restrictions: string, area: string
   try {
@@ -59,5 +67,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     if (error.code === '23505') return NextResponse.json({ ok: true, pending: true, alreadyRequested: true })
     return NextResponse.json({ error: 'join_failed', message: serverMessage('group.joinFailed', requestLocale(req)) }, { status: 500 })
   }
+  // owner 20/11/2026: tell the leader (best effort: a failing push never fails the request). Reached only for a NEW request: a repeat, the creator and an accepted member all returned above.
+  // The notice names the person and the group, never their budget, tastes or area.
+  try {
+    const leaderLang = await resolveUserLang(admin, group.creator_id as string)
+    const { data: groupRow } = await admin.from('groups').select('name').eq('id', groupId).maybeSingle()
+    const copy = groupRequestNotice(leaderLang, actorShortName(name, leaderLang), (groupRow as { name?: string } | null)?.name)
+    await emitNotification({ userId: group.creator_id as string, type: 'system', category: 'system', title: copy.title, body: copy.body, actorId: user.id, entityUrl: `/group/${groupId}` })
+  } catch { /* best-effort */ }
   return NextResponse.json({ ok: true, pending: true })
 }
