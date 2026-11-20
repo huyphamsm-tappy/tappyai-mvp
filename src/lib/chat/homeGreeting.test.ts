@@ -1,10 +1,27 @@
 import { describe, it, expect } from 'vitest'
-import { dayPartOf, greetingKey, GREETING_KEYS, GREETING_VARIANTS } from './homeGreeting'
+import { dayPartOf, greetingKey, givenNameOf, lineWithName, GREETING_KEYS, GREETING_VARIANTS } from './homeGreeting'
 import { translate } from '@/lib/i18n/useTranslation'
 
 describe('dayPartOf', () => {
   it('splits the day into morning, midday, afternoon, evening and night', () => {
     expect([5, 10, 11, 13, 14, 17, 18, 22, 23, 0, 4].map(dayPartOf)).toEqual(['dawn', 'dawn', 'noon', 'noon', 'afternoon', 'afternoon', 'evening', 'evening', 'night', 'night', 'night'])
+  })
+})
+
+describe('given name and the line with it', () => {
+  it('the first word of the profile name; nothing for an empty name, an address, digits or a very long word', () => {
+    expect(givenNameOf('Huy Phạm')).toBe('Huy')
+    expect(givenNameOf('  Lan  ')).toBe('Lan')
+    for (const bad of [undefined, null, '', '   ', 'a@b.com', 'user123', 'x'.repeat(30), 42]) expect(givenNameOf(bad)).toBeNull()
+  })
+  it('puts the name in front and lowers the first letter of the line; no name leaves the line alone', () => {
+    expect(lineWithName('Cà phê sáng cùng Tappy nhé?', 'Huy', '{name} ơi, {line}')).toBe('Huy ơi, cà phê sáng cùng Tappy nhé?')
+    expect(lineWithName('Good morning!', 'Huy', '{name}, {line}')).toBe('Huy, good morning!')
+    expect(lineWithName('Chào buổi sáng!', null, '{name} ơi, {line}')).toBe('Chào buổi sáng!')
+  })
+  it('the template exists in both languages', () => {
+    expect(translate('vi', 'home.greet.withName')).toContain('{name}')
+    expect(translate('en', 'home.greet.withName')).toContain('{line}')
   })
 })
 

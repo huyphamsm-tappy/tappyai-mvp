@@ -118,6 +118,7 @@ const T: Record<string, [string, string]> = {
   'v206.budget.found': ['Từ kết quả tra cứu', 'From lookups'],
   'v206.budget.total': ['Tổng dự kiến', 'Estimated total'],
   // the one greeting line of the empty chat, by the time of day on the device (three lines per part of the day; the weekend has its own until the evening)
+  'home.greet.withName': ['{name} ơi, {line}', '{name}, {line}'],
   'home.greet.dawn.0': ['Chào buổi sáng! Hôm nay mình giúp gì được cho bạn?', 'Good morning! What can I help with today?'],
   'home.greet.dawn.1': ['Buổi sáng tốt lành, hôm nay bắt đầu từ đâu nhỉ?', 'A good morning to you. Where shall we start today?'],
   'home.greet.dawn.2': ['Cà phê sáng cùng Tappy nhé?', 'Morning coffee with Tappy?'],

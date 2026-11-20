@@ -24,4 +24,23 @@ export function greetingKey(now: Date): string {
   return `home.greet.${weekend ? 'weekend' : part}.${variant}`
 }
 
+/**
+ * The name to greet by: the FIRST word of the name the person gave in their profile (owner 20/11: in Vietnam the given name is what people are called by, "Huy Phạm" -> "Huy").
+ * Nothing when the profile has no name, when it looks like an address or contains digits or symbols, or when the word is very long.
+ */
+export function givenNameOf(full: unknown): string | null {
+  if (typeof full !== 'string') return null
+  const t = full.trim()
+  if (!t || /[@\d_/\\<>{}[\]|]/.test(t)) return null
+  const first = t.split(/\s+/)[0]
+  return first.length >= 1 && first.length <= 20 ? first : null
+}
+
+/** The line with the name in front ("Huy ơi, ..."): the first letter of the line goes to lower case after the name. */
+export function lineWithName(line: string, name: string | null, template: string): string {
+  if (!name || !line) return line
+  const lower = line.charAt(0).toLowerCase() + line.slice(1)
+  return template.replace('{name}', name).replace('{line}', lower)
+}
+
 export const GREETING_KEYS: readonly string[] = [...(['dawn', 'noon', 'afternoon', 'evening', 'night', 'weekend'] as const)].flatMap(p => Array.from({ length: GREETING_VARIANTS }, (_, i) => `home.greet.${p}.${i}`))
