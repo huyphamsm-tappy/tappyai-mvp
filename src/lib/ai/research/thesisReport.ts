@@ -9,6 +9,7 @@ import type { Evidence, Finding, ResearchPlan } from './deepResearch'
 import { pickForAnalyst, type EvidenceCard } from './evidenceCards'
 import { verifyReport, written, type VerifierSource } from './claimVerifier'
 import { lenientArray } from './lenientSchema'
+import { fold } from './researchSignals'
 
 export interface OutlinePoint { claim: string; cards: string[] }
 export interface OutlineSection { title: string; points: OutlinePoint[] }
@@ -201,6 +202,8 @@ export function wordCiteStream(): { push(delta: string): string; end(): string }
   }
 }
 
+/** Words that start a sentence resting on the previous one (folded: no accents, lower case). */
+const DEPENDENT_START = /^(nhung|tuy nhien|tuy vay|tuy|song|cung|ngoai ra|ben canh do|theo do|do do|vi vay|vi the|nhu vay|trong khi do|trong khi|dong thoi|con|however|but|also|moreover|therefore|thus|meanwhile|in addition|by contrast)\b/
 /** The sentence filter of releaseText, before the citations are renumbered (sectionRelease.ts runs it on one section at a time). Pure. */
 export function filterVerified(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], trusted = ''): { kept: string; dropped: number } {
   let dropped = 0
@@ -209,6 +212,7 @@ export function filterVerified(report: string, sources: readonly (VerifierSource
     const marker = /^(\s*(?:[-*+]|\d+[.)])\s+)/.exec(line)?.[1] ?? ''
     const body = line.slice(marker.length)
     const sentences = body.split(SENTENCE).filter(Boolean)
+    let prevDropped = false
     const ok = sentences.filter(s => {
       const r = verifyReport(s, sources)
       let bad = [...Object.entries(r.counts)].some(([k, n]) => ERRORS.has(k) && n > 0)
@@ -217,6 +221,9 @@ export function filterVerified(report: string, sources: readonly (VerifierSource
         const refused = r.flagged.flatMap(f => f.figures)
         if (refused.length && refused.every(f => written(f, trusted))) bad = false
       }
+      // a sentence that leans on the one before it ("But only 1.8% ...", "Also ...") is left with nothing to lean on when that one was dropped (judge, 20/11: a summary opening "Nhung chi 1,8%..."): it goes with it
+      if (!bad && prevDropped && DEPENDENT_START.test(fold(s.trim()))) bad = true
+      prevDropped = bad
       if (bad) dropped++
       return !bad
     })

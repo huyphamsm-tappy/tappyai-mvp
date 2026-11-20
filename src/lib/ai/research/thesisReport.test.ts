@@ -218,6 +218,15 @@ describe('releaseText: only checked text is shown', () => {
     expect(r.text).not.toContain('800 cửa hàng')
     expect(r.dropped).toBe(2)
   })
+  it('a sentence that leans on a dropped one ("Nhưng...", "Cũng...", "But...") goes with it; one that follows a kept sentence stays (judge 20/11: a summary opened "Nhưng chỉ 1,8%...")', () => {
+    const report = '## 1. A\nDoanh thu đạt 99.999 tỷ đồng [1]. Nhưng chỉ có 700 cửa hàng [2]. Có 700 cửa hàng [2]. Nhưng đó là mức ổn định [2].'
+    const r = releaseText(report, sources)
+    expect(r.text).not.toContain('99.999')
+    expect(r.text).not.toContain('Nhưng chỉ có 700')
+    expect(r.text).toContain('Có 700 cửa hàng')
+    expect(r.text).toContain('Nhưng đó là mức ổn định')
+    expect(r.dropped).toBe(2)
+  })
   it('keeps headings, tables and sentences without figures, and renumbers the citations that remain', () => {
     const report = '## 1. A\nCó 700 cửa hàng [2].\n\n## 2. B\nDoanh thu đạt 12.500 tỷ đồng [1]. Đây là nhận định không có số.\n| Kịch bản | 2027 |\n| thấp | 120 |'
     const r = releaseText(report, sources)
