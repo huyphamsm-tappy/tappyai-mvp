@@ -20,6 +20,8 @@ export interface ForecastSpec {
   baseRange?: { low: number; high: number; note: string }
   /** the years the question asks for, ascending; every year from baseYear + 1 is compounded, only these are listed */
   years: number[]
+  /** false when the base level measures only a RELATED quantity (a credit stock for a question about house prices): the model is then not run (20/11: judges called it a model of the wrong thing). Absent = not asked. */
+  measuresSubject?: boolean
   volume: RateRange & Basis
   price: RateRange & Basis
   /** an effect applied only in the listed years (a tax, a rule), percent per year, 0 when none */
@@ -33,6 +35,7 @@ export interface ForecastSpecRaw {
   base: { value: number; source: number; scope: string; note?: string }
   baseRange?: { low: number; high: number; note: string } | null
   years: number[]
+  measuresSubject?: boolean | null
   volume: RawRate; price: RawRate
   adjustment?: (RawRate & { years: number[] }) | null
 }
@@ -48,12 +51,21 @@ export function specFromRaw(r: ForecastSpecRaw): ForecastSpec {
     base: { value: r.base.value, source: r.base.source, scope: r.base.scope, ...(r.base.note ? { note: r.base.note } : {}) },
     ...(r.baseRange ? { baseRange: r.baseRange } : {}),
     years: r.years,
+    ...(typeof r.measuresSubject === 'boolean' ? { measuresSubject: r.measuresSubject } : {}),
     volume: rate(r.volume), price: rate(r.price),
     ...(r.adjustment ? { adjustment: rate(r.adjustment) } : {}),
   }
 }
 
-export type GroundReject = 'bad_shape' | 'bad_years' | 'rate_out_of_range' | 'assumption_order' | 'bad_base_range' | 'base_not_in_findings' | 'base_not_on_page'
+export type GroundReject = 'bad_shape' | 'bad_years' | 'rate_out_of_range' | 'assumption_order' | 'bad_base_range' | 'base_not_in_findings' | 'base_not_on_page' | 'not_a_value_metric' | 'not_the_subject'
+
+/**
+ * The model decomposes a VALUE (revenue, market size) into volume and price-and-mix. A count of people or vehicles, or a share, has no price: a "price and mix" driver and a break-even table on it
+ * mean nothing (judges, 20/11: a scenario model of a number of workers with a price driver at 0%). A unit is monetary when it names a currency or an amount of money. Pure.
+ */
+export function isMonetaryUnit(unit: string): boolean {
+  return /(\bdong\b|\bvnd\b|\busd\b|\beur\b|\bjpy\b|\bcny\b|\bsgd\b|\bthb\b|\bkrw\b|\$|\bty\b|\bnghin ty\b|\btrieu dong\b|\bdollars?\b|\bcurrency\b|\brevenue\b|\bdoanh thu\b|\bgia tri\b)/.test(fold(String(unit ?? '')))
+}
 export type Grounded = { ok: true; spec: ForecastSpec; downgrades: string[] } | { ok: false; reason: GroundReject }
 
 const MAX_RATE = 50
@@ -94,6 +106,8 @@ export function groundForecast(spec: ForecastSpec, findings: readonly Finding[],
   const s = spec as Partial<ForecastSpec> | null
   if (!s || typeof s !== 'object' || typeof s.unit !== 'string' || !isInt(s.baseYear) || !s.base || !isNum(s.base.value) || s.base.value <= 0 || !isInt(s.base.source) || typeof s.base.scope !== 'string'
     || !Array.isArray(s.years) || !isRange(s.volume) || !isRange(s.price) || (s.adjustment !== undefined && (!isRange(s.adjustment) || !Array.isArray(s.adjustment.years)))) return no('bad_shape')
+  if ((s as ForecastSpec).measuresSubject === false) return no('not_the_subject')
+  if (!isMonetaryUnit((s as ForecastSpec).unit)) return no('not_a_value_metric')
   const { baseYear, years } = s as ForecastSpec
   const last = years[years.length - 1]
   if (!years.length || !years.every(isInt) || years.some((y, i) => y <= baseYear || (i > 0 && y <= years[i - 1])) || last - baseYear > MAX_SPAN) return no('bad_years')
