@@ -13,11 +13,12 @@ export interface ExplainResult { found: boolean; topic: string; matches: Feature
 type Lang = 'vi' | 'en'
 
 const MAX_MATCHES = 2
+const EXPLAIN_NOTE = 'Explain to the person in their own language, in plain words, using ONLY these matches (give the steps in order). If what they ask is not in a match, say Tappy does not list it and offer the topics; do not invent screens, buttons, prices or limits.'
 const fold = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
 const words = (s: string): string[] => fold(s).split(/[^a-z0-9]+/).filter(Boolean)
 
 // words that say nothing about WHICH feature (question words, "I", "my", "the")
-const STOP = new Set(['la', 'gi', 'the', 'a', 'an', 'of', 'to', 'do', 'i', 'my', 'how', 'what', 'is', 'can', 'where', 'cua', 'toi', 'minh', 'lam', 'sao', 'nhu', 'nao', 'o', 'dau', 'co', 'khong', 'cho', 'va', 'and', 'or', 'in', 'on', 'for', 'tappy', 'ban', 'em', 'anh', 'chi', 'duoc', 'thi', 'muon', 'want', 'use', 'dung', 'su', 'cach', 'huong', 'dan'])
+const STOP = new Set(['la', 'gi', 'the', 'a', 'an', 'of', 'to', 'do', 'i', 'my', 'how', 'what', 'is', 'can', 'where', 'cua', 'toi', 'minh', 'lam', 'sao', 'nhu', 'nao', 'o', 'dau', 'co', 'khong', 'cho', 'va', 'and', 'or', 'in', 'on', 'for', 'tappy', 'ban', 'em', 'anh', 'chi', 'duoc', 'thi', 'muon', 'want', 'use', 'dung', 'su', 'cach', 'huong', 'dan', 'you', 'your', 'tui', 'no', 'vay', 'nhung', 'ra', 'sao'])
 
 function sectionCard(section: (typeof HOW_TO_USE_DOC.sections)[number], lang: Lang): FeatureCard {
   const dict = lang === 'vi' ? guideVi : guideEn
@@ -68,7 +69,13 @@ export function explainFeature(topic: string, lang: Lang): ExplainResult {
   const topics = featureTopics(l)
   const tokens = words(typeof topic === 'string' ? topic : '').filter(t => !STOP.has(t))
   const NOT_FOUND = 'This is not listed in what Tappy can explain. Say plainly that you do not have it listed, offer the topics that ARE listed, and do not invent screens, buttons, prices or limits.'
-  if (!tokens.length) return { found: false, topic: String(topic ?? '').slice(0, 120), matches: [], topics, note: NOT_FOUND }
+  if (!tokens.length) {
+    // a topic of only general words ("what can Tappy do", "lam duoc gi") asks for the overview; no words at all asks for nothing
+    if (!words(typeof topic === 'string' ? topic : '').length) return { found: false, topic: String(topic ?? '').slice(0, 120), matches: [], topics, note: NOT_FOUND }
+    const overview = cards(l).find(c => c.id === 'overview')
+    if (overview) return { found: true, topic: String(topic).slice(0, 120), matches: [overview], topics, note: EXPLAIN_NOTE }
+    return { found: false, topic: String(topic ?? '').slice(0, 120), matches: [], topics, note: NOT_FOUND }
+  }
   const scored = index().map(c => {
     let score = 0
     for (const t of tokens) {
@@ -80,11 +87,5 @@ export function explainFeature(topic: string, lang: Lang): ExplainResult {
   const byId = new Map(cards(l).map(c => [c.id, c]))
   const matches = scored.slice(0, MAX_MATCHES).map(s => byId.get(s.id)!).filter(Boolean)
   if (!matches.length) return { found: false, topic: String(topic).slice(0, 120), matches: [], topics, note: NOT_FOUND }
-  return {
-    found: true,
-    topic: String(topic).slice(0, 120),
-    matches,
-    topics,
-    note: 'Explain to the person in their own language, in plain words, using ONLY these matches (give the steps in order). If what they ask is not in a match, say Tappy does not list it and offer the topics; do not invent screens, buttons, prices or limits.',
-  }
+  return { found: true, topic: String(topic).slice(0, 120), matches, topics, note: EXPLAIN_NOTE }
 }

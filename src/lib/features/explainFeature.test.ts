@@ -22,6 +22,14 @@ describe('explainFeature: finds the feature a person asks about, in either langu
     expect(ids('xóa bộ nhớ Tappy nhớ gì về tôi')[0]).toBe('memory')
     expect(ids('xem lại kế hoạch cũ của tôi')).toContain('planner')
   })
+  it('the first question of a newcomer, "what can Tappy do", gets the overview, with a topic of only general words too', () => {
+    expect(ids('Tappy làm được những gì')[0]).toBe('overview')
+    expect(ids('what can you do', 'en')[0]).toBe('overview')
+    expect(ids('tính năng của Tappy')[0]).toBe('overview')
+    expect(ids('tôi mới dùng, bắt đầu từ đâu')[0]).toBe('overview')
+    const o = explainFeature('Tappy làm được những gì', 'vi').matches[0]
+    expect(o.more.length).toBeGreaterThanOrEqual(3)
+  })
   it('features of the shared guide: saving a place, notifications, the smart tools, voice', () => {
     for (const [topic, id] of [['lưu địa điểm yêu thích', 'saved'], ['thông báo', 'notifications'], ['công cụ tiện ích', 'tools'], ['nghe Tappy đọc to câu trả lời', 'listening']] as const) {
       expect(ids(topic), topic).toContain(id)

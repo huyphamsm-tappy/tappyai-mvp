@@ -25,6 +25,40 @@ export function webFeatures(): WebFeature[] {
   const P = Object.fromEntries((['pip', 'momo', 'coco', 'promax1m', 'promax3m'] as const).map(id => [id, { priceVnd: PLAN_CONFIG[id].priceVnd ?? 0 }])) as Record<'pip' | 'momo' | 'coco' | 'promax1m' | 'promax3m', { priceVnd: number }>
   return [
     {
+      id: 'overview',
+      keywords: 'lam duoc gi tinh nang moi dung bat dau gioi thieu tong quan huong dan what can you do getting started new overview features help',
+      vi: {
+        title: 'Tappy làm được gì',
+        what: 'Tappy là trợ lý AI nói tiếng Việt: bạn hỏi bằng lời thường, Tappy trả lời và, khi cần, tra cứu giúp bạn.',
+        steps: [
+          'Mở Chat và nhắn điều bạn muốn bằng câu tự nhiên, ví dụ "tìm quán bún bò gần đây" hoặc "lập kế hoạch đi Đà Nẵng 3 ngày 2 đêm".',
+          'Đọc câu trả lời; khi cần, Tappy hiện thẻ địa điểm, sản phẩm hoặc kế hoạch để bạn bấm xem.',
+          'Hỏi tiếp để thu hẹp hoặc chỉnh lại; càng nêu rõ khu vực, ngân sách, dịp đi thì gợi ý càng sát.',
+        ],
+        more: [
+          'Hỏi kiến thức, xin lời khuyên, nhờ viết và tính toán.',
+          'Tìm quán ăn, cà phê, spa, khách sạn và địa điểm; tìm sản phẩm để so sánh; xem tin tức, thời tiết, giá vàng, giá vé (gói Coco và Tappy có tra cứu thời gian thực).',
+          'Lập kế hoạch du lịch trọn gói, chia sẻ bằng liên kết hoặc tải PDF; viết báo cáo Nghiên cứu sâu (gói Coco và Tappy).',
+          'Lưu lại để xem sau, nhận thông báo, nghe Tappy đọc câu trả lời và dùng vài công cụ nhỏ; hỏi Tappy về từng mục để biết cách dùng.',
+        ],
+      },
+      en: {
+        title: 'What Tappy can do',
+        what: 'Tappy is an AI assistant that speaks Vietnamese: you ask in plain words, Tappy answers and, when needed, looks things up for you.',
+        steps: [
+          'Open Chat and write what you want in a natural sentence, for example "find a bun bo place near me" or "plan a 3-day 2-night trip to Da Nang".',
+          'Read the answer; when it helps, Tappy shows place, product or plan cards you can tap.',
+          'Ask a follow-up to narrow it down or change it; the more you say about the area, budget or occasion, the better the suggestion.',
+        ],
+        more: [
+          'Ask for facts, advice, writing help and calculations.',
+          'Find restaurants, cafes, spas, hotels and places; find products to compare; check news, weather, gold prices and fares (the Coco and Tappy plans have real-time lookups).',
+          'Plan a full trip, share it with a link or download a PDF; write a Deep Research report (Coco and Tappy plans).',
+          'Save things for later, get notifications, listen to answers read aloud and use a few small tools; ask Tappy about any of these to learn how.',
+        ],
+      },
+    },
+    {
       id: 'deep_research',
       keywords: 'nghien cuu sau bao cao deep research report phan tich chuyen sau pdf tai bao cao',
       vi: {
