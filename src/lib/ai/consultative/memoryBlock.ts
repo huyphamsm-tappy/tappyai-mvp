@@ -82,7 +82,9 @@ export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: st
 
   if (!infoOnly && !locationAndHistory) {
     const defaults: string[] = []
-    if (memory.companions) defaults.push(`hay di cung: ${clip(memory.companions, VALUE_CHARS)}`)
+    // 20/11 (owner: "one line asked for a plan and Tappy fixed 4 people"): the companions are a STYLE hint (family, friends, couple), never the headcount of this trip: a number of people is left out, and the line says so
+    const companionsStyle = memory.companions ? clip(memory.companions, VALUE_CHARS).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').replace(/\b\d+\s*(?:nguoi|ng|pax|persons?|people)\b/gi, '').replace(/\s+/g, ' ').trim() : ''
+    if (companionsStyle) defaults.push(`hay di cung (chi de chon phong cach, KHONG phai so nguoi cua chuyen nay): ${companionsStyle}`)
     if (memory.timing) defaults.push(`thoi gian hay di: ${clip(memory.timing, VALUE_CHARS)}`)
     if (memory.personality) defaults.push(`phong cach: ${clip(memory.personality, VALUE_CHARS)}`)
     if (defaults.length > 0) parts.push(`- Mac dinh neu tin nhan khong noi: ${defaults.join('; ')}`)
