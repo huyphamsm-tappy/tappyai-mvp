@@ -632,7 +632,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
       if (!url || isLowValueSource(url)) continue
       let e = byUrl.get(url)
       if (!e) {
-        const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) ? g.published.slice(0, 10) : undefined
+        // a date before 2005 or after next year is a page's default or broken metadata (final UAT 19/11: a 2025 article dated 01/01/2002): no date is better than a false one
+        const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) && Number(g.published.slice(0, 4)) >= 2005 && Number(g.published.slice(0, 4)) <= new Date(now()).getUTCFullYear() + 1 ? g.published.slice(0, 10) : undefined
         const site = typeof g.site === 'string' && /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(g.site) ? g.site.toLowerCase() : undefined
         e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, pageTextLimit()), ...(published ? { published } : {}), ...(site ? { site } : {}) }
         evidence.push(e); byUrl.set(url, e)
