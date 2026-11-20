@@ -190,7 +190,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
             style={panelStyle}
           >
             <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-0.5">
-              Chọn biểu cảm
+              {t('shell.pickEmoji')}
             </p>
             <div className="grid grid-cols-6 gap-1">
               {EMOJIS.map((emoji) => (
@@ -227,7 +227,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
               ref={emojiButtonRef}
               type="button"
               onClick={openEmojiPanel}
-              aria-label="Chọn emoji"
+              aria-label={t('shell.pickEmojiAria')}
               className={cn(
                 'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
                 showEmojiPanel
@@ -305,7 +305,7 @@ export default function SearchBar({ placeholder, onSearch, variant = 'default' }
       />
       {query && (
         <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 bg-interactive text-white rounded-xl px-3 py-1.5 text-sm font-medium">
-          Hỏi
+          {t('shell.ask')}
         </button>
       )}
     </form>

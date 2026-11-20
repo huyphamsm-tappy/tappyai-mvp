@@ -220,7 +220,7 @@ export default function MessageActionBar({
       {/* Action row */}
       <div className="flex items-center gap-0.5">
         {/* Copy */}
-        <button onClick={handleCopy} className={btnBase} title="Sao chép">
+        <button onClick={handleCopy} className={btnBase} title={t('chatbar.copy')}>
           {copyState === 'copied'
             ? <Check size={14} className="text-green-500" />
             : <Copy size={14} />}
@@ -235,7 +235,7 @@ export default function MessageActionBar({
         <button
           onClick={handleLike}
           className={cn(btnBase, liked && 'text-green-500 bg-green-50 dark:bg-green-900/20 hover:text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30')}
-          title="Hữu ích"
+          title={t('chatbar.helpful')}
         >
           <ThumbsUp size={14} />
         </button>
@@ -244,7 +244,7 @@ export default function MessageActionBar({
         <button
           onClick={handleDislike}
           className={cn(btnBase, disliked && 'text-red-500 bg-red-50 dark:bg-red-900/20 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30')}
-          title="Không hữu ích"
+          title={t('chatbar.notHelpful')}
         >
           <ThumbsDown size={14} />
         </button>
@@ -253,14 +253,14 @@ export default function MessageActionBar({
         <button
           onClick={() => { if (!isThisSpeaking) posthog.capture('message_action', { action: 'tts_played' }); onSpeak() }}
           className={cn(btnBase, isThisSpeaking && 'text-link bg-primary-50 dark:bg-primary-900/20 hover:text-primary-600 hover:bg-primary-100 dark:hover:bg-primary-900/30')}
-          title={isThisSpeaking ? 'Dừng đọc' : 'Đọc to'}
+          title={isThisSpeaking ? t('chatbar.stopReading') : t('chatbar.readAloud')}
         >
           <Volume2 size={14} />
         </button>
 
         {/* Regenerate — only rendered for the latest assistant message */}
         {onRegenerate && (
-          <button onClick={() => { posthog.capture('message_action', { action: 'regenerate' }); onRegenerate() }} className={btnBase} title="Tạo lại">
+          <button onClick={() => { posthog.capture('message_action', { action: 'regenerate' }); onRegenerate() }} className={btnBase} title={t('chatbar.regenerate')}>
             <RefreshCw size={14} />
           </button>
         )}
@@ -270,7 +270,7 @@ export default function MessageActionBar({
           <button
             onClick={() => setShowMore(v => !v)}
             className={cn(btnBase, showMore && 'text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800')}
-            title="Thêm"
+            title={t('chatbar.more')}
           >
             <MoreHorizontal size={14} />
           </button>
@@ -288,7 +288,7 @@ export default function MessageActionBar({
                 className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2.5 transition-colors"
               >
                 <Hash size={13} className="flex-shrink-0 text-gray-400" />
-                {idCopyState === 'copied' ? 'Đã sao chép!' : 'Copy ID'}
+                {idCopyState === 'copied' ? t('chatbar.idCopied') : t('chatbar.copyId')}
               </button>
               <div className="border-t border-gray-100 dark:border-gray-800" />
               <button
@@ -297,7 +297,7 @@ export default function MessageActionBar({
                 className="w-full text-left px-3 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 flex items-center gap-2.5 transition-colors disabled:opacity-60"
               >
                 <Flag size={13} className="flex-shrink-0" />
-                {reportState === 'reported' ? 'Đã báo cáo' : 'Báo cáo lỗi'}
+                {reportState === 'reported' ? t('chatbar.reported') : t('chatbar.reportProblem')}
               </button>
             </div>
           )}
@@ -322,7 +322,7 @@ export default function MessageActionBar({
           <button
             onClick={onTTSSkipBack}
             className="text-xs font-semibold px-1 py-0.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0 tabular-nums leading-none"
-            title="Quay lại 15s"
+            title={t('chatbar.back15')}
           >
             «15
           </button>
@@ -331,7 +331,7 @@ export default function MessageActionBar({
           <button
             onClick={onTTSSkipForward}
             className="text-xs font-semibold px-1 py-0.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0 tabular-nums leading-none"
-            title="Tiến 15s"
+            title={t('chatbar.forward15')}
           >
             15»
           </button>

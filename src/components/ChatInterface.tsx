@@ -306,6 +306,7 @@ export function replyHasSavablePlace(text: string, buttons: CTAButton[], placeVi
 }
 
 function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[] }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [placeName, setPlaceName] = useState('')
   const [saved, setSaved] = useState(false)
@@ -348,7 +349,7 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
           autoFocus
           value={placeName}
           onChange={e => setPlaceName(e.target.value)}
-          placeholder="Tên địa điểm muốn lưu?"
+          placeholder={t('chatui.placePrompt')}
           className="flex-1 text-xs px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
           onKeyDown={e => { if (e.key === 'Enter') handleSave(); if (e.key === 'Escape') setOpen(false) }}
         />
@@ -357,7 +358,7 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
           disabled={saving || !placeName.trim()}
           className="text-xs px-2.5 py-1.5 rounded-xl bg-interactive text-white disabled:opacity-50 hover:bg-interactive-hover transition-colors"
         >
-          {saved ? '✓' : saving ? '...' : 'Lưu'}
+          {saved ? '✓' : saving ? '...' : t('chatui.save')}
         </button>
         <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-0.5">
           <X size={14} />
@@ -370,9 +371,9 @@ function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[]
     <button
       onClick={() => { setPlaceName(detected); setOpen(true) }}
       className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 mt-1 px-1.5 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-      title="Lưu địa điểm"
+      title={t('chatui.savePlace')}
     >
-      🔖 Lưu địa điểm
+      🔖 {t('chatui.savePlace')}
     </button>
   )
 }
@@ -498,6 +499,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
 function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
   placeId: string; placeName: string; placeAddress: string; placeType: string
 }) {
+  const { t } = useTranslation()
   const [saved, setSaved] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -523,8 +525,8 @@ function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
       onClick={toggle}
       disabled={loading}
       className="inline-flex items-center justify-center w-8 h-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-red-300 dark:hover:border-red-700 transition-colors flex-shrink-0 disabled:opacity-50"
-      aria-label={saved ? 'Đã lưu' : 'Lưu vào yêu thích'}
-      title={saved ? 'Đã lưu' : 'Lưu vào yêu thích'}
+      aria-label={saved ? t('chatui.savedFav') : t('chatui.saveFav')}
+      title={saved ? t('chatui.savedFav') : t('chatui.saveFav')}
     >
       <Heart size={14} className={saved ? 'fill-red-400 text-red-400' : 'text-gray-400 dark:text-gray-500'} />
     </button>
@@ -2325,7 +2327,7 @@ export default function ChatInterface({
                       <img
                         key={i}
                         src={att.url}
-                        alt={att.name || 'Ảnh đính kèm'}
+                        alt={att.name || t('chatui.attachedImage')}
                         data-zoomable="true"
                         className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow cursor-zoom-in"
                       />
@@ -2450,15 +2452,15 @@ export default function ChatInterface({
                         }}
                         className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-interactive hover:bg-interactive-hover text-white text-xs font-medium transition-colors"
                       >
-                        Đăng nhập để tiếp tục
+                        {t('chatui.signInContinue')}
                       </button>
                     </div>
                   ) : /anon_limit_reached/i.test(error.message || '') ? (
                     // Anonymous visitor used up their free questions → prompt login.
                     // Message text comes from the server (backend owns quota copy).
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
-                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số câu hỏi AI dùng thử.'}</p>
-                      <p className="leading-relaxed mt-1 text-primary-600 dark:text-primary-400">Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng!</p>
+                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? t('chatui.trialUsedUp')}</p>
+                      <p className="leading-relaxed mt-1 text-primary-600 dark:text-primary-400">{t('chatui.signInUnlock')}</p>
                       <button
                         type="button"
                         onClick={() => {
@@ -2468,7 +2470,7 @@ export default function ChatInterface({
                         }}
                         className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-interactive hover:bg-interactive-hover text-white text-xs font-medium transition-colors"
                       >
-                        Đăng nhập để tiếp tục
+                        {t('chatui.signInContinue')}
                       </button>
                     </div>
                   ) : /free_limit_reached/i.test(error.message || '') ? (

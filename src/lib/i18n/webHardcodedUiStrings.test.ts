@@ -62,6 +62,14 @@ const SEALED = [
   'src/app/(app)/group/new/GroupNewForm.tsx',
   'src/app/(app)/group/[id]/page.tsx', // 20/11/2026: the group page (join form, member list, suggestion) now follows the language
   'src/app/reviews/[id]/ReviewCommentButton.tsx', // 20/11/2026: the comment sheet of a review (time ago, reply, react, post)
+  // 20/11/2026 (T4, second batch): booking form + its share/review buttons, the buttons under an answer, the error page, the creator profile, the search bar
+  'src/app/(app)/service/[id]/BookingForm.tsx',
+  'src/app/(app)/profile/bookings/BookingShareButton.tsx',
+  'src/app/(app)/profile/bookings/BookingReviewButton.tsx',
+  'src/components/chat/MessageActionBar.tsx',
+  'src/app/error.tsx',
+  'src/app/reviews/creator/[id]/page.tsx',
+  'src/components/SearchBar.tsx',
   'src/app/(app)/music/page.tsx',
 ]
 
@@ -182,7 +190,9 @@ describe('B07 — the rest of the Web surface only gets better', () => {
   // new real number. (The old measure had reached 473 with those lines.)
   // 432 → 402 (20/11/2026): the group dining page (25 lines) moved into the dictionary and was sealed; the 5 others were gained since the last lowering.
   // 402 → 385 (20/11/2026): the review comment sheet (17 lines) moved into the dictionary and was sealed.
-  const BASELINE = 385
+  // 385 → 303 (20/11/2026, second batch): booking screens, the buttons under an answer, the error page, the creator profile, the search bar and loose chat strings (82 lines) moved into the dictionaries.
+  // What remains is mostly NOT UI copy: server routes and cron notices, a language list written in each language's own name, the "đ" currency sign, category keys read from data.
+  const BASELINE = 303
 
   it(`carries at most ${BASELINE} Vietnamese UI lines outside the sealed screens`, () => {
     const sealed = new Set([...SEALED, ...Object.keys(SEALED_WITH_PERSISTED_VALUES)])
