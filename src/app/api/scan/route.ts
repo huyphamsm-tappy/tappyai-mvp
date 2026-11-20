@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIpKey } from '@/lib/security/rateLimit'
-import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -23,6 +24,9 @@ export async function POST(req: NextRequest) {
   }
   // P1-5: shared across instances when a store is configured (production is), in-process
   // otherwise. Unauthenticated VISION calls are the most expensive per-request path in the app.
+  // SEC4 slice 4: a burst cap in front of the daily ones (5 per minute per caller): vision calls are the dearest unauthenticated path.
+  const burst = await publicRateLimit(`scan-burst:${clientIpKey(req)}`, 5, 60_000)
+  if (!burst.ok) return rateLimitedResponse(req, burst, 'scan_burst')
   if (!(await publicDailyRateLimit(`scan:${clientIpKey(req)}`, DAILY_SCAN_LIMIT)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.scanLimit', requestLocale(req), { n: DAILY_SCAN_LIMIT }) }, { status: 429 })
   }

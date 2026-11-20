@@ -6,6 +6,8 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { canonicalReportReason } from '@/lib/reviews/reportReasons'
 import { createHash } from 'crypto'
 import { alertModerators, isUrgentReason } from '@/lib/safety/operatorAlert'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 
 // F-031 — the content-report channel for user-generated content.
 //
@@ -28,6 +30,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+
+  // SEC4 slice 5: every report can alert the moderators, so a reporter is capped (shared store). 20 per 10 minutes; the database flood guard (10 per 10 minutes, 53400) stays behind it.
+  const rl = await publicRateLimit(`review-report:${user.id}`, 20, 600_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'review_report')
 
   let reason = ''
   try { const b = await req.json(); reason = typeof b?.reason === 'string' ? b.reason.trim() : '' } catch { /* invalid below */ }

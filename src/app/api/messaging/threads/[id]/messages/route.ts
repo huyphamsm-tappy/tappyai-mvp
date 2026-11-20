@@ -4,7 +4,8 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import type { ChatMessage } from '@/lib/messaging/types'
 import { emitMessageNotification, messageNotificationsEnabled } from '@/lib/messaging/messageNotifications'
 import { isOwnChatMediaPath, signChatMedia } from '@/lib/messaging/media'
@@ -136,12 +137,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   // Per-user, not per-IP: this throttles a runaway client without letting one
   // office network's shared address throttle everyone behind it.
-  if (!rateLimit(`messaging:send:${user.id}`, 60, 60_000).ok) {
-    return NextResponse.json(
-      { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },
-      { status: 429 },
-    )
-  }
+  // SEC4 slice 5: the shared store (in-process only when none is configured), same limit and key as before.
+  const rl = await publicRateLimit(`messaging:send:${user.id}`, 60, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'messaging_send')
 
   let payload: unknown
   try {

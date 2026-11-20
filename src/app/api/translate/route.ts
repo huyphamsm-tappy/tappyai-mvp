@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIpKey } from '@/lib/security/rateLimit'
-import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -30,6 +31,9 @@ export async function POST(req: NextRequest) {
   // otherwise. This endpoint calls a model WITHOUT requiring an account, so the cap was the only
   // thing standing between a script and our Anthropic bill — and it counted per lambda.
   // Security audit 04/11 (W-03): the caller is keyed by its IPv6 /64 (not by address), and a global daily ceiling bounds the spend.
+  // SEC4 slice 4: a burst cap in front of the daily ones (10 per minute per caller): a script cannot spend a whole day's allowance in seconds.
+  const burst = await publicRateLimit(`translate-burst:${clientIpKey(req)}`, 10, 60_000)
+  if (!burst.ok) return rateLimitedResponse(req, burst, 'translate_burst')
   if (!(await publicDailyRateLimit(`translate:${clientIpKey(req)}`, DAILY_LIMIT)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('translate.dailyLimit', locale, { n: DAILY_LIMIT }) }, { status: 429 })
   }

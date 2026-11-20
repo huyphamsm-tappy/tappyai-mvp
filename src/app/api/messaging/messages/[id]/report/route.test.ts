@@ -38,7 +38,9 @@ const h = vi.hoisted(() => {
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.writer }))
 // The real in-memory limiter accumulates across the tests of this file (one user); each test controls it instead.
-vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: h.state.memoryOk }) }))
+vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: h.state.memoryOk }), clientIpKey: () => 'test-ip' }))
+// the route-level IP cap (shared store, SEC4 slice 5) is not what this file tests: it always admits here (its contract test is limiter.test.ts)
+vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }) }))
 vi.mock('@/lib/safety/operatorAlert', () => ({ alertModerators: h.alertModerators, isUrgentReason: (r: string) => r === 'self_harm' || r === 'violence' }))
 
 import { POST } from './route'
