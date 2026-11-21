@@ -20,6 +20,9 @@ import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 const MAX_FILE_SIZE = MAX_PHOTO_SIZE_MB * 1024 * 1024
 const MAX_UPLOADS_PER_DAY = 10
 
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
+
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('media.signInToUpload', requestLocale(req)) }, { status: 401 })

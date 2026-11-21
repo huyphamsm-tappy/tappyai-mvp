@@ -7,6 +7,7 @@ import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRate
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { readCappedBody } from '@/lib/http/readCappedBody'
 
 // Daily cap via the shared limiter (lib/security/rateLimit) — one implementation
 // for every daily-capped route instead of per-route Maps.
@@ -22,6 +23,9 @@ const LANG_NAMES: Record<string, string> = {
   fi: 'Finnish', cs: 'Czech', hu: 'Hungarian', ro: 'Romanian',
   el: 'Greek', he: 'Hebrew', uk: 'Ukrainian', no: 'Norwegian',
 }
+
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
 
 export async function POST(req: NextRequest) {
   // B04 — resolved once per request; the `error` codes below are unchanged machine contract and
@@ -43,9 +47,12 @@ export async function POST(req: NextRequest) {
 
   let text: string, targetLang: string
   try {
-    const body = await req.json()
-    text = (body.text || '').trim()
-    targetLang = body.targetLang || 'vi'
+    // a 2.000-character text needs a few KB: the body is capped while it is read, before it is parsed
+    const capped = await readCappedBody(req, 32 * 1024)
+    if (!capped.ok) return NextResponse.json({ error: 'too_long', message: serverMessage('translate.tooLong', locale) }, { status: 413 })
+    const body = JSON.parse(capped.text)
+    text = (typeof body.text === 'string' ? body.text : '').trim()
+    targetLang = typeof body.targetLang === 'string' ? body.targetLang : 'vi'
   } catch {
     return NextResponse.json({ error: 'invalid_body', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 })
   }

@@ -16,6 +16,9 @@ const MAX_BODY_BYTES = 10_500_000
 /** Vision calls a day across ALL callers (SCAN_GLOBAL_DAILY overrides); past it the endpoint answers 429 until tomorrow. */
 const globalDailyScans = (): number => (Number(process.env.SCAN_GLOBAL_DAILY) > 0 ? Number(process.env.SCAN_GLOBAL_DAILY) : 3000)
 
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
+
 export async function POST(req: NextRequest) {
   // Security audit 04/11 (W-03): an oversized body is refused before it is read; the per-caller cap keys an IPv6 caller by its /64 (not by
   // address); and a global daily ceiling bounds the vision spend whoever the callers are.

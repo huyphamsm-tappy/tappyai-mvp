@@ -118,20 +118,22 @@ const URL_RESOLVE_DEBOUNCE_MS = 600
 /* Structured pipeline instrumentation. Every video stage emits START, then
    SUCCESS or FAIL with elapsed TIME (ms) and, on failure, the ERROR. Prefixed
    so prod logs can be filtered with `[video-pipeline]`. */
+// Hardening 21/11/2026: these stage logs are diagnostics for developers; in production the browser console stays quiet (no stage names, timings or error text for a curious user to read).
+const vdbg = process.env.NODE_ENV === 'production' ? { info: (..._a: unknown[]) => {}, warn: (..._a: unknown[]) => {}, error: (..._a: unknown[]) => {} } : console
 type VStage =
   | 'select' | 'validate-format' | 'validate-size' | 'validate-duration'
   | 'thumbnail-generate' | 'thumbnail-upload' | 'video-upload' | 'ai-process' | 'submit-review'
 function vstart(stage: VStage, extra?: Record<string, unknown>): number {
-  console.info(`[video-pipeline] ${stage} START`, extra ?? {})
+  vdbg.info(`[video-pipeline] ${stage} START`, extra ?? {})
   return (typeof performance !== 'undefined' ? performance.now() : Date.now())
 }
 function vok(stage: VStage, t0: number, extra?: Record<string, unknown>) {
   const ms = Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
-  console.info(`[video-pipeline] ${stage} SUCCESS`, { ms, ...(extra ?? {}) })
+  vdbg.info(`[video-pipeline] ${stage} SUCCESS`, { ms, ...(extra ?? {}) })
 }
 function vfail(stage: VStage, t0: number, error: unknown, extra?: Record<string, unknown>) {
   const ms = Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
-  console.error(`[video-pipeline] ${stage} FAIL`, { ms, error: (error as Error)?.message ?? String(error), ...(extra ?? {}) })
+  vdbg.error(`[video-pipeline] ${stage} FAIL`, { ms, error: (error as Error)?.message ?? String(error), ...(extra ?? {}) })
 }
 
 function getVideoDuration(file: File): Promise<number> {
@@ -167,20 +169,20 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
       settled = true
       clearTimeout(timer)
       URL.revokeObjectURL(url)
-      console.info(`[video-pipeline:thumb] settle(${tag}) @${ms()}ms`)
+      vdbg.info(`[video-pipeline:thumb] settle(${tag}) @${ms()}ms`)
       fn()
     }
     // Hard cap: guarantees the promise ALWAYS settles, so the UI can never
     // freeze at "Đang tạo thumbnail…" regardless of codec/format quirks.
     const timer = setTimeout(() => {
-      console.warn(`[video-pipeline:thumb] TIMEOUT @${ms()}ms readyState=${video.readyState} dims=${video.videoWidth}x${video.videoHeight}`)
+      vdbg.warn(`[video-pipeline:thumb] TIMEOUT @${ms()}ms readyState=${video.readyState} dims=${video.videoWidth}x${video.videoHeight}`)
       finish(() => reject(new Error('thumbnail timeout')), 'timeout')
     }, THUMB_TIMEOUT_MS)
 
     const draw = (via: string) => {
       if (drawn || settled) return
       drawn = true
-      console.info(`[video-pipeline:thumb] draw(${via}) @${ms()}ms dims=${video.videoWidth}x${video.videoHeight} rs=${video.readyState}`)
+      vdbg.info(`[video-pipeline:thumb] draw(${via}) @${ms()}ms dims=${video.videoWidth}x${video.videoHeight} rs=${video.readyState}`)
       try {
         // No renderable video track (audio-only, or an undecodable codec) —
         // fail gracefully so the caller continues WITHOUT a thumbnail.
@@ -195,17 +197,17 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
         const ctx = canvas.getContext('2d')
         if (!ctx) { finish(() => reject(new Error('no 2d context')), 'no-ctx'); return }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-        console.info(`[video-pipeline:thumb] drawImage ok @${ms()}ms → toBlob`)
+        vdbg.info(`[video-pipeline:thumb] drawImage ok @${ms()}ms → toBlob`)
         canvas.toBlob(
           blob => {
-            console.info(`[video-pipeline:thumb] toBlob cb @${ms()}ms bytes=${blob?.size ?? 0}`)
+            vdbg.info(`[video-pipeline:thumb] toBlob cb @${ms()}ms bytes=${blob?.size ?? 0}`)
             finish(() => (blob ? resolve(blob) : reject(new Error('toBlob null'))), 'toblob')
           },
           'image/jpeg',
           0.82,
         )
       } catch (e) {
-        console.error(`[video-pipeline:thumb] draw threw @${ms()}ms`, e)
+        vdbg.error(`[video-pipeline:thumb] draw threw @${ms()}ms`, e)
         finish(() => reject(e), 'draw-throw')
       }
     }
@@ -214,26 +216,26 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
     video.playsInline = true
     video.preload = 'metadata'
     video.onloadedmetadata = () => {
-      console.info(`[video-pipeline:thumb] loadedmetadata @${ms()}ms dur=${video.duration} dims=${video.videoWidth}x${video.videoHeight}`)
+      vdbg.info(`[video-pipeline:thumb] loadedmetadata @${ms()}ms dur=${video.duration} dims=${video.videoWidth}x${video.videoHeight}`)
       // Seek to a small, guaranteed-in-range time to force one decoded frame.
       // Seeking to 0.5 would be out of range for sub-0.5s clips (→ 'seeked'
       // never fires) and invalid when duration is Infinity/NaN.
       const dur = isFinite(video.duration) && video.duration > 0 ? video.duration : 0
       const target = dur ? Math.min(0.1, dur / 2) : 0.1
       try {
-        console.info(`[video-pipeline:thumb] set currentTime=${target} @${ms()}ms`)
+        vdbg.info(`[video-pipeline:thumb] set currentTime=${target} @${ms()}ms`)
         video.currentTime = target
       } catch (e) {
-        console.warn(`[video-pipeline:thumb] currentTime threw @${ms()}ms — drawing current frame`, e)
+        vdbg.warn(`[video-pipeline:thumb] currentTime threw @${ms()}ms — drawing current frame`, e)
         draw('metadata-fallback')
       }
     }
-    video.onseeked = () => { console.info(`[video-pipeline:thumb] seeked @${ms()}ms`); draw('seeked') }
+    video.onseeked = () => { vdbg.info(`[video-pipeline:thumb] seeked @${ms()}ms`); draw('seeked') }
     video.onerror = () => {
-      console.error(`[video-pipeline:thumb] video error @${ms()}ms`, video.error)
+      vdbg.error(`[video-pipeline:thumb] video error @${ms()}ms`, video.error)
       finish(() => reject(new Error('video decode error')), 'error')
     }
-    console.info(`[video-pipeline:thumb] start @${ms()}ms size=${file.size} type=${file.type}`)
+    vdbg.info(`[video-pipeline:thumb] start @${ms()}ms size=${file.size} type=${file.type}`)
     video.src = url
   })
 }

@@ -69,6 +69,9 @@ async function readOwnProfile(supabase: Awaited<ReturnType<typeof getRequestUser
 }
 
 // GET /api/profile
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
+
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })

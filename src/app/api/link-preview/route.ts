@@ -24,6 +24,9 @@ const CODE_START = /^\s*(?:window\.[\w$.]+\s*=|(?:var|let|const)\s+[\w$]+\s*=|fu
 const PLACEHOLDER = /^\s*(?:xin\s+ch\S\s+m\S+t\s+l\S+t|please wait|loading\.{0,3}\s*$)/i
 const scriptLike = (p: string): boolean => CODE_START.test(p) || PLACEHOLDER.test(p) || (p.match(/"[\w-]+"\s*:/g)?.length ?? 0) >= 3
 
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
+
 export async function GET(req: NextRequest) {
   const limited = await publicRateLimit(`link-preview:${clientIpKey(req)}`, 30, 60_000)
   if (!limited.ok) return rateLimitedResponse(req, limited, 'link-preview')

@@ -4,6 +4,7 @@ import { handleMcpRequest, PARSE_ERROR } from '@/lib/mcp/gateway'
 import { buildGatewayDeps } from '@/lib/mcp/defaultDeps'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { clientIp } from '@/lib/security/rateLimit'
+import { readCappedBody } from '@/lib/http/readCappedBody'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -24,8 +25,10 @@ export async function POST(req: NextRequest) {
   // for abuse limiting only: it is never a location and never an identity.) The per-principal limit and the spend pool run inside the Gateway.
   const rl = await publicRateLimit(`mcp:ip:${clientIp(req)}`, 120, 60_000)
   if (!rl.ok) return NextResponse.json({ error: 'rate_limited', code: 'RATE_LIMITED', message: 'Too many requests.' }, { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } })
-  const text = await req.text()
-  if (text.length > MAX_BODY_CHARS) return NextResponse.json({ error: 'request_too_large', code: 'INVALID_INPUT', message: 'Request too large.' }, { status: 413 })
+  // the cap is enforced WHILE reading (a chunked body cannot buffer past it), not after
+  const capped = await readCappedBody(req, MAX_BODY_CHARS * 4)
+  if (!capped.ok || capped.text.length > MAX_BODY_CHARS) return NextResponse.json({ error: 'request_too_large', code: 'INVALID_INPUT', message: 'Request too large.' }, { status: 413 })
+  const text = capped.text
   let body: unknown
   try { body = JSON.parse(text) } catch { body = PARSE_ERROR }
   const r = await handleMcpRequest({ authorization: req.headers.get('authorization'), origin: req.headers.get('origin'), body, signal: req.signal }, buildGatewayDeps())

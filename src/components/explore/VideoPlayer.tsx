@@ -492,7 +492,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         onPlay={() => setPlaying(true)}
         onPause={handlePause}
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
-        onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
+        onError={() => { setPlaying(false) }}
       />
       {/* The post's text layers (Explore video): drawn from the JSON the playback answer carried; mounted only when there is any, so other posts pay nothing. */}
       {hlsPlayback.overlayDoc && <OverlayOverVideo doc={hlsPlayback.overlayDoc} videoRef={videoRef} />}

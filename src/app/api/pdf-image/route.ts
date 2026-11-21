@@ -21,6 +21,9 @@ const SERVED = /^image\/(?:png|jpe?g|webp|gif)\b/i
 
 const notFound = () => new NextResponse(null, { status: 404, headers: { 'Cache-Control': 'public, max-age=120' } })
 
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
+
 export async function GET(req: NextRequest) {
   const limited = await publicRateLimit(`pdf-image:${clientIpKey(req)}`, 60, 60_000)
   if (!limited.ok) return rateLimitedResponse(req, limited, 'pdf-image')

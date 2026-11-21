@@ -5,6 +5,9 @@ import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { authorModerationPayload } from '@/lib/safety/gate/authorNotice'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { clientIpKey } from '@/lib/security/rateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 export const runtime = 'edge'
@@ -19,8 +22,13 @@ const EXPLORE_SELECT = `
 
 // GET /api/reviews/feed?page=0&limit=12&sort=latest|trending&userId=xxx&following=true&city=xxx
 export async function GET(req: NextRequest) {
-  const page = Math.max(0, parseInt(searchParam(req, 'page') || '0'))
-  const limit = Math.min(20, parseInt(searchParam(req, 'limit') || '12'))
+  // Hardening 21/11/2026: the feed was open to any caller with no limit, and every unique query string is a CDN miss that reads the database. 120 per minute per caller; paging is clamped (a NaN or a huge page never reaches the range).
+  const rl = await publicRateLimit(`reviews-feed:${clientIpKey(req)}`, 120, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'reviews_feed')
+  const pageRaw = parseInt(searchParam(req, 'page') || '0', 10)
+  const limitRaw = parseInt(searchParam(req, 'limit') || '12', 10)
+  const page = Number.isFinite(pageRaw) ? Math.min(50, Math.max(0, pageRaw)) : 0
+  const limit = Number.isFinite(limitRaw) ? Math.min(20, Math.max(1, limitRaw)) : 12
   const offset = page * limit
   const filterUserId = searchParam(req, 'userId')
   const sort = searchParam(req, 'sort') || 'latest'

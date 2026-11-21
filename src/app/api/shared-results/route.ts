@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     }, { status: 201 })
   } catch (e) {
     if (e instanceof SharedResultError && e.code === 'invalid_payload') {
-      return NextResponse.json({ error: 'not_shareable', reason: e.message, message: serverMessage('share.notShareable', requestLocale(req)) }, { status: 422 })
+      return NextResponse.json({ error: 'not_shareable', message: serverMessage('share.notShareable', requestLocale(req)) }, { status: 422 })
     }
     console.error('[shared-results] create failed:', e instanceof Error ? e.message : e)
     return apiError(req, 'server_error', 'server.error', 500)

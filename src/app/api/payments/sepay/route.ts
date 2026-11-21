@@ -23,6 +23,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { sepayProvider } from '@/lib/payments/providers'
 import { sendPaymentMail } from '@/lib/payments/mail'
+import { readCappedBody } from '@/lib/http/readCappedBody'
 import type { PaidPlanId } from '@/lib/plans/planConfig'
 
 export const dynamic = 'force-dynamic'
@@ -46,7 +47,9 @@ export async function POST(req: Request) {
   // The adapter verifies (secret + shape + our account, fail closed); the database matches the
   // amount against the server-created order. No client input can reach this decision.
   // The RAW body: the HMAC signature is over these exact bytes (never re-serialise parsed JSON).
-  const rawBody = await req.text().catch(() => '')
+  const capped = await readCappedBody(req, 256 * 1024)
+  if (!capped.ok) return NextResponse.json({ success: false, error: 'invalid_payload', message: 'Too large' }, { status: 413 })
+  const rawBody = capped.text
   const verified = sepayProvider.verify({ headers: req.headers, rawBody })
   if (!verified.ok) {
     return verified.status === 401
