@@ -139,6 +139,9 @@ policy_of() {
     # supabase/migrations/rollback/. The new web code needs all three (it reads the new tables); apply them just before the single web deploy.
     20261204_group_join_approval.sql|20261205_group_suggestion_votes.sql|20261206_group_bills.sql)
       echo APPLY ;;
+    # Auto-hold of a reported post (owner 21/11/2026): enough different reporters hold a post until a moderator looks. Needs 20261009 (queue trigger). Rollback in supabase/migrations/rollback/.
+    20261207_auto_hold_reported_posts.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
