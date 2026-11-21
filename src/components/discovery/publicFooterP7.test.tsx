@@ -16,18 +16,27 @@ describe('public footer', () => {
     expect(other.getAttribute('href')).toBe('/chat')
     for (const h of ['/food', '/shopping', '/entertainment', '/travel', '/spa']) expect(container.querySelector(`a[href="${h}"]`)).toBeTruthy()
   })
-  it('Tải TappyAI: no public listing → "Sắp có" for Android and iOS, and no store link at all', () => {
+  it('Tải ứng dụng: both listings are public (21/11/2026) → "Sẵn có" with the real store links, in the column and in the banner', () => {
     const { container } = render(<PublicFooter />)
     const dl = container.querySelector('[data-footer-download]') as HTMLElement
     expect(dl.textContent).toContain('Tải ứng dụng')
+    expect(container.querySelector('[data-store="android"]')!.textContent).toBe('AndroidSẵn có')
+    expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOSSẵn có')
+    const links = [...container.querySelectorAll('a[data-badge]')].map((a) => a.getAttribute('href'))
+    expect(links).toEqual(['https://play.google.com/store/apps/details?id=com.tappyai.app', expect.stringMatching(/^https:\/\/apps\.apple\.com\/vn\/app\/tappyai\/id\d+$/)])
+    expect(container.querySelector('a[data-badge]')!.getAttribute('rel')).toContain('noopener')
+  })
+  it('switched off (listing taken down): "Sắp có", no store link and no "available" claim anywhere', async () => {
+    vi.stubEnv('NEXT_PUBLIC_PLAY_LISTING_LIVE', '0')
+    vi.stubEnv('NEXT_PUBLIC_APP_STORE_URL', 'off')
+    vi.resetModules()
+    const { default: OffFooter } = await import('./PublicFooter')
+    const { container } = render(<OffFooter />)
     expect(container.querySelector('[data-store="android"]')!.textContent).toBe('AndroidSắp có')
     expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOSSắp có')
-    expect(dl.querySelector('a')).toBeNull()
-    // The two banner badges follow the same truthful state: no link, no "available" claim.
-    expect(container.querySelector('[data-badge="google"]')!.tagName).toBe('SPAN')
-    expect(container.querySelector('[data-badge="apple"]')!.tagName).toBe('SPAN')
+    expect(container.querySelector('a[data-badge]')).toBeNull()
     expect(container.textContent).not.toContain('Sẵn có')
-    expect(container.innerHTML).not.toMatch(/apps\.apple\.com|itunes\.apple\.com/)
+    expect(container.innerHTML).not.toMatch(/apps\.apple\.com|play\.google\.com/)
   })
   it('links the Community Guidelines, Terms and Privacy', () => {
     const { container } = render(<PublicFooter />)

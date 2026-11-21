@@ -11,10 +11,12 @@ export const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=co
 
 /** The public App Store listing, set (https://apps.apple.com/...) only once it loads publicly. Unset = "Sắp có", no link (no invented URL). */
 const rawAppStore = process.env.NEXT_PUBLIC_APP_STORE_URL?.trim()
-export const APP_STORE_URL: string | null = rawAppStore && /^https:\/\/apps\.apple\.com\//.test(rawAppStore) ? rawAppStore : null
+// 21/11/2026: verified live — the public iTunes search (vn storefront) lists "TappyAI" by HUY PHAM, bundle com.tappyai.ios, under this id.
+const APP_STORE_LISTING = 'https://apps.apple.com/vn/app/tappyai/id6816654420'
+export const APP_STORE_URL: string | null = rawAppStore === 'off' ? null : rawAppStore && /^https:\/\/apps\.apple\.com\//.test(rawAppStore) ? rawAppStore : APP_STORE_LISTING
 
-// Owner (02/10): Android is not public and iOS is not available, so store badges are HIDDEN everywhere
-// (including UAT/preview) until NEXT_PUBLIC_PLAY_LISTING_LIVE=1 is set after the public page loads.
+// 21/11/2026: the Google Play listing is public (the real id answers 200, a made-up id 404), so the badge is ON by default.
+// Set NEXT_PUBLIC_PLAY_LISTING_LIVE=0 to hide it (a listing taken down). (Owner 02/10 had it hidden until the page went public.)
 export function playBadgeEnabled(env: Record<string, string | undefined> = { NEXT_PUBLIC_PLAY_LISTING_LIVE: process.env.NEXT_PUBLIC_PLAY_LISTING_LIVE }): boolean {
-  return env.NEXT_PUBLIC_PLAY_LISTING_LIVE === '1'
+  return env.NEXT_PUBLIC_PLAY_LISTING_LIVE !== '0'
 }
