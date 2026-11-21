@@ -73,12 +73,27 @@ let feedAudioUnlocked = false
  */
 export function isFeedAudioUnlocked(): boolean { return feedAudioUnlocked }
 
+/**
+ * True only inside the click that UNLOCKED the page's audio (the first click of the session). A stage that pauses on a tap must skip
+ * that one tap: the unlock has just unmuted and played the clip, and a pause in the same click silenced it again — which is why sound
+ * only arrived on the SECOND tap (owner, 21/11/2026, Khám phá stage). Read it with `consumeAudioUnlockTap()`.
+ */
+let unlockTapPending = false
+export function consumeAudioUnlockTap(): boolean {
+  const was = unlockTapPending
+  unlockTapPending = false
+  return was
+}
+
 const audioSubs = new Set<() => void>()
 function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch {} }) }
 if (typeof window !== 'undefined') {
   window.addEventListener('click', () => {
+    unlockTapPending = !feedAudioUnlocked
     feedAudioUnlocked = true
     notifyAudio()
+    // The click's own handlers run synchronously after this capture listener; whatever they did not consume is dropped.
+    if (unlockTapPending) setTimeout(() => { unlockTapPending = false }, 0)
   }, { capture: true, passive: true } as AddEventListenerOptions)
 }
 

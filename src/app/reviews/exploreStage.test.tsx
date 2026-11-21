@@ -24,6 +24,7 @@ vi.mock('@/components/explore/VideoPlayer', async () => {
       return <div data-testid="player" data-url={url} data-active={String(!!active)}><video data-testid="video" /></div>
     }),
     isFeedAudioUnlocked: () => true,
+    consumeAudioUnlockTap: () => false,
   }
 })
 /** The off-screen poster: an image, never a player. */

@@ -8,7 +8,7 @@ import {
   ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark,
   Loader2, AlertCircle, PlayCircle, Play, Pause, MapPin, MoreHorizontal, Maximize2, Trash2, EyeOff, Plus,
 } from 'lucide-react'
-import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
+import VideoPlayer, { consumeAudioUnlockTap, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -528,7 +528,7 @@ function StageCard({
           playing one it toggles pause. A button, so it is keyboard-reachable. */}
       <button
         type="button"
-        onClick={() => { if (!active) { onSelect(); return } togglePause() }}
+        onClick={() => { if (!active) { onSelect(); return } if (consumeAudioUnlockTap()) return; togglePause() }}
         aria-label={active ? t('v3.explore.togglePlay') : t('v3.explore.playThis')}
         aria-pressed={active}
         tabIndex={role === 'hidden' ? -1 : 0}

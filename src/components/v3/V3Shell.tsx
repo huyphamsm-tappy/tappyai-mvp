@@ -533,7 +533,9 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   subtitle — the loudest thing in the bar, on every page, saying what the user
                   had just clicked. The bar's job is to hold the global controls; the page says
                   what it is in its own content. */}
-              <div className="min-w-0 flex-shrink-0 lg:w-[150px] xl:w-[176px]">
+              {/* 21/11/2026 (owner): on Home the title ("Trang chủ / Hỏi Tappy bất cứ điều gì") and the "Hỏi Tappy" pill are gone — the hero is the way in.
+                  The <h1> stays for screen readers (sr-only). */}
+              <div className={onHome ? 'sr-only' : 'min-w-0 flex-shrink-0 lg:w-[150px] xl:w-[176px]'}>
                 <h1 className="truncate text-[15px] font-medium tracking-[-0.01em] lg:text-[16px]" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
                 {subtitle && (
                   <p className="truncate text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>{subtitle}</p>
@@ -554,14 +556,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   carries a `min-w` so it can never degrade into a stub again — the tab strip,
                   which already scrolls, gives up the space instead. */}
               {onHome ? (
-                <Link
-                  href="/chat"
-                  className="ml-auto hidden items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/5 lg:inline-flex"
-                  style={{ border: '1px solid var(--v3-border)', color: 'var(--v3-fg-secondary)' }}
-                >
-                  <Sparkles size={13} aria-hidden="true" style={{ color: 'var(--v3-accent)' }} />
-                  {t('v3.top.askAction')}
-                </Link>
+                <span className="ml-auto hidden lg:block" aria-hidden="true" />
               ) : (
               <form
                 onSubmit={(e) => {
