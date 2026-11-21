@@ -84,6 +84,14 @@ describe('which tab the Inbox opens on', () => {
     expect(initialThread).toBe('t-42')
   })
 
+  it('the profile Message button (?thread= alone) opens Messages even when only notifications are unread', () => {
+    query = 'thread=t-42'
+    store = { notifications: [dto()], unreadCount: 3, loading: false }
+    renderPage()
+    expect(screen.getByTestId('messages-tab')).toBeTruthy()
+    expect(initialThread).toBe('t-42')
+  })
+
   it('an unknown ?tab= value is ignored (falls back to the default rule)', () => {
     query = 'tab=bogus'
     renderPage()

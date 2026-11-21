@@ -1,4 +1,5 @@
 'use client'
+import { createPortal } from 'react-dom'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 /**
@@ -7,8 +8,11 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
  */
 export function AiConsentDialog({ onAccept, onDecline, busy, failed }: { onAccept(): void; onDecline(): void; busy?: boolean; failed?: boolean }) {
   const { t } = useTranslation()
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4" data-testid="ai-consent-dialog">
+  // Rendered into document.body: inside the new-post page it sat in a stacking context and the composer card was painted OVER it, so the
+  // person could not reach "Agree" and could never post a clip (found in a real UAT run on desktop width).
+  if (typeof document === 'undefined') return null
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4" data-testid="ai-consent-dialog">
       <div role="dialog" aria-modal="true" aria-labelledby="video-consent-title" aria-describedby="video-consent-body"
         className="w-full max-w-md rounded-2xl p-5 shadow-xl" style={{ background: 'var(--v3-panel-elevated, #fff)', color: 'var(--v3-fg, #111)' }}>
         <h2 id="video-consent-title" className="text-[17px] font-extrabold">{t('video.consent.title')}</h2>
@@ -23,6 +27,7 @@ export function AiConsentDialog({ onAccept, onDecline, busy, failed }: { onAccep
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

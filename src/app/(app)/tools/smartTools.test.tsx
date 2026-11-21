@@ -136,7 +136,7 @@ describe('accessibility basics', () => {
   })
 
   it('sign-in is communicated in text, never by colour alone (signed-out visitor)', () => {
-    const { container } = render(<ToolsView user={null} />)
+    const { container } = render(<ToolsView user={undefined} />)
     const gated = smartTools().filter((t) => t.auth)
     expect(gated.length, 'the fixture assumes at least one auth-gated tool').toBeGreaterThan(0)
     for (const tool of gated) {

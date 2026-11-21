@@ -175,7 +175,9 @@ function InboxView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
   }, [auto, loading, messagesLoading, unreadCount, messageUnread])
   // A new `?tab=` (navigating inside the page) wins over an earlier click.
   useEffect(() => { setPicked(null) }, [requestedTab])
-  const tab: InboxTab = picked ?? requestedTab ?? auto ?? 'messages'
+  // `?thread=` is the profile's Message button: it means "open the conversation", so it opens Messages even when only notifications are unread
+  // (found in a real UAT run: the person landed on Notifications and had to click Messages).
+  const tab: InboxTab = picked ?? requestedTab ?? (requestedThread ? 'messages' : null) ?? auto ?? 'messages'
   const setTab = (next: InboxTab) => setPicked(next)
   const [filter, setFilter] = useState(0)
   const [showSettings, setShowSettings] = useState(false)
