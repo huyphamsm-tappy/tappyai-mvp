@@ -39,6 +39,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.deleteAccount': 'Yêu cầu xóa tài khoản',
     'settings.mic': 'Micrô',
     'settings.mic.desc': 'Cho phép nói để nhập trong chat. Micrô chỉ bật khi bạn bấm.',
+    'settings.clearCache': 'Xóa bộ nhớ đệm ảnh',
+    'settings.clearCache.desc': 'Giải phóng dung lượng trên thiết bị này. Ảnh trong tin nhắn vẫn còn, sẽ tải lại từ máy chủ khi bạn mở.',
+    'settings.clearCache.button': 'Xóa',
+    'settings.clearCache.done': 'Đã xóa bộ nhớ đệm ảnh trên thiết bị này.',
 
     // Common
     'common.or': 'hoặc',
@@ -349,6 +353,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.deleteAccount': 'Request Account Deletion',
     'settings.mic': 'Microphone',
     'settings.mic.desc': 'Allow speaking to type in chat. The mic only turns on when you tap it.',
+    'settings.clearCache': 'Clear photo cache',
+    'settings.clearCache.desc': 'Free up space on this device. Photos in your messages stay safe and load again from the server when you open them.',
+    'settings.clearCache.button': 'Clear',
+    'settings.clearCache.done': 'Photo cache on this device cleared.',
 
     // Common
     'common.or': 'or',
