@@ -142,6 +142,9 @@ policy_of() {
     # Auto-hold of a reported post (owner 21/11/2026): enough different reporters hold a post until a moderator looks. Needs 20261009 (queue trigger). Rollback in supabase/migrations/rollback/.
     20261207_auto_hold_reported_posts.sql)
       echo APPLY ;;
+    # Hiding a comment (owner 21/11/2026): the post owner hides a comment; enough different reporters hide it until a moderator looks. Needs 20260928c (comment read boundary) and 20261001b/d (reports + queue). Rollback in supabase/migrations/rollback/.
+    20261208_comment_hiding.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

@@ -35,6 +35,7 @@ const h = vi.hoisted(() => ({
   reversedAppeals: [] as Array<{ decision_id: string }>,
   otherHolds: [] as Array<{ id: string }>,         // other reports on the same post that are on hold
   autoHolds: [] as Array<{ id: string }>,          // other reports of the same post carrying the system auto-hold mark (metadata.auto_hold)
+  commentHiddenBy: undefined as string | null | undefined, // review_comments.hidden_by of the reported comment
   heldReadError: null as null | { message: string },
   neqs: [] as Array<[string, string, unknown]>,     // .neq(col, value) filters seen, per table
 }))
@@ -66,6 +67,7 @@ vi.mock('@/lib/supabase/admin', () => ({
         if (table === 'moderation_decisions') return { data: h.ledgerInserted ? { id: 'dec-new' } : h.decision ?? h.prevDecision, error: null }
         if (table === 'moderation_appeals') return { data: h.appeal, error: null }
         if (table === 'reviews') return { data: { publication_state: h.reviewState }, error: null }
+        if (table === 'review_comments') return { data: h.commentHiddenBy === undefined ? null : { hidden_by: h.commentHiddenBy }, error: null }
         return { data: null, error: null }
       }
       b.then = (res: (v: unknown) => unknown) => Promise.resolve({
@@ -130,7 +132,7 @@ describe('moderation desk routes', () => {
     h.emit.mockResolvedValue({ id: 'n1' })
     h.target = target(); h.strikes = []; h.ledgerError = null; h.ops = []; h.decision = null; h.appeal = null; hh.ledgerInserted = false; h.siblings = []; h.siblingError = null
     h.queueItem = { id: QID, status: 'pending', target_type: 'comment', target_id: TARGET }
-    h.reviewState = 'PUBLISHED'; h.reviewMatches = [1]; h.reviewsError = null; h.provError = null; h.actionRows = []; h.standing = []; h.reversedAppeals = []; h.otherHolds = []; h.autoHolds = []; h.heldReadError = null; h.neqs = []
+    h.reviewState = 'PUBLISHED'; h.reviewMatches = [1]; h.reviewsError = null; h.provError = null; h.actionRows = []; h.standing = []; h.reversedAppeals = []; h.otherHolds = []; h.autoHolds = []; h.commentHiddenBy = undefined; h.heldReadError = null; h.neqs = []
   })
   afterEach(() => { if (prev === undefined) delete process.env.MODERATION_ADMIN_ENABLED; else process.env.MODERATION_ADMIN_ENABLED = prev })
 
@@ -225,6 +227,20 @@ describe('moderation desk routes', () => {
       const r = await decide({ outcome: 'no_violation', reason: REASON })
       expect(restores()).toEqual([])
       expect((await r.json()).data.post_kept_hidden).toBe(true)
+    })
+
+    it('21/11/2026: a COMMENT the system hid after several reports comes back on a "no violation" verdict; the owner\'s own hide, or a visible comment, is not touched', async () => {
+      const commentUpdates = () => h.ops.filter((o) => o.table === 'review_comments' && o.op === 'update').map((o) => o.value)
+      h.queueItem = { id: QID, status: 'in_review', target_type: 'comment', target_id: TARGET }
+      h.commentHiddenBy = 'auto'
+      expect((await decide({ outcome: 'no_violation', reason: REASON })).status).toBe(200)
+      expect(commentUpdates()).toEqual([{ hidden_at: null, hidden_by: null }])
+      h.ops = []; h.commentHiddenBy = 'owner'
+      await decide({ outcome: 'no_violation', reason: REASON })
+      expect(commentUpdates()).toEqual([])
+      h.ops = []; h.commentHiddenBy = null
+      await decide({ outcome: 'no_violation', reason: REASON })
+      expect(commentUpdates()).toEqual([])
     })
 
     it('a report that was NOT on hold never touches the post', async () => {

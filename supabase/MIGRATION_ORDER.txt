@@ -178,3 +178,4 @@ supabase/migrations/20261204_group_join_approval.sql
 supabase/migrations/20261205_group_suggestion_votes.sql
 supabase/migrations/20261206_group_bills.sql
 supabase/migrations/20261207_auto_hold_reported_posts.sql
+supabase/migrations/20261208_comment_hiding.sql

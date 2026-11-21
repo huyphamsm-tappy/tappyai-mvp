@@ -85,7 +85,7 @@ export async function GET(
 
   const { data, error } = await supabase
     .from('review_comments')
-    .select('id, body, created_at, user_id, parent_comment_id')
+    .select('id, body, created_at, user_id, parent_comment_id, hidden_at, hidden_by')
     .eq('review_id', params.id)
     .order('created_at', { ascending: true })
     .limit(limit)
