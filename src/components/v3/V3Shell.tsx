@@ -4,7 +4,7 @@ import AiDisclaimer from '@/components/AiDisclaimer'
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   Home, PlayCircle, Search, Upload, Users,
@@ -21,6 +21,8 @@ import { useNotifications } from '@/components/NotificationProvider'
 import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
 import { useAuthStatus } from '@/hooks/useAuthStatus'
+import { createClient } from '@/lib/supabase/client'
+import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import { performSignOut } from '@/lib/auth/signOut'
 import { smartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
@@ -325,6 +327,29 @@ export interface V3ShellProps {
   children: ReactNode
 }
 
+let chipProfile: { at: number; p: Promise<{ name: string; avatarUrl: string | null } | null> } | null = null
+/** Test seam. */
+export function __resetChipProfile(): void { chipProfile = null }
+/** The signed-in member's own display name and picture, once per minute per tab; null for a visitor or any failure. */
+function ownChipProfile(): Promise<{ name: string; avatarUrl: string | null } | null> {
+  const now = Date.now()
+  if (chipProfile && now - chipProfile.at < 60_000) return chipProfile.p
+  // The session is read locally first (no network): a visitor, or a browser with no session, asks the server nothing.
+  const member = (async () => {
+    try {
+      const { data: { session } } = await createClient().auth.getSession()
+      return !!session?.user && !isAnonymousUser(session.user)
+    } catch { return false }
+  })()
+  const p = member
+    .then(ok => (ok ? fetch('/api/profile') : null))
+    .then(r => (r && r.ok ? r.json() : null))
+    .then(j => (j && typeof j.full_name === 'string' && j.full_name.trim() ? { name: j.full_name.trim(), avatarUrl: typeof j.avatar_url === 'string' && j.avatar_url ? j.avatar_url : null } : null))
+    .catch(() => null)
+  chipProfile = { at: now, p }
+  return p
+}
+
 export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, header, flush = false, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
@@ -342,6 +367,17 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
   // user actually is; `usePathname` cannot.
   const onHome = pathname === '/'
   const { isDark, mounted: themeMounted, toggle: toggleTheme } = useThemeMode()
+  // 21/11/2026 (UAT): a public, cached page (Scam Shield) passes no `user`, so a signed-in member saw "Khách" in the corner. When no user was handed in
+  // and this browser belongs to a member, the name and picture are read from the member's own profile instead. Display only; the server decides everything else.
+  // (No second auth subscription: a visitor's profile answers 401 or an empty name, so the chip then stays "Khách".)
+  const [self, setSelf] = useState<{ name?: string | null; avatarUrl?: string | null } | null>(null)
+  useEffect(() => {
+    if (user || typeof fetch !== 'function') return
+    let alive = true
+    ownChipProfile().then(j => { if (alive && j) setSelf(j) })
+    return () => { alive = false }
+  }, [user])
+  const chipUser = user ?? self
 
   return (
     // 🚨 This used to be `v3-theme dark` — the surface pinned itself to dark and ignored the
@@ -665,12 +701,12 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   className="flex items-center gap-2 rounded-lg px-2 py-1.5"
                   style={{ background: 'var(--v3-panel-elevated)' }}
                 >
-                  {user?.avatarUrl
-                    ? <Image src={user.avatarUrl} alt="" width={26} height={26} className="h-[26px] w-[26px] rounded-full object-cover" />
+                  {chipUser?.avatarUrl
+                    ? <Image src={chipUser.avatarUrl} alt="" width={26} height={26} className="h-[26px] w-[26px] rounded-full object-cover" />
                     : <UserCircle size={24} style={{ color: 'var(--v3-fg-secondary)' }} aria-hidden="true" />}
                   <span className="hidden flex-col leading-tight sm:flex">
                     <span className="max-w-[104px] truncate whitespace-nowrap text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
-                      {user?.name || t('v3.top.guest')}
+                      {chipUser?.name || t('v3.top.guest')}
                     </span>
                     {user?.plan && (
                       <span className="text-[10px]" style={{ color: 'var(--v3-amber)' }}>{user.plan}</span>

@@ -4548,6 +4548,8 @@
 .v3-pp-identity > .v3-pp-text { grid-area: text; }
 .v3-pp-identity > .v3-pp-stats { grid-area: stats; }
 .v3-pp-identity > .v3-pp-action { grid-area: action; }
+/* The "cannot message yet" hint has no named area: left to auto-placement it took a column and squeezed the name and the stats (UAT 21/11/2026). It gets its own full-width row. */
+.v3-pp-identity > [data-pp-message-error] { grid-area: auto; grid-column: 1 / -1; margin-top: 0; }
 @media (min-width: 640px) {
   .v3-pp-identity {
     margin-top: -56px; grid-template-columns: auto minmax(0, 1fr) auto;
