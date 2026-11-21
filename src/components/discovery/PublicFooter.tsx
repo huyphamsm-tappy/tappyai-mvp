@@ -8,6 +8,7 @@ import { SCAM_KB_PATH } from '@/lib/scam-shield/knowledgePages'
 import { GOOGLE_PLAY_URL, playBadgeEnabled, APP_STORE_URL, SOCIAL_LINKS } from '@/lib/share/storeListing'
 import { encodeQR, qrToSvg } from '@/lib/qr/qrcode'
 import AiDisclaimer from '@/components/AiDisclaimer'
+import { TappyWordmark } from '@/components/brand/TappyLockup'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // The footer of Home and the public pages (redesigned 21/11/2026 to the owner's mockup:
@@ -144,7 +145,8 @@ export default function PublicFooter() {
           <Link href="/" className="inline-flex items-center gap-3" aria-label="TappyAI">
             {/* eslint-disable-next-line @next/next/no-img-element -- the brand mark from /public */}
             <img src="/branding/otter-logo.png" alt="" width={52} height={52} className="h-[52px] w-[52px] object-contain" />
-            <span className="text-[26px] font-bold text-gray-900 dark:text-white">TappyAI</span>
+            {/* "Tappy" white, "AI" brand blue — the same split as the sidebar (owner 21/11/2026). */}
+            <TappyWordmark fontSize={28} />
           </Link>
           <p className="mt-3 max-w-[270px] text-[14px] text-gray-500 dark:text-gray-300">{t('footer.brandTagline')}</p>
           <div className="mt-5 flex items-center gap-5" data-footer-social>

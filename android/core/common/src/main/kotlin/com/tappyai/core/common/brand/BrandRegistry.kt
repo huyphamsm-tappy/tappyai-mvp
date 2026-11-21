@@ -168,6 +168,32 @@ val BRAND_REGISTRY: Map<String, BrandDefinition> = listOf(
         source = "Wikimedia Commons — File:Booking.com Icon 2022.svg (official \"B.\" app icon; the wordmark is illegible at 48px)",
         approvedSince = "2026-07-31",
     ),
+    BrandDefinition(
+        id = "vexere",
+        displayName = "Vexere",
+        aliases = listOf("VeXeRe", "Vé xe rẻ"),
+        logo = "brands/vexere.png",
+        background = BrandBackground.LIGHT,
+        scale = 1.0,
+        category = BrandCategory.TRANSPORT,
+        officialWebsite = "https://vexere.com",
+        assetType = "png",
+        source = "vexere.com — official square app icon (storage.googleapis.com/fe-production/images/VeXeRe_logo_knowledge_graph.png, 560px; the site's own knowledge-graph logo)",
+        approvedSince = "2026-11-21",
+    ),
+    BrandDefinition(
+        id = "lazada",
+        displayName = "Lazada",
+        aliases = listOf("Lazada VN", "Lazada Vietnam"),
+        logo = "brands/lazada.png",
+        background = BrandBackground.LIGHT,
+        scale = 1.1,
+        category = BrandCategory.SHOPPING,
+        officialWebsite = "https://www.lazada.vn",
+        assetType = "svg",
+        source = "Wikimedia Commons — File:Lazada (2019).svg (official lockup)",
+        approvedSince = "2026-11-21",
+    ),
 ).associateBy { it.id }
 
 /**

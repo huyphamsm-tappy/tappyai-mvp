@@ -163,6 +163,33 @@ export const BRAND_REGISTRY = {
     source: 'Wikimedia Commons — File:Booking.com Icon 2022.svg (official "B." app icon; the wordmark is illegible at 48px)',
     approvedSince: '2026-07-31',
   },
+  // 21/11/2026 (owner approved the download): the two Deals partners that still showed a letter.
+  vexere: {
+    id: 'vexere',
+    displayName: 'Vexere',
+    aliases: ['VeXeRe', 'Vé xe rẻ'],
+    logo: '/brands/vexere.png',
+    background: 'light',
+    scale: 1,
+    category: 'transport',
+    officialWebsite: 'https://vexere.com',
+    assetType: 'png',
+    source: "vexere.com — official square app icon (storage.googleapis.com/fe-production/images/VeXeRe_logo_knowledge_graph.png, 560px; the site's own knowledge-graph logo)",
+    approvedSince: '2026-11-21',
+  },
+  lazada: {
+    id: 'lazada',
+    displayName: 'Lazada',
+    aliases: ['Lazada VN', 'Lazada Vietnam'],
+    logo: '/brands/lazada.svg',
+    background: 'light',
+    scale: 1.1,
+    category: 'shopping',
+    officialWebsite: 'https://www.lazada.vn',
+    assetType: 'svg',
+    source: 'Wikimedia Commons — File:Lazada (2019).svg (official lockup)',
+    approvedSince: '2026-11-21',
+  },
 } as const satisfies Record<string, BrandDefinition>
 
 /** Strict brand identifier — derived from the registry, never hand-written strings. */
