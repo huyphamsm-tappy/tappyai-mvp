@@ -68,7 +68,7 @@ describe('buildTranscodeJob', () => {
 
   it('bitrates fall with the rung and are all positive; frame rate is capped at 30', () => {
     const rates = job(1080, 1920).config.elementaryStreams.flatMap(s => (s.videoStream ? [s.videoStream.h264.bitrateBps] : []))
-    expect(rates).toEqual([2_500_000, 1_100_000, 600_000])
+    expect(rates).toEqual([2_000_000, 800_000, 400_000])
     for (const s of job(1080, 1920).config.elementaryStreams) if (s.videoStream) expect(s.videoStream.h264.frameRate).toBe(30)
   })
 

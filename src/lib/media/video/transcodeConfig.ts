@@ -20,7 +20,9 @@ export interface TranscodeJobInput {
 export interface Rung { w: number; h: number }
 
 const SHORT_SIDES = [720, 480, 360] as const
-const BITRATE: Record<number, number> = { 720: 2_500_000, 480: 1_100_000, 360: 600_000 }
+// 21/11/2026 (owner: "nén clip"): lowered from 2.5 / 1.1 / 0.6 Mbit/s. A real 3 min 54 s clip of 19 MB (852x576, already ~0.66 Mbit/s) produced 38 MB at 480 and 23 MB at 360, so the ladder was
+// BIGGER than the source. Phone clips are 8-20 Mbit/s, where any rung is a saving; for an already-light clip the lower targets keep the ladder near the source instead of 3-4 times above it.
+const BITRATE: Record<number, number> = { 720: 2_000_000, 480: 800_000, 360: 400_000 }
 const AUDIO_BPS = 128_000
 const FRAME_RATE = 30
 const MIN_SIDE = 16
