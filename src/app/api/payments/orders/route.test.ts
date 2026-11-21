@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const rpc = vi.fn()
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => ({ rpc }) }))
-vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: async () => ({ ok: true }) }))
+vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: async () => ({ ok: true }) }))
 vi.mock('@/lib/payments/authGuard', () => ({
   requirePayer: async () => ({
     user: { id: '11111111-1111-4111-8111-111111111111' },

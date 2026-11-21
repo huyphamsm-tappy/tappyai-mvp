@@ -14,7 +14,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requirePayer } from '@/lib/payments/authGuard'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { mySubscription, canBuyPlan, type SubscriptionRowForState } from '@/lib/payments/subscriptionState'
 import { MY_PLAN_COLUMNS } from '@/lib/payments/myPlan'
@@ -57,7 +57,10 @@ export async function POST(req: Request) {
   if (!bank) {
     return NextResponse.json({ error: 'payments_unavailable', message: serverMessage('payments.unavailable', locale) }, { status: 503 })
   }
-  if (!(await distributedRateLimit(`payments-orders:${auth.user.id}`, 10, 10 * 60_000)).ok) {
+  // 21/11/2026 (found by a real UAT run): the fail-closed distributedRateLimit refuses EVERY request when no shared
+  // store is configured (local UAT, a preview), so nobody could create an order. publicRateLimit is the same cap
+  // (10 per 10 minutes per account): no store = in-process limiter; store configured but silent = refuse.
+  if (!(await publicRateLimit(`payments-orders:${auth.user.id}`, 10, 10 * 60_000)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('payments.slowDown', locale) }, { status: 429 })
   }
   const parsed = CreateSchema.safeParse(await req.json().catch(() => null))
