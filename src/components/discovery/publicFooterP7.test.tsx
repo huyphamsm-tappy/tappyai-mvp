@@ -19,10 +19,14 @@ describe('public footer', () => {
   it('Tải TappyAI: no public listing → "Sắp có" for Android and iOS, and no store link at all', () => {
     const { container } = render(<PublicFooter />)
     const dl = container.querySelector('[data-footer-download]') as HTMLElement
-    expect(dl.textContent).toContain('Tải TappyAI')
-    expect(container.querySelector('[data-store="android"]')!.textContent).toBe('Android · Sắp có')
-    expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOS · Sắp có')
+    expect(dl.textContent).toContain('Tải ứng dụng')
+    expect(container.querySelector('[data-store="android"]')!.textContent).toBe('AndroidSắp có')
+    expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOSSắp có')
     expect(dl.querySelector('a')).toBeNull()
+    // The two banner badges follow the same truthful state: no link, no "available" claim.
+    expect(container.querySelector('[data-badge="google"]')!.tagName).toBe('SPAN')
+    expect(container.querySelector('[data-badge="apple"]')!.tagName).toBe('SPAN')
+    expect(container.textContent).not.toContain('Sẵn có')
     expect(container.innerHTML).not.toMatch(/apps\.apple\.com|itunes\.apple\.com/)
   })
   it('links the Community Guidelines, Terms and Privacy', () => {

@@ -721,48 +721,23 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
   )
 }
 
-/** The capability strip along the bottom of the V3 surface. */
+/**
+ * The bottom line of the app pages.
+ *
+ * 21/11/2026 (owner): the "TappyAI V3 · AI Core · Community · Commerce · Utilities · Security · Multi-Platform" capability strip is gone from
+ * every page — it was redundant. What stays is the one thing the store rules and the UI contract require on every screen: the legal links
+ * and the global AI disclaimer, as a single quiet line without a box.
+ */
 export function V3Footer() {
   const { t } = useTranslation()
-  const items = [
-    { icon: Sparkles, labelKey: 'v3.footer.aiCore', descKey: 'v3.footer.aiCoreDesc', tone: 'var(--v3-accent)' },
-    { icon: Users, labelKey: 'v3.footer.community', descKey: 'v3.footer.communityDesc', tone: 'var(--v3-violet)' },
-    { icon: Tag, labelKey: 'v3.footer.commerce', descKey: 'v3.footer.commerceDesc', tone: 'var(--v3-amber)' },
-    { icon: Wrench, labelKey: 'v3.footer.utilities', descKey: 'v3.footer.utilitiesDesc', tone: 'var(--v3-emerald)' },
-    { icon: ShieldCheck, labelKey: 'v3.footer.security', descKey: 'v3.footer.securityDesc', tone: 'var(--v3-rose)' },
-  ]
   return (
-    <footer
-      className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-4 rounded-2xl px-4 py-4"
-      style={{ background: 'var(--v3-panel)', border: '1px solid var(--v3-border)' }}
-    >
-      <div className="min-w-[160px]">
-        <p className="text-[13px] font-bold" style={{ color: 'var(--v3-fg)' }}>TappyAI V3</p>
-        <p className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.page.subtitle')}</p>
-      </div>
-      {items.map(({ icon: Icon, labelKey, descKey, tone }) => (
-        <div key={labelKey} className="flex items-center gap-2">
-          <span className="v3-panel-icon" style={{ background: 'rgba(255,255,255,0.05)', color: tone }} aria-hidden="true">
-            <Icon size={13} />
-          </span>
-          <span className="flex flex-col leading-tight">
-            <span className="text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{t(labelKey)}</span>
-            <span className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t(descKey)}</span>
-          </span>
-        </div>
-      ))}
-      <Link href="/reviews" className="ml-auto flex items-center gap-1 text-[11px]" style={{ color: 'var(--v3-accent)' }}>
-        {t('v3.footer.platforms')} <ChevronRight size={12} aria-hidden="true" />
-      </Link>
-      {/* Phase 7 CP7: legal links + the global AI disclaimer (UI contract) */}
-      <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t pt-3 text-[11px]" style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-muted)' }}>
-        <nav className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t('footer.about')}>
-          <Link href="/community-guidelines" className="hover:underline">{t('footer.guidelines')}</Link>
-          <Link href="/terms" className="hover:underline">{t('footer.terms')}</Link>
-          <Link href="/privacy" className="hover:underline">{t('footer.privacy')}</Link>
-        </nav>
-        <AiDisclaimer className="!text-left" />
-      </div>
+    <footer className="mt-6 flex flex-wrap items-center justify-between gap-2 px-1 py-3 text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
+      <nav className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t('footer.about')}>
+        <Link href="/community-guidelines" className="hover:underline">{t('footer.guidelines')}</Link>
+        <Link href="/terms" className="hover:underline">{t('footer.terms')}</Link>
+        <Link href="/privacy" className="hover:underline">{t('footer.privacy')}</Link>
+      </nav>
+      <AiDisclaimer className="!text-left" />
     </footer>
   )
 }

@@ -25,7 +25,7 @@ describe('PublicFooter — the crawlable link block on discovery pages', () => {
     for (const d of HUB_DOMAINS) expect(hrefs).toContain(`/${d}`)
     for (const p of PUBLIC_FOOTER_ABOUT_LINKS) expect(hrefs).toContain(p)
     expect(hrefs.every((h) => h.startsWith('/') && !h.includes('?') && !h.includes('#'))).toBe(true)
-    expect(container.querySelectorAll('nav[aria-label]').length).toBe(2)
+    expect(container.querySelectorAll('nav[aria-label]').length).toBe(3)
   })
   it('is bilingual and never hard-codes the labels', () => {
     const { container } = render(<PublicFooter />)

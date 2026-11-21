@@ -9,6 +9,10 @@
 
 export const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.tappyai.app'
 
+/** The public App Store listing, set (https://apps.apple.com/...) only once it loads publicly. Unset = "Sắp có", no link (no invented URL). */
+const rawAppStore = process.env.NEXT_PUBLIC_APP_STORE_URL?.trim()
+export const APP_STORE_URL: string | null = rawAppStore && /^https:\/\/apps\.apple\.com\//.test(rawAppStore) ? rawAppStore : null
+
 // Owner (02/10): Android is not public and iOS is not available, so store badges are HIDDEN everywhere
 // (including UAT/preview) until NEXT_PUBLIC_PLAY_LISTING_LIVE=1 is set after the public page loads.
 export function playBadgeEnabled(env: Record<string, string | undefined> = { NEXT_PUBLIC_PLAY_LISTING_LIVE: process.env.NEXT_PUBLIC_PLAY_LISTING_LIVE }): boolean {
