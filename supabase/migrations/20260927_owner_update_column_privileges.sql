@@ -58,7 +58,8 @@ BEGIN
     FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
    WHERE n.nspname = 'public' AND NOT p.prosecdef
      AND p.proname IN ('increment_review_view', 'sync_review_watch_stats', 'update_follow_counts',
-                       'update_review_comment_count', 'update_review_like_count', 'update_review_save_count');
+                       'update_review_comment_count', 'update_review_like_count', 'update_review_save_count',
+                       'content_report_auto_hold');
   IF invoker IS NOT NULL THEN
     RAISE EXCEPTION 'owner_update_column_privileges: % % SECURITY INVOKER here and would fail once owners lose UPDATE on reviews/profiles. Re-apply add_counter_security_definer.sql (and the 20260703_fix_*_count_trigger.sql files), then run this again.',
       invoker, CASE WHEN position(',' IN invoker) > 0 THEN 'are' ELSE 'is' END;
