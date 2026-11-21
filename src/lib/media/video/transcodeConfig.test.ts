@@ -5,15 +5,15 @@ const base = { inputUri: 'gs://src/vsrc/o/k.mp4', outputUri: 'gs://src/vstg/o/a/
 const job = (w: number, h: number, over: Partial<TranscodeJobInput> = {}) => buildTranscodeJob({ ...base, width: w, height: h, ...over })
 const videoSizes = (j: ReturnType<typeof job>) => j.config.elementaryStreams.flatMap(s => (s.videoStream ? [[s.videoStream.h264.widthPixels, s.videoStream.h264.heightPixels]] : []))
 
-describe('ladderFor — never larger than the source, short side 720 / 480 / 360', () => {
-  it('portrait 1080x1920 gets 720, 480 and 360 (short side), keeping the aspect', () => {
-    expect(ladderFor(1080, 1920)).toEqual([{ w: 720, h: 1280 }, { w: 480, h: 854 }, { w: 360, h: 640 }])
+describe('ladderFor — never larger than the source, at most two rungs: 720 and 360 (480 only for a source between 480 and 719)', () => {
+  it('portrait 1080x1920 gets 720 and 360 (short side), keeping the aspect', () => {
+    expect(ladderFor(1080, 1920)).toEqual([{ w: 720, h: 1280 }, { w: 360, h: 640 }])
   })
-  it('landscape 1920x1080 gets 1280x720, 854x480, 640x360', () => {
-    expect(ladderFor(1920, 1080)).toEqual([{ w: 1280, h: 720 }, { w: 854, h: 480 }, { w: 640, h: 360 }])
+  it('landscape 1920x1080 gets 1280x720 and 640x360', () => {
+    expect(ladderFor(1920, 1080)).toEqual([{ w: 1280, h: 720 }, { w: 640, h: 360 }])
   })
   it('a source at exactly 720 keeps the 720 rung; one below it does not get one (no upscale)', () => {
-    expect(ladderFor(720, 1280).map(r => r.w)).toEqual([720, 480, 360])
+    expect(ladderFor(720, 1280).map(r => r.w)).toEqual([720, 360])
     expect(ladderFor(700, 1244).map(r => r.w)).toEqual([480, 360])
   })
   it('a 480p source gets 480 and 360; a 360p source only 360', () => {
@@ -45,9 +45,9 @@ describe('buildTranscodeJob', () => {
     const j = job(1080, 1920)
     expect(j.inputUri).toBe(base.inputUri)
     expect(j.outputUri).toBe(base.outputUri)
-    expect(videoSizes(j)).toEqual([[720, 1280], [480, 854], [360, 640]])
-    expect(j.config.muxStreams.map(m => m.key)).toEqual(['hls720', 'hls480', 'hls360', 'audio'])
-    expect(j.config.manifests).toEqual([{ fileName: 'manifest.m3u8', type: 'HLS', muxStreams: ['hls720', 'hls480', 'hls360'] }])
+    expect(videoSizes(j)).toEqual([[720, 1280], [360, 640]])
+    expect(j.config.muxStreams.map(m => m.key)).toEqual(['hls720', 'hls360', 'audio'])
+    expect(j.config.manifests).toEqual([{ fileName: 'manifest.m3u8', type: 'HLS', muxStreams: ['hls720', 'hls360'] }])
     expect(j.config.spriteSheets).toEqual([{ filePrefix: 'frames', spriteWidthPixels: 180, spriteHeightPixels: 320, columnCount: 3, rowCount: 2, totalCount: 6 }])
   })
 
@@ -62,13 +62,13 @@ describe('buildTranscodeJob', () => {
   it('a clip with NO sound gets no audio stream and no audio mux (asking for sound that is not there fails the job)', () => {
     const j = job(1080, 1920, { hasAudio: false })
     expect(j.config.elementaryStreams.some(s => s.audioStream)).toBe(false)
-    expect(j.config.muxStreams.map(m => m.key)).toEqual(['hls720', 'hls480', 'hls360'])
+    expect(j.config.muxStreams.map(m => m.key)).toEqual(['hls720', 'hls360'])
     for (const m of j.config.muxStreams) expect(m.elementaryStreams).not.toContain('aud')
   })
 
   it('bitrates fall with the rung and are all positive; frame rate is capped at 30', () => {
     const rates = job(1080, 1920).config.elementaryStreams.flatMap(s => (s.videoStream ? [s.videoStream.h264.bitrateBps] : []))
-    expect(rates).toEqual([2_000_000, 800_000, 400_000])
+    expect(rates).toEqual([2_000_000, 400_000])
     for (const s of job(1080, 1920).config.elementaryStreams) if (s.videoStream) expect(s.videoStream.h264.frameRate).toBe(30)
   })
 

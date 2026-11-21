@@ -35,7 +35,10 @@ export function ladderFor(width: number, height: number): Rung[] {
   const short = Math.min(width, height)
   const long = Math.max(width, height)
   const portrait = height > width
-  const rungs = SHORT_SIDES.filter(r => r <= short).map(r => {
+  // 21/11/2026 (owner: top quality 720 is enough, keep storage light): two rungs at most. A source of 720+ gets 720 and 360 (no 480 in between); one of 480-719 gets 480 and 360; below that, 360.
+  let sides: number[] = SHORT_SIDES.filter(r => r <= short)
+  if (sides.includes(720)) sides = sides.filter(r => r !== 480)
+  const rungs = sides.map(r => {
     const l = Math.min(evenRound((long * r) / short), long % 2 === 0 ? long : evenDown(long))
     return portrait ? { w: r, h: l } : { w: l, h: r }
   })

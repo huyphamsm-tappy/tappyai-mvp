@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { savePhotoCopy, loadPhotoCopy, clearPhotoCopies, PHOTO_CACHE_NAME } from './photoCache'
+import { savePhotoCopy, loadPhotoCopy, clearPhotoCopies, PHOTO_CACHE_NAME, MAX_COPIES } from './photoCache'
 
 /** The browser's own copy of a shown picture: saved once by message id, read back when the server no longer has it, cleared on sign-out; every failure is silent. */
 
@@ -8,6 +8,8 @@ function fakeStore() {
   const cache = {
     match: async (k: string) => entries.get(k)?.clone(),
     put: async (k: string, r: Response) => { entries.set(k, r) },
+    keys: async () => [...entries.keys()].map(k => new Request(k)),
+    delete: async (k: Request | string) => entries.delete(typeof k === 'string' ? k : k.url),
   }
   const opened: string[] = []
   const store = {
@@ -19,6 +21,18 @@ function fakeStore() {
 const imageResponse = (type = 'image/webp', bytes = 5) => () => Promise.resolve(new Response(new Blob([new Uint8Array(bytes)], { type }), { status: 200 }))
 
 beforeEach(() => { vi.stubGlobal('URL', Object.assign(URL, { createObjectURL: () => 'blob:copy', revokeObjectURL: () => {} })) })
+
+describe('the device cache stays small (owner 21/11/2026: not an archive; the server keeps everything)', () => {
+  it('keeps only the most recent MAX_COPIES pictures: the oldest are dropped, the newest stay', async () => {
+    const { store, entries } = fakeStore()
+    const f = vi.fn(imageResponse())
+    for (let i = 0; i < MAX_COPIES + 5; i++) await savePhotoCopy(`m${i}`, `https://storage.example/${i}.webp`, { caches: store, fetchImpl: f as never })
+    expect(entries.size).toBe(MAX_COPIES)
+    const names = [...entries.keys()]
+    expect(names.some(k => k.endsWith('/m0'))).toBe(false)               // the oldest went
+    expect(names.some(k => k.endsWith(`/m${MAX_COPIES + 4}`))).toBe(true) // the newest stayed
+  })
+})
 
 describe('savePhotoCopy', () => {
   it('fetches the link once, keys the copy by the message id (never by the link), and does not fetch again when it already has it', async () => {
