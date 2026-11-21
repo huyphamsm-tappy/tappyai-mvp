@@ -103,7 +103,9 @@ describe('the slots', () => {
     expect(own.container.querySelector('[data-shell-banner]')!.innerHTML).not.toContain('border-dashed')
     cleanup()
     const { container } = await frame(ref)
-    expect(container.querySelector('[data-shell-banner]')).toBeNull() // the shell no longer draws it above the conversation
+    // the banner is in the header row (owner 20/11), not a panel above the conversation
+    const banner = container.querySelector('[data-shell-banner]') as HTMLElement
+    expect(container.querySelector('[data-testid="v206-product-header"]')!.contains(banner)).toBe(true)
     const bg = container.querySelector('[data-shell-background] > div') as HTMLElement
     expect(bg.style.backgroundImage).toContain(DEFAULT_BACKGROUND)
     expect(DEFAULT_BACKGROUND).toBe('/backgrounds/shell-background.webp')

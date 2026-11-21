@@ -9,7 +9,7 @@ import { useNotifications } from '@/components/NotificationProvider'
 import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { planBadgeLabel } from '@/lib/chat/v206Look'
-import HeaderPartnerBanner from './HeaderPartnerBanner'
+import { ShellBannerSlot } from './ShellSlots'
 
 // The first layout's header (NEXT_PUBLIC_SHELL_REF): a menu button that opens / closes the history panel, the logo with the REAL plan badge, a bell to the person's notifications (a red dot only
 // when something is unread) and their real avatar to the profile. A guest has no profile to read: the avatar is then the app's initial-letter state. Nothing is drawn that has no source.
@@ -35,7 +35,7 @@ export default function ShellHeader({ historyOpen, onToggleHistory }: { historyO
   const unread = unreadCount > 0
   return (
     // the first layout: no bar behind the header: a row on the ground. Its left end is indented past the rail (96 / 104 px + the 12 px gap + 12 px), so the menu button and the logo sit over the history panel, not over the rail
-    <header data-testid="v206-product-header" className="flex h-16 min-h-[64px] shrink-0 items-center justify-between pl-[120px] pr-4 2xl:pl-[128px]">
+    <header data-testid="v206-product-header" className="flex min-h-[64px] shrink-0 items-center justify-between pl-[120px] pr-4 2xl:pl-[128px]">
       <div className="flex items-center gap-3">
         <button type="button" onClick={onToggleHistory} aria-label={t('chatWs.shell.menu')} aria-expanded={historyOpen}
           className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-200 transition-colors hover:bg-white/10">
@@ -48,7 +48,8 @@ export default function ShellHeader({ historyOpen, onToggleHistory }: { historyO
           {badge && <span data-testid="v206-plan-badge" className="rounded border border-white/15 bg-white/10 px-1.5 font-mono text-[10px] font-bold leading-4 text-amber-200">{badge}</span>}
         </Link>
       </div>
-      <HeaderPartnerBanner />
+      {/* owner 20/11 (picture 1 is a mockup): Tappy's own Explore banner sits INSIDE the header row, between the logo and the bell, not as a panel above the conversation */}
+      <div className="mx-4 hidden min-w-0 max-w-[860px] flex-1 lg:block"><ShellBannerSlot /></div>
       <div className="flex items-center gap-2">
         <Link href="/profile/notifications" aria-label={unread ? t('chatWs.shell.bellUnread') : t('chatWs.shell.bell')} className="relative flex h-10 w-10 items-center justify-center rounded-xl text-slate-200 transition-colors hover:bg-white/10">
           <Bell size={22} aria-hidden="true" />

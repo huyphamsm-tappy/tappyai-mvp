@@ -65,6 +65,18 @@ describe('readTextFile', () => {
     expect(r).toMatchObject({ ok: true, truncated: true })
     if (r.ok) expect(r.block.length).toBeLessThan(TEXT_MAX_CHARS + 600)
   })
+  it('a UTF-8 Vietnamese file cut by the byte cap in the middle of a character is still read as UTF-8 (not as an old ANSI file)', async () => {
+    const bytes = new TextEncoder().encode('ệ'.repeat(200_000)) // 3 bytes each: the 400.000-byte cut lands inside a character
+    const r = await readTextFile(file(bytes))
+    expect(r).toMatchObject({ ok: true, truncated: true })
+    if (r.ok) { expect(r.block).toContain('ệệệ'); expect(r.block).not.toContain('á»') }
+  })
+  it('the text is cut to the room the message has left, and no room is a refusal', async () => {
+    const r = await readTextFile(file('b'.repeat(5000)), 1200)
+    expect(r).toMatchObject({ ok: true, truncated: true })
+    if (r.ok) expect(r.block.length).toBeLessThan(1200)
+    expect(await readTextFile(file('b'.repeat(5000)), 300)).toEqual({ ok: false, error: 'chatui.textNoRoom' })
+  })
   it('refuses a binary file renamed .txt (NUL bytes) and an empty file', async () => {
     expect(await readTextFile(file(new Uint8Array([0x89, 0x50, 0x00, 0x00, 0x1a])))).toEqual({ ok: false, error: 'chatui.textUnreadable' })
     expect(await readTextFile(file(''))).toEqual({ ok: false, error: 'chatui.textUnreadable' })

@@ -1201,8 +1201,8 @@ export default function ChatInterface({
   useEffect(() => { messagesRef.current = messages }, [messages])
   // a text set from outside the box (a chip, the voice, a text file) is fitted too, not only what is typed
   // (typing already fitted the box in onChange: skip that pass, so a keystroke does not pay for a second layout)
-  const composerTyped = useRef(false)
-  useEffect(() => { if (composerTyped.current) { composerTyped.current = false; return } if (inputRef.current) fitComposer(inputRef.current) }, [input])
+  const composerFitted = useRef<string | null>(null)
+  useEffect(() => { if (composerFitted.current === input) return; composerFitted.current = input; if (inputRef.current) fitComposer(inputRef.current) }, [input])
 
   // Rotating "thinking" hint shown while we wait for the first token — gives the
   // sense Tappy is working (searching / synthesising) rather than frozen.
@@ -1644,11 +1644,14 @@ export default function ChatInterface({
   // 01/11: the attach button, a file dropped on the chat and a picture pasted into the box all end here (composerAttachment.ts rules).
   const acceptAttachments = useCallback(async (files: File[]) => {
     let error: string | null = null
+    let textAdded = 0
     for (const original of files) {
       // 20/11/2026 (owner): a plain text file (.txt, .md, .csv, .json, .log) is read here and its text goes into the message; nothing is uploaded
       if (isTextFile(original)) {
-        const r = await readTextFile(original)
+        // the message limit (24.000 characters on the server) counts what is already in the box: the file is cut to what still fits
+        const r = await readTextFile(original, 24_000 - 300 - (inputRef.current?.value.length ?? 0) - textAdded)
         if (!r.ok) { error = t(r.error); continue }
+        textAdded += r.block.length // the box's state is not updated yet inside this loop: count what this call already put in
         setInput(prev => prev + r.block)
         if (r.truncated) error = t('chatui.textTruncated')
         continue
@@ -2730,9 +2733,9 @@ export default function ChatInterface({
               onChange={(e) => {
                 if (voiceError) setVoiceError(null)
                 if (pendingSend) cancelAutoSend()
-                composerTyped.current = true
                 handleInputChange(e)
                 fitComposer(e.target)
+                composerFitted.current = e.target.value
               }}
               onKeyDown={handleKeyDown}
               onPaste={onComposerPaste}
