@@ -111,24 +111,21 @@ export default function PublicFooter() {
     <footer className="mt-16" data-testid="public-footer">
       {/* ── App-download banner (compact, phones overflow the top edge) ───── */}
       <section
-        className="relative mx-auto flex min-h-[112px] max-w-6xl items-center overflow-visible rounded-2xl border border-white/10 px-6 py-5 sm:px-10"
+        className="relative mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-4 overflow-hidden rounded-2xl border border-white/10 px-6 py-4 sm:px-9 lg:flex-nowrap"
         style={{ background: 'linear-gradient(95deg, #0e2756 0%, #123a7a 60%, #1a438f 100%)' }}
         data-footer-banner
       >
-        <div className="min-w-0 flex-1">
-          <h2 className="text-[22px] font-bold leading-tight text-white sm:text-[26px]">{t('footer.bannerTitle')}</h2>
-          <p className="mt-1 text-[15px] text-blue-100/85">{t('footer.bannerBody')}</p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <StoreBadge store="google" href={androidLive ? GOOGLE_PLAY_URL : null} label={t('footer.badgeGetOn')} soon={t('footer.badgeSoon')} />
-            <StoreBadge store="apple" href={iosLive ? APP_STORE_URL : null} label={t('footer.badgeDownloadOn')} soon={t('footer.badgeSoon')} />
-          </div>
+        {/* Mockup order, left to right: the words · the two store badges side by side · the mascot (fits inside the banner). */}
+        <div className="min-w-0 flex-1 lg:flex-none lg:basis-[38%]">
+          <h2 className="text-[19px] font-bold leading-tight text-white sm:text-[21px]">{t('footer.bannerTitle')}</h2>
+          <p className="mt-1 text-[13px] text-blue-100/85 sm:text-[14px]">{t('footer.bannerBody')}</p>
         </div>
-        <div className="pointer-events-none relative ml-6 hidden h-[130px] w-[330px] shrink-0 self-end sm:block md:w-[390px]" aria-hidden="true">
-          {/* eslint-disable-next-line @next/next/no-img-element -- fixed decorative phone screens from /public */}
-          <img src="/landing/screen-chat.webp" alt="" className="absolute -top-8 left-2 h-[215px] w-[108px] -rotate-[7deg] rounded-[22px] border-[5px] border-black object-cover object-top shadow-2xl md:left-8" />
-          {/* eslint-disable-next-line @next/next/no-img-element -- fixed decorative phone screens from /public */}
-          <img src="/landing/screen-home.webp" alt="" className="absolute -top-14 right-2 h-[235px] w-[118px] rotate-[7deg] rounded-[22px] border-[5px] border-black object-cover object-top shadow-2xl md:right-8" />
+        <div className="flex flex-wrap items-center gap-3 lg:flex-1 lg:justify-center">
+          <StoreBadge store="google" href={androidLive ? GOOGLE_PLAY_URL : null} label={t('footer.badgeGetOn')} soon={t('footer.badgeSoon')} />
+          <StoreBadge store="apple" href={iosLive ? APP_STORE_URL : null} label={t('footer.badgeDownloadOn')} soon={t('footer.badgeSoon')} />
         </div>
+        {/* eslint-disable-next-line @next/next/no-img-element -- the mascot from /public, decorative */}
+        <img src="/branding/mascot-scooter.webp" alt="" aria-hidden="true" className="pointer-events-none ml-auto hidden h-[92px] w-auto shrink-0 object-contain sm:block" data-footer-mascot />
       </section>
 
       {/* ── Brand + columns ─────────────────────────────────────────────── */}
