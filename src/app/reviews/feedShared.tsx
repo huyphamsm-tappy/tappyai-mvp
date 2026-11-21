@@ -17,8 +17,9 @@ import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, Eye, EyeOff,
-  X, Loader2, Plus, AlertCircle, Sparkles, Flag,
+  X, Loader2, Plus, AlertCircle, Flag,
 } from 'lucide-react'
+import { TappyMascot } from '@/components/TappyMascot'
 import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
@@ -740,7 +741,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                 className="mt-2.5 inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] font-semibold text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 style={{ background: 'var(--v3-accent-fill)' }}
               >
-                <Sparkles size={15} aria-hidden="true" />
+                <TappyMascot pose="wave" size={22} />
                 {t('reviews.askAboutPlace')}
               </Link>
             ) : (
@@ -761,7 +762,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                 className="mt-2.5 inline-flex min-h-[44px] cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] font-semibold text-white/60"
                 style={{ background: 'var(--v3-accent-fill)', opacity: 0.45 }}
               >
-                <Sparkles size={15} aria-hidden="true" />
+                <TappyMascot pose="wave" size={22} />
                 {t('reviews.askAboutPlace')}
               </span>
             )}

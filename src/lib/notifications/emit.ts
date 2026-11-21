@@ -12,6 +12,8 @@ export type NotificationType =
   | 'reply'
   | 'share'
   | 'follow'
+  // A person you follow published a new post or clip (src/lib/notifications/friendPost.ts).
+  | 'friend_post'
   | 'milestone'
   | 'deal'
   | 'morning_brief'

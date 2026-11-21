@@ -89,16 +89,14 @@ describe('every entry point to a VIDEO post lands in the clip viewer', () => {
     expect(el.props.review).toHaveProperty('saved_by_me')
   })
 
-  it('an IMAGE post keeps the existing Review Detail', async () => {
+  it('an IMAGE post opens in the same Explore stage (owner 21/11/2026: one layout for every post)', async () => {
     h.review = IMAGE
-    expect(await renderedComponent()).toBe('ReviewDetailView')
+    expect(await renderedComponent()).toBe('ReviewClipView')
   })
 
-  it('a row typed video but WITHOUT media falls back to Review Detail rather than a black screen', async () => {
-    // `ReviewDetailView` already guards on `content_type === 'video' && media_url`; the route uses
-    // the same pair so the two can never disagree about what a clip is.
+  it('a row typed video but WITHOUT media also opens in the stage, which draws a poster instead of a black screen', async () => {
     h.review = VIDEO_NO_MEDIA
-    expect(await renderedComponent()).toBe('ReviewDetailView')
+    expect(await renderedComponent()).toBe('ReviewClipView')
   })
 })
 

@@ -19,6 +19,7 @@ import { getTrack } from '@/modules/music/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { exploreVideoPipelineEnabled } from '@/lib/media/video/flags'
 import { claimVideoForPost, inspectVideoForPost, parseVideoAssetId, videoPostDepsFromEnv, type VideoPostFailure } from '@/lib/media/video/publishPost'
+import { notifyFollowersOfPost } from '@/lib/notifications/friendPost'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -318,6 +319,20 @@ export async function POST(req: NextRequest) {
   }
 
   rebuildProfile(user.id, supabase).catch(() => {})
+
+  // People who follow the author hear about a post that is PUBLIC now (gate off = no state column = public). A held post notifies nobody.
+  const publishedId = videoReviewId ?? (insData as { id?: string } | null)?.id
+  const state = (lifecycle as { publication_state?: string }).publication_state
+  if (publishedId && (!state || state === 'PUBLISHED')) {
+    await notifyFollowersOfPost({
+      admin: writer,
+      authorId: user.id,
+      reviewId: publishedId,
+      contentType: reviewData.content_type as string | undefined,
+      body: reviewData.body as string | undefined,
+      placeName: reviewData.place_name as string | undefined,
+    })
+  }
 
   // Tell the author what happened to their own post.
   //

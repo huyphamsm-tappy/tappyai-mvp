@@ -3,7 +3,6 @@ import { getReview } from './getReview'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { buildReviewMetadata } from '@/lib/share/reviewMetadata'
-import ReviewDetailView from './ReviewDetailView'
 import ReviewClipView from './ReviewClipView'
 import type { Review } from '@/app/reviews/feedShared'
 
@@ -97,27 +96,16 @@ export default async function ReviewDetailPage({ params }: Props) {
   ])
   if (!review) notFound()
 
+  // 21/11/2026 (owner, after a real UAT run): EVERY post opens in the same Explore stage. Photo, text and link posts used to fall
+  // through to the old article page (a 55vh brown hero), which looked like a different product. The stage already draws a poster
+  // for a post without playable media, so nothing is lost. `ReviewDetailView` is no longer routed to.
+  // The viewer reads its own state off the row, so the server's like/save answers are folded in here.
   const r = review as Record<string, unknown>
-  if (r.content_type === 'video' && r.media_url) {
-    // The viewer reads its own state off the row, so the server's like/save answers are folded in
-    // here rather than fetched again on the client.
-    const clip = {
-      ...r,
-      liked_by_me: initialLiked,
-      saved_by_me: initialSaved,
-      comment_count: commentCount,
-    } as unknown as Review
-    return <ReviewClipView review={clip} me={viewerId} />
-  }
-
-  return (
-    <ReviewDetailView
-      reviewId={params.id}
-      review={review as unknown as React.ComponentProps<typeof ReviewDetailView>['review']}
-      initialLiked={initialLiked}
-      initialSaved={initialSaved}
-      commentCount={commentCount}
-      viewerId={viewerId}
-    />
-  )
+  const clip = {
+    ...r,
+    liked_by_me: initialLiked,
+    saved_by_me: initialSaved,
+    comment_count: commentCount,
+  } as unknown as Review
+  return <ReviewClipView review={clip} me={viewerId} />
 }

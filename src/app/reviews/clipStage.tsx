@@ -5,11 +5,12 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import {
-  ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark, Sparkles,
+  ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark,
   Loader2, AlertCircle, PlayCircle, Play, Pause, MapPin, MoreHorizontal, Maximize2, Trash2, EyeOff, Plus,
 } from 'lucide-react'
 import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
+import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { isShareOnlyName, ago, type Review } from './feedShared'
 import { track } from '@/lib/tracking/tracker'
@@ -666,7 +667,7 @@ function StageCard({
                   className="v3-xp-ask relative z-10 mt-2.5"
                   data-stage-ask
                 >
-                  <Sparkles size={13} aria-hidden="true" />
+                  <TappyMascot pose="wave" size={20} />
                   {t('v3.explore.askAboutVideo')}
                 </Link>
               )}
