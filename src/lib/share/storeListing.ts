@@ -17,6 +17,19 @@ export const APP_STORE_URL: string | null = rawAppStore === 'off' ? null : rawAp
 
 // 21/11/2026: the Google Play listing is public (the real id answers 200, a made-up id 404), so the badge is ON by default.
 // Set NEXT_PUBLIC_PLAY_LISTING_LIVE=0 to hide it (a listing taken down). (Owner 02/10 had it hidden until the page went public.)
+/**
+ * Official social accounts for the footer icons. Each is an https URL set in its own NEXT_PUBLIC_SOCIAL_* variable; unset = the icon is
+ * drawn but is not a link (no account URL is invented). Literal `process.env.X` reads so Next inlines them in the browser bundle.
+ */
+const httpsOrNull = (v: string | undefined): string | null => (v && /^https:\/\//.test(v.trim()) ? v.trim() : null)
+export const SOCIAL_LINKS = {
+  youtube: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE),
+  tiktok: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_TIKTOK),
+  facebook: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK),
+  instagram: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM),
+  x: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_X),
+} as const
+
 export function playBadgeEnabled(env: Record<string, string | undefined> = { NEXT_PUBLIC_PLAY_LISTING_LIVE: process.env.NEXT_PUBLIC_PLAY_LISTING_LIVE }): boolean {
   return env.NEXT_PUBLIC_PLAY_LISTING_LIVE !== '0'
 }

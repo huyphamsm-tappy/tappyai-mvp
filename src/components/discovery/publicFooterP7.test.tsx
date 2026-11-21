@@ -16,12 +16,17 @@ describe('public footer', () => {
     expect(other.getAttribute('href')).toBe('/chat')
     for (const h of ['/food', '/shopping', '/entertainment', '/travel', '/spa']) expect(container.querySelector(`a[href="${h}"]`)).toBeTruthy()
   })
-  it('Tải ứng dụng: both listings are public (21/11/2026) → "Sẵn có" with the real store links, in the column and in the banner', () => {
+  it('Tải ứng dụng: both listings are public (21/11/2026) → a QR code to each real store listing (owner: QR instead of a tag), and the banner badges link to them', () => {
     const { container } = render(<PublicFooter />)
     const dl = container.querySelector('[data-footer-download]') as HTMLElement
     expect(dl.textContent).toContain('Tải ứng dụng')
-    expect(container.querySelector('[data-store="android"]')!.textContent).toBe('AndroidSẵn có')
-    expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOSSẵn có')
+    for (const [key, host] of [['android', 'play.google.com'], ['ios', 'apps.apple.com']] as const) {
+      const row = container.querySelector(`[data-store="${key}"]`)!
+      const qr = row.querySelector('a[data-qr]') as HTMLAnchorElement
+      expect(qr.getAttribute('href')).toContain(host)
+      expect(qr.querySelector('svg')).toBeTruthy()
+      expect(row.textContent).not.toContain('Sẵn có')
+    }
     const links = [...container.querySelectorAll('a[data-badge]')].map((a) => a.getAttribute('href'))
     expect(links).toEqual(['https://play.google.com/store/apps/details?id=com.tappyai.app', expect.stringMatching(/^https:\/\/apps\.apple\.com\/vn\/app\/tappyai\/id\d+$/)])
     expect(container.querySelector('a[data-badge]')!.getAttribute('rel')).toContain('noopener')
@@ -35,6 +40,7 @@ describe('public footer', () => {
     expect(container.querySelector('[data-store="android"]')!.textContent).toBe('AndroidSắp có')
     expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOSSắp có')
     expect(container.querySelector('a[data-badge]')).toBeNull()
+    expect(container.querySelector('[data-qr]')).toBeNull()
     expect(container.textContent).not.toContain('Sẵn có')
     expect(container.innerHTML).not.toMatch(/apps\.apple\.com|play\.google\.com/)
   })
