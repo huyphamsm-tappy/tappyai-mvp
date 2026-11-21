@@ -24,6 +24,7 @@ import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { sepayProvider } from '@/lib/payments/providers'
 import { sendPaymentMail } from '@/lib/payments/mail'
 import { readCappedBody } from '@/lib/http/readCappedBody'
+import { reportsLeftBeforePurchase, carryOverAfterPurchase } from '@/lib/plans/deepCarryover'
 import type { PaidPlanId } from '@/lib/plans/planConfig'
 
 export const dynamic = 'force-dynamic'
@@ -59,6 +60,14 @@ export async function POST(req: Request) {
   const tx = verified.event
 
   const db = createAdminClient()
+  // Carry-over (owner 21/11/2026): what the person has LEFT of the Deep Research allowance under the plan they are on NOW, read before the payment changes it.
+  let carryUser: string | null = null
+  let carryLeft = 0
+  try {
+    const o = await db.from('payment_orders').select('user_id').eq('code', tx.orderCode).maybeSingle()
+    carryUser = (o.data as { user_id?: string | null } | null)?.user_id ?? null
+    if (carryUser) carryLeft = await reportsLeftBeforePurchase(db, carryUser)
+  } catch { /* best effort */ }
   const { data, error } = await db.rpc('p8_payments_apply_sepay', {
     p_tx_id: tx.providerTxId,
     p_code: tx.orderCode,
@@ -71,6 +80,7 @@ export async function POST(req: Request) {
   }
 
   const r = data as ApplyResult
+  if (carryUser && r.user_id === carryUser) await carryOverAfterPurchase(carryUser, carryLeft, r.result)
   if ((r.result === 'paid' || r.result === 'late_paid' || r.result === 'mismatch' || r.result === 'extra_paid' || r.result === 'pip_used') && r.user_id && r.plan && r.code) {
     try {
       const { data: u } = await db.auth.admin.getUserById(r.user_id)
