@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from '@/components/media/SafeImage'
-import { Loader2, MessageCircle, X, Trash2 } from 'lucide-react'
+import { Loader2, MessageCircle, X, Trash2, Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -17,6 +17,8 @@ interface Comment {
   profiles: CommentProfile | null
   reactions: Record<string, number>
   my_reaction: string | null
+  hidden_at?: string | null
+  hidden_by?: string | null
 }
 
 // Reaction keys must mirror the web's ALLOWED set (src/app/api/comments/[commentId]/reactions).
@@ -45,9 +47,12 @@ function timeAgo(dateStr: string, t: (key: string, vars?: Record<string, string>
 export default function ReviewCommentButton({
   reviewId,
   initialCount,
+  ownerId,
 }: {
   reviewId: string
   initialCount: number
+  /** The owner of the post: may hide a comment under it (owner 21/11/2026). */
+  ownerId?: string
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -91,6 +96,15 @@ export default function ReviewCommentButton({
       setComments(prev => prev.filter(c => c.id !== commentId && c.parent_comment_id !== commentId))
       if (typeof d.count === 'number') setCount(d.count)
     } catch { /* leave in place on failure */ }
+  }
+
+  // Owner 21/11/2026: the owner of the post hides (or shows again) a comment under their post. Hidden = not deleted: its author and the owner still see it, others do not (the database enforces it).
+  const setHidden = async (commentId: string, hidden: boolean) => {
+    try {
+      const res = await fetch(`/api/comments/${commentId}/hide`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hidden }) })
+      if (!res.ok) return
+      setComments(prev => prev.map(c => c.id === commentId ? { ...c, hidden_at: hidden ? new Date().toISOString() : null, hidden_by: hidden ? 'owner' : null } : c))
+    } catch { /* leave it as it was */ }
   }
 
   const send = async () => {
@@ -162,7 +176,12 @@ export default function ReviewCommentButton({
           <p className="text-xs font-semibold text-white">
             {name} <span className="text-gray-500 font-normal">{timeAgo(c.created_at, t)}</span>
           </p>
-          <p className="text-sm text-gray-300 mt-0.5 break-words">{c.body}</p>
+          <p className={`text-sm mt-0.5 break-words ${c.hidden_at ? 'text-gray-500 italic' : 'text-gray-300'}`}>{c.body}</p>
+          {c.hidden_at && (
+            <p className="text-[11px] text-amber-400/80 mt-0.5" data-testid="comment-hidden-note">
+              {c.hidden_by === 'owner' ? t(c.user_id === me ? 'reviews.commentHiddenForYou' : 'reviews.commentHiddenOwner') : t('reviews.commentHiddenReview')}
+            </p>
+          )}
           <div className="flex items-center gap-3 mt-1 relative">
             <button onClick={() => setPickerFor(pickerFor === c.id ? null : c.id)}
               className={`text-xs font-medium transition-colors ${c.my_reaction ? 'text-pink-400' : 'text-gray-500 hover:text-pink-300'}`}>
@@ -188,6 +207,13 @@ export default function ReviewCommentButton({
         {c.user_id === me && (
           <button onClick={() => del(c.id)} aria-label={t('reviewDetail.cDeleteAria')} className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
             <Trash2 size={14} />
+          </button>
+        )}
+        {/* the owner of the post can hide / show again a comment of someone else; a hide by the system (reports) is lifted by a moderator only */}
+        {me && ownerId === me && c.user_id !== me && (!c.hidden_at || c.hidden_by === 'owner') && (
+          <button onClick={() => setHidden(c.id, !c.hidden_at)} aria-label={t(c.hidden_at ? 'reviews.commentUnhide' : 'reviews.commentHide')} title={t(c.hidden_at ? 'reviews.commentUnhide' : 'reviews.commentHide')}
+            className="flex-shrink-0 self-start p-1 text-gray-500 hover:text-amber-300 transition-colors" data-testid="comment-hide-toggle">
+            {c.hidden_at ? <Eye size={14} /> : <EyeOff size={14} />}
           </button>
         )}
         {/* WP-06 — report someone else's comment / block its author (signed-in only; the menu draws nothing while its flags are off). */}

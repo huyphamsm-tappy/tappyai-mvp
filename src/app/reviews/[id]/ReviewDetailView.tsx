@@ -232,7 +232,7 @@ export default function ReviewDetailView({
           initialCount={review.like_count}
         />
         {/* 💬 Comment */}
-        <ReviewCommentButton reviewId={reviewId} initialCount={commentCount} />
+        <ReviewCommentButton reviewId={reviewId} initialCount={commentCount} ownerId={review.user_id} />
         {/* 🔖 Save */}
         <ReviewSaveButton reviewId={reviewId} initialSaved={initialSaved} />
         {/* ↗ Share */}
