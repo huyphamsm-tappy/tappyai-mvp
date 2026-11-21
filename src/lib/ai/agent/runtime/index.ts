@@ -56,7 +56,7 @@ import type { AgentRunTrace } from './trace'
 import type { GuardEvidence } from '@/lib/ai/guardEvidence'
 import { answerV4Enabled } from '@/lib/ai/answerV4/flag'
 import { understandTurn, understandingTrace, type TurnUnderstanding, type UnderstandResult } from '@/lib/ai/answerV4/understand'
-import { resolveDocMedia, type DocMediaDeps } from '@/lib/ai/answerV4/docMedia'
+import { resolveDocMedia, prewarmDocMedia, type DocMediaDeps } from '@/lib/ai/answerV4/docMedia'
 import { docMediaFrame, sanitizeDocMedia } from '@/lib/answerDoc/media'
 import { createHostedResearch, hostedSearchOn, HOSTED_TOOL_TIMEOUT_MS } from '@/lib/ai/answerV4/hostedResearch'
 import { retrievalV5Enabled } from '@/lib/ai/retrievalV5/flag'
@@ -402,7 +402,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     const understanding: Promise<UnderstandResult> | null = v4
       ? understandTurn({ userText: c2UserText, previousUser: userAll.length > 1 ? userAll[userAll.length - 2] : null, previousReply: box?.turn.previousReply ?? null, signal: trackerCtrl.signal, ...(i.understandExtract ? { extract: i.understandExtract } : {}) })
         .then(r => {
-          if (r.u) { understood = r.u; i.trace.add('task', { decision: 'understood', ms: r.ms, ...understandingTrace(r.u) }); try { i.onUnderstanding?.(r.u) } catch { /* bookkeeping only */ } }
+          if (r.u) { understood = r.u; i.trace.add('task', { decision: 'understood', ms: r.ms, ...understandingTrace(r.u) }); try { i.onUnderstanding?.(r.u) } catch { /* bookkeeping only */ }; if (!i.docMediaDeps) prewarmDocMedia(r.u) }
           else i.trace.add('error', { scope: 'understand', message: r.error ?? 'no_result', ms: r.ms })
           i.trace.counters.usd += r.usd
           return r

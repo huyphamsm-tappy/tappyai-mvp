@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { createOpenAI } from '@ai-sdk/openai'
 import { APICallError } from 'ai'
 import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
@@ -272,7 +273,13 @@ export { reasoningHeadroomTokens }
 export function buildResponsesRequest(modelId: string, effort: ReasoningEffort, opts: CallOpts, now = Date.now()): { body: Record<string, unknown>; replayed: number; warnings: string[] } {
   const { instructions, input, replayed, warnings } = promptToResponsesInput(opts.prompt, now)
   const body: Record<string, unknown> = { model: modelId, input, store: false, reasoning: { effort }, include: ['reasoning.encrypted_content'] }
-  if (instructions) body.instructions = instructions
+  if (instructions) {
+    body.instructions = instructions
+    // 21/11/2026 (latency, quality-neutral): a stable routing key for the provider's prompt cache, derived from the FIRST 3 000 characters of the instructions
+    // (the shared, per-deployment part; the dated/per-user part comes after it). Measured on UAT: cross-turn cache reads were 0 — every turn re-processed
+    // ~13 000 prompt tokens. The key changes nothing about what is sent or answered; it only lets requests with the same opening land on the same cache.
+    body.prompt_cache_key = `tappy-${createHash('sha256').update(instructions.slice(0, 3000)).digest('hex').slice(0, 16)}`
+  }
   // C2_REASONING_HEADROOM_TOKENS (C2 Phase 3): on the Responses API the reasoning tokens count INSIDE max_output_tokens, so an answer budget
   // sized for visible text (1500) was eaten by reasoning in 23/24 cut calls of benchmark C. With reasoning on, the limit gets this headroom on top.
   // C2_REQUEST_BUDGET: under a request ledger every generation is capped at 4 000 output tokens, reasoning and text TOGETHER (the API has one cap).

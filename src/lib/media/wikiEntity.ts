@@ -39,7 +39,31 @@ export function sameSubject(title: string, subject: string): boolean {
   return (a.includes(b) || b.includes(a)) && common >= Math.min(2, wb.length)
 }
 
-export async function fetchWikiEntity(subject: string, lang: string, fetchImpl: FetchLike = fetch as unknown as FetchLike, timeoutMs = 1500): Promise<MediaEntity | null> {
+/**
+ * Latency (21/11/2026, quality-neutral): an identical lookup made within two minutes — or one STILL IN FLIGHT — returns the same promise, so a lookup that was started
+ * while the answer was still being written (see `prewarmDocMedia`) is simply waiting for the card when the answer ends. The result is exactly what a fresh
+ * lookup returns; a failed/empty lookup is never kept (a transient Wikipedia error must not hide a card for two minutes). Only the default `fetch`
+ * is memoised — a test that passes its own fetch always gets a fresh lookup.
+ */
+const MEMO_MS = 120_000
+const memo = new Map<string, { t: number; p: Promise<unknown> }>()
+function memoised<T>(key: string, run: () => Promise<T | null>): Promise<T | null> {
+  const now = Date.now()
+  const hit = memo.get(key)
+  if (hit && now - hit.t < MEMO_MS) return hit.p as Promise<T | null>
+  if (memo.size > 200) for (const [k, v] of memo) if (now - v.t >= MEMO_MS) memo.delete(k)
+  const p = run()
+  memo.set(key, { t: now, p })
+  p.then(r => { if (r == null && memo.get(key)?.p === p) memo.delete(key) }, () => { if (memo.get(key)?.p === p) memo.delete(key) })
+  return p
+}
+
+export function fetchWikiEntity(subject: string, lang: string, fetchImpl?: FetchLike, timeoutMs = 1500): Promise<MediaEntity | null> {
+  if (fetchImpl) return fetchWikiEntityUncached(subject, lang, fetchImpl, timeoutMs)
+  return memoised(`entity|${lang}|${subject.trim()}`, () => fetchWikiEntityUncached(subject, lang, fetch as unknown as FetchLike, timeoutMs))
+}
+
+async function fetchWikiEntityUncached(subject: string, lang: string, fetchImpl: FetchLike, timeoutMs: number): Promise<MediaEntity | null> {
   const title = subject.trim().replace(/\s+/g, '_')
   if (!title || title.length > 80) return null
   for (const wiki of lang === 'en' ? ['en'] : ['vi', 'en']) {
@@ -61,7 +85,12 @@ export async function fetchWikiEntity(subject: string, lang: string, fetchImpl: 
  * The title of the SAME article in the other Wikipedia (its interlanguage link): vi "Tesla" → en "Tesla (unit)", en "Tesla, Inc." → vi
  * "Tesla, Inc.". One GET to a fixed host (`from` is one of two literals; only the title varies, URL-encoded). Any failure → null.
  */
-export async function wikiLanglink(title: string, from: 'vi' | 'en', to: 'vi' | 'en', fetchImpl: FetchLike = fetch as unknown as FetchLike, timeoutMs = 1500): Promise<string | null> {
+export function wikiLanglink(title: string, from: 'vi' | 'en', to: 'vi' | 'en', fetchImpl?: FetchLike, timeoutMs = 1500): Promise<string | null> {
+  if (fetchImpl) return wikiLanglinkUncached(title, from, to, fetchImpl, timeoutMs)
+  return memoised(`langlink|${from}|${to}|${title.trim()}`, () => wikiLanglinkUncached(title, from, to, fetch as unknown as FetchLike, timeoutMs))
+}
+
+async function wikiLanglinkUncached(title: string, from: 'vi' | 'en', to: 'vi' | 'en', fetchImpl: FetchLike, timeoutMs: number): Promise<string | null> {
   const t = title.trim()
   if (!t || t.length > 100 || from === to) return null
   const ctrl = new AbortController()

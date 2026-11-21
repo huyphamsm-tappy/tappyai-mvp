@@ -222,3 +222,24 @@ export async function resolveDocMedia(
   const annotation: DocMediaAnnotation | null = items.length ? { kind: DOC_MEDIA_KIND, v: 1, items } : null
   return { block, annotation, webImages, trace }
 }
+
+/**
+ * Latency, quality-neutral (21/11/2026): the subject cards depend only on the UNDERSTANDING of the question, which settles while the answer is still being
+ * written — yet they used to be looked up after the answer ended (1.6–2.6 s of tail measured on UAT). This starts exactly the lookups `resolveDocMedia` will make
+ * for those entities (same names, same language, the memoised Wikipedia helpers) so they are already in flight, or finished, when the answer ends. It decides
+ * nothing: the cards, the sense checks and every guard run afterwards as before, on the same data. Fire-and-forget; never throws; a no-op for the shapes that
+ * get no subject card.
+ */
+export function prewarmDocMedia(u: TurnUnderstanding): void {
+  try {
+    if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest') return
+    const taught = u.intent === 'how_to' ? u.entities.filter(e => e.type === 'dish') : []
+    if (u.answer_shape === 'steps' && !taught.length) return
+    const wanted = (taught.length ? taught : u.entities).filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
+    if (!wanted.length || (wanted.length > 1 && u.answer_shape !== 'comparison')) return
+    const lang = wikiLangOf(u)
+    const wiki = (s: string, l: string) => fetchWikiEntity(s, l)
+    const langlink = (t: string, f: 'vi' | 'en', to: 'vi' | 'en') => wikiLanglink(t, f, to)
+    for (const e of wanted) void localizedWikiEntity(e.name, lang, wiki, langlink).catch(() => null)
+  } catch { /* a warm-up never breaks a turn */ }
+}
