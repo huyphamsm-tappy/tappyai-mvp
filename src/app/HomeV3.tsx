@@ -64,6 +64,7 @@ interface Suggestion {
   text: string
   textEn: string
   category: string
+  topic?: string
   emoji: string
   gradient: string
   imageUrl?: string
@@ -132,6 +133,15 @@ const CATEGORY_ART_VARIANTS: Record<string, readonly string[]> = {
   entertainment: ['/home/inspire/entertainment.webp', '/home/inspire/entertainment-2.webp', '/home/inspire/entertainment-3.webp'],
 }
 const ART_POOL: readonly string[] = Object.values(CATEGORY_ART_VARIANTS).flat()
+/** Owner-supplied photographs (21/11/2026) for the any-topic cards, 840x320, one or two per topic. Topics without a file (tech, writing) show the mascot. */
+export const TOPIC_ART: Record<string, readonly string[]> = {
+  work: ['/home/topics/work.webp', '/home/topics/work-2.webp'],
+  study: ['/home/topics/study.webp'],
+  money: ['/home/topics/money.webp', '/home/topics/money-2.webp'],
+  health: ['/home/topics/health.webp', '/home/topics/health-2.webp'],
+  family: ['/home/topics/family.webp', '/home/topics/family-2.webp'],
+  news: ['/home/topics/news.webp'],
+}
 /** Neutral Tappy poses for cards outside the five photographed categories (see `assignCardArt`). Files in /public/tappy. */
 const NEUTRAL_MASCOT_ART: readonly string[] = ['/tappy/thinking.png', '/tappy/speaking.png', '/tappy/recommendation.png', '/tappy/aitools.png', '/tappy/welcome.png']
 const isMascotArt = (src: string) => src.startsWith('/tappy/')
@@ -166,6 +176,8 @@ const CATEGORY_PREFERRED_ART: Record<string, string> = {
  *  the choice must not be able to depend on the prompt text or the emoji. */
 export interface ArtAssignable {
   category: string
+  /** The topic an any-topic prompt is about (authored with the prompt). Used only when the category has no photography of its own. */
+  topic?: string
   /** 🔑 FUTURE-PROOFING, AS CODE RATHER THAN AS A COMMENT. When a real recommendation object
    *  arrives carrying its own photograph, it wins outright — a real picture of a real thing beats
    *  any placeholder, and it does not compete for a slot in the pool. Nothing sets this today. */
@@ -199,9 +211,14 @@ export function assignCardArt(cards: readonly ArtAssignable[]): string[] {
   // 21/11/2026 (owner: "content một nơi, hình một nẻo"): a card whose category has no photography of its own (`general`: money, work, study,
   // personal decisions…) used to take whatever scene was left in the pool — a grilled chicken over an exchange-rate question, a waterfall over a
   // reading habit. It now gets the Tappy mascot in a neutral pose, rotated by position (never by the card's words), which fits any question.
+  // 21/11/2026 (owner supplied the photographs): a card whose prompt carries a TOPIC (authored in suggestedPrompts.ts, not read from its words) takes the
+  // first free picture of that topic; a repeated topic takes the topic's next picture; when the topic has none left (or none yet: tech, writing) the mascot.
   let neutral = 0
+  const topicUsed = new Set<string>()
   cards.forEach((card, i) => {
     if (out[i] || CATEGORY_ART_VARIANTS[card.category]) return
+    const pick = card.topic ? (TOPIC_ART[card.topic] ?? []).find(x => !topicUsed.has(x)) : undefined
+    if (pick) { out[i] = pick; topicUsed.add(pick); return }
     out[i] = NEUTRAL_MASCOT_ART[neutral % NEUTRAL_MASCOT_ART.length]
     neutral++
   })

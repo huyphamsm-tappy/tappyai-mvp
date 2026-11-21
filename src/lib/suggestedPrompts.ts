@@ -4,18 +4,26 @@ import type { UserMemory } from './memory/memoryService'
 // The five verticals are tools with their own data, not Tappy's scope (owner principle 11/10), so general prompts get at least half the strip.
 export type PromptCategoryName = 'food' | 'shopping' | 'entertainment' | 'travel' | 'spa' | 'general'
 
+/**
+ * What an any-topic (`general`) prompt is ABOUT — authored with the prompt, so the picture on its card can match it (owner 21/11/2026: "content one place, picture another").
+ * Only `general` prompts carry one. Topics with owner-supplied photographs: work, study, money, health, family, news; `tech` and `writing` have none yet (the card shows the mascot).
+ */
+export type PromptTopic = 'work' | 'study' | 'money' | 'health' | 'family' | 'news' | 'tech' | 'writing'
+
 export interface SuggestedPrompt {
   text: string
   textEn: string
   category: PromptCategoryName
   emoji: string
   gradient: string
+  topic?: PromptTopic
 }
 
 type PromptItem = {
   text: string
   textEn: string
   category: PromptCategoryName
+  topic?: PromptTopic
   emoji?: string
   gradient?: string
 }
@@ -215,22 +223,22 @@ const DISCOVERY_PROMPTS: PromptItem[] = [
 
 // ===== ANY-TOPIC PROMPTS (not a vertical: advice, work, study, money, decisions, relationships, habits, knowledge) =====
 const GENERAL_PROMPTS: PromptItem[] = [
-  { text: 'Mình đang phân vân giữa hai lời mời làm việc — giúp mình cân nhắc nhé?', textEn: "I'm torn between two job offers — can you help me weigh them?", category: 'general' },
-  { text: 'Nên học cao học hay đi làm ngay sau khi ra trường?', textEn: 'Grad school or start working right after graduating?', category: 'general', emoji: '🎓' },
-  { text: 'Có một khoản tiền nhàn rỗi: nên trả nợ hay để tiết kiệm?', textEn: 'I have spare money: pay off debt or save it?', category: 'general', emoji: '💰' },
-  { text: 'Giải thích giúp mình lãi kép là gì, cho ví dụ dễ hiểu', textEn: 'Explain compound interest with an easy example', category: 'general', emoji: '📈' },
-  { text: 'Viết lại giúp mình email xin nghỉ phép cho lịch sự hơn', textEn: 'Help me rewrite a leave-request email so it sounds more polite', category: 'general', emoji: '✉️' },
-  { text: 'Mình hay ngủ muộn rồi mệt cả ngày — đổi thói quen thế nào cho dễ?', textEn: 'I stay up late and feel tired all day — how can I change the habit?', category: 'general', emoji: '😴' },
-  { text: 'Làm sao nói chuyện với người thân khi hai bên đang hơi căng về chuyện tiền?', textEn: 'How do I talk to a family member when money is causing tension?', category: 'general', emoji: '💬' },
-  { text: 'Laptop hay MacBook cho người mới học lập trình?', textEn: 'Laptop or MacBook for someone learning to code?', category: 'general', emoji: '💻' },
-  { text: 'Chuẩn bị gì cho buổi phỏng vấn trong 2 ngày tới?', textEn: 'How should I prepare for an interview in two days?', category: 'general', emoji: '🗂️' },
-  { text: 'Giải thích giúp mình lạm phát ảnh hưởng thế nào đến tiền tiết kiệm', textEn: 'Explain how inflation affects my savings', category: 'general', emoji: '📉' },
-  { text: 'Tin tức nổi bật hôm nay có gì đáng chú ý?', textEn: "What's the most notable news today?", category: 'general', emoji: '📰' },
-  { text: 'Mình muốn bắt đầu tập thói quen đọc sách — bắt đầu từ đâu?', textEn: 'I want to build a reading habit — where do I start?', category: 'general', emoji: '📚' },
-  { text: 'Tỷ giá USD/VND hôm nay là bao nhiêu và vì sao hay dao động?', textEn: "What's today's USD/VND rate and why does it fluctuate?", category: 'general', emoji: '💱' },
-  { text: 'Mình bị áp lực công việc, làm gì để bớt stress mà không bỏ việc?', textEn: "Work pressure is getting to me — how to ease stress without quitting?", category: 'general', emoji: '🧘' },
-  { text: 'Học tiếng Anh giao tiếp trong 3 tháng — lộ trình thực tế?', textEn: 'Learning conversational English in 3 months — a realistic plan?', category: 'general', emoji: '🗣️' },
-  { text: 'Nên đàm phán lương thế nào khi nhận offer mới?', textEn: 'How should I negotiate salary on a new offer?', category: 'general', emoji: '🤝' },
+  { text: 'Mình đang phân vân giữa hai lời mời làm việc — giúp mình cân nhắc nhé?', textEn: "I'm torn between two job offers — can you help me weigh them?", category: 'general', topic: 'work' },
+  { text: 'Nên học cao học hay đi làm ngay sau khi ra trường?', textEn: 'Grad school or start working right after graduating?', category: 'general', topic: 'study', emoji: '🎓' },
+  { text: 'Có một khoản tiền nhàn rỗi: nên trả nợ hay để tiết kiệm?', textEn: 'I have spare money: pay off debt or save it?', category: 'general', topic: 'money', emoji: '💰' },
+  { text: 'Giải thích giúp mình lãi kép là gì, cho ví dụ dễ hiểu', textEn: 'Explain compound interest with an easy example', category: 'general', topic: 'money', emoji: '📈' },
+  { text: 'Viết lại giúp mình email xin nghỉ phép cho lịch sự hơn', textEn: 'Help me rewrite a leave-request email so it sounds more polite', category: 'general', topic: 'writing', emoji: '✉️' },
+  { text: 'Mình hay ngủ muộn rồi mệt cả ngày — đổi thói quen thế nào cho dễ?', textEn: 'I stay up late and feel tired all day — how can I change the habit?', category: 'general', topic: 'health', emoji: '😴' },
+  { text: 'Làm sao nói chuyện với người thân khi hai bên đang hơi căng về chuyện tiền?', textEn: 'How do I talk to a family member when money is causing tension?', category: 'general', topic: 'family', emoji: '💬' },
+  { text: 'Laptop hay MacBook cho người mới học lập trình?', textEn: 'Laptop or MacBook for someone learning to code?', category: 'general', topic: 'tech', emoji: '💻' },
+  { text: 'Chuẩn bị gì cho buổi phỏng vấn trong 2 ngày tới?', textEn: 'How should I prepare for an interview in two days?', category: 'general', topic: 'work', emoji: '🗂️' },
+  { text: 'Giải thích giúp mình lạm phát ảnh hưởng thế nào đến tiền tiết kiệm', textEn: 'Explain how inflation affects my savings', category: 'general', topic: 'money', emoji: '📉' },
+  { text: 'Tin tức nổi bật hôm nay có gì đáng chú ý?', textEn: "What's the most notable news today?", category: 'general', topic: 'news', emoji: '📰' },
+  { text: 'Mình muốn bắt đầu tập thói quen đọc sách — bắt đầu từ đâu?', textEn: 'I want to build a reading habit — where do I start?', category: 'general', topic: 'study', emoji: '📚' },
+  { text: 'Tỷ giá USD/VND hôm nay là bao nhiêu và vì sao hay dao động?', textEn: "What's today's USD/VND rate and why does it fluctuate?", category: 'general', topic: 'money', emoji: '💱' },
+  { text: 'Mình bị áp lực công việc, làm gì để bớt stress mà không bỏ việc?', textEn: "Work pressure is getting to me — how to ease stress without quitting?", category: 'general', topic: 'health', emoji: '🧘' },
+  { text: 'Học tiếng Anh giao tiếp trong 3 tháng — lộ trình thực tế?', textEn: 'Learning conversational English in 3 months — a realistic plan?', category: 'general', topic: 'study', emoji: '🗣️' },
+  { text: 'Nên đàm phán lương thế nào khi nhận offer mới?', textEn: 'How should I negotiate salary on a new offer?', category: 'general', topic: 'work', emoji: '🤝' },
 ]
 
 type PromptCategory = PromptItem['category']
@@ -366,6 +374,7 @@ export function getDynamicPrompts(
     text: localize(p.text),
     textEn: localizeEn(p.textEn),
     category: p.category,
+    ...(p.topic ? { topic: p.topic } : {}),
     emoji: p.emoji ?? DEFAULT_EMOJI[p.category] ?? '✨',
     gradient: p.gradient ?? DEFAULT_GRADIENT[p.category] ?? DEFAULT_GRADIENT.food,
   }))
