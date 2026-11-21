@@ -57,6 +57,7 @@ import LinkPoster from '@/components/LinkPoster'
 import { ClipViewer } from '@/app/reviews/ProfileTab'
 import { isShareOnlyName, type Review } from '@/app/reviews/feedShared'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
+import { myBlocks, setBlocked, rememberBlock } from '@/lib/safety/safetyClient'
 import { rejectCoverFile, uploadCover, removeCover, CoverRequestError } from '@/lib/profile/cover'
 import { uploadErrorKey } from '@/lib/profile/uploadError'
 import { loadLiked, loadSaved, loadHidden } from './ownerCollections'
@@ -99,6 +100,8 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
+  const [iBlocked, setIBlocked] = useState(false)
+  const [reloadTick, setReloadTick] = useState(0)
   const [following, setFollowing] = useState(false)
   const [followBusy, setFollowBusy] = useState(false)
   const [messageBusy, setMessageBusy] = useState(false)
@@ -135,14 +138,18 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
         // contribution is shared links should not land on an empty "Bài đăng".
         if (!rows.some(r => !isShareOnlyName(r.place_name)) && rows.some(r => isShareOnlyName(r.place_name))) setTab('shares')
       } catch {
-        if (!cancelled) setLoadError(true)
+        if (!cancelled) {
+          setLoadError(true)
+          // A blocked account answers "not found". If it is one the viewer blocked, say so and offer Unblock (there was no other place on the web to undo a block).
+          if (viewerId) myBlocks().then(s => { if (!cancelled) setIBlocked(s.has(userId)) }).catch(() => {})
+        }
       } finally {
         if (!cancelled) setLoading(false)
       }
     }
     load()
     return () => { cancelled = true }
-  }, [userId, locale])
+  }, [userId, locale, viewerId, reloadTick])
 
   // ── Private collections: on demand, owner only ───────────────────────────
   const loadCollection = useCallback(async (which: PrivateTab) => {
@@ -368,7 +375,19 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
         ) : loadError || !profile ? (
           <div className="flex flex-col items-center gap-2 py-24 text-white/60">
             <AlertCircle size={34} className="opacity-40" />
-            <p className="text-sm">{t('reviews.profileLoadError')}</p>
+            <p className="text-sm">{t(iBlocked ? 'v3.publicProfile.youBlocked' : 'reviews.profileLoadError')}</p>
+            {iBlocked && (
+              <button
+                type="button"
+                data-testid="profile-unblock"
+                className="mt-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
+                onClick={async () => {
+                  if ((await setBlocked(userId, false)) === 'ok') { await rememberBlock(userId, false); setIBlocked(false); setReloadTick(n => n + 1) }
+                }}
+              >
+                {t('safety.unblock')}
+              </button>
+            )}
           </div>
         ) : (
           <>
