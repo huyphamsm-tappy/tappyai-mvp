@@ -135,13 +135,21 @@ describe('accessibility basics', () => {
     }
   })
 
-  it('sign-in is communicated in text, never by colour alone', () => {
-    const { container } = renderTools()
+  it('sign-in is communicated in text, never by colour alone (signed-out visitor)', () => {
+    const { container } = render(<ToolsView user={null} />)
     const gated = smartTools().filter((t) => t.auth)
     expect(gated.length, 'the fixture assumes at least one auth-gated tool').toBeGreaterThan(0)
     for (const tool of gated) {
       const card = container.querySelector(`[data-tool="${tool.id}"]`) as HTMLElement
       expect(card.textContent, `${tool.id} must SAY it needs sign-in`).toContain('Sign-in required')
+    }
+  })
+
+  it('a signed-in user is not told to sign in (found in a real UAT run)', () => {
+    const { container } = renderTools()
+    for (const tool of smartTools().filter((t) => t.auth)) {
+      const card = container.querySelector(`[data-tool="${tool.id}"]`) as HTMLElement
+      expect(card.textContent, `${tool.id} must not show the sign-in hint to a signed-in user`).not.toContain('Sign-in required')
     }
   })
 

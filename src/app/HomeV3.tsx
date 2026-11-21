@@ -815,7 +815,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           <div className="mt-3">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {homeSmartTools().map((tool) => (
-                <SmartToolCard key={tool.id} tool={tool} variant="compact" />
+                <SmartToolCard key={tool.id} tool={tool} variant="compact" signedIn={user} />
               ))}
             </div>
           </div>

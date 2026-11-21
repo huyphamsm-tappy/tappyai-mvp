@@ -131,7 +131,7 @@ export default function ToolsView({ user }: { user: ComponentProps<typeof Header
                     overflows the page horizontally at any step. */}
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 xl:grid-cols-4 xl:gap-5">
                   {group.tools.map((tool) => (
-                    <SmartToolCard key={tool.id} tool={tool} />
+                    <SmartToolCard key={tool.id} tool={tool} signedIn={!!user} />
                   ))}
                 </div>
               </section>
