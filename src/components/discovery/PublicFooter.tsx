@@ -56,7 +56,8 @@ function StoreBadge({ store, href, label, soon }: { store: 'google' | 'apple'; h
       </span>
     </>
   )
-  const cls = 'inline-flex h-[46px] items-center gap-2.5 rounded-lg border border-white/40 bg-black px-4 text-white'
+  // Both badges share one size, radius and glow (new banner design, 21/11/2026).
+  const cls = 'inline-flex h-[50px] w-[168px] shrink-0 items-center justify-center gap-2.5 whitespace-nowrap rounded-[14px] border border-[rgba(96,165,250,0.45)] bg-[#050b1c] px-4 text-white shadow-[0_0_14px_rgba(59,130,246,0.25),inset_0_1px_0_rgba(255,255,255,0.08)]'
   return href
     ? <a href={href} className={`${cls} transition-transform hover:scale-[1.03]`} rel="noopener noreferrer" target="_blank" data-badge={store}>{inner}</a>
     : <span className={`${cls} cursor-default opacity-60`} aria-disabled="true" data-badge={store}>{inner}</span>
@@ -111,21 +112,30 @@ export default function PublicFooter() {
     <footer className="mt-16" data-testid="public-footer">
       {/* ── App-download banner (compact, phones overflow the top edge) ───── */}
       <section
-        className="relative mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-4 overflow-hidden rounded-2xl border border-white/10 px-6 py-4 sm:px-9 lg:flex-nowrap"
-        style={{ background: 'linear-gradient(95deg, #0e2756 0%, #123a7a 60%, #1a438f 100%)' }}
+        className="relative mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-4 overflow-hidden rounded-[24px] border border-[rgba(96,165,250,0.35)] px-6 py-4 shadow-[0_0_28px_rgba(37,99,235,0.22)] sm:px-9 lg:flex-nowrap"
+        style={{ background: 'linear-gradient(100deg, #060f26 0%, #0a1b44 55%, #0d2a62 100%)' }}
         data-footer-banner
       >
-        {/* Mockup order, left to right: the words · the two store badges side by side · the mascot (fits inside the banner). */}
-        <div className="min-w-0 flex-1 lg:flex-none lg:basis-[38%]">
-          <h2 className="text-[19px] font-bold leading-tight text-white sm:text-[21px]">{t('footer.bannerTitle')}</h2>
-          <p className="mt-1 text-[13px] text-blue-100/85 sm:text-[14px]">{t('footer.bannerBody')}</p>
+        {/* Depth: a blue glow along the bottom edge and a soft wave behind the mascot. */}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-10" style={{ background: 'linear-gradient(to top, rgba(37,99,235,0.45), transparent)' }} />
+        <svg aria-hidden="true" viewBox="0 0 400 100" preserveAspectRatio="none" className="pointer-events-none absolute bottom-0 right-0 hidden h-full w-[34%] sm:block">
+          <path d="M0 100 C 70 60, 130 40, 200 62 S 330 70, 400 30 L 400 100 Z" fill="rgba(37,99,235,0.28)" />
+          <path d="M60 100 C 130 78, 210 70, 280 82 S 360 70, 400 56 L 400 100 Z" fill="rgba(56,139,253,0.30)" />
+        </svg>
+        {/* Order, left to right: the words (with a small blue accent bar) · the two badges, same size · the mascot as the focal point. */}
+        <div className="relative flex min-w-0 flex-1 items-stretch gap-3.5 lg:flex-none">
+          <span aria-hidden="true" className="w-[3px] shrink-0 rounded-full" style={{ background: 'linear-gradient(to bottom, #22d3ee, #2563eb)' }} />
+          <div className="min-w-0">
+            <h2 className="text-[19px] font-bold leading-tight text-white sm:text-[20px] lg:whitespace-nowrap">{t('footer.bannerTitle')}</h2>
+            <p className="mt-1 text-[13px] text-blue-100/80 sm:text-[14px]">{t('footer.bannerBody')}</p>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3 lg:flex-1 lg:justify-center">
+        <div className="relative flex flex-wrap items-center gap-3 lg:flex-1 lg:justify-center">
           <StoreBadge store="google" href={androidLive ? GOOGLE_PLAY_URL : null} label={t('footer.badgeGetOn')} soon={t('footer.badgeSoon')} />
           <StoreBadge store="apple" href={iosLive ? APP_STORE_URL : null} label={t('footer.badgeDownloadOn')} soon={t('footer.badgeSoon')} />
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element -- the mascot from /public, decorative */}
-        <img src="/branding/mascot-scooter.webp" alt="" aria-hidden="true" className="pointer-events-none ml-auto hidden h-[92px] w-auto shrink-0 object-contain sm:block" data-footer-mascot />
+        <img src="/branding/mascot-scooter.webp" alt="" aria-hidden="true" className="pointer-events-none relative ml-auto hidden h-[100px] w-auto shrink-0 object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.45)] sm:block" data-footer-mascot />
       </section>
 
       {/* ── Brand + columns ─────────────────────────────────────────────── */}
