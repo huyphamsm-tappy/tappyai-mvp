@@ -21,13 +21,18 @@ export const APP_STORE_URL: string | null = rawAppStore === 'off' ? null : rawAp
  * Official social accounts for the footer icons. Each is an https URL set in its own NEXT_PUBLIC_SOCIAL_* variable; unset = the icon is
  * drawn but is not a link (no account URL is invented). Literal `process.env.X` reads so Next inlines them in the browser bundle.
  */
-const httpsOrNull = (v: string | undefined): string | null => (v && /^https:\/\//.test(v.trim()) ? v.trim() : null)
+function socialLink(env: string | undefined, fallback: string | null): string | null {
+  const v = env?.trim()
+  if (v === 'off') return null
+  return v && /^https:\/\//.test(v) ? v : fallback
+}
 export const SOCIAL_LINKS = {
-  youtube: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE),
-  tiktok: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_TIKTOK),
-  facebook: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK),
-  instagram: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM),
-  x: httpsOrNull(process.env.NEXT_PUBLIC_SOCIAL_X),
+  // Owner-supplied official accounts (21/11/2026); an env value overrides, "off" hides the icon. LinkedIn: link to come.
+  facebook: socialLink(process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK, 'https://www.facebook.com/profile.php?id=61591106270254'),
+  tiktok: socialLink(process.env.NEXT_PUBLIC_SOCIAL_TIKTOK, 'https://www.tiktok.com/@tappyaivietnam'),
+  instagram: socialLink(process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM, 'https://www.instagram.com/tappyaivietnam/'),
+  threads: socialLink(process.env.NEXT_PUBLIC_SOCIAL_THREADS, 'https://www.threads.com/@tappyaivietnam'),
+  linkedin: socialLink(process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN, null),
 } as const
 
 export function playBadgeEnabled(env: Record<string, string | undefined> = { NEXT_PUBLIC_PLAY_LISTING_LIVE: process.env.NEXT_PUBLIC_PLAY_LISTING_LIVE }): boolean {

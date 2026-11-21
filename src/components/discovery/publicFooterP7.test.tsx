@@ -44,6 +44,18 @@ describe('public footer', () => {
     expect(container.textContent).not.toContain('Sẵn có')
     expect(container.innerHTML).not.toMatch(/apps\.apple\.com|play\.google\.com/)
   })
+  it('social icons: the four official accounts link out; LinkedIn draws nothing until its link exists', () => {
+    const { container } = render(<PublicFooter />)
+    const hrefs = Object.fromEntries([...container.querySelectorAll('a[data-social]')].map((a) => [a.getAttribute('data-social'), a.getAttribute('href')]))
+    expect(hrefs).toEqual({
+      facebook: 'https://www.facebook.com/profile.php?id=61591106270254',
+      tiktok: 'https://www.tiktok.com/@tappyaivietnam',
+      instagram: 'https://www.instagram.com/tappyaivietnam/',
+      threads: 'https://www.threads.com/@tappyaivietnam',
+    })
+    expect(container.querySelector('[data-social="linkedin"]')).toBeNull()
+    expect(container.querySelector('a[data-social]')!.getAttribute('rel')).toContain('noopener')
+  })
   it('links the Community Guidelines, Terms and Privacy', () => {
     const { container } = render(<PublicFooter />)
     for (const h of ['/community-guidelines', '/terms', '/privacy']) expect(container.querySelector(`a[href="${h}"]`)).toBeTruthy()

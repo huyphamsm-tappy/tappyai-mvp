@@ -21,7 +21,7 @@ import AiDisclaimer from '@/components/AiDisclaimer'
 //     The QR is drawn in the browser by the project's own encoder (no outside service, nothing sent anywhere);
 //   · Về TappyAI and Hỗ trợ — About, Scam Shield, the scenario index, the extension, Community Guidelines, Terms, Privacy, Support;
 //   · the global AI disclaimer (UI contract).
-// Social icons link only to accounts configured in NEXT_PUBLIC_SOCIAL_* (see storeListing.ts); an unset one is drawn but not a link.
+// Social icons (Facebook, TikTok, Instagram, Threads, LinkedIn) link to the official accounts in storeListing.ts; an account without a link draws no icon.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const PUBLIC_FOOTER_ABOUT_LINKS = ['/about', '/scam-shield', SCAM_KB_PATH, '/extension'] as const
@@ -76,19 +76,21 @@ function StoreQr({ url, label }: { url: string; label: string }) {
 }
 
 const SocialSvg = {
-  youtube: <path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.900.5A3 3 0 0 0 1 7.200C.5 9.100.5 12 .5 12s0 2.900.5 4.800a3 3 0 0 0 2.100 2.100c1.900.5 8.900.5 8.900.5s7 0 8.900-.5a3 3 0 0 0 2.100-2.100c.5-1.900.5-4.800.5-4.800s0-2.900-.5-4.800ZM9.800 15.400V8.600L15.700 12l-5.900 3.400Z" />,
   tiktok: <path d="M16.600 3c.3 2.500 1.700 4 4.200 4.200v3a7 7 0 0 1-4.100-1.300v6.100a6 6 0 1 1-6-6c.3 0 .6 0 .9.100v3.100a3 3 0 1 0 2.100 2.900V3h2.900Z" />,
   facebook: <path d="M13.500 21.500v-8h2.700l.4-3.200h-3.100V8.300c0-.9.300-1.500 1.600-1.500h1.700V4c-.3 0-1.300-.1-2.400-.1-2.400 0-4 1.500-4 4.100v2.300H7.700v3.200h2.700v8h3.100Z" />,
   instagram: <path d="M12 7.500A4.500 4.500 0 1 0 16.500 12 4.500 4.500 0 0 0 12 7.500Zm0 7.400a2.900 2.900 0 1 1 2.900-2.900 2.900 2.900 0 0 1-2.900 2.900ZM16.800 6a1.100 1.100 0 1 0 1.100 1.100A1.100 1.100 0 0 0 16.800 6ZM12 3.500c-2.300 0-2.600 0-3.500.1-2.700.1-4.100 1.500-4.300 4.300-.1.900-.1 1.200-.1 3.500s0 2.600.1 3.500c.2 2.800 1.600 4.200 4.300 4.300.9.100 1.200.1 3.500.1s2.600 0 3.500-.1c2.800-.1 4.200-1.500 4.300-4.300.1-.9.1-1.200.1-3.500s0-2.600-.1-3.500c-.1-2.800-1.500-4.200-4.300-4.300-.9-.1-1.200-.1-3.500-.1Z" fillRule="evenodd" />,
-  x: <path d="M17.800 3h3.100l-6.800 7.700L22 21h-6.200l-4.900-6.300L5.300 21H2.200l7.300-8.300L2 3h6.400l4.400 5.800L17.800 3Zm-1.100 16.200h1.700L7.300 4.700H5.500l11.200 14.500Z" />,
+  threads: <path d="M12.200 3c-4.900 0-8 3.200-8 9s3.100 9 8 9c3.800 0 6.200-1.800 6.200-4.600 0-2-1.300-3.300-3.300-3.700.1-1.700-.4-3-1.400-3.900-.8-.7-1.900-1-3.100-1-1.800 0-3.100.8-3.800 2l1.500.9c.5-.8 1.200-1.200 2.200-1.200 1.600 0 2.500.9 2.500 2.400v.3c-.7-.1-1.400-.2-2.200-.1-2 .1-3.300 1.200-3.300 2.800 0 1.700 1.400 2.800 3.300 2.700 2.400-.1 3.600-1.500 3.800-3.800 1.100.3 1.600 1 1.600 1.900 0 1.700-1.500 2.800-4 2.800-3.700 0-5.800-2.300-5.800-7.200s2.100-7.200 5.800-7.200c1.900 0 3.300.5 4.300 1.600.7.800 1.100 1.800 1.300 3l1.800-.4c-.3-1.600-.9-2.900-1.900-3.900C16.600 3.700 14.700 3 12.200 3Zm.2 11.800c-.8 0-1.400-.4-1.400-1 0-.6.600-1 1.500-1.100.6 0 1.100 0 1.600.1-.1 1.400-.7 2-1.700 2Z" />,
+  linkedin: <path d="M20.400 20.500h-3.600v-5.600c0-1.300 0-3-1.800-3s-2.100 1.400-2.100 2.900v5.700H9.300V9h3.400v1.600c.5-.9 1.600-1.800 3.400-1.800 3.600 0 4.300 2.400 4.300 5.500v6.200ZM5.300 7.400a2.100 2.100 0 1 1 0-4.200 2.100 2.100 0 0 1 0 4.200Zm1.800 13.100H3.500V9h3.600v11.500ZM22.200 0H1.800C.8 0 0 .8 0 1.700v20.600c0 .9.800 1.700 1.800 1.700h20.400c1 0 1.800-.8 1.800-1.700V1.700C24 .8 23.200 0 22.200 0Z" />,
 } as const
 
+/** Drawn only when the account's link exists — an icon that goes nowhere is not shown. */
 function SocialIcon({ name, href }: { name: keyof typeof SocialSvg; href: string | null }) {
-  const svg = <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{SocialSvg[name]}</svg>
-  const cls = 'text-gray-400 transition-colors dark:text-gray-400'
-  return href
-    ? <a href={href} className={`${cls} hover:text-white`} rel="noopener noreferrer" target="_blank" aria-label={name} data-social={name}>{svg}</a>
-    : <span className={cls} aria-hidden="true" data-social={name}>{svg}</span>
+  if (!href) return null
+  return (
+    <a href={href} className="text-gray-400 transition-colors hover:text-white" rel="noopener noreferrer" target="_blank" aria-label={name} data-social={name}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{SocialSvg[name]}</svg>
+    </a>
+  )
 }
 
 export default function PublicFooter() {
@@ -139,11 +141,11 @@ export default function PublicFooter() {
           </Link>
           <p className="mt-3 max-w-[270px] text-[14px] text-gray-500 dark:text-gray-300">{t('footer.brandTagline')}</p>
           <div className="mt-5 flex items-center gap-5" data-footer-social>
-            <SocialIcon name="youtube" href={SOCIAL_LINKS.youtube} />
-            <SocialIcon name="tiktok" href={SOCIAL_LINKS.tiktok} />
             <SocialIcon name="facebook" href={SOCIAL_LINKS.facebook} />
+            <SocialIcon name="tiktok" href={SOCIAL_LINKS.tiktok} />
             <SocialIcon name="instagram" href={SOCIAL_LINKS.instagram} />
-            <SocialIcon name="x" href={SOCIAL_LINKS.x} />
+            <SocialIcon name="threads" href={SOCIAL_LINKS.threads} />
+            <SocialIcon name="linkedin" href={SOCIAL_LINKS.linkedin} />
           </div>
         </div>
         <nav aria-label={t('footer.explore')}>
