@@ -49,18 +49,10 @@ const stripComments = (src: string) =>
   src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1')
 
 describe('Home → Chat handoff carries the prompt', () => {
-  it('a prompt chip navigates to /chat with the question as ?q=', () => {
+  it('the "Thử hỏi Tappy" quick-prompt row is gone from Home (owner 21/11/2026); the chat bar is the way in', () => {
     const { container } = render(<HomeV3 user={false} userInfo={undefined} firstName="Huy" suggestions={[]} conversations={[]} hero={{ hour: 10, isWeekend: false, dayOfMonth: 1 }} />)
-    const chip = [...container.querySelectorAll('button.v3-chip')][0] as HTMLButtonElement
-    expect(chip, 'Home renders prompt chips').toBeTruthy()
-
-    fireEvent.click(chip)
-
-    expect(push).toHaveBeenCalledTimes(1)
-    const target = push.mock.calls[0][0] as string
-    expect(target.startsWith('/chat?q=')).toBe(true)
-    // The chip's own words are what gets asked — not a category, not a bare route.
-    expect(decodeURIComponent(target.slice('/chat?q='.length))).toBe(chip.textContent?.trim())
+    expect(container.querySelectorAll('button.v3-chip').length).toBe(0)
+    expect(container.textContent).not.toContain('Thử hỏi Tappy')
   })
 
   it('the composer sends what the user typed, and refuses to send nothing', () => {

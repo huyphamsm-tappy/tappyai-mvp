@@ -77,7 +77,7 @@ const ALL: readonly SmartTool[] = [
   // ── Discover ──────────────────────────────────────────────────────────────
   { id: 'suggest', href: '/recommendations', labelKey: 'v3.tool.suggest', descKey: 'v3.tool.suggestDesc', icon: Star, tone: 'var(--v3-amber)', group: 'v3.tools.discover', home: false },
   // The only auth-gated tool: `/group/new` redirects a signed-out visitor to /login. Measured.
-  { id: 'together', href: '/group/new', labelKey: 'v3.tool.together', descKey: 'v3.tool.togetherDesc', icon: Users, tone: 'var(--v3-rose)', group: 'v3.tools.discover', home: false, auth: true },
+  { id: 'together', href: '/group/new', labelKey: 'v3.tool.together', descKey: 'v3.tool.togetherDesc', icon: Users, tone: 'var(--v3-rose)', group: 'v3.tools.discover', home: true, auth: true }, // home: owner 21/11/2026 — Nhóm ăn sits on Home beside Cảnh báo lừa đảo and Chia bill
   { id: 'music', href: '/music', labelKey: 'v3.tool.music', descKey: 'v3.tool.musicDesc', icon: Music2, tone: 'var(--v3-violet)', group: 'v3.tools.discover', home: false },
 
   // ── Fun ───────────────────────────────────────────────────────────────────

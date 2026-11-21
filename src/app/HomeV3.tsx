@@ -8,7 +8,6 @@ import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
 import PublicFooter from '@/components/discovery/PublicFooter'
 import TappyPresence from '@/components/v3/TappyPresence'
-import AiLeftToday from '@/components/subscription/AiLeftToday'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -133,6 +132,9 @@ const CATEGORY_ART_VARIANTS: Record<string, readonly string[]> = {
   entertainment: ['/home/inspire/entertainment.webp', '/home/inspire/entertainment-2.webp', '/home/inspire/entertainment-3.webp'],
 }
 const ART_POOL: readonly string[] = Object.values(CATEGORY_ART_VARIANTS).flat()
+/** Neutral Tappy poses for cards outside the five photographed categories (see `assignCardArt`). Files in /public/tappy. */
+const NEUTRAL_MASCOT_ART: readonly string[] = ['/tappy/thinking.png', '/tappy/speaking.png', '/tappy/recommendation.png', '/tappy/aitools.png', '/tappy/welcome.png']
+const isMascotArt = (src: string) => src.startsWith('/tappy/')
 
 /** 🚨 A HINT, NOT A MAPPING — and the distinction is the whole point of this file's last defect.
  *
@@ -194,6 +196,16 @@ export function assignCardArt(cards: readonly ArtAssignable[]): string[] {
     if (card.imageUrl) out[i] = card.imageUrl
   })
 
+  // 21/11/2026 (owner: "content một nơi, hình một nẻo"): a card whose category has no photography of its own (`general`: money, work, study,
+  // personal decisions…) used to take whatever scene was left in the pool — a grilled chicken over an exchange-rate question, a waterfall over a
+  // reading habit. It now gets the Tappy mascot in a neutral pose, rotated by position (never by the card's words), which fits any question.
+  let neutral = 0
+  cards.forEach((card, i) => {
+    if (out[i] || CATEGORY_ART_VARIANTS[card.category]) return
+    out[i] = NEUTRAL_MASCOT_ART[neutral % NEUTRAL_MASCOT_ART.length]
+    neutral++
+  })
+
   cards.forEach((card, i) => {
     if (out[i]) return
     // Phase 7 8I: the first free picture OF THE CARD'S OWN CATEGORY (its preferred scene first, then that category's variants).
@@ -250,18 +262,6 @@ const CAPABILITIES: { id: string; icon: typeof Search; descKey: string; tone: st
   { id: 'travel', descKey: 'v3.home.capTravel', icon: Plane, tone: 'var(--v3-accent)' },
   { id: 'entertainment', descKey: 'v3.home.capEntertainment', icon: Clapperboard, tone: 'var(--v3-violet)' },
   { id: 'spa', descKey: 'v3.home.capSpa', icon: Flower2, tone: 'var(--v3-emerald)' },
-]
-
-/** 🚨 THE PROMPTS ARE ICON + TEXT, AS THE APPROVED MOCKUP SHOWS. They were bare strings.
- *  Each glyph is an existing lucide icon and is chosen for what the prompt ASKS — a cup for the
- *  cafe prompt, a plane for the trip, a shield for the scam check — so the row reads as things a
- *  person could say rather than as a set of filter tags. The keys and the strings are unchanged. */
-const QUICK_CHIPS: { key: string; icon: typeof Search; tone: string }[] = [
-  { key: 'v3.chip.cafe', icon: Coffee, tone: 'var(--v3-amber)' },
-  { key: 'v3.chip.plan', icon: Plane, tone: 'var(--v3-accent)' },
-  { key: 'v3.chip.translate', icon: Languages, tone: 'var(--v3-violet)' },
-  { key: 'v3.chip.split', icon: Users, tone: 'var(--v3-emerald)' },
-  { key: 'v3.chip.scam', icon: ShieldCheck, tone: 'var(--v3-rose)' },
 ]
 
 // 🔑 THE FIVE TOOLS HOME CURATES NOW COME FROM THE REGISTRY, NOT FROM A LIST HERE.
@@ -456,8 +456,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <p className="mt-3.5 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
               {t('v3.home.askSub')}
             </p>
-            {/* SUBSCRIPTIONS: "AI còn lại hôm nay x/y" — renders nothing unless SUBSCRIPTIONS_ENABLED, so Home is unchanged with the flag OFF. */}
-            <AiLeftToday className="mt-3" />
+            {/* 21/11/2026 (owner): the "AI còn lại hôm nay" quota card is removed from Home. */}
           </div>
 
           {/* 🚨 THE COMPOSER STOPS SHORT OF THE CANVAS EDGE, AS IT DOES IN THE MOCKUP.
@@ -551,29 +550,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </button>
           </form>
 
-          {/* 🚨 THE PROMPTS CARRY ICONS. In the mockup each pill opens with a semantic glyph —
-              a cup, a plane, cutlery, a shield, people — and that iconography is a large part of
-              why the row reads as things you could SAY rather than as filter tags. They were
-              plain text here. Every glyph is an existing lucide icon already used elsewhere in
-              this product, chosen to match what the prompt actually asks for. */}
-          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 lg:pr-[132px]">
-            <p className="text-[11.5px] font-medium" style={{ color: 'var(--v3-fg-muted)' }}>
-              {t('v3.home.tryAsking')}
-            </p>
-            <div className="v3-scroll-x flex gap-2 pb-0.5">
-              {QUICK_CHIPS.map(({ key, icon: ChipIcon, tone }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => ask(t(key))}
-                  className="v3-chip flex flex-shrink-0 items-center gap-1.5"
-                >
-                  <ChipIcon size={13} aria-hidden="true" style={{ color: tone }} />
-                  {t(key)}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* 21/11/2026 (owner): the "Thử hỏi Tappy" row of quick prompts is removed from Home — the chat bar is the way in. */}
         </section>
 
         {/* ── 2. CAPABILITIES — what the agent can actually do ──────────────
@@ -726,7 +703,10 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                   >
                     {/* The art. `aria-hidden` and empty alt: it is decoration behind a link whose
                         text already says where it goes, so a screen reader gains nothing from it. */}
-                    <span className="relative block h-[94px] w-full flex-shrink-0 overflow-hidden">
+                    <span
+                      className="relative block h-[94px] w-full flex-shrink-0 overflow-hidden"
+                      style={art && isMascotArt(art) ? { background: 'linear-gradient(135deg, #1b2a5e 0%, #2b2260 55%, #162447 100%)' } : undefined}
+                    >
                       {art && (
                         <img
                           src={art}
@@ -738,7 +718,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                              from a recommendation is not a placeholder, so marking it as one would
                              make the marker a lie the moment real data arrives. */
                           data-art-placeholder={s.imageUrl ? undefined : 'authored-vector-scene'}
-                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          className={`absolute inset-0 h-full w-full transition-transform duration-500 group-hover:scale-[1.04] ${isMascotArt(art) ? 'object-contain p-2' : 'object-cover'}`}
                         />
                       )}
                       {/* 🚨 THE CATEGORY IS A BADGE ON THE ART, WHICH IS WHERE THE MOCKUP PUTS

@@ -238,8 +238,8 @@ describe('no tool was dropped when Home stopped being a dashboard', () => {
     // curation is now pinned directly instead of inferred from a total.
     const { container } = renderHome()
     const tools = container.querySelector('[data-home-section="tools"]')!
-    // the five curated tools minus Translate (18/11/2026), Scan and Currency (20/11/2026) while they are hidden: Scam Alerts and Split the Bill remain
-    expect(tools.querySelectorAll('[data-tool]').length, 'Home shows the curated two, not the catalogue').toBe(2)
+    // the curated tools minus Translate (18/11/2026), Scan and Currency (20/11/2026) while they are hidden; Nhóm ăn joined on 21/11/2026 (owner): Scam Alerts, Split the Bill, Group dining
+    expect(tools.querySelectorAll('[data-tool]').length, 'Home shows the curated three, not the catalogue').toBe(3)
     // And the only other link in the section is that see-all, at the REAL destination.
     const others = [...tools.querySelectorAll('a[href]')].filter(a => !a.hasAttribute('data-tool'))
     expect(others.map(a => a.getAttribute('href')), 'one see-all, pointing at the Tools page').toEqual(['/tools'])
