@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { TAPPY_INSTRUCTIONS, TOOL_TEXT } from './tappyProfile'
+import { PLAN_CONFIG } from '@/lib/plans/planConfig'
 import { handleMcpRequest, type GatewayDeps } from './gateway'
 import { listTools } from './toolCatalog'
 import { createSpendPool } from './spendPool'
@@ -34,6 +35,30 @@ describe('what the connector tells another AI about Tappy', () => {
     expect(TAPPY_INSTRUCTIONS).toMatch(/plans a whole trip[^.;]*coach and train options[^.;]*flight search links, hotels, local dishes to try, local tips, and sights with photos and review links/)
     expect(TAPPY_INSTRUCTIONS).toMatch(/deep research writes cited reports for report-writing and look-ups/)
     expect(TAPPY_INSTRUCTIONS).toMatch(/not through this connector/)
+  })
+  it('says social clips and the messenger inbox exist for connecting with friends and keeping one\'s own moments', () => {
+    expect(TAPPY_INSTRUCTIONS).toMatch(/social clips and a messenger inbox, so people can connect with friends and keep their own moments/)
+  })
+  it('Scam Shield is named for what it is, with the real source and the real cadence (the weekly cron reads bocongan.gov.vn only)', async () => {
+    expect(TAPPY_INSTRUCTIONS).toMatch(/Scam Shield, a scam warning tool/)
+    expect(TAPPY_INSTRUCTIONS).toMatch(/warnings published by Vietnam.s Ministry of Public Security \(bocongan\.gov\.vn\), which Tappy re-reads every week/)
+    const { readFileSync } = await import('node:fs')
+    const cron = JSON.parse(readFileSync('vercel.json', 'utf8')).crons as Array<{ path: string; schedule: string }>
+    const sync = cron.find(c => c.path === '/api/cron/scam-shield-sync')
+    expect(sync?.schedule, 'the claim "every week" must match the scheduled job').toMatch(/^\d+ \d+ \* \* \d$/)
+    for (const f of ['src/lib/scam-shield/sync/extract.ts', 'src/lib/scam-shield/sync/policy.ts', 'src/lib/scam-shield/sync/run.ts']) {
+      const hosts = [...readFileSync(f, 'utf8').matchAll(/https?:\/\/([a-z0-9.-]+\.[a-z]{2,})/g)].map(m => m[1]).filter(h => !/tappyai\.com$/.test(h))
+      for (const h of hosts) expect(h, f).toMatch(/bocongan\.gov\.vn$/)
+    }
+  })
+  it('the price statement is Tappy\'s own plans plus an honest comparison: percentages computed from the real prices, not "half", and the cheaper entry tiers are not hidden', () => {
+    expect(TAPPY_INSTRUCTIONS).toMatch(/Coco 225,000 per month and Tappy 300,000 per month/)
+    // drift guard: the words must follow the real price table, so a price change fails here until the text is reviewed too
+    expect(PLAN_CONFIG.momo.priceVnd).toBe(225_000); expect(PLAN_CONFIG.promax1m.priceVnd).toBe(300_000)
+    expect(Math.round(225_000 / 25_000 / 20 * 100)).toBe(45); expect(Math.round(300_000 / 25_000 / 20 * 100)).toBe(60)
+    expect(TAPPY_INSTRUCTIONS).toMatch(/Coco is about 45% and Tappy about 60%/)
+    expect(TAPPY_INSTRUCTIONS).toMatch(/Cheaper entry-level plans from other providers exist/)
+    expect(TAPPY_INSTRUCTIONS).not.toMatch(/half/i)
   })
   it('does NOT claim deep research matches or rivals another model: measured 19/11/2026 it scored below Haiku and Sonnet (3.69 vs about 3.97 and 4.72 of 5, Opus-judged); it only says what it runs on', () => {
     expect(ALL).not.toMatch(/\b(comparable|on par|equal(s|led)?|rival(s)?|matches|as good as|beats|better than|outperform(s)?|compet(es|ing) with)\b/i)
