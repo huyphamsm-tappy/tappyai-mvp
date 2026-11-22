@@ -18,6 +18,8 @@ struct ChatPlanCardView: View {
     var planJSON: String? = nil
     var planShare: PlanSharing? = nil
     var onShare: () -> Void = {}
+    /// Pictures the server found for itinerary stops that had no photo of their own, by `SubjectImages.key(stop name)` (`tappy.subject_images.v1`, `stops`).
+    var stopImages: [String: URL] = [:]
 
     @ObservedObject private var images = PlanImageStore.shared
     @State private var publishing = false
@@ -188,7 +190,9 @@ struct ChatPlanCardView: View {
             .frame(width: 10)
             Text(stop.time.isEmpty ? "—" : stop.time).font(.system(size: 13, weight: .semibold)).foregroundStyle(PlanPal.text)
                 .frame(width: 42, alignment: .leading)
-            PlanImage(key: stop.imageKey, area: area, manifest: images.manifest, glyph: stop.emoji, glyphSize: 22, photoUrl: stop.photoUrl)
+            PlanImage(key: stop.imageKey, area: area, manifest: images.manifest, glyph: stop.emoji, glyphSize: 22,
+                      // the stop's own photo first, then the picture the server found for a stop that had none (web `stopImages` fallback)
+                      photoUrl: stop.photoUrl ?? stopImages[SubjectImages.key(stop.name)]?.absoluteString)
                 .frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 10))
             VStack(alignment: .leading, spacing: 2) {
                 Text(stop.name).font(.system(size: 14, weight: .semibold)).foregroundStyle(PlanPal.text).lineLimit(2)
@@ -209,7 +213,8 @@ struct ChatPlanCardView: View {
                 if stop.mapsLink != nil || stop.bookingLink != nil {
                     HStack(spacing: 14) {
                         if let url = stop.mapsLink { planLink("mappin.and.ellipse", "chat.plan.map", url) }
-                        if let url = stop.bookingLink { planLink("arrow.up.right.square", "chat.plan.bookNow", url) }
+                        // The web's own word for a stop's booking page is "Đặt chỗ" (`v206.trip.book`), the same as a stay's.
+                        if let url = stop.bookingLink { planLink("arrow.up.right.square", "chat.plan.bookStay", url) }
                     }
                     .padding(.top, 2)
                 }

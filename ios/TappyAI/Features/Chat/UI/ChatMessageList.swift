@@ -368,7 +368,8 @@ private struct AssistantBubble: View {
 
                 // Plan card
                 if let plan {
-                    ChatPlanCardView(plan: plan, planJSON: planJSON, planShare: planShare, onShare: onShare)
+                    ChatPlanCardView(plan: plan, planJSON: planJSON, planShare: planShare, onShare: onShare,
+                                     stopImages: subjectImages?.stops ?? [:])
                 }
 
                 // D1 — the shopping DECISION. Rendered only once streaming ends, like every other

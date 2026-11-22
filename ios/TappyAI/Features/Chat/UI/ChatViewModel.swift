@@ -727,7 +727,7 @@ final class ChatViewModel: AppObservableObject {
             let stream = self.service.chatWithContext(
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
-                responseStyle: nil,
+                responseStyle: ResponseStyle.current(),
                 userLocation: sentLocation,
                 guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil,
                 chatSessionId: self.chatSessionId,

@@ -176,7 +176,7 @@ final class ChatService: Sendable {
 
     /// `guestAgeDeclaration`: the guest's stated age (`18plus` | `YYYY`), sent as
     /// `x-tappy-age-declared`. Nil for accounts — their date of birth is read server-side.
-    func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: String?,
+    func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: [String: String]?,
                         userLocation: [String: Double]? = nil,
                         guestAgeDeclaration: String? = nil,
                         chatSessionId: String? = nil,
@@ -188,6 +188,8 @@ final class ChatService: Sendable {
         if let prefs = userPreferences, !prefs.isEmpty {
             bodyDict["userPreferences"] = prefs
         }
+        // The server reads an OBJECT `{tone, length}` (`route.ts`: a string is ignored). It was sent as a string, and never set, so the
+        // style the person chose in "Tappy knows" changed nothing.
         if let style = responseStyle, !style.isEmpty {
             bodyDict["responseStyle"] = style
         }

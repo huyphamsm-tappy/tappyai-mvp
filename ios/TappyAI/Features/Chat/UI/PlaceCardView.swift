@@ -233,6 +233,14 @@ private struct PlaceCardRow: View {
                         .foregroundStyle(TappyColor.textSecondary)
                 }
 
+                // The provider's OWN price band, shown plainly: unlike the snippet price below it is a structured field, not a number spotted in prose.
+                if let band = PriceBand.format(place.priceRangeText, lang: LocalizationManager.currentLanguageCode) {
+                    Text(band)
+                        .font(.system(size: 12))
+                        .foregroundStyle(TappyColor.textSecondary)
+                        .accessibilityIdentifier("place-price-range")
+                }
+
                 // A price seen in a search snippet. Labelled as REFERENCE, because that is what it
                 // is: presenting weak evidence as the place's price is what the label prevents.
                 if let signal = place.priceSignal, !signal.isEmpty {

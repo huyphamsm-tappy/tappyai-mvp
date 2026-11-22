@@ -250,6 +250,8 @@ struct PlaceCardView: Equatable, Sendable, Identifiable {
     var flags: [String] = []
     /// A stay's reference price from the realtime check (live card only; the durable block does not carry it).
     var stayOffer: LiveStayOffer? = nil
+    /// The provider's OWN price band ("100-200 N ₫"), a structured field shown plainly (web `formatPriceBandText`); live card only.
+    var priceRangeText: String? = nil
 }
 
 extension LivePlace {
@@ -280,7 +282,8 @@ extension LivePlace {
                 )
             },
             flags: flags,
-            stayOffer: stayOffer?.offer
+            stayOffer: stayOffer?.offer,
+            priceRangeText: priceRangeText
         )
     }
 }
@@ -497,6 +500,7 @@ extension LivePlace {
             phone: try? c.decode(String.self, forKey: .phone),
             priceLevel: try? c.decode(Int.self, forKey: .priceLevel),
             priceSignal: try? c.decode(String.self, forKey: .priceSignal),
+            priceRangeText: try? c.decode(String.self, forKey: .priceRangeText),
             stayOffer: try? c.decode(LenientStayOffer.self, forKey: .stayOffer),
             distanceKm: try? c.decode(Double.self, forKey: .distanceKm),
             categories: c.lossyArray(String.self, forKey: .categories),
