@@ -241,6 +241,16 @@ private struct PlaceCardRow: View {
                         .foregroundStyle(TappyColor.textSecondary)
                 }
 
+                // A hotel's reference price from the realtime check, with the platform and the time of the check (web `stayOfferLine`).
+                // Only the provider's own figures, hedged as the web hedges them ("chưa gồm thuế và phí", the booking page has the final price).
+                if let offer = place.stayOffer, let line = StayOfferLine.text(offer, lang: LocalizationManager.currentLanguageCode) {
+                    Text(line)
+                        .font(.system(size: 12))
+                        .foregroundStyle(TappyColor.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("place-stay-offer")
+                }
+
                 // Provider categories, verbatim. Two, like web — a card is not a tag cloud.
                 if !place.categories.isEmpty {
                     Text(place.categories.prefix(2).joined(separator: " · "))

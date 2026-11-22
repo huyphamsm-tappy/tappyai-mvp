@@ -6678,6 +6678,57 @@
         }
       }
     },
+    "place.stayPriceNight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reference price: {price}/night{guests}, excluding taxes and fees; checked on {platform} at {time} on {date}. Open the booking page for the final price."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giá tham khảo: {price}/đêm{guests}, chưa gồm thuế và phí; {platform} kiểm tra lúc {time} ngày {date}. Bấm nút đặt phòng để xem giá cuối cùng."
+          }
+        }
+      }
+    },
+    "place.stayPriceTotal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reference price: {price}{guests}; checked on {platform} at {time} on {date}. Open the booking page for the final price."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giá tham khảo: {price}{guests}; {platform} kiểm tra lúc {time} ngày {date}. Bấm nút đặt phòng để xem giá cuối cùng."
+          }
+        }
+      }
+    },
+    "place.stayGuests": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " for {n} guests"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " cho {n} người"
+          }
+        }
+      }
+    },
     "chat.deepExhausted": {
       "extractionState": "manual",
       "localizations": {

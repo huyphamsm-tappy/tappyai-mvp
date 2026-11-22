@@ -170,6 +170,8 @@ struct LivePlace: Codable, Equatable, Sendable {
     var priceSignal: String?
     /// The provider's OWN price band, verbatim ("100-200 N ₫") — structured, shown plainly.
     var priceRangeText: String?
+    /// A stay's structured provider price (realtime layer) with platform and check time; read leniently, so a bad one never costs the card.
+    var stayOffer: LenientStayOffer?
     var distanceKm: Double?
     var categories: [String] = []
     var flags: [String] = []
@@ -246,6 +248,8 @@ struct PlaceCardView: Equatable, Sendable, Identifiable {
     var actions: [PersistedPlaceAction] = []
     /// Provider amenity flags (`wifi`, `outdoorSeating`, `vegetarian`) — only the filter chips read them.
     var flags: [String] = []
+    /// A stay's reference price from the realtime check (live card only; the durable block does not carry it).
+    var stayOffer: LiveStayOffer? = nil
 }
 
 extension LivePlace {
@@ -275,7 +279,8 @@ extension LivePlace {
                     commerce: $0.commerce
                 )
             },
-            flags: flags
+            flags: flags,
+            stayOffer: stayOffer?.offer
         )
     }
 }
