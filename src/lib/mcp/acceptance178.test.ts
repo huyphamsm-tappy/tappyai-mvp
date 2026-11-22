@@ -336,9 +336,17 @@ describe('17.8 #17 no file or image payloads, no arbitrary URL fetching', () => 
 describe('17.8 #18 no regression: nothing outside the MCP files depends on MCP', () => {
   it('no existing module imports the Gateway (chat, quota, retrieval, TVI, plans, auth are untouched by it)', () => {
     const walk = (dir: string): string[] => readdirSync(dir).flatMap(n => { const p = join(dir, n); return statSync(p).isDirectory() ? (n === 'node_modules' ? [] : walk(p)) : /\.(ts|tsx)$/.test(n) ? [p] : [] })
-    const allowed = [/src[\\/]lib[\\/]mcp[\\/]/, /src[\\/]app[\\/]api[\\/]mcp[\\/]/, /src[\\/]app[\\/]api[\\/]cron[\\/]mcp-jobs[\\/]/, /src[\\/]app[\\/]\.well-known[\\/]/, /src[\\/]app[\\/]go[\\/]m[\\/]/]
+    const allowed = [/src[\\/]lib[\\/]mcp[\\/]/, /src[\\/]app[\\/]api[\\/]mcp[\\/]/, /src[\\/]app[\\/]api[\\/]cron[\\/]mcp-jobs[\\/]/, /src[\\/]app[\\/]\.well-known[\\/]/, /src[\\/]app[\\/]go[\\/]m[\\/]/,
+      // 22/11/2026: the connector's OAuth consent screen. It may import ONLY the pure helpers of the consent view, never the Gateway (checked in the next test).
+      /src[\\/]app[\\/]oauth[\\/]consent[\\/]/]
     const offenders = walk(join(process.cwd(), 'src')).filter(f => !allowed.some(a => a.test(f))).filter(f => /from '@\/lib\/mcp\//.test(readFileSync(f, 'utf8')))
     expect(offenders.map(f => f.replace(process.cwd(), ''))).toEqual([])
+  })
+  it('the consent screen imports only the pure consentView helpers from lib/mcp, never the Gateway, the job store or the adapters', () => {
+    for (const f of ['src/app/oauth/consent/ConsentView.tsx', 'src/app/oauth/consent/page.tsx']) {
+      const mcp = [...readFileSync(join(process.cwd(), f), 'utf8').matchAll(/from '@\/lib\/mcp\/([A-Za-z]+)'/g)].map(m => m[1])
+      expect(mcp.every(m => m === 'consentView'), f).toBe(true)
+    }
   })
   it('the flag keeps every MCP entry point dark by default', () => {
     expect(process.env.MCP_GATEWAY).toBeUndefined()

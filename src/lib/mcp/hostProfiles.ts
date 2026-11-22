@@ -6,7 +6,7 @@
 // placeholders for the SERVER side (our own deadline and response size), NOT measured Host limits.
 import type { HostPlatform } from './connectorContract'
 
-export type ProfileId = 'claude' | 'chatgpt' | 'gemini_apps' | 'gemini_api'
+export type ProfileId = 'claude' | 'chatgpt' | 'gemini_apps' | 'gemini_api' | 'cursor' | 'grok_api' | 'deepseek' | 'meta'
 
 export interface HostProfile {
   id: ProfileId
@@ -15,7 +15,8 @@ export interface HostProfile {
   label: string
   /** always the connector doc baseline: no profile is verified */
   verification: 'unverified'
-  baseline: 'connector-doc-v2.1 (10/11/2026)'
+  /** where the facts come from: the connector doc for the first three, a web search on 22/11/2026 (docs and secondary sources, NOT a real account) for Cursor / Grok / DeepSeek / Meta */
+  baseline: 'connector-doc-v2.1 (10/11/2026)' | 'web-search-22-11-2026 (not tested on a real account)'
   transport: { streamableHttp: true; sse: boolean }
   /** our own limits for calls from this Host: server deadline and response size, placeholders until measured against the Host */
   limits: { serverDeadlineMs: number; maxResponseBytes: number }
@@ -57,6 +58,31 @@ export const HOST_PROFILES: Readonly<Record<ProfileId, HostProfile>> = Object.fr
     transport: { streamableHttp: true, sse: false }, limits: LIMITS, serverNameRule: /^[a-z][a-z0-9_]*$/, toolNameRule: NAME,
     eligibility: ['a developer / API channel, not a consumer app installation', 'the doc records: Streamable HTTP, SSE not supported, server name follows the API naming rules (snake_case guidance)', 'authentication and billing are governed by the API'],
     mustVerify: [...COMMON_MUST, 'target-model behaviour with the published catalog', 'API-specific authentication and billing model'],
+  },
+  // ---- added 22/11/2026 at the owner's request. Facts: official docs and secondary sources read the same day; NOTHING here was tried on a real account. ----
+  cursor: {
+    id: 'cursor', host: 'cursor', label: 'Cursor (MCP in the editor / Cursor agents)', verification: 'unverified', baseline: 'web-search-22-11-2026 (not tested on a real account)',
+    transport: { streamableHttp: true, sse: false }, limits: LIMITS, serverNameRule: null, toolNameRule: NAME,
+    eligibility: ['docs (cursor.com/docs/mcp): remote servers over Streamable HTTP, configured in mcp.json (project .cursor/mcp.json or global ~/.cursor/mcp.json), OAuth handled by Cursor (discovery, registration, PKCE), static bearer headers also possible', 'the docs list separate OAuth redirect URLs for the desktop app and for web / Cursor Agents: both must be allowed on the authorization server', 'forum reports (not confirmed): OAuth failed when the protected-resource URL had a trailing slash, and a localhost callback sent no response: test both before claiming support', 'a developer tool: the user is a developer, not a consumer'],
+    mustVerify: [...COMMON_MUST, 'both OAuth redirect URLs (desktop and web agents)', 'protected-resource URL without a trailing slash', 'tool-approval prompts (Cursor asks the user before running a tool)'],
+  },
+  grok_api: {
+    id: 'grok_api', host: 'grok', label: 'Grok (xAI API remote MCP tools)', verification: 'unverified', baseline: 'web-search-22-11-2026 (not tested on a real account)',
+    transport: { streamableHttp: true, sse: false }, limits: LIMITS, serverNameRule: null, toolNameRule: NAME,
+    eligibility: ['docs (docs.x.ai/developers/tools/remote-mcp): remote MCP is a TOOL of the API (xAI SDK, OpenAI-compatible Responses API, Voice Agent API): the developer adds {type: mcp, server_url, server_label} to a request. It is not an installable consumer connector', 'require_approval and connector_id are documented as not supported', 'the docs show an allowed_tool_names filter: a developer who leaves it broad hands Grok every tool of the server', 'whether the consumer Grok app can add a custom MCP server was NOT confirmed'],
+    mustVerify: [...COMMON_MUST, 'how the API sends an access token to the server (static header or OAuth)', 'current model names and whether they discover tools', 'the consumer Grok app, if a connector surface exists at all'],
+  },
+  deepseek: {
+    id: 'deepseek', host: 'deepseek', label: 'DeepSeek (no confirmed connector surface)', verification: 'unverified', baseline: 'web-search-22-11-2026 (not tested on a real account)',
+    transport: { streamableHttp: true, sse: false }, limits: LIMITS, serverNameRule: null, toolNameRule: NAME,
+    eligibility: ['NO official DeepSeek document was found saying the DeepSeek app accepts a custom remote MCP connector: do NOT claim DeepSeek support', 'the DeepSeek developer harness (dsh) is reported by a third party to include an MCP client (stdio or Streamable HTTP): a developer channel, not a consumer one', 'DeepSeek models are usually reached through another MCP-capable client (Cursor, Claude Code), which then falls under THAT client\'s profile'],
+    mustVerify: [...COMMON_MUST, 'whether any first-party surface (app, API or harness) can register a remote MCP server', 'authentication supported by that surface'],
+  },
+  meta: {
+    id: 'meta', host: 'meta', label: 'Meta AI (Muse agent; no confirmed Llama API connector)', verification: 'unverified', baseline: 'web-search-22-11-2026 (not tested on a real account)',
+    transport: { streamableHttp: true, sse: false }, limits: LIMITS, serverNameRule: null, toolNameRule: NAME,
+    eligibility: ['only secondary sources (parallel.ai, CData) say Meta\'s personal agent (Muse) connects to custom remote MCP servers; no Meta document was read, so this is NOT a confirmed surface', 'Meta publishes its OWN MCP servers (Facebook, Instagram, WhatsApp, Meta Ads, developers.facebook.com/documentation/mcp): that is Meta as a server, not a host for ours', 'no confirmation that the first-party Llama API supports remote MCP; Llama models run on MCP-capable hosts such as Groq or Llama Stack, which are other hosts', 'the owner\'s account type, country and plan eligibility are unknown'],
+    mustVerify: [...COMMON_MUST, 'that a Meta first-party surface can register a custom remote MCP server at all', 'country, age and account eligibility', 'who reviews custom connectors'],
   },
 })
 

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { HOST_PROFILES, PROFILE_IDS, profilesFor, limitsFor } from './hostProfiles'
 import { CATALOG, listTools } from './toolCatalog'
+import { HOST_PLATFORMS, type HostPlatform } from './connectorContract'
 import { SERVER_NAME, PROTOCOL_VERSION, handleMcpRequest, type GatewayDeps } from './gateway'
 import { createSpendPool } from './spendPool'
 import { createInMemoryJobStore } from './jobs'
@@ -13,9 +14,9 @@ import { NextRequest } from 'next/server'
 const NOW = new Date('2026-11-12T03:00:00Z')
 const AUD = 'https://mcp.test/api/mcp'
 const CAPS = { MCP_POOL_DAILY_USD: '1', MCP_POOL_HOST_USD: '1', MCP_POOL_INSTALL_USD: '1', MCP_POOL_PRINCIPAL_USD: '1', MCP_POOL_TOOL_USD: '1', MCP_POOL_REQUEST_USD: '1' }
-const claimsOf = (host: 'claude' | 'chatgpt' | 'gemini') => ({ audience: AUD, scopes: ['places:read', 'hotels:read', 'shopping:read', 'itinerary:create'], expiresAt: NOW.getTime() / 1000 + 3600, revoked: false, host, installId: `${host}:c1`, userId: null, principalId: `a:${host}` })
+const claimsOf = (host: HostPlatform) => ({ audience: AUD, scopes: ['places:read', 'hotels:read', 'shopping:read', 'itinerary:create'], expiresAt: NOW.getTime() / 1000 + 3600, revoked: false, host, installId: `${host}:c1`, userId: null, principalId: `a:${host}` })
 const ROWS = Array.from({ length: 10 }, (_, i) => ({ name: `Quán ${i}`, address: 'x'.repeat(200), place_id: `p${i}`, maps_link: 'https://m.example/x' }))
-const deps = (host: 'claude' | 'chatgpt' | 'gemini', over: Partial<GatewayDeps> = {}): GatewayDeps => ({
+const deps = (host: HostPlatform, over: Partial<GatewayDeps> = {}): GatewayDeps => ({
   verify: async () => claimsOf(host), expectedAudience: AUD, adapters: { ...NO_ADAPTERS, 'places.search': async () => ({ rows: ROWS }) },
   spend: createSpendPool({ env: CAPS }), jobs: createInMemoryJobStore(() => NOW), abuse: createAbuseMonitor({ now: () => NOW }), rateLimit: async () => ({ ok: true, retryAfter: 0 }), now: () => NOW, log: () => {}, allowedOrigins: [], ...over,
 })
@@ -23,15 +24,17 @@ const rpc = (d: GatewayDeps, method: string, params?: unknown) => handleMcpReque
 beforeEach(() => __resetKvCounters())
 
 describe('profiles are data, separate per Host, and make no parity claim', () => {
-  it('four profiles: Claude, ChatGPT, Gemini Apps and Gemini API are separate entries (the two Gemini channels are not one product)', () => {
-    expect(PROFILE_IDS.sort()).toEqual(['chatgpt', 'claude', 'gemini_api', 'gemini_apps'])
+  it('eight profiles: Claude, ChatGPT, Gemini Apps, Gemini API, Cursor, Grok API, DeepSeek and Meta are separate entries (the two Gemini channels are not one product)', () => {
+    expect(PROFILE_IDS.sort()).toEqual(['chatgpt', 'claude', 'cursor', 'deepseek', 'gemini_api', 'gemini_apps', 'grok_api', 'meta'])
+    expect(HOST_PLATFORMS.length).toBe(7)
+    for (const h of HOST_PLATFORMS) expect(profilesFor(h).length, h).toBeGreaterThan(0)
     expect(HOST_PROFILES.gemini_apps.label).not.toBe(HOST_PROFILES.gemini_api.label)
     expect(profilesFor('gemini').map(p => p.id).sort()).toEqual(['gemini_api', 'gemini_apps'])
     expect(profilesFor('claude').length).toBe(1)
   })
-  it('every profile is UNVERIFIED, cites the dated connector-doc baseline, and lists what must be proven on the real Host', () => {
+  it('every profile is UNVERIFIED, cites a dated baseline (the connector doc, or the 22/11/2026 web search that says it was not tested on a real account), and lists what must be proven on the real Host', () => {
     for (const p of Object.values(HOST_PROFILES)) {
-      expect(p.verification, p.id).toBe('unverified'); expect(p.baseline).toMatch(/10\/11\/2026/)
+      expect(p.verification, p.id).toBe('unverified'); expect(p.baseline).toMatch(/10\/11\/2026|22-11-2026 \(not tested on a real account\)/)
       expect(p.mustVerify.length, p.id).toBeGreaterThanOrEqual(6); expect(p.eligibility.length, p.id).toBeGreaterThan(0)
     }
   })
@@ -47,7 +50,7 @@ describe('profiles are data, separate per Host, and make no parity claim', () =>
     }
   })
   it('the limits that apply to a Host are the strictest of its profiles, and are finite server-side placeholders', () => {
-    for (const h of ['claude', 'chatgpt', 'gemini'] as const) { const l = limitsFor(h); expect(l.serverDeadlineMs).toBeGreaterThan(0); expect(l.serverDeadlineMs).toBeLessThan(60_000); expect(l.maxResponseBytes).toBeGreaterThan(0) }
+    for (const h of HOST_PLATFORMS) { const l = limitsFor(h); expect(l.serverDeadlineMs).toBeGreaterThan(0); expect(l.serverDeadlineMs).toBeLessThan(60_000); expect(l.maxResponseBytes).toBeGreaterThan(0) }
   })
 })
 

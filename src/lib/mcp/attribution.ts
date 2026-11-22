@@ -6,14 +6,14 @@
 // the token is signed, bounded in time, and refuses any extra field. No secret, no link: with no configured secret nothing is built and the redirect route does not exist (404).
 // ATTRIBUTION_HOSTS is a PLACEHOLDER list of travel/commerce hosts already named elsewhere in the product: the owner decides the real partner list. A short link does not guarantee a commission.
 import { createHmac, timingSafeEqual } from 'node:crypto'
-import type { HostPlatform } from './connectorContract'
+import { HOST_PLATFORMS, type HostPlatform } from './connectorContract'
 
 type Env = Record<string, string | undefined>
 
 export const ATTRIBUTION_HOSTS: readonly string[] = ['agoda.com', 'booking.com', 'traveloka.com', 'vexere.com', 'shopee.vn', 'tiki.vn', 'lazada.vn', 'google.com']
 export const LINK_VALID_MS = 90 * 24 * 60 * 60 * 1000
-const CHANNELS = ['claude_mcp', 'chatgpt_mcp', 'gemini_mcp'] as const
-export type Channel = typeof CHANNELS[number]
+const CHANNELS = HOST_PLATFORMS.map(h => `${h}_mcp` as const)
+export type Channel = `${HostPlatform}_mcp`
 
 /** The six fields of a token. By construction there is no field for a person. */
 export interface LinkPayload { v: 1; ch: Channel; tool: string; ref: string; dest: string; iat: number }

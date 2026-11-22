@@ -1,12 +1,13 @@
 // The persisted job store (supabase/migrations/20261121_mcp_jobs.sql) behind the JobStore and JobWorkerStore ports. Server only. It reaches the table ONLY through the SECURITY DEFINER functions of that
 // migration, each of which takes the owner principal and filters on it: there is no table access and no query built here. The migration is a FILE that has not been applied anywhere, so this adapter
 // has been exercised against a fake `rpc` only (UNVERIFIED against a real database). Any transport error, malformed row or missing client is JobStoreUnavailable: the Gateway then fails closed.
+import { HOST_PLATFORMS } from './connectorContract'
 import { JOB_ID_PATTERN, JOB_MAX_ATTEMPTS, JobStoreUnavailable, inputFingerprint, newJobId, JOB_TTL_MS, type JobRecord, type JobStatus, type JobStore, type JobWorkerStore } from './jobs'
 
 export type Rpc = { rpc: (fn: string, args?: Record<string, unknown>) => PromiseLike<{ data: unknown; error: unknown }> }
 
 const STATUSES: ReadonlySet<string> = new Set(['queued', 'running', 'succeeded', 'failed', 'cancelled'])
-const HOSTS: ReadonlySet<string> = new Set(['claude', 'chatgpt', 'gemini'])
+const HOSTS: ReadonlySet<string> = new Set<string>(HOST_PLATFORMS)
 
 function toRecord(row: unknown): JobRecord | null {
   if (!row || typeof row !== 'object') return null

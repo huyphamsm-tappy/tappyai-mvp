@@ -10,7 +10,7 @@
 CREATE TABLE IF NOT EXISTS public.mcp_jobs (
   job_id        text PRIMARY KEY CHECK (job_id ~ '^job_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'),
   owner         text NOT NULL CHECK (length(owner) BETWEEN 3 AND 80),
-  host          text NOT NULL CHECK (host IN ('claude', 'chatgpt', 'gemini')),
+  host          text NOT NULL CHECK (host IN ('claude', 'chatgpt', 'gemini', 'cursor', 'grok', 'deepseek', 'meta')),
   install_id    text NOT NULL CHECK (length(install_id) BETWEEN 1 AND 120),
   tool          text NOT NULL CHECK (tool = 'create_itinerary'),
   input         jsonb NOT NULL,

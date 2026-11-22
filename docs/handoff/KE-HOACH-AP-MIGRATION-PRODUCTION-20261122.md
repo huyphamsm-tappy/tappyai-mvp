@@ -56,6 +56,8 @@ Cách làm: Postgres 17 tạm trong Docker, phục hồi `prod.dump` + cấu tr�
 - **Phát hiện mới:** bản sao lưu `backup-prod.ps1` chỉ gồm schema `public`, `auth`, `storage`, **không có `safety_private`** (chứa hàm chặn người dùng). Sao lưu vẫn đủ dữ liệu người dùng, nhưng muốn phục hồi hoàn chỉnh phải kèm tệp `safety_private-schema.sql` em đã lưu cạnh bản sao lưu.
 - **Chưa kiểm:** chạy thử mã web trên cơ sở dữ liệu sao; thử rollback toàn bộ chuỗi; thử `20261001e`.
 
+- **Lưu ý khi áp thật:** `20261016` và `20261017` tự có `BEGIN/COMMIT` nên `apply-migration.sh` từ chối (dòng 244, "psql -1 would nest it"). Hai bản này (cần cho gói Pip/SePay) phải áp bằng cách chạy cùng kết nối docker psql không có `-1`, vẫn `ON_ERROR_STOP`, như phiên Apple 1.2 đã làm (`docs/security/APPLE-1-2-RELEASE-PLAN.md`, mục "Migrations needing the helper"). Trên bản sao diễn tập cả hai chạy sạch.
+
 ## 5. Cần anh quyết (ngắn)
-- Có áp `20261001e` không? (em nghiêng về hỏi lại phiên trước đã chặn nó vì lý do gì)
+- ~~Có áp `20261001e` không?~~ **Anh Huy quyết 22/11/2026: KHÔNG áp** (bộ kích hoạt trên bảng đăng nhập, chưa có mã dùng, thời hạn lưu theo luật chưa xác nhận).
 - Sau khi anh nói "UAT ổn", em mới sang bước B (áp lên production).

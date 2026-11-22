@@ -8,14 +8,14 @@
 // The four identities stay distinct: the Host (from the REGISTERED client, never from a claim the Host writes), the installation (host + client id), the linked user (`sub` of a verified
 // token) and the anonymous principal (an anonymous Supabase session). A token is never believed from its payload alone: the identity provider is asked on every request, and refusal or
 // outage means no access. No service-role client is involved anywhere here.
-import type { HostPlatform, VerifiedClaims } from './connectorContract'
+import { HOST_PLATFORMS, type HostPlatform, type VerifiedClaims } from './connectorContract'
 import type { TokenVerifier } from './gateway'
 
 type Env = Record<string, string | undefined>
 
 export const MCP_SCOPES = ['places:read', 'hotels:read', 'shopping:read', 'itinerary:create'] as const
 const SCOPE_SET: ReadonlySet<string> = new Set(MCP_SCOPES)
-const HOSTS: ReadonlySet<string> = new Set(['claude', 'chatgpt', 'gemini'])
+const HOSTS: ReadonlySet<string> = new Set<string>(HOST_PLATFORMS)
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 /** client_id of a registered connector → the Host it was registered for. Written by the owner at registration time; client ids are not secrets. */

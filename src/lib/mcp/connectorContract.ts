@@ -9,7 +9,9 @@
 
 export const CONNECTOR_CONTRACT_VERSION = 'connector-contract.v1'
 
-export type HostPlatform = 'claude' | 'chatgpt' | 'gemini'
+/** The ONE list of Hosts a connector can be registered for (22/11/2026: Cursor, Grok, DeepSeek and Meta added by the owner). Everything that names a Host derives from it. */
+export const HOST_PLATFORMS = ['claude', 'chatgpt', 'gemini', 'cursor', 'grok', 'deepseek', 'meta'] as const
+export type HostPlatform = typeof HOST_PLATFORMS[number]
 export type ToolName = 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions' | 'create_itinerary'
 
 export interface ToolContract {

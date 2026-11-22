@@ -1,0 +1,26 @@
+// Text of the connector (MCP) OAuth consent screen, /oauth/consent. Kept here, not in the component, so the hardcoded-UI-text guard stays at its baseline.
+export type ConsentLocale = 'vi' | 'en'
+
+export const CONSENT_COPY = {
+  vi: {
+    title: 'Cho phép kết nối với Tappy?', wantSuffix: 'muốn dùng Tappy thay mặt bạn với tài khoản', may: 'Ứng dụng này sẽ được phép:',
+    safe: 'Chỉ đọc và soạn kế hoạch. Không đặt chỗ, không thanh toán, không đổi thông tin tài khoản. Bạn có thể thu hồi quyền bất cứ lúc nào.',
+    allow: 'Cho phép', deny: 'Từ chối', invalid: 'Liên kết không hợp lệ hoặc đã hết hạn. Hãy quay lại ứng dụng AI và thử kết nối lại.',
+    error: 'Không thể tải yêu cầu kết nối. Hãy thử lại sau.', loading: 'Đang tải…', sending: 'Đang chuyển bạn về ứng dụng…', unknownApp: 'Một ứng dụng AI',
+  },
+  en: {
+    title: 'Allow this app to connect to Tappy?', wantSuffix: 'wants to use Tappy on your behalf, signed in as', may: 'It will be allowed to:',
+    safe: 'Read-only and trip planning. No booking, no payment, no account changes. You can revoke access at any time.',
+    allow: 'Allow', deny: 'Deny', invalid: 'This link is invalid or has expired. Go back to the AI app and try connecting again.',
+    error: 'Could not load the connection request. Please try again later.', loading: 'Loading…', sending: 'Sending you back to the app…', unknownApp: 'An AI app',
+  },
+} as const
+
+/** The only scopes a connector can hold (src/lib/mcp/identity.ts MCP_SCOPES), in plain words. */
+export const SCOPE_TEXT: Readonly<Record<string, Record<ConsentLocale, string>>> = {
+  'places:read': { vi: 'Tìm quán ăn, địa điểm và điểm tham quan', en: 'Search restaurants, places and attractions' },
+  'hotels:read': { vi: 'Tìm khách sạn và giá phòng', en: 'Search hotels and prices' },
+  'shopping:read': { vi: 'Tìm sản phẩm và giá', en: 'Search products and prices' },
+  'itinerary:create': { vi: 'Lập lịch trình du lịch (chỉ soạn kế hoạch: không đặt chỗ, không thanh toán)', en: 'Plan a trip itinerary (a plan only: no booking, no payment)' },
+}
+export const UNKNOWN_SCOPE: Record<ConsentLocale, string> = { vi: 'Quyền không xác định:', en: 'Unknown permission:' }
