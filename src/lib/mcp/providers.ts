@@ -7,6 +7,7 @@
 //
 // Transport (Vexere) has NO published tool: the connector doc defines six tools and none is a transport search. The port exists so a later, approved tool (or the itinerary job) can use it; nothing calls it today.
 import type { ServiceAdapter, ServiceCall } from './serviceMap'
+import { MCP_HOTEL_SOURCE } from '@/lib/ccp/tracking/mcpHotelSource'
 
 type Env = Record<string, string | undefined>
 
@@ -33,7 +34,8 @@ export interface TransportProvider { search(q: TransportQuery): Promise<Transpor
  * NO setting: a source supplied from that layer says whether it is configured (presence only) and builds the client. Both sources are null today: no such client exists.
  */
 export interface ProviderSource<P> { isConfigured(env: Env): boolean; create(env: Env): P }
-export const HOTEL_PROVIDER_SOURCE: ProviderSource<HotelProvider> | null = null
+/** Agoda Affiliate Lite API through the chat's own realtime adapter (22/11/2026; supplied from ccp/tracking, see mcpHotelSource.ts). Configured only when CCP_REALTIME_AGODA_LITE is on and both Agoda credentials exist. */
+export const HOTEL_PROVIDER_SOURCE: ProviderSource<HotelProvider> | null = MCP_HOTEL_SOURCE
 export const TRANSPORT_PROVIDER_SOURCE: ProviderSource<TransportProvider> | null = null
 
 export function hotelProviderFromEnv(env: Env = process.env, source: ProviderSource<HotelProvider> | null = HOTEL_PROVIDER_SOURCE): HotelProvider | null {

@@ -338,9 +338,17 @@ describe('17.8 #18 no regression: nothing outside the MCP files depends on MCP',
     const walk = (dir: string): string[] => readdirSync(dir).flatMap(n => { const p = join(dir, n); return statSync(p).isDirectory() ? (n === 'node_modules' ? [] : walk(p)) : /\.(ts|tsx)$/.test(n) ? [p] : [] })
     const allowed = [/src[\\/]lib[\\/]mcp[\\/]/, /src[\\/]app[\\/]api[\\/]mcp[\\/]/, /src[\\/]app[\\/]api[\\/]cron[\\/]mcp-jobs[\\/]/, /src[\\/]app[\\/]\.well-known[\\/]/, /src[\\/]app[\\/]go[\\/]m[\\/]/,
       // 22/11/2026: the connector's OAuth consent screen. It may import ONLY the pure helpers of the consent view, never the Gateway (checked in the next test).
-      /src[\\/]app[\\/]oauth[\\/]consent[\\/]/]
+      /src[\\/]app[\\/]oauth[\\/]consent[\\/]/,
+      // 22/11/2026: the Agoda source for the gateway's hotel port. It imports only TYPES from lib/mcp/providers (checked in the next test); the chat never depends on it.
+      /src[\\/]lib[\\/]ccp[\\/]tracking[\\/]mcpHotelSource(\.test)?\.ts$/]
     const offenders = walk(join(process.cwd(), 'src')).filter(f => !allowed.some(a => a.test(f))).filter(f => /from '@\/lib\/mcp\//.test(readFileSync(f, 'utf8')))
     expect(offenders.map(f => f.replace(process.cwd(), ''))).toEqual([])
+  })
+  it('the Agoda hotel source imports only types from lib/mcp (a type import cannot pull the Gateway into the chat bundle)', () => {
+    const src = readFileSync(join(process.cwd(), 'src/lib/ccp/tracking/mcpHotelSource.ts'), 'utf8')
+    const lines = src.split(String.fromCharCode(10)).filter(l => /from '@\/lib\/mcp\//.test(l))
+    expect(lines.length).toBeGreaterThan(0)
+    for (const l of lines) expect(l, l).toMatch(/^import type /)
   })
   it('the consent screen imports only the pure consentView helpers from lib/mcp, never the Gateway, the job store or the adapters', () => {
     for (const f of ['src/app/oauth/consent/ConsentView.tsx', 'src/app/oauth/consent/page.tsx']) {

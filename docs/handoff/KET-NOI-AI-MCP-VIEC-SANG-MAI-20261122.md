@@ -9,6 +9,9 @@ Nhãn: **ĐÃ KIỂM** = chạy test hoặc đọc mã thật; **CHƯA KIỂM** 
 | Hồ sơ riêng cho từng AI mới (`src/lib/mcp/hostProfiles.ts`): ghi rõ điều đọc được và điều **chưa xác nhận**, gắn nhãn "chưa kiểm trên tài khoản thật" | SUY TỪ TÀI LIỆU |
 | **Màn hình đồng ý OAuth** `/oauth/consent` (người dùng thấy AI nào xin quyền, quyền gì, bấm Cho phép/Từ chối; chưa đăng nhập thì đưa đi đăng nhập rồi quay lại; chỉ theo địa chỉ chuyển về là https, localhost hoặc `cursor://`) | ĐÃ KIỂM bằng test với Supabase giả; **CHƯA KIỂM** với máy chủ OAuth thật |
 | Chữ trên màn hình đồng ý, 2 ngôn ngữ, nằm trong `src/lib/i18n/mcpConsent.ts` | ĐÃ KIỂM |
+| **Lời Tappy tự giới thiệu với các AI khác** (`src/lib/mcp/tappyProfile.ts`): Tappy là ai, có gì mà AI khác không có (giá phòng Agoda hỏi trực tiếp lúc đó kèm link theo dõi, địa điểm/quán ăn/điểm tham quan Việt Nam, giá sản phẩm, lập lịch trình), khi nào nên gọi Tappy thay vì đoán; nhắc thêm trong app: tàu/xe Vexere, ưu đãi Lazada, Scam Shield, tiếng Việt. Mô tả từng công cụ cũng viết lại theo hướng đó. Danh mục công cụ lên bản `mcp-tools.v1.2` (chỉ đổi mô tả) | ĐÃ KIỂM bằng test (không nói "tốt nhất/duy nhất/đảm bảo"; "trực tiếp" chỉ dùng cho giá Agoda). **Anh cần đọc và duyệt lời này trước khi cổng đi thật** |
+| **Nối công cụ khách sạn với Agoda thật**: dùng đúng bộ nối Agoda Lite mà chat đã dùng (`src/lib/ccp/tracking/mcpHotelSource.ts`), giá một đêm chưa gồm thuế phí, link theo dõi của Agoda. Chỉ chạy khi bật cờ `CCP_REALTIME_AGODA_LITE=1` và có đủ 2 khóa Agoda; thiếu ngày nhận/trả phòng thì không tìm và không bịa | ĐÃ KIỂM bằng HTTP giả; **CHƯA KIỂM** qua cổng với Agoda thật |
+| Vexere (tàu/xe) và Lazada **chưa là công cụ** của cổng. Cổng chưa có công cụ tìm tàu xe; bộ nối Vexere đã có trong chat nhưng thêm công cụ mới là đổi hợp đồng nên chưa làm | Việc đề xuất tiếp theo |
 
 ## 2. Điều em đọc được về từng AI (SUY TỪ TÀI LIỆU, chưa thử thật)
 | AI | Có nối được không | Ghi chú quan trọng |

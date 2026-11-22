@@ -29,10 +29,15 @@ beforeEach(() => __resetKvCounters())
 
 describe('provider source gate: configured AND a source must exist', () => {
   const src = <P,>(p: P, key = 'FAKE_PROVIDER_KEY') => ({ isConfigured: (env: Record<string, string | undefined>) => typeof env[key] === 'string' && (env[key] as string).trim() !== '', create: vi.fn(() => p) })
-  it('no real source exists today: whatever the environment holds the providers stay null (unwired)', () => {
-    expect(HOTEL_PROVIDER_SOURCE).toBeNull(); expect(TRANSPORT_PROVIDER_SOURCE).toBeNull()
-    expect(hotelProviderFromEnv({ FAKE_PROVIDER_KEY: 'x' })).toBeNull(); expect(transportProviderFromEnv({ FAKE_PROVIDER_KEY: 'x' })).toBeNull()
-    expect(realAdapters({ FAKE_PROVIDER_KEY: 'x' })['hotels.prices']).toBeNull()
+  it('hotels: the Agoda source exists (22/11/2026) but a provider is built ONLY when its own flag is on AND both credentials exist; transport has no source and stays unwired', () => {
+    expect(HOTEL_PROVIDER_SOURCE).not.toBeNull(); expect(TRANSPORT_PROVIDER_SOURCE).toBeNull()
+    expect(transportProviderFromEnv({ FAKE_PROVIDER_KEY: 'x' })).toBeNull()
+    for (const env of [{}, { FAKE_PROVIDER_KEY: 'x' }, { CCP_REALTIME_AGODA_LITE: '1' }, { AGODA_LITE_SITE_ID: '1', AGODA_LITE_API_KEY: 'k' }, { CCP_REALTIME_AGODA_LITE: '1', AGODA_LITE_SITE_ID: '1' }]) {
+      expect(hotelProviderFromEnv(env), JSON.stringify(Object.keys(env))).toBeNull()
+      expect(realAdapters(env)['hotels.prices'], JSON.stringify(Object.keys(env))).toBeNull()
+    }
+    const ready = { CCP_REALTIME_AGODA_LITE: '1', AGODA_LITE_SITE_ID: '1', AGODA_LITE_API_KEY: 'k' }
+    expect(hotelProviderFromEnv(ready)).not.toBeNull(); expect(realAdapters(ready)['hotels.prices']).not.toBeNull()
   })
   it('a provider is built only when a source exists AND says it is configured', () => {
     const p = fakeHotelProvider([]); const s = src(p)
@@ -44,8 +49,10 @@ describe('provider source gate: configured AND a source must exist', () => {
   })
   it('providerStatus reports booleans only, never a value', () => {
     const s = providerStatus({ FAKE_PROVIDER_KEY: 'SECRET-VALUE-1' })
-    expect(s).toEqual({ hotels: { source: false, configured: false }, transport: { source: false, configured: false } })
+    expect(s).toEqual({ hotels: { source: true, configured: false }, transport: { source: false, configured: false } })
+    expect(providerStatus({ CCP_REALTIME_AGODA_LITE: '1', AGODA_LITE_SITE_ID: '1', AGODA_LITE_API_KEY: 'SECRET-VALUE-2' }).hotels).toEqual({ source: true, configured: true })
     expect(JSON.stringify(s)).not.toContain('SECRET')
+    expect(JSON.stringify(providerStatus({ CCP_REALTIME_AGODA_LITE: '1', AGODA_LITE_SITE_ID: '1', AGODA_LITE_API_KEY: 'SECRET-VALUE-2' }))).not.toContain('SECRET')
   })
   it('this file names no partner credential (the architecture guard allows only src/lib/ccp/tracking to)', () => {
     const lines = readFileSync(join(process.cwd(), 'src/lib/mcp/providers.ts'), 'utf8').split(String.fromCharCode(10))

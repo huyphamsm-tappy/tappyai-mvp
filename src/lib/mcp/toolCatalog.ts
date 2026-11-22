@@ -12,8 +12,10 @@
 import { createHash } from 'node:crypto'
 import { z } from 'zod'
 import { CONNECTOR_TOOLS, type ToolName } from './connectorContract'
+import { TOOL_TEXT } from './tappyProfile'
 
-export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.1'
+// v1.2 (22/11/2026): DESCRIPTIONS ONLY (what Tappy has that a general AI does not: tappyProfile.ts). No field, bound or type changed, so it stays within major version 1.
+export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.2'
 
 export type CatalogToolName = ToolName | 'create_itinerary_job' | 'get_itinerary_job_status' | 'get_itinerary_job_result' | 'cancel_itinerary_job'
 export type ExecutionMode = 'SYNC' | 'ASYNC' | 'JOB_CONTROL'
@@ -154,13 +156,13 @@ const search = (name: ToolName & keyof typeof CONNECTOR_TOOLS, title: string, de
 const ITINERARY_DESCRIPTION = 'Starts an itinerary job for a destination in Vietnam and returns a job handle immediately (job_id, status, poll_after_ms). It creates a job record; it does not book, buy or pay for anything. Poll get_itinerary_job_status, then read get_itinerary_job_result.'
 
 export const CATALOG: Readonly<Record<CatalogToolName, CatalogTool>> = Object.freeze({
-  search_places: search('search_places', 'Search places', 'Find places in Vietnam (cafes, services, spas and more) near a named destination or shared coordinates. Read-only.'),
-  search_restaurants: search('search_restaurants', 'Search restaurants', 'Find restaurants and food places in Vietnam near a named destination or shared coordinates. Read-only.'),
-  search_shopping: search('search_shopping', 'Search shopping', 'Find products and shops with listed prices. Read-only; prices are indicative and the merchant page is the source of truth.'),
-  search_hotels: search('search_hotels', 'Search hotels', 'Find hotels in a Vietnamese destination with indicative prices. Read-only; it does not confirm room availability.', {
+  search_places: search('search_places', 'Search places', TOOL_TEXT.search_places),
+  search_restaurants: search('search_restaurants', 'Search restaurants', TOOL_TEXT.search_restaurants),
+  search_shopping: search('search_shopping', 'Search shopping', TOOL_TEXT.search_shopping),
+  search_hotels: search('search_hotels', 'Search hotels', TOOL_TEXT.search_hotels, {
     check_in: O(str(10, 'Check-in date, YYYY-MM-DD.', { pattern: DATE })), check_out: O(str(10, 'Check-out date, YYYY-MM-DD.', { pattern: DATE })),
   }),
-  search_attractions: search('search_attractions', 'Search attractions', 'Find attractions, entertainment and activities in Vietnam near a named destination or shared coordinates. Read-only.'),
+  search_attractions: search('search_attractions', 'Search attractions', TOOL_TEXT.search_attractions),
   create_itinerary: def('create_itinerary', { title: 'Create itinerary', description: ITINERARY_DESCRIPTION, fields: itineraryFields, annotations: CONNECTOR_TOOLS.create_itinerary.annotations, mode: 'ASYNC', deadlineMs: CONTROL_DEADLINE_MS, contract: 'create_itinerary' }),
   create_itinerary_job: def('create_itinerary_job', { title: 'Create itinerary job', description: ITINERARY_DESCRIPTION, fields: itineraryFields, annotations: CONNECTOR_TOOLS.create_itinerary.annotations, mode: 'ASYNC', deadlineMs: CONTROL_DEADLINE_MS, contract: 'create_itinerary' }),
   get_itinerary_job_status: def('get_itinerary_job_status', { title: 'Itinerary job status', description: 'Reads the status of an itinerary job you created. Read-only.', fields: jobIdField, annotations: CONTROL_READ, mode: 'JOB_CONTROL', deadlineMs: CONTROL_DEADLINE_MS, contract: 'create_itinerary' }),
