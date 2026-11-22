@@ -34,6 +34,21 @@ enum CommentActions {
         return next
     }
 
+    /// Web `feedShared.tsx`: the eye button shows for the post's owner on someone else's comment, and only while the comment is visible or was
+    /// hidden by the owner (a comment hidden by reports or a moderator stays hidden until a moderator decides: the server answers 409).
+    static func canHide(_ comment: ReviewComment, isPostOwner: Bool, currentUserId: String?) -> Bool {
+        guard isPostOwner, let me = currentUserId, comment.userId != me else { return false }
+        return comment.hiddenAt == nil || comment.hiddenBy == "owner"
+    }
+
+    /// The comment as it reads once the owner hid it (or showed it again), before the server has answered.
+    static func settingHidden(_ hidden: Bool, on comment: ReviewComment) -> ReviewComment {
+        var next = comment
+        next.hiddenAt = hidden ? ISO8601DateFormatter().string(from: Date()) : nil
+        next.hiddenBy = hidden ? "owner" : nil
+        return next
+    }
+
     /// The server's answer to what the caller now has: nil when the reaction was removed.
     static func resulting(_ reaction: CommentReaction, on comment: ReviewComment) -> CommentReaction? {
         comment.myReaction == reaction.rawValue ? nil : reaction

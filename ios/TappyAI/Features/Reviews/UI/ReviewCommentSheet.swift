@@ -17,6 +17,9 @@ struct ReviewCommentSheet: View {
     var replyingTo: ReviewComment? = nil
     var onReply: (ReviewComment?) -> Void = { _ in }
     var onReact: (ReviewComment, CommentReaction) -> Void = { _, _ in }
+    /// The post's owner may hide a comment under their own post (and show it again): the web's eye button. `onHide(comment, hidden)`.
+    var isPostOwner: Bool = false
+    var onHide: (ReviewComment, Bool) -> Void = { _, _ in }
     let onDismiss: () -> Void
 
     /// First comment asks for the Terms (App Store 1.2); both comment entry points use this sheet.
@@ -119,6 +122,16 @@ struct ReviewCommentSheet: View {
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Spacer()
+                    if CommentActions.canHide(comment, isPostOwner: isPostOwner, currentUserId: currentUserId) {
+                        Button { onHide(comment, !comment.isHidden) } label: {
+                            Image(systemName: comment.isHidden ? "eye" : "eye.slash")
+                                .font(.system(size: 13)).foregroundStyle(TappyColor.textSecondary)
+                                .padding(.horizontal, 4)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(Text(LocalizedStringKey(comment.isHidden ? "review.comments.unhide" : "review.comments.hide")))
+                        .accessibilityIdentifier("comment-hide-" + comment.id)
+                    }
                     if comment.userId == currentUserId {
                         Button {
                             onDelete(comment.id)
@@ -144,13 +157,30 @@ struct ReviewCommentSheet: View {
 
                 Text(comment.body)
                     .font(TappyFont.callout)
-                    .foregroundStyle(TappyColor.textPrimary)
+                    .italic(comment.isHidden)
+                    .foregroundStyle(comment.isHidden ? TappyColor.textSecondary : TappyColor.textPrimary)
+                if let note = Self.hiddenNoteKey(comment, isPostOwner: isPostOwner) {
+                    Text(LocalizedStringKey(note))
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.textSecondary)
+                        .accessibilityIdentifier("comment-hidden-note-" + comment.id)
+                }
                 commentActions(comment)
             }
         }
         .padding(.leading, isReply ? Spacing.xl : 0)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("comment-" + comment.id)
+    }
+
+    /// Web `feedShared.tsx`: a hidden comment says why it is greyed. Hidden by the post's owner: the owner reads "you hid it", its author reads
+    /// "the owner hid it from others"; hidden by reports or a moderator: "under review". nil when the comment is not hidden.
+    static func hiddenNoteKey(_ comment: ReviewComment, isPostOwner: Bool) -> String? {
+        guard comment.isHidden else { return nil }
+        if comment.hiddenBy == "owner" {
+            return isPostOwner ? "review.comments.hiddenOwner" : "review.comments.hiddenForYou"
+        }
+        return "review.comments.hiddenReview"
     }
 
     /// Reply, the reaction picker and what people reacted with (Web `ReviewCommentButton` / `…/reactions`).

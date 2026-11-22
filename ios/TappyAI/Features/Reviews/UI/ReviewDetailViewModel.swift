@@ -213,6 +213,25 @@ final class ReviewDetailViewModel: AppObservableObject {
         }
     }
 
+    /// True when the signed-in person owns the post, so they may hide a comment under it.
+    var isPostOwner: Bool {
+        guard let me = currentUserId, let owner = review?.userId else { return false }
+        return me == owner
+    }
+
+    /// The post's owner hides (or shows again) a comment: shown at once, undone if the server refuses (404 not the owner, 409 held by moderation).
+    func setCommentHidden(_ comment: ReviewComment, hidden: Bool) {
+        guard let idx = comments.firstIndex(where: { $0.id == comment.id }) else { return }
+        let before = comments[idx]
+        comments[idx] = CommentActions.settingHidden(hidden, on: before)
+        Task {
+            do { try await service.setCommentHidden(commentId: comment.id, hidden: hidden) } catch {
+                if let i = comments.firstIndex(where: { $0.id == comment.id }) { comments[i] = before }
+                log.error("hide comment failed: \(error)")
+            }
+        }
+    }
+
     func deleteComment(commentId: String) {
         Task {
             do {

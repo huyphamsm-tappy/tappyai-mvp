@@ -200,6 +200,14 @@ struct ReviewsService: Sendable {
         _ = try await api.send(endpoint)
     }
 
+    /// `POST /api/comments/{id}/hide {hidden}`: the post's owner hides (or shows again) a comment under their own post.
+    /// 404 when the caller is not the owner; 409 `held_by_moderation` when showing again a comment hidden by reports or a moderator.
+    func setCommentHidden(commentId: String, hidden: Bool) async throws {
+        let payload = try JSONSerialization.data(withJSONObject: ["hidden": hidden])
+        let endpoint = Endpoint(path: "/api/comments/\(commentId)/hide", method: .post, body: payload, requiresAuth: true)
+        _ = try await api.send(endpoint)
+    }
+
     func deleteComment(reviewId: String, commentId: String) async throws -> DeleteCommentResponse {
         let endpoint = Endpoint(
             path: "/api/reviews/\(reviewId)/comments",

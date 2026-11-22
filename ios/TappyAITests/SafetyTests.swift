@@ -33,7 +33,7 @@ final class SafetyTests: XCTestCase {
 
     func testReasonsAreTheServerWhitelistInOrder() {
         XCTAssertEqual(SafetyReportReason.allCases.map(\.rawValue),
-                       ["spam", "harassment", "hate", "sexual", "self_harm", "scam", "sensitive", "impersonation", "copyright", "other"])
+                       ["spam", "harassment", "hate", "sexual", "violence", "self_harm", "scam", "misinformation", "impersonation", "other"])
         // "message" joined on 2026-11-04 (web release b5cd20e: POST /api/messaging/messages/{id}/report).
         XCTAssertEqual(ReportTargetKind.allCases.map(\.rawValue), ["review", "comment", "user", "message"])
         XCTAssertEqual(SafetyService.reportPath(kind: .message, targetId: "m-1"), "/api/messaging/messages/m-1/report")
@@ -57,7 +57,7 @@ final class SafetyTests: XCTestCase {
         let long = String(repeating: "a", count: 1500)
         let body = try ReportRequest(kind: .user, targetId: "u", reason: .other, details: "  " + long + "  ").jsonBody()
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: String])
-        XCTAssertEqual(json["details"]?.count, 1000)
+        XCTAssertEqual(json["details"]?.count, 300, "the server keeps 300 characters (src/lib/safety/userReports.ts)")
         let blank = try ReportRequest(kind: .user, targetId: "u", reason: .other, details: "   \n ").jsonBody()
         XCTAssertNil((try XCTUnwrap(JSONSerialization.jsonObject(with: blank) as? [String: String]))["details"])
     }

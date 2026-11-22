@@ -991,6 +991,86 @@
         }
       }
     },
+    "review.comments.hide": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide comment"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ẩn bình luận"
+          }
+        }
+      }
+    },
+    "review.comments.unhide": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show comment again"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiện lại bình luận"
+          }
+        }
+      }
+    },
+    "review.comments.hiddenOwner": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You hid this comment (only you and its author can see it)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã ẩn bình luận này (chỉ bạn và người viết nhìn thấy)"
+          }
+        }
+      }
+    },
+    "review.comments.hiddenForYou": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The post owner hid this comment from others"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chủ bài viết đã ẩn bình luận này khỏi người khác"
+          }
+        }
+      }
+    },
+    "review.comments.hiddenReview": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This comment is under review after reports"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bình luận đang được xem xét vì bị báo cáo"
+          }
+        }
+      }
+    },
     "review.comments.reply": {
       "localizations": {
         "en": {

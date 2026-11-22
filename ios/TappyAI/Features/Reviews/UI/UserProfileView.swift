@@ -68,8 +68,18 @@ struct UserProfileView: View {
             case .loaded:
                 // App Review 1.2: blocking this person (from the ⋯ on this very screen, or elsewhere) hides their profile at once.
                 if safety.isBlocked(vm.userId) {
-                    TappyEmptyState(systemImage: "hand.raised.fill", title: "safety.blockedContent.title", message: "safety.blockedContent.message")
-                    .accessibilityIdentifier("blocked-unavailable")
+                    VStack(spacing: Spacing.md) {
+                        TappyEmptyState(systemImage: "hand.raised.fill", title: "safety.blockedContent.title", message: "safety.blockedContent.message")
+                            .accessibilityIdentifier("blocked-unavailable")
+                        // The web shows "Bỏ chặn" on the blocked person's profile (PublicProfileView, v3.publicProfile.youBlocked): unblock here, then reload.
+                        Button {
+                            Task {
+                                if await safety.unblock(vm.userId) { await vm.load() }
+                            }
+                        } label: { Text("safety.block.unblock") }
+                        .buttonStyle(.borderedProminent)
+                        .accessibilityIdentifier("blocked-unblock")
+                    }
                 } else {
                     loaded
                 }

@@ -71,6 +71,8 @@ struct ReviewsFeedView: View {
                 replyingTo: vm.replyingTo,
                 onReply: { vm.replyingTo = $0 },
                 onReact: { vm.react(to: $0, with: $1) },
+                isPostOwner: vm.isPostOwner,
+                onHide: { vm.setCommentHidden($0, hidden: $1) },
                 onDismiss: { vm.closeComments() }
             )
             .presentationDetents([.medium, .large])

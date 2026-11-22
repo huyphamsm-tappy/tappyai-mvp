@@ -36,11 +36,11 @@ enum ReportTargetKind: String, Sendable, CaseIterable {
     var titleKey: String { "safety.report.title." + rawValue }
 }
 
-/// The server's reason whitelist, in menu order — the final contract (sec/user-blocks-slice):
-/// spam, harassment, hate, sexual, self_harm, scam, sensitive, impersonation, copyright, other.
+/// The web menu's reasons, in the web's order (`src/lib/safety/safetyClient.ts`, SAFETY_REASONS): spam, harassment, hate, sexual,
+/// violence, self_harm, scam, misinformation, impersonation, other. The server accepts all of them (`src/lib/reviews/reportReasons.ts`).
 /// Named apart from Music's `ReportReason` and the review menu's `ReviewReportReason`: three endpoints, three lists.
 enum SafetyReportReason: String, CaseIterable, Identifiable, Sendable {
-    case spam, harassment, hate, sexual, selfHarm = "self_harm", scam, sensitive, impersonation, copyright, other
+    case spam, harassment, hate, sexual, violence, selfHarm = "self_harm", scam, misinformation, impersonation, other
 
     var id: String { rawValue }
     var labelKey: String { "safety.reason." + rawValue }
@@ -59,9 +59,9 @@ struct SafetyTarget: Identifiable, Equatable, Sendable {
     var id: String { kind.rawValue + ":" + targetId }
 }
 
-/// `POST /api/reports` body. `details` is optional and capped by the server at 1000 characters.
+/// The report body (one route per target, see `SafetyService.reportPath`). `details` is optional; the server keeps at most 300 characters.
 struct ReportRequest: Equatable, Sendable {
-    static let maxDetails = 1000
+    static let maxDetails = 300
 
     let kind: ReportTargetKind
     let targetId: String

@@ -125,6 +125,12 @@ struct ReviewComment: Codable, Sendable, Identifiable, Hashable {
     var reactions: [String: Int] = [:]
     /// The caller's own reaction key, if any.
     var myReaction: String? = nil
+    /// Web `GET /api/reviews/{id}/comments` (migration 20261208): set when the comment is hidden. `hiddenBy` is `owner` (the post's owner),
+    /// `auto` (reports reached the threshold) or `moderator`. The server sends a hidden comment only to its author, the post's owner and moderators.
+    var hiddenAt: String? = nil
+    var hiddenBy: String? = nil
+
+    var isHidden: Bool { hiddenAt != nil }
 
     var displayName: String {
         profiles?.fullName ?? NSLocalizedString("search.user.unnamed", comment: "")
