@@ -199,6 +199,9 @@ struct ProfileSettingsView: View {
                     valueKey: "settings.appearance." + theme.mode.rawValue) {
                     showAppearancePicker = true
                 }
+                // Web `ClearCacheRow`: free this phone's copy of the Messenger pictures (the server keeps them).
+                divider
+                ClearPhotoCacheRow()
             }
         }
     }

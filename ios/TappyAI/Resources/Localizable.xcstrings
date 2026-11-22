@@ -8567,6 +8567,70 @@
         }
       }
     },
+    "settings.clearCache": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear photo cache"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa bộ nhớ đệm ảnh"
+          }
+        }
+      }
+    },
+    "settings.clearCache.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free up space on this device. Photos in your messages stay safe and load again from the server when you open them."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giải phóng dung lượng trên thiết bị này. Ảnh trong tin nhắn vẫn còn, sẽ tải lại từ máy chủ khi bạn mở."
+          }
+        }
+      }
+    },
+    "settings.clearCache.button": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa"
+          }
+        }
+      }
+    },
+    "settings.clearCache.done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo cache on this device cleared."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã xóa bộ nhớ đệm ảnh trên thiết bị này."
+          }
+        }
+      }
+    },
     "deals.partnersTitle": {
       "localizations": {
         "en": {
