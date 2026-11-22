@@ -122,7 +122,7 @@ struct ReviewCommentSheet: View {
                         .font(TappyFont.caption)
                         .foregroundStyle(TappyColor.textSecondary)
                     Spacer()
-                    if CommentActions.canHide(comment, isPostOwner: isPostOwner, currentUserId: currentUserId) {
+                    if Self.showsHideButton(comment, isPostOwner: isPostOwner, currentUserId: currentUserId, flags: safety.flags) {
                         Button { onHide(comment, !comment.isHidden) } label: {
                             Image(systemName: comment.isHidden ? "eye" : "eye.slash")
                                 .font(.system(size: 13)).foregroundStyle(TappyColor.textSecondary)
@@ -171,6 +171,12 @@ struct ReviewCommentSheet: View {
         .padding(.leading, isReply ? Spacing.xl : 0)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("comment-" + comment.id)
+    }
+
+    /// The eye button needs a server that has the hide route: `/api/config` says so in `p8.commentModeration` (absent on an older server, so the
+    /// button never shows where a tap could only fail), and the web's own rule for who may hide what (`CommentActions.canHide`).
+    static func showsHideButton(_ comment: ReviewComment, isPostOwner: Bool, currentUserId: String?, flags: SafetyFlags) -> Bool {
+        flags.commentModeration && CommentActions.canHide(comment, isPostOwner: isPostOwner, currentUserId: currentUserId)
     }
 
     /// Web `feedShared.tsx`: a hidden comment says why it is greyed. Hidden by the post's owner: the owner reads "you hid it", its author reads

@@ -49,6 +49,14 @@ final class CommentHidingTests: XCTestCase {
         XCTAssertEqual(ReviewCommentSheet.hiddenNoteKey(comment(hiddenAt: "t", hiddenBy: "auto"), isPostOwner: false), "review.comments.hiddenReview")
     }
 
+    func testTheEyeButtonNeedsAServerThatHasTheHideRoute() {
+        let c = comment()
+        XCTAssertTrue(ReviewCommentSheet.showsHideButton(c, isPostOwner: true, currentUserId: "owner", flags: SafetyFlags(commentModeration: true)))
+        XCTAssertFalse(ReviewCommentSheet.showsHideButton(c, isPostOwner: true, currentUserId: "owner", flags: .off),
+                       "an older server has no /hide route: a button there could only fail")
+        XCTAssertFalse(ReviewCommentSheet.showsHideButton(c, isPostOwner: false, currentUserId: "owner", flags: SafetyFlags(commentModeration: true)))
+    }
+
     func testEveryStringTheHideButtonShowsHasACatalogEntry() {
         for key in ["review.comments.hide", "review.comments.unhide", "review.comments.hiddenOwner",
                     "review.comments.hiddenForYou", "review.comments.hiddenReview"] {
