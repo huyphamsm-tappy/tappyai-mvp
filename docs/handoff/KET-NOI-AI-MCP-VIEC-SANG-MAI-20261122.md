@@ -46,6 +46,14 @@ Thứ tự có phụ thuộc. Làm trên **UAT** trước (Supabase `zdapr...`),
 - **Không thử được với AI thật** khi chưa có OAuth Server và địa chỉ công khai.
 - **Production:** cờ cổng bị khóa tắt và chưa có cấu hình nào; đừng bật khi chưa thử xong trên UAT.
 
+## 4b. Kiểm giả thuyết "người chấm Opus thiên vị Haiku/Sonnet" (22/11/2026, ĐÃ KIỂM)
+Chấm lại đúng các báo cáo nghiên cứu sâu cũ (3 câu 801–803, cùng thang điểm, cùng thứ tự ẩn A/B/C, hai thứ tự mỗi câu) bằng người chấm **khác họ**: OpenAI `gpt-6-luna` (script `judge-research-luna.mjs` ở thư mục đo, kết quả `eval-runs/judge-research-c-luna.json`).
+| Người chấm | Tappy | Haiku | Sonnet | Hạng nhất |
+|---|---|---|---|---|
+| Opus 5.5 (cũ) | 3,69 | 3,97 | 4,72 | Sonnet 6/6 |
+| gpt-6-luna (mới) | 3,39 | 3,83 | 4,36 | Sonnet 6/6 |
+Thứ hạng giống nhau ở cả 6 lượt: Sonnet > Haiku > Tappy. Khoảng cách với Haiku không thu hẹp (0,28 → 0,44), với Sonnet gần như giữ nguyên (1,03 → 0,97). Chỗ thiếu ổn định ở cả hai người chấm là **độ đầy đủ** (Tappy 3,33; Haiku 4,33; Sonnet 4,83–5). Giới hạn: chỉ 3 câu, 6 lượt chấm, một người chấm ngoài họ, báo cáo chạy ngày 19/11. Vì vậy lời giới thiệu **không** nói "sánh ngang"; muốn nói thì phải sửa độ đầy đủ rồi đo lại với ít nhất 10 câu và hai người chấm khác họ.
+
 ## 5. Rủi ro đã thấy (để anh biết)
 - Hồ sơ của 4 AI mới dựa trên tìm kiếm web hôm nay (có cả nguồn thứ ba); sai khác với thực tế là có thể. Mỗi hồ sơ ghi sẵn mục "phải kiểm trước khi tuyên bố".
 - Màn hình đồng ý chỉ cho chuyển về https, localhost hoặc `cursor://`; nếu một AI dùng kiểu địa chỉ khác (ví dụ ứng dụng di động riêng) thì sẽ bị từ chối và phải thêm có kiểm soát.
