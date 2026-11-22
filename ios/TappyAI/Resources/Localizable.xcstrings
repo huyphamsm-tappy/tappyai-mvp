@@ -6678,6 +6678,23 @@
         }
       }
     },
+    "chat.deepExhausted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have used all your Deep Research reports this month, so Tappy answered in Thinking mode. New reports arrive on %@."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã dùng hết lượt Nghiên cứu sâu của tháng này nên Tappy trả lời ở chế độ Suy nghĩ. Lượt mới có từ %@."
+          }
+        }
+      }
+    },
     "chat.sources.title": {
       "extractionState": "manual",
       "localizations": {

@@ -38,6 +38,8 @@ struct ChatMessageList: View {
     var onReviewAIConsent: () -> Void = {}
     /// How the last reply ended when it was not a clean finish (see `ChatEndNotice`); nil = clean.
     var endNotice: ChatEndNotice? = nil
+    /// The day the Deep Research reports come back (`yyyy-MM-dd`) when the last question ran as Thinking because none were left; nil otherwise.
+    var deepResetOn: String? = nil
     /// The server's progress sentence for the thinking indicator (see `ThinkingIndicator.progressHint`).
     var progressHint: String? = nil
     /// Publishes a plan for «Xem kế hoạch đầy đủ trên Tappy» on the plan card (nil = the button stays inert).
@@ -163,6 +165,14 @@ struct ChatMessageList: View {
                     // `chat.turnIncomplete` / `chat.turnInterrupted`); a cut reply also offers «answer again».
                     if let endNotice, error == nil, !isStreaming {
                         ChatEndNoticeView(notice: endNotice, onRegenerate: onRegenerate)
+                    }
+
+                    // Web `chat.deepExhausted`: a report asked for with none left this month ran as Thinking. One fixed sentence, never the model's.
+                    if let deepResetOn, error == nil, !isStreaming {
+                        Text(String(format: NSLocalizedString("chat.deepExhausted", comment: ""), DeepResetHeader.displayDate(deepResetOn)))
+                            .font(.system(size: 12)).foregroundStyle(TappyColor.textSecondary)
+                            .padding(.leading, 44)
+                            .accessibilityIdentifier("deep-exhausted-note")
                     }
 
                     // Read-aloud notice. Deliberately NOT folded into ChatErrorBanner: that models

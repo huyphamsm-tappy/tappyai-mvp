@@ -12,6 +12,9 @@ enum StreamFrame: Equatable, Sendable {
     /// ADR-024. The `X-Decision-Evidence-Id` response header, surfaced as a frame so the caller can store it and
     /// echo it back on the conversation's next turn. A lookup KEY only, never the evidence facts.
     case decisionEvidenceId(String)
+    /// The `x-tappy-deep-reset` response header (`DeepResetHeader`): the day the monthly Deep Research reports come back, sent when a report was
+    /// asked for with none left and the server ran the question as Thinking. Shown as one fixed note; never part of the answer.
+    case deepResetOn(String)
     /// A message ANNOTATION (`8:`) carrying the turn's live place decision.
     ///
     /// 🚨 THE STREAM WAS NEVER TEXT-ONLY — THIS FRAME WAS ARRIVING AND FALLING INTO `.unknown`.
@@ -57,6 +60,29 @@ enum DecisionEvidenceHeader {
     static func key(_ raw: String?) -> String? {
         let trimmed = raw?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return !trimmed.isEmpty && trimmed.count <= 64 ? trimmed : nil
+    }
+}
+
+/// The `x-tappy-deep-reset` response header (server `src/lib/plans/deepResearchNotice.ts`): `yyyy-MM-dd`, the first day of next month in Vietnam.
+/// Anything that is not that shape is ignored (the note says a date, so a stray value must not become one).
+enum DeepResetHeader {
+    static let name = "x-tappy-deep-reset"
+
+    static func date(_ raw: String?) -> String? {
+        let v = raw?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard v.count == 10 else { return nil }
+        let parts = v.split(separator: "-", omittingEmptySubsequences: false)
+        guard parts.count == 3, parts[0].count == 4, parts[1].count == 2, parts[2].count == 2,
+              parts.allSatisfy({ $0.utf8.allSatisfy { $0 >= 0x30 && $0 <= 0x39 } }),
+              let month = Int(parts[1]), (1...12).contains(month), let day = Int(parts[2]), (1...31).contains(day)
+        else { return nil }
+        return v
+    }
+
+    /// `2026-12-01` → `01/12/2026` (day first, as the web's `displayResetDate`).
+    static func displayDate(_ iso: String) -> String {
+        let p = iso.split(separator: "-")
+        return p.count == 3 ? "\(p[2])/\(p[1])/\(p[0])" : iso
     }
 }
 
@@ -176,6 +202,10 @@ final class URLSessionStreamingClient: StreamingClient {
                     if let http = response as? HTTPURLResponse,
                        let key = DecisionEvidenceHeader.key(http.value(forHTTPHeaderField: DecisionEvidenceHeader.name)) {
                         continuation.yield(.decisionEvidenceId(key))
+                    }
+                    if let http = response as? HTTPURLResponse,
+                       let date = DeepResetHeader.date(http.value(forHTTPHeaderField: DeepResetHeader.name)) {
+                        continuation.yield(.deepResetOn(date))
                     }
                     for try await line in bytes.lines {
                         try Task.checkCancellation()

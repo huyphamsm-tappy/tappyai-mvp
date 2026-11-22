@@ -16,6 +16,9 @@ final class ChatViewModel: AppObservableObject {
     /// How the last reply ended when it was not a clean finish (cut stream, server turn status, `3:` part).
     /// A line under the reply; never part of the answer text. Cleared when a new turn starts.
     @AppPublished var endNotice: ChatEndNotice? = nil
+    /// The day the monthly Deep Research reports come back (`yyyy-MM-dd`), set when the last question asked for a report with none left and the
+    /// server answered it as Thinking (header `x-tappy-deep-reset`, web `deepResetOn`). Drawn as one fixed note under the reply; cleared when a new turn starts.
+    @AppPublished var deepResetOn: String? = nil
     /// What the pipeline is doing right now, as the server wrote it (`tappy.progress.v1`); shown in the
     /// thinking indicator until the answer starts. Never text of the answer, never persisted.
     @AppPublished var progressHint: String? = nil
@@ -680,6 +683,7 @@ final class ChatViewModel: AppObservableObject {
         isStreaming = true
         activeTool = nil
         endNotice = nil
+        deepResetOn = nil
         progressHint = nil
         clearLiveAnnotations()
         startThinkTimer()
@@ -767,6 +771,10 @@ final class ChatViewModel: AppObservableObject {
                     // ADR-024: store the key; the next turn echoes it. Never the evidence facts.
                     case .decisionEvidenceId(let key):
                         self.decisionEvidenceId = key
+
+                    // The reports ran out: the question was answered as Thinking, and the person is told when they come back.
+                    case .deepResetOn(let date):
+                        self.deepResetOn = date
 
                     case .done:
                         sawDone = true

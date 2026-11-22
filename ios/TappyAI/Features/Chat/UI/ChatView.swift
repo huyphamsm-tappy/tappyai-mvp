@@ -82,6 +82,7 @@ struct ChatView: View {
                         onCancelAgeCorrection: { vm.cancelAgeCorrection() },
                         onReviewAIConsent: { vm.reviewAIConsent() },
                         endNotice: vm.endNotice,
+                        deepResetOn: vm.deepResetOn,
                         progressHint: vm.progressHint,
                         planShare: vm.planShare,
                         liveResearch: vm.liveResearch,
