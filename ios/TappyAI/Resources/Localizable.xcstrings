@@ -6746,6 +6746,48 @@
         }
       }
     },
+    "chat.link.kind": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Quick read" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đọc nhanh" } }
+      }
+    },
+    "chat.link.loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Opening the page…" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đang mở trang…" } }
+      }
+    },
+    "chat.link.open": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Open the original page" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mở trang gốc" } }
+      }
+    },
+    "chat.link.unreadable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This site does not let Tappy read it automatically (many news sites block this), so there is no preview. Open the original page to read it in full." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Trang này không cho Tappy đọc tự động (nhiều trang báo chặn việc này), nên Tappy không xem trước được nội dung. Bạn mở trang gốc để đọc đầy đủ." } }
+      }
+    },
+    "chat.link.note": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "An excerpt taken as written from the original page; Tappy adds or verifies nothing else." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đoạn trích lấy nguyên từ trang gốc; Tappy không thêm hay kiểm chứng gì khác." } }
+      }
+    },
+    "chat.link.published": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Published %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đăng %@" } }
+      }
+    },
     "chat.present.pick": {
       "extractionState": "manual",
       "localizations": {

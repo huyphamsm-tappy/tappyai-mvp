@@ -299,6 +299,8 @@ private struct AssistantBubble: View {
     var placesShown: Int? = nil
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
+    /// The page of a tapped link that opens in the quick-read sheet (web LinkDrawer); nil when no sheet is open.
+    @State private var readerLink: ReaderTarget?
     let followups: [String]
     /// The turn's news pictures / subject cards (`[TAPPY_MEDIA]`, already host-checked).
     var media: [MediaBlock] = []
@@ -319,6 +321,9 @@ private struct AssistantBubble: View {
         HStack(alignment: .top, spacing: Spacing.xs) {
             // Avatar
             TappyAvatar()
+                // The quick-read sheet of a tapped link, anchored here (outside the link scope, so the sheet's own "open the original" link is a
+                // plain link, never read again; and no extra row in the bubble).
+                .background(Color.clear.sheet(item: $readerLink) { LinkReaderSheet(target: $0).presentationDetents([.medium, .large]) })
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 // Deep Research: the card above its report (web: the card before the message content)
@@ -331,12 +336,13 @@ private struct AssistantBubble: View {
                     // An answer with structure (heading, list, table, ...), charts or section pictures, or a picture in the middle of its text:
                     // drawn block by block, each chart / picture right under the section it names (web ArticleAnswer, Android ArticleViews)
                     ForEach(Array(parts.enumerated()), id: \.offset) { _, part in
-                        articlePartView(part)
+                        articlePartView(part).readerLinks { readerLink = $0 }
                     }
                 } else {
                     // Message text
                     if !content.isEmpty {
                         Text(attributedContent)
+                            .readerLinks { readerLink = $0 }
                             .font(TappyFont.body)
                             .foregroundStyle(TappyColor.textPrimary)
                             .textSelection(.enabled)
@@ -352,6 +358,7 @@ private struct AssistantBubble: View {
                 // "Nguồn · N": the pages the finished answer links to (web SourcesFooter). A research report lists its own sources on its card.
                 if research == nil, !isStreaming, status == .complete {
                     SourcesFooterView(sources: AnswerSources.of(content))
+                        .readerLinks { readerLink = $0 }
                 }
 
                 // The blocks the model declared: comparison table, subject cards, gallery, questions, booking (web `PresentationBlocks`).
@@ -391,6 +398,7 @@ private struct AssistantBubble: View {
                 } : media
                 if !shownMedia.isEmpty, !isStreaming {
                     MediaBlocksView(blocks: shownMedia)
+                        .readerLinks { readerLink = $0 }
                 }
 
                 if let shopping, !isStreaming {

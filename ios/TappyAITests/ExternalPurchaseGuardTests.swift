@@ -47,6 +47,9 @@ final class ExternalPurchaseGuardTests: XCTestCase {
             // 22/11 review for 3.1.1: the emergency card opens a `tel:` address (the phone's dialer, a 2-4 digit hotline number the app
             // re-checks as digits only, `EmergencyFrames`). It cannot reach a web page and has nothing to do with paying.
             "TappyAI/Features/Chat/UI/EmergencyCardView.swift",
+            // 22/11 review for 3.1.1: the quick-read sheet shows an article's own excerpt and ends with a link to the ORIGINAL page. Booking and
+            // shopping sites never reach it (`ReaderLinks.target` leaves them to open where they belong); nothing here sells or unlocks anything.
+            "TappyAI/Features/Chat/UI/LinkReaderSheet.swift",
             "TappyAI/Features/Chat/UI/MediaBlocksView.swift",
             // 22/11 review for 3.1.1: the booking card opens a PARTNER link for a hotel, a ride, a ticket or a product (goods and services bought
             // outside the app, like the place and plan cards above). It is drawn only for an `https` link the server attached to that booking
