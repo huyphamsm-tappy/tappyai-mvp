@@ -192,7 +192,7 @@ struct ChatPlanCardView: View {
                 .frame(width: 42, alignment: .leading)
             PlanImage(key: stop.imageKey, area: area, manifest: images.manifest, glyph: stop.emoji, glyphSize: 22,
                       // the stop's own photo first, then the picture the server found for a stop that had none (web `stopImages` fallback)
-                      photoUrl: stop.photoUrl ?? stopImages[SubjectImages.key(stop.name)]?.absoluteString)
+                      photoUrl: stop.photoUrl ?? stopImages[SubjectImages.key(stop.name)])
                 .frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 10))
             VStack(alignment: .leading, spacing: 2) {
                 Text(stop.name).font(.system(size: 14, weight: .semibold)).foregroundStyle(PlanPal.text).lineLimit(2)
