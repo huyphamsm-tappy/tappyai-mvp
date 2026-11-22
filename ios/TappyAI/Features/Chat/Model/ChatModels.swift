@@ -30,6 +30,10 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     var docMedia: [DocMediaItem] = []
     /// The emergency hotlines of this reply (`tappy.safety.v1`), drawn as a card with call buttons. In memory only; empty on every other reply.
     var safetyCards: [EmergencyCardItem] = []
+    /// The blocks the model declared for this reply (`tappy.presentation.v1`): table, subject cards, gallery, questions, booking. In memory only.
+    var presentation: PresentationFrame? = nil
+    /// The pictures the server found for this reply's subject cards and gallery (`tappy.subject_images.v1`). In memory only.
+    var subjectImages: SubjectImagesFrame? = nil
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
          status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = [],

@@ -95,6 +95,8 @@ struct ChatMessageList: View {
                                 charts: msg.charts.isEmpty && isLast && isStreaming ? liveCharts : msg.charts,
                                 docMedia: msg.docMedia,
                                 safetyCards: msg.safetyCards,
+                                presentation: msg.presentation,
+                                subjectImages: msg.subjectImages,
                                 segments: parsed.segments,
                                 chartLang: locale == "vi" ? "vi" : "en",
                                 isStreaming: isStreaming && isLast,
@@ -273,6 +275,9 @@ private struct AssistantBubble: View {
     var docMedia: [DocMediaItem] = []
     /// The emergency hotlines of this reply (`tappy.safety.v1`), drawn as a card with call buttons (empty on every other reply).
     var safetyCards: [EmergencyCardItem] = []
+    /// The blocks the model declared (`tappy.presentation.v1`) and the pictures found for them (`tappy.subject_images.v1`); nil on every other reply.
+    var presentation: PresentationFrame? = nil
+    var subjectImages: SubjectImagesFrame? = nil
     /// The reply's prose and pictures in the order written (`ParsedContent.segments`).
     var segments: [ReplySegment] = []
     /// "vi" or "en": the language the charts' figures are written in.
@@ -349,6 +354,13 @@ private struct AssistantBubble: View {
                     SourcesFooterView(sources: AnswerSources.of(content))
                 }
 
+                // The blocks the model declared: comparison table, subject cards, gallery, questions, booking (web `PresentationBlocks`).
+                // Drawn once the reply is complete; an older answer's questions send nothing.
+                if let presentation, !isStreaming {
+                    PresentationBlocksView(frame: presentation, onSend: { onFollowup($0) }, disabled: !isLastMessage,
+                                           subjectImages: subjectImages?.images ?? [:], galleryImages: subjectImages?.gallery ?? [:])
+                }
+
                 // The emergency hotlines, one tap each (web: the safety card under the reply)
                 if !safetyCards.isEmpty {
                     EmergencyCardView(cards: safetyCards)
@@ -371,8 +383,13 @@ private struct AssistantBubble: View {
 
                 // News pictures / Wikipedia subject cards (CONSULT_V3 / ANSWER_V4): only validated blocks, only
                 // once the reply is complete. Empty on every default turn.
-                if !media.isEmpty, !isStreaming {
-                    MediaBlocksView(blocks: media)
+                // The subject cards the model declared replace the server's own subject row: one look, never both (web `entities && !profilesNode`).
+                let shownMedia = (presentation?.hasProfiles ?? false) ? media.filter { block in
+                    if case .entities = block { return false }
+                    return true
+                } : media
+                if !shownMedia.isEmpty, !isStreaming {
+                    MediaBlocksView(blocks: shownMedia)
                 }
 
                 if let shopping, !isStreaming {

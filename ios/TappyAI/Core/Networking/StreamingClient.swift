@@ -42,6 +42,12 @@ enum StreamFrame: Equatable, Sendable {
     /// A message ANNOTATION (`8:`) of kind `tappy.safety.v1`: the emergency hotlines the server verified, drawn as a card with a call button
     /// each (`EmergencyFrames.cards`). The same numbers are also in the reply's text. Live only; never text, never saved.
     case safety([EmergencyCardItem])
+    /// A message ANNOTATION (`8:`) of kind `tappy.presentation.v1`: the blocks the model declared (comparison table, subject cards, gallery,
+    /// tap-to-send questions, booking handoff), re-checked by `PresentationFrames`. The latest one is the answer's. Live only; never text, never saved.
+    case presentation(PresentationFrame)
+    /// A message ANNOTATION (`8:`) of kind `tappy.subject_images.v1`: pictures the server found for the subject cards and the gallery, by name
+    /// (`SubjectImages.frame`). The latest one is the answer's. Live only; never text, never saved.
+    case subjectImages(SubjectImagesFrame)
     case done
     case unknown(prefix: String, payload: Data)
 }
@@ -148,6 +154,10 @@ enum DataStreamLineParser {
             case safetyAnnotationKind:
                 let cards = EmergencyFrames.cards(item)
                 return cards.isEmpty ? nil : .safety(cards)
+            case presentationAnnotationKind:
+                return PresentationFrames.frame(item).map { .presentation($0) }
+            case subjectImagesAnnotationKind:
+                return SubjectImages.frame(item).map { .subjectImages($0) }
             case placesAnnotationKind:
                 guard let data = try? JSONSerialization.data(withJSONObject: item),
                       let view = try? JSONDecoder().decode(PlacesLiveView.self, from: data),

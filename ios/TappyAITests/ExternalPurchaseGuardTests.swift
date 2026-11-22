@@ -48,6 +48,10 @@ final class ExternalPurchaseGuardTests: XCTestCase {
             // re-checks as digits only, `EmergencyFrames`). It cannot reach a web page and has nothing to do with paying.
             "TappyAI/Features/Chat/UI/EmergencyCardView.swift",
             "TappyAI/Features/Chat/UI/MediaBlocksView.swift",
+            // 22/11 review for 3.1.1: the booking card opens a PARTNER link for a hotel, a ride, a ticket or a product (goods and services bought
+            // outside the app, like the place and plan cards above). It is drawn only for an `https` link the server attached to that booking
+            // (`PresentationFrames.bookingLink`); the app writes no address, and there is nothing digital to unlock.
+            "TappyAI/Features/Chat/UI/PresentationBlocksView.swift",
             "TappyAI/Features/Chat/UI/PlaceCardView.swift",
             "TappyAI/Features/Chat/UI/PlanCardView.swift",
             "TappyAI/Features/Chat/UI/VoiceListeningView.swift",

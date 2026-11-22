@@ -828,6 +828,14 @@ final class ChatViewModel: AppObservableObject {
                     case .safety(let cards):
                         edit { $0.safetyCards = cards }
 
+                    // The blocks the model declared: held on the reply (the latest frame is the answer's), never in `content`.
+                    case .presentation(let frame):
+                        edit { $0.presentation = frame }
+
+                    // The pictures for those blocks (they can arrive before or after the blocks themselves).
+                    case .subjectImages(let frame):
+                        edit { $0.subjectImages = frame }
+
                     case .messageStart, .unknown:
                         break
                     }

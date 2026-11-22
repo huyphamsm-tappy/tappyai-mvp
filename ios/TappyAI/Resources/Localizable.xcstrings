@@ -6746,6 +6746,41 @@
         }
       }
     },
+    "chat.present.pick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tappy's pick" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tappy chọn" } }
+      }
+    },
+    "chat.present.sources": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sources: %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nguồn: %@" } }
+      }
+    },
+    "chat.present.login": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Needs a login on the partner site" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cần đăng nhập trên trang đối tác" } }
+      }
+    },
+    "chat.present.app": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Opens in the partner's app" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mở trong ứng dụng của đối tác" } }
+      }
+    },
+    "chat.present.book": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Book with %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đặt qua %@" } }
+      }
+    },
     "chat.sources.title": {
       "extractionState": "manual",
       "localizations": {
