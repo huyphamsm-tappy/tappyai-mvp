@@ -409,7 +409,9 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
             ))}
           </ul>
         </div>
-        <div className="hidden lg:block"><TappyMascot pose="travel" size={260} className="mx-auto" /></div>
+        {/* The whole otter (head to feet), never the cropped bust: the full-body Tappy art, contained. */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- owner-supplied art in /public/subscription */}
+        <div className="hidden lg:block"><img src="/subscription/tappy.webp" alt="" width={471} height={640} className="mx-auto h-72 w-auto object-contain" data-testid="sub-hero-mascot" /></div>
       </section>
 
       {active && sub.plan && (
@@ -538,7 +540,7 @@ function AccessColumn({ image, name, tagline, lines, action }: {
   return (
     <div className="flex flex-col rounded-3xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       {/* eslint-disable-next-line @next/next/no-img-element -- owner-supplied art in /public/subscription */}
-      <img src={image} alt="" width={96} height={96} className="mx-auto h-24 w-24 rounded-2xl object-cover" />
+      <img src={image} alt="" width={96} height={96} className="mx-auto h-24 w-24 rounded-2xl object-contain" />
       <p className="mt-2 text-center text-2xl font-black text-gray-900 dark:text-white">{name}</p>
       <p className="min-h-[2.5rem] text-center text-xs text-content-secondary">{tagline}</p>
       <p className="mt-3 text-center text-xl font-black text-gray-900 dark:text-white">{t('sub.price.free')}</p>
