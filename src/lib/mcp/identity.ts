@@ -16,20 +16,26 @@ type Env = Record<string, string | undefined>
 export const MCP_SCOPES = ['places:read', 'hotels:read', 'shopping:read', 'itinerary:create'] as const
 const SCOPE_SET: ReadonlySet<string> = new Set(MCP_SCOPES)
 const HOSTS: ReadonlySet<string> = new Set<string>(HOST_PLATFORMS)
+const SUPABASE_AUDIENCE = 'authenticated'
+const IDENTITY_SCOPES: ReadonlySet<string> = new Set(['openid', 'profile', 'email', 'phone', 'offline_access'])
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 /** client_id of a registered connector → the Host it was registered for. Written by the owner at registration time; client ids are not secrets. */
-export type ClientRegistry = Readonly<Record<string, { host: HostPlatform }>>
+export type ClientRegistry = Readonly<Record<string, { host: HostPlatform; /** what this connector may do; absent = every MCP scope (Supabase cannot put our scopes in a token, see claimsFromJwtPayload) */ scopes?: readonly string[] }>>
 
 /** Reads MCP_OAUTH_CLIENTS (JSON: {"<client_id>": {"host": "claude"}}). Anything malformed is an empty registry, so nobody is let in. Pure. */
 export function parseClientRegistry(raw: string | undefined): ClientRegistry {
   try {
     const j = JSON.parse(raw ?? '{}') as unknown
     if (!j || typeof j !== 'object' || Array.isArray(j)) return {}
-    const out: Record<string, { host: HostPlatform }> = {}
+    const out: Record<string, { host: HostPlatform; scopes?: readonly string[] }> = {}
     for (const [id, v] of Object.entries(j as Record<string, unknown>)) {
       const host = v && typeof v === 'object' ? (v as { host?: unknown }).host : undefined
-      if (id && typeof host === 'string' && HOSTS.has(host)) out[id] = { host: host as HostPlatform }
+      if (!(id && typeof host === 'string' && HOSTS.has(host))) continue
+      const raw = (v as { scopes?: unknown }).scopes
+      // an optional narrower grant; anything that is not a list of known scopes is ignored (the client then gets the default, never more than the known scopes)
+      const scopes = Array.isArray(raw) ? raw.filter((s): s is string => typeof s === 'string' && SCOPE_SET.has(s)) : undefined
+      out[id] = { host: host as HostPlatform, ...(scopes ? { scopes } : {}) }
     }
     return out
   } catch { return {} }
@@ -48,10 +54,17 @@ export function claimsFromJwtPayload(p: Record<string, unknown>, o: IdentityOpti
   const exp = num(p.exp)
   if (!sub || exp === null) return null
   const aud = Array.isArray(p.aud) ? p.aud.filter((a): a is string => typeof a === 'string') : typeof p.aud === 'string' ? [p.aud] : []
-  const scopes = (typeof p.scope === 'string' ? p.scope.split(/\s+/) : []).filter(s => SCOPE_SET.has(s))
+  // 🚨 SEEN ON A REAL TOKEN (22/11/2026, Supabase OAuth server on the UAT project): `aud` is always "authenticated" and `scope` holds only OpenID names ("openid profile"). Supabase can neither bind a token to
+  // OUR resource nor mint OUR scopes. What binds the token to the connector is the REGISTERED client: `client_id` is in the token (a normal web session has none) and must be in MCP_OAUTH_CLIENTS (checked
+  // above), and the identity provider confirmed the token on this very request. Our scopes therefore come from the registry entry (default: every MCP scope), never from anything the token or a Host claims.
+  // A token carrying a `client_id` is refused by every other Tappy route (src/lib/auth/getRequestUser.ts), so this token works nowhere but here.
+  const tokenScopes = (typeof p.scope === 'string' ? p.scope.split(/\s+/) : []).filter(Boolean)
+  const own = tokenScopes.filter(s => SCOPE_SET.has(s))
+  const identityOnly = tokenScopes.length > 0 && tokenScopes.every(s => IDENTITY_SCOPES.has(s))
+  const scopes = own.length > 0 ? own : identityOnly ? [...(client.scopes ?? MCP_SCOPES)] : []
   const anonymous = p.is_anonymous === true
   return {
-    audience: aud.includes(o.expectedAudience) ? o.expectedAudience : (aud[0] ?? ''),
+    audience: aud.includes(o.expectedAudience) || aud.includes(SUPABASE_AUDIENCE) ? o.expectedAudience : (aud[0] ?? ''),
     scopes: [...new Set(scopes)], expiresAt: exp, revoked: false,
     host: client.host, installId: `${client.host}:${clientId}`,
     userId: anonymous ? null : sub, principalId: anonymous ? `a:${sub}` : `u:${sub}`,

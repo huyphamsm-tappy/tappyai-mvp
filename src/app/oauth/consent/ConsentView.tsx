@@ -2,7 +2,7 @@
 
 // The consent screen of the Tappy connector (MCP). Supabase's OAuth server sends a signed-in person here with ?authorization_id=…; they see WHICH AI wants access and WHAT it may do,
 // and choose Allow or Deny. Nothing is granted by loading the page. UNVERIFIED against a live Supabase OAuth server (see consentView.ts).
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
@@ -22,8 +22,13 @@ export default function ConsentView() {
   const id = params.get('authorization_id')
   const [state, setState] = useState<State>({ kind: 'loading' })
 
+  // ONE look at the request per authorization id. Found on the real Supabase server (22/11/2026): when the person has already allowed this app, the FIRST details call returns the redirect (with the code) and
+  // any SECOND call answers 400 "cannot be processed". React runs an effect twice in development (and a re-render can repeat it), so the result of the first call must never be thrown away: no `alive`
+  // flag, and a ref guard so the same id is never asked twice.
+  const askedFor = useRef<string | null | undefined>(undefined)
   useEffect(() => {
-    let alive = true
+    if (askedFor.current === id) return
+    askedFor.current = id
     ;(async () => {
       if (!isAuthorizationId(id)) { setState({ kind: 'invalid' }); return }
       const supabase = createClient()
@@ -31,7 +36,6 @@ export default function ConsentView() {
       // not signed in (or only a guest): sign in first, then come back to this exact request
       if (!user || isAnonymousUser(user)) { window.location.assign(loginPathFor(`/oauth/consent?authorization_id=${encodeURIComponent(id)}`)); return }
       const { data, error } = await supabase.auth.oauth.getAuthorizationDetails(id)
-      if (!alive) return
       if (error || !data) { setState({ kind: 'invalid' }); return }
       if ('redirect_url' in data) { // already consented: go straight back
         const to = safeOAuthRedirect(data.redirect_url)
@@ -39,8 +43,7 @@ export default function ConsentView() {
         return
       }
       setState({ kind: 'ask', d: data as unknown as Details })
-    })().catch(() => { if (alive) setState({ kind: 'error' }) })
-    return () => { alive = false }
+    })().catch(() => setState({ kind: 'error' }))
   }, [id])
 
   async function decide(approve: boolean) {

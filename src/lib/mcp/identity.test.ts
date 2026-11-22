@@ -49,7 +49,28 @@ describe('claimsFromJwtPayload: deterministic principal mapping (R13 10.7)', () 
     expect(claimsFromJwtPayload(payload({ aud: [AUD, 'other'] }), opts)!.audience).toBe(AUD)
     expect(claimsFromJwtPayload(payload({ aud: 'https://other.example' }), opts)!.audience).not.toBe(AUD)
     expect(claimsFromJwtPayload(payload({ aud: undefined }), opts)!.audience).not.toBe(AUD)
-    expect(claimsFromJwtPayload(payload({ aud: 'authenticated' }), opts)!.audience).not.toBe(AUD) // a plain Supabase session token is not an MCP token
+    // 22/11/2026, seen on a real token: Supabase's OAuth server always issues aud "authenticated". What ties such a token to the connector is the REGISTERED client_id, so with one it is accepted ...
+    expect(claimsFromJwtPayload(payload({ aud: 'authenticated' }), opts)!.audience).toBe(AUD)
+    // ... and WITHOUT one (a plain web / native session token) it is no MCP token at all
+    expect(claimsFromJwtPayload(payload({ aud: 'authenticated', client_id: undefined }), opts)).toBeNull()
+    expect(claimsFromJwtPayload(payload({ aud: 'authenticated', client_id: 'cid-unregistered' }), opts)).toBeNull()
+  })
+  it('a real Supabase OAuth token ("openid profile") gets the scopes of its REGISTERED client: all MCP scopes by default, or the narrower list the registry names; never more, never from the token', () => {
+    const real = { aud: 'authenticated', scope: 'openid profile' }
+    expect([...claimsFromJwtPayload(payload(real), opts)!.scopes].sort()).toEqual([...MCP_SCOPES].sort())
+    const narrow: ClientRegistry = { 'cid-one': { host: 'claude', scopes: ['places:read'] } }
+    expect(claimsFromJwtPayload(payload(real), { ...opts, registry: narrow })!.scopes).toEqual(['places:read'])
+    // a token that asks for something that is not an identity scope gets nothing from the default
+    expect(claimsFromJwtPayload(payload({ ...real, scope: 'admin:all' }), opts)!.scopes).toEqual([])
+    expect(claimsFromJwtPayload(payload({ ...real, scope: 'openid admin:all' }), opts)!.scopes).toEqual([])
+    expect(claimsFromJwtPayload(payload({ ...real, scope: undefined }), opts)!.scopes).toEqual([])
+    // if a token ever DOES carry our scopes, those (and only those) are used
+    expect(claimsFromJwtPayload(payload({ ...real, scope: 'openid shopping:read' }), opts)!.scopes).toEqual(['shopping:read'])
+  })
+  it('the registry reads an optional scopes list and ignores anything that is not a list of known scopes', async () => {
+    const { parseClientRegistry } = await import('./identity')
+    const reg = parseClientRegistry(JSON.stringify({ a: { host: 'cursor', scopes: ['places:read', 'root', 5] }, b: { host: 'grok' }, c: { host: 'meta', scopes: 'places:read' } }))
+    expect(reg.a).toEqual({ host: 'cursor', scopes: ['places:read'] }); expect(reg.b).toEqual({ host: 'grok' }); expect(reg.c).toEqual({ host: 'meta' })
   })
   it('missing or malformed sub / exp are refused', () => {
     for (const bad of [{ sub: undefined }, { sub: '' }, { sub: 'not-a-uuid' }, { exp: undefined }, { exp: 'soon' }]) expect(claimsFromJwtPayload(payload(bad), opts)).toBeNull()
@@ -114,10 +135,16 @@ describe('end to end through the Gateway: cross-principal and wrong-audience tok
     for (const n of ['get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job']) expect(sc(await call(d, tokenB, n, { job_id: id })).error.code).toBe('JOB_NOT_FOUND')
     expect(sc(await call(d, tokenA, 'get_itinerary_job_status', { job_id: id })).status).toBe('queued')
   })
-  it('a token for another audience (a plain Supabase session token) gets 401', async () => {
-    const t = jwt(payload({ aud: 'authenticated' }))
-    const r = await call(deps(async () => ({ id: SUB_A })), t, 'search_places', { query: 'pho' })
-    expect(r.status).toBe(401)
+  it('a token for another audience gets 401, and so does a plain Supabase session token (no client_id)', async () => {
+    for (const t of [jwt(payload({ aud: 'https://other.example' })), jwt(payload({ aud: 'authenticated', client_id: undefined }))]) {
+      const r = await call(deps(async () => ({ id: SUB_A })), t, 'search_places', { query: 'pho' })
+      expect(r.status).toBe(401)
+    }
+  })
+  it('a real Supabase OAuth token (aud authenticated, scope "openid profile", registered client_id) is admitted: the connector grant comes from the registry', async () => {
+    const t = jwt(payload({ aud: 'authenticated', scope: 'openid profile' }))
+    const r = await call(deps(async () => ({ id: SUB_A })), t, 'search_places', { query: 'pho', latitude: 10.77, longitude: 106.7 })
+    expect(r.status).toBe(200)
   })
   it('a token without the tool scope is ACCESS_DENIED', async () => {
     const t = jwt(payload({ scope: 'shopping:read' }))

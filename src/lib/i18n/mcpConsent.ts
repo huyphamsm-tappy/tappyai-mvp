@@ -24,3 +24,7 @@ export const SCOPE_TEXT: Readonly<Record<string, Record<ConsentLocale, string>>>
   'itinerary:create': { vi: 'Lập lịch trình du lịch (chỉ soạn kế hoạch: không đặt chỗ, không thanh toán)', en: 'Plan a trip itinerary (a plan only: no booking, no payment)' },
 }
 export const UNKNOWN_SCOPE: Record<ConsentLocale, string> = { vi: 'Quyền không xác định:', en: 'Unknown permission:' }
+
+/** Supabase's OAuth server can only carry OpenID scopes (seen on a real token 22/11/2026). They mean "know who I am"; the connector's capabilities are then listed in full (SCOPE_TEXT), because that is what the connection can do. */
+export const IDENTITY_SCOPES = ['openid', 'profile', 'email', 'phone', 'offline_access'] as const
+export const IDENTITY_TEXT: Record<ConsentLocale, string> = { vi: 'Biết tài khoản Tappy của bạn là ai (để xử lý yêu cầu của bạn)', en: 'Know which Tappy account is yours (to handle your requests)' }

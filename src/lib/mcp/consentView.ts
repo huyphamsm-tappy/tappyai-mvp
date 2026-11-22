@@ -1,8 +1,8 @@
 // The pure parts of the OAuth consent screen (/oauth/consent) for connectors: what the user is shown and what the page may do with the answer.
 // The OAuth server itself is Supabase's (it must be switched on in the project: Authentication -> OAuth Server, with the consent path set to /oauth/consent). This file builds nothing of the server.
-// UNVERIFIED against a real Supabase OAuth server: the response shapes follow @supabase/auth-js 2.108.2 types, not a live exchange.
+// Checked on 22/11/2026 against the real UAT Supabase OAuth server (authorize -> this screen -> approve -> code -> token): the shapes work. Not yet tried with a real AI Host.
 
-import { SCOPE_TEXT, UNKNOWN_SCOPE, type ConsentLocale } from '@/lib/i18n/mcpConsent'
+import { SCOPE_TEXT, UNKNOWN_SCOPE, IDENTITY_SCOPES, IDENTITY_TEXT, type ConsentLocale } from '@/lib/i18n/mcpConsent'
 
 /** `authorization_id` is an opaque id minted by Supabase. We accept only a plain token (no slash, no whitespace) of sensible length, so nothing odd reaches the SDK call or the page. */
 export const isAuthorizationId = (v: unknown): v is string => typeof v === 'string' && /^[A-Za-z0-9_-]{8,128}$/.test(v)
@@ -10,7 +10,15 @@ export const isAuthorizationId = (v: unknown): v is string => typeof v === 'stri
 /** Each requested scope in plain words (text in src/lib/i18n/mcpConsent.ts). An unknown scope is shown as such, never silently dropped: the user must see everything that was asked. */
 export function scopeLines(scope: string | undefined | null, locale: ConsentLocale): string[] {
   const parts = (scope ?? '').split(/\s+/).filter(Boolean)
-  return parts.map(s => SCOPE_TEXT[s]?.[locale] ?? `${UNKNOWN_SCOPE[locale]} ${s}`)
+  const identity: readonly string[] = IDENTITY_SCOPES
+  const lines: string[] = []
+  for (const s of parts) {
+    const line = SCOPE_TEXT[s]?.[locale] ?? (identity.includes(s) ? IDENTITY_TEXT[locale] : `${UNKNOWN_SCOPE[locale]} ${s}`)
+    if (!lines.includes(line)) lines.push(line)
+  }
+  // Supabase can only carry OpenID scopes, so a connector asks for "openid profile" and nothing else: what it may do is then the connector's full capability list (the registry default grant), shown in full.
+  if (parts.length > 0 && parts.every(s => identity.includes(s))) lines.push(...Object.keys(SCOPE_TEXT).map(k => SCOPE_TEXT[k][locale]))
+  return lines
 }
 
 /** App schemes a desktop host registers for its OAuth callback. Only `cursor:` (Cursor desktop): the Cursor docs list a separate redirect URL for the desktop app. UNVERIFIED: confirm the exact URL on the real app. */

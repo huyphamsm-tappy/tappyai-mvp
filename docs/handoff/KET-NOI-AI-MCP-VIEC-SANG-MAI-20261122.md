@@ -26,8 +26,21 @@ Nhãn: **ĐÃ KIỂM** = chạy test hoặc đọc mã thật; **CHƯA KIỂM** 
 
 Kết luận thật: **chắc chắn nối được trong thực tế**: Claude, ChatGPT (tùy gói), Cursor, Grok (qua API). **Chưa chắc**: Gemini ở Việt Nam, DeepSeek, Meta. Em đã đưa cả bảy vào mã để sẵn sàng, nhưng sẽ không tuyên bố hỗ trợ khi chưa thử thật.
 
+## 2b. ĐÃ LÀM THẬT tối 22/11 trên UAT (cập nhật sau khi anh cho phép dùng Chrome; ĐÃ KIỂM bằng chuỗi thật)
+Em đã chạy cả chuỗi như một AI Host thật (kịch bản `oauth-flow.cjs`, ứng dụng OAuth thử loại public + PKCE do em tạo trên UAT): authorize → màn hình đồng ý `/oauth/consent` → Cho phép → mã → token → gọi cổng.
+- **OAuth Server của Supabase UAT đã bật** (Authentication → OAuth Server; đường dẫn đồng ý `/oauth/consent`). Công tắc **"Allow Dynamic OAuth Apps" CHƯA bật được** (tab Chrome không nhận bấm vì Chrome không vẽ trang lúc anh treo máy); vì thế `registration_endpoint` chưa có trong metadata, và Claude/ChatGPT (tự đăng ký client) chưa nối được. **Việc sáng mai: bật công tắc này rồi Save.**
+- Máy chủ cấp quyền, màn hình đồng ý, đổi mã lấy token đều chạy đúng với Supabase thật. Cổng nhận token, `initialize` trả lời giới thiệu của Tappy, `tools/list` trả bộ công cụ với mô tả mới.
+- Dữ liệu thật qua bộ nối của cổng: quán phở Hà Nội (địa chỉ, điểm Google), khách sạn Đà Lạt từ Agoda (giá một đêm khoảng 452.000–523.000đ, link theo dõi `cid=1974819`).
+- **Ba phát hiện thật (và đã sửa trong mã):**
+  1. Token Supabase luôn có `aud=authenticated` và `scope="openid profile"`: không gắn được vào địa chỉ của cổng và không mang được quyền riêng. Cổng cũ từ chối mọi token. Đã sửa: ràng buộc bằng **client đã đăng ký** (`MCP_OAUTH_CLIENTS`), quyền lấy từ mục đăng ký (mặc định đủ 4 quyền, có thể thu hẹp bằng `"scopes":[...]`).
+  2. 🚨 **Bảo mật:** token đó cũng là phiên người dùng đầy đủ với mọi route khác của Tappy (`getRequestUser` nhận mọi token Supabase hợp lệ). Đã chặn: token có `client_id` không còn được coi là người dùng ở mọi route khác (`src/lib/auth/oauthClientToken.ts`), chỉ cổng MCP nhận. **Còn lại (do Supabase, không sửa được ở phía mình):** token này vẫn gọi được thẳng API dữ liệu của Supabase theo quyền RLS của người dùng nếu bị lộ; anh nên biết điều này trước khi mở cho người dùng thật.
+  3. Màn hình đồng ý hiện "quyền không xác định: openid/profile" và lỗi "liên kết không hợp lệ" khi người dùng đã từng đồng ý (Supabase trả địa chỉ chuyển ngay ở lần gọi đầu rồi báo 400 ở lần hai). Đã sửa cả hai (hiện "biết tài khoản Tappy của bạn là ai" + danh sách việc kết nối làm được; chỉ gọi một lần mỗi yêu cầu).
+- **Công cụ tìm kiếm chưa chạy được qua cổng ở máy local:** cổng bắt buộc có **kho đếm dùng chung (Redis/Upstash)** cho giới hạn tốc độ và ngân sách (mất kho thì từ chối, đúng thiết kế), mà UAT local chưa có. Trả `PROVIDER_UNAVAILABLE`. **Việc sáng mai: tạo một cơ sở dữ liệu Upstash miễn phí cho UAT (tài khoản của anh) và đặt `KV_REST_API_URL` / `KV_REST_API_TOKEN`; đặt thêm 6 giới hạn chi `MCP_POOL_*_USD` (số tạm, ví dụ ngày 5, host 3, cài đặt 2, người dùng 1, công cụ 1, mỗi yêu cầu 0,1).**
+- Đã đặt trong `.env.local` (UAT, có bản sao `.env.local.bak-before-mcp`): `MCP_GATEWAY=1`, `MCP_RESOURCE_URL` và `MCP_RESOURCE_METADATA_URL` (theo địa chỉ hầm **hôm nay**, sẽ hỏng khi hầm đổi), `MCP_AUTH_SERVER_URL`, `MCP_OAUTH_CLIENTS` (ứng dụng thử gắn vào host `cursor`), `MCP_ATTRIBUTION_SECRET`. Ứng dụng OAuth thử tên "Tappy local OAuth test" nằm ở Supabase UAT → Authentication → OAuth Apps; xóa được khi không cần.
+
 ## 3. Việc sáng mai (anh ngồi máy; em hướng dẫn từng bước)
 Thứ tự có phụ thuộc. Làm trên **UAT** trước (Supabase `zdapr...`), không đụng production.
+**Các bước 1–3 dưới đây đã làm xong một phần tối 22/11 (xem mục 2b); phần còn lại: công tắc đăng ký động, kho Upstash, giới hạn chi, rồi nối AI thật.**
 
 | # | Việc | Ai | Ghi chú |
 |---|---|---|---|

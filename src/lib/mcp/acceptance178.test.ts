@@ -106,7 +106,8 @@ describe('17.8 #5 identities are distinct; invalid, expired, revoked, wrong-audi
     expect((await search(mk(), 'not-a-jwt')).status).toBe(401)
     expect((await search(mk(), jwt({ exp: NOW.getTime() / 1000 - 10 }))).status).toBe(401) // expired
     expect((await search(mk({ revoked: [SUB_A] }), jwt({}))).status).toBe(401) // revoked at the provider
-    expect((await search(mk(), jwt({ aud: 'authenticated' }))).status).toBe(401) // wrong audience: a plain session token
+    expect((await search(mk(), jwt({ aud: 'https://other.example' }))).status).toBe(401) // wrong audience
+    expect((await search(mk(), jwt({ aud: 'authenticated', client_id: undefined }))).status).toBe(401) // a plain session token: no registered client
     expect((await search(mk(), jwt({ client_id: 'cid_unregistered' }))).status).toBe(401) // unknown connector
     expect(sc(await search(mk(), jwt({ scope: 'shopping:read' }))).error.code).toBe('ACCESS_DENIED') // wrong scope
     expect(reached).not.toHaveBeenCalled()

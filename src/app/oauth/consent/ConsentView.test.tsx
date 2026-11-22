@@ -78,6 +78,15 @@ describe('/oauth/consent', () => {
     render(<ConsentView />)
     await waitFor(() => expect(h.assign).toHaveBeenCalledWith('https://claude.ai/cb?code=z'))
   })
+  it('asks the server ONCE per request even when React runs the effect twice (StrictMode), because the real server answers 400 to a second call; the first answer is kept and followed', async () => {
+    const { StrictMode } = await import('react')
+    h.details.mockReset()
+    h.details.mockResolvedValueOnce({ data: { redirect_url: 'https://claude.ai/cb?code=z' }, error: null }).mockResolvedValue({ data: null, error: { message: 'cannot be processed' } })
+    render(<StrictMode><ConsentView /></StrictMode>)
+    await waitFor(() => expect(h.assign).toHaveBeenCalledWith('https://claude.ai/cb?code=z'))
+    expect(h.details).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
   it('an error from the server is shown as invalid', async () => {
     h.details.mockResolvedValue({ data: null, error: { message: 'x' } })
     render(<ConsentView />)
