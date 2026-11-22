@@ -30,18 +30,25 @@ final class ChatService: Sendable {
 
     // MARK: - Conversation CRUD
 
+    /// How many pages of history are read while looking for one conversation (40 rows each): bounded, so a vanished id cannot loop.
+    static let maxHistoryPages = 25
+
+    /// The conversation with this id. The list API answers 40 rows at a time, newest first, so a chat older than the newest 40 is on a later
+    /// page: the search follows the `before` cursor until it finds the chat or the history ends. (Before, only the first page was read and an
+    /// older chat opened as "not found", then continued as a new conversation.)
     func loadConversation(id: String) async throws -> Conversation {
-        let endpoint = Endpoint(
-            path: "/api/conversations",
-            method: .get,
-            requiresAuth: true
-        )
-        // Lossy: one malformed row must not hide the conversation being opened.
-        let all = try await api.send(endpoint, as: LossyList<Conversation>.self).items
-        guard let conversation = all.first(where: { $0.id == id }) else {
-            throw AppError.validation(message: "Conversation not found")
+        var before: String?
+        for _ in 0..<Self.maxHistoryPages {
+            var query: [URLQueryItem] = []
+            if let before { query.append(URLQueryItem(name: "before", value: before)) }
+            let endpoint = Endpoint(path: "/api/conversations", method: .get, query: query, requiresAuth: true)
+            // Lossy: one malformed row must not hide the conversation being opened.
+            let page = try await api.send(endpoint, as: ConversationPage.self)
+            if let hit = page.conversations.first(where: { $0.id == id }) { return hit }
+            guard page.rowCount > 0, let next = ConversationPage.cursor(from: page.lastUpdatedAt), next != before else { break }
+            before = next
         }
-        return conversation
+        throw AppError.validation(message: "Conversation not found")
     }
 
     func saveConversation(title: String, category: String, messages: [MessagePayload]) async throws -> Conversation {
@@ -55,7 +62,8 @@ final class ChatService: Sendable {
         return try await api.send(endpoint, as: Conversation.self)
     }
 
-    func updateConversation(id: String, title: String, messages: [MessagePayload]) async throws {
+    /// Saves the messages. `title` is nil for an ordinary save so the stored title (possibly renamed on the web) is left alone.
+    func updateConversation(id: String, title: String? = nil, messages: [MessagePayload]) async throws {
         let request = UpdateConversationRequest(id: id, title: title, messages: messages)
         let endpoint = Endpoint(
             path: "/api/conversations",

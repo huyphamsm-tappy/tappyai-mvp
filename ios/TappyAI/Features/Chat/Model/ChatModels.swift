@@ -506,10 +506,48 @@ struct SaveConversationRequest: Encodable, Sendable {
     let messages: [MessagePayload]
 }
 
+/// `PUT /api/conversations`. The server writes only the fields it is sent, so a save sends `messages` alone and a rename made elsewhere (the
+/// web's history sidebar) survives; the web's own save does the same. `title` is for a caller that really renames.
 struct UpdateConversationRequest: Encodable, Sendable {
     let id: String
-    let title: String
+    var title: String? = nil
     let messages: [MessagePayload]
+}
+
+/// One page of `GET /api/conversations`: the server answers the 40 most recent rows (`?before=<updated_at of the last row you have>` gives the
+/// next, older page). A row that does not decode is dropped, but still counts as a row and still moves the cursor.
+struct ConversationPage: Decodable, Sendable {
+    /// The rows that decoded.
+    let conversations: [Conversation]
+    /// How many rows the server sent (decoded or not).
+    let rowCount: Int
+    /// The last row's `updated_at`, as the server wrote it: the cursor for the next page. Nil when the page is empty or the row has none.
+    let lastUpdatedAt: String?
+
+    private struct Row: Decodable {
+        let conversation: Conversation?
+        let updatedAt: String?
+        private enum CodingKeys: String, CodingKey { case updatedAt = "updated_at" }
+        init(from decoder: Decoder) throws {
+            conversation = try? Conversation(from: decoder)
+            updatedAt = (try? decoder.container(keyedBy: CodingKeys.self))?.lenient(String.self, forKey: .updatedAt)
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let rows = ((try? [LossyElement<Row>](from: decoder)) ?? []).compactMap(\.value)
+        conversations = rows.compactMap(\.conversation)
+        rowCount = rows.count
+        lastUpdatedAt = rows.last?.updatedAt
+    }
+
+    /// The cursor as the next request sends it. A `+00:00` offset becomes `Z`: a plus sign in a query reads as a space on the server and the
+    /// request would be refused. Any other offset gives nil (paging stops rather than guess).
+    static func cursor(from updatedAt: String?) -> String? {
+        guard let raw = updatedAt?.trimmingCharacters(in: .whitespacesAndNewlines), !raw.isEmpty else { return nil }
+        if raw.hasSuffix("+00:00") { return String(raw.dropLast(6)) + "Z" }
+        return raw.contains("+") ? nil : raw
+    }
 }
 
 struct MessagePayload: Encodable, Sendable {

@@ -927,7 +927,8 @@ final class ChatViewModel: AppObservableObject {
 
         do {
             if let id = conversationId {
-                try await service.updateConversation(id: id, title: title, messages: payloads)
+                // Messages only: the server writes just what it is sent, so a title renamed elsewhere is not overwritten by the first 50 characters.
+                try await service.updateConversation(id: id, messages: payloads)
             } else {
                 let saved = try await service.saveConversation(
                     title: title, category: category, messages: payloads

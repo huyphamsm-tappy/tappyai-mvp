@@ -565,16 +565,9 @@ struct TappyKnowsView: View {
         default: break
         }
         memory = m
-        let list: [String]
-        switch category {
-        case "food": list = m.preferences.food ?? []
-        case "spa": list = m.preferences.spa ?? []
-        case "entertainment": list = m.preferences.entertainment ?? []
-        case "shopping": list = m.preferences.shopping ?? []
-        case "avoid": list = m.preferences.avoid ?? []
-        default: list = []
-        }
-        Task { try? await service.patchMemory(["preferences": [category: list]]) }
+        // All five categories, not the one that changed: the server replaces the whole column, so one category alone erased the rest.
+        let preferences = m.preferences.wirePayload
+        Task { try? await service.patchMemory(["preferences": preferences]) }
     }
 
     private func removeHistory(_ topic: String) {

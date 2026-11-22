@@ -45,6 +45,14 @@ struct MemoryPreferences: Codable {
     var entertainment: [String]?
     var shopping: [String]?
     var avoid: [String]?
+
+    /// The WHOLE preferences object for `PATCH /api/memory`. The server REPLACES the stored `preferences` with what it is sent
+    /// (`src/app/api/memory/route.ts` keeps only the categories in the body, then `updateMemory` upserts the column), so a patch with one
+    /// category erases the other four. The web's "Tappy knows" page sends all of them; so does this.
+    var wirePayload: [String: [String]] {
+        ["food": food ?? [], "spa": spa ?? [], "entertainment": entertainment ?? [],
+         "shopping": shopping ?? [], "avoid": avoid ?? []]
+    }
 }
 
 struct BudgetRange: Codable {
