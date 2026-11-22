@@ -127,6 +127,8 @@ export interface SepayTransaction {
   transferType: string
   transferAmount: number
   accountNumber: string | null
+  /** SePay's virtual account (VA) number, when the money went to one. */
+  subAccount?: string | null
   code: string | null
   gateway: string | null
   transactionDate: string | null
@@ -148,6 +150,7 @@ export function parseSepayTransaction(body: unknown): SepayTransaction | null {
     transferType: b.transferType,
     transferAmount: Math.round(amount),
     accountNumber: str(b.accountNumber),
+    subAccount: str(b.subAccount),
     code: extractOrderCode(b),
     gateway: str(b.gateway),
     transactionDate: str(b.transactionDate),
@@ -159,9 +162,15 @@ export function parseSepayTransaction(body: unknown): SepayTransaction | null {
  * The transfer type the database decides on. Only an incoming transfer to OUR configured account
  * can pay an order; anything else is recorded as `other_account` (P8-17: this used to fail open
  * when the account number was missing on either side).
+ *
+ * "Our account" is what SEPAY_BANK_ACCOUNT holds: the bank account OR, for a BIDV API-banking account, its SePay virtual account (VA) number.
+ * For a transfer into a VA, SePay sends the real account in `accountNumber` and the VA in `subAccount` (found live 22/11/2026: with the VA
+ * configured, every real transfer was ignored as `other_account`). Either one matching is enough; nothing matching still fails closed.
  */
-export function sepayTransferType(tx: Pick<SepayTransaction, 'transferType' | 'accountNumber'>, ourAccount: string | null): string {
+export function sepayTransferType(tx: Pick<SepayTransaction, 'transferType' | 'accountNumber' | 'subAccount'>, ourAccount: string | null): string {
   if (tx.transferType !== 'in') return tx.transferType
-  if (!ourAccount || !tx.accountNumber || tx.accountNumber.trim() !== ourAccount) return 'other_account'
-  return 'in'
+  const ours = ourAccount?.trim()
+  if (!ours) return 'other_account'
+  const matches = [tx.accountNumber, tx.subAccount].some((a) => typeof a === 'string' && a.trim() !== '' && a.trim() === ours)
+  return matches ? 'in' : 'other_account'
 }

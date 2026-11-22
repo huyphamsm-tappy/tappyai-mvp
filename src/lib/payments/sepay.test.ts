@@ -85,6 +85,15 @@ describe('sepayTransferType (P8-17: fail closed)', () => {
     expect(sepayTransferType({ transferType: 'in', accountNumber: '0123' }, null)).toBe('other_account')
     expect(sepayTransferType({ transferType: 'out', accountNumber: '0123' }, '0123')).toBe('out')
   })
+
+  it('a BIDV virtual account: the VA in subAccount counts when the VA is what we configured; an unrelated VA or empty strings never do', () => {
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '8960520881', subAccount: '96247HUYPHAM1985' }, '96247HUYPHAM1985')).toBe('in')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '8960520881', subAccount: '96247HUYPHAM1985' }, '8960520881')).toBe('in')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '8960520881', subAccount: 'OTHERVA' }, '96247HUYPHAM1985')).toBe('other_account')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '', subAccount: '' }, '')).toBe('other_account')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: null, subAccount: null }, '96247HUYPHAM1985')).toBe('other_account')
+    expect(parseSepayTransaction({ id: 1, transferType: 'in', transferAmount: 25000, accountNumber: '8960520881', subAccount: '96247HUYPHAM1985', code: 'TAPPYF4U2L6' })?.subAccount).toBe('96247HUYPHAM1985')
+  })
 })
 
 describe('SePay HMAC-SHA256 (default auth)', () => {
