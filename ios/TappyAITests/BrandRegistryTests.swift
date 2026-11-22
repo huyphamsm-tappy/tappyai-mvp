@@ -19,13 +19,16 @@ final class BrandRegistryTests: XCTestCase {
     }
 
     func testAnUnknownOrEmptyPartnerIsNilNotAnError() {
-        XCTAssertNil(BrandRegistry.resolve("Lazada"))
+        // Lazada and Vexere joined the registry on 2026-11-21 (web `brandRegistry.ts`); Tiki is still not a partner.
+        XCTAssertNil(BrandRegistry.resolve("Tiki"))
+        XCTAssertEqual(BrandRegistry.resolve("Lazada VN")?.id, "lazada")
+        XCTAssertEqual(BrandRegistry.resolve("Vé xe rẻ")?.id, "vexere")
         XCTAssertNil(BrandRegistry.resolve(""))
         XCTAssertNil(BrandRegistry.resolve("  ..  "))
     }
 
     func testEveryRegistryEntryHasItsLogoInTheBundle() {
-        XCTAssertEqual(BrandRegistry.all.count, 7)
+        XCTAssertEqual(BrandRegistry.all.count, 9, "the web registry's nine entries (shopee, shopeefood, tiktok-shop, grab, be, agoda, booking, vexere, lazada)")
         for brand in BrandRegistry.all {
             XCTAssertNotNil(UIImage(named: brand.assetName), "logo asset \(brand.assetName) is missing from the app")
             XCTAssertFalse(brand.source.isEmpty, "\(brand.id): the provenance of the file is recorded")

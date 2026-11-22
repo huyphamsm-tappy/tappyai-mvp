@@ -6,6 +6,8 @@ final class DealsViewModel: AppObservableObject {
 
     @AppPublished var state: LoadState = .idle
     @AppPublished var deals: [PartnerDeal] = []
+    /// The booking partners shown only when no managed deal is left (web `/deals`).
+    @AppPublished var partnerCards: [DealPartnerCard] = []
 
     private let service: DealsService
     private let log = AppLogger.app
@@ -17,7 +19,9 @@ final class DealsViewModel: AppObservableObject {
     func load(lang: String) async {
         state = .loading
         do {
-            deals = try await service.fetchDeals(lang: lang)
+            // Web (owner 20/11/2026): the page draws only the deals of Accesstrade, Lazada, Agoda and Vexere.
+            deals = try await service.fetchDeals(lang: lang).filter { DealPartnerAllowlist.isAllowed($0.partnerName) }
+            partnerCards = deals.isEmpty ? await service.fetchPartnerCards(lang: lang) : []
             state = .loaded
         } catch {
             state = Task.isCancelled ? .idle : .failed

@@ -8567,6 +8567,118 @@
         }
       }
     },
+    "deals.partnersTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book through Tappy partners"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt chỗ qua đối tác của Tappy"
+          }
+        }
+      }
+    },
+    "deals.partnersHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No new deals today. You can still book through the partners below; Tappy hasn't verified live prices or offers."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa có ưu đãi mới hôm nay. Bạn vẫn có thể đặt qua các đối tác dưới đây; Tappy chưa xác minh giá hay ưu đãi trực tiếp."
+          }
+        }
+      }
+    },
+    "deals.partnerCta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở %@"
+          }
+        }
+      }
+    },
+    "deals.partner.traveloka": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book hotels and flights on Traveloka."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt khách sạn và vé máy bay trên Traveloka."
+          }
+        }
+      }
+    },
+    "deals.partner.vexere": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book coach tickets on Vexere."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt vé xe khách trên Vexere."
+          }
+        }
+      }
+    },
+    "deals.partner.agoda": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book hotels on Agoda."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt khách sạn trên Agoda."
+          }
+        }
+      }
+    },
+    "deals.partner.lazada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop on Lazada."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mua sắm trên Lazada."
+          }
+        }
+      }
+    },
     "deals.title": {
       "localizations": {
         "en": {

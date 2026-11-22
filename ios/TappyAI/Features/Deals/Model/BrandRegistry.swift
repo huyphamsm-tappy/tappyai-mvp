@@ -58,6 +58,14 @@ enum BrandRegistry {
                         officialWebsite: "https://www.booking.com", assetType: "svg",
                         source: "Wikimedia Commons — File:Booking.com Icon 2022.svg (official \"B.\" app icon; the wordmark is illegible at 48px)",
                         approvedSince: "2026-07-31"),
+        // 2026-11-21 (owner approved the download; web registry `vexere` / `lazada`): the two Deals partners that still showed a letter.
+        BrandDefinition(id: "vexere", displayName: "Vexere", aliases: ["VeXeRe", "Vé xe rẻ"], scale: 1, background: .light, category: .transport,
+                        officialWebsite: "https://vexere.com", assetType: "png",
+                        source: "vexere.com — official square app icon (storage.googleapis.com/fe-production/images/VeXeRe_logo_knowledge_graph.png, 560px; the site's own knowledge-graph logo)",
+                        approvedSince: "2026-11-21"),
+        BrandDefinition(id: "lazada", displayName: "Lazada", aliases: ["Lazada VN", "Lazada Vietnam"], scale: 1.1, background: .light, category: .shopping,
+                        officialWebsite: "https://www.lazada.vn", assetType: "svg",
+                        source: "Wikimedia Commons — File:Lazada (2019).svg (official lockup)", approvedSince: "2026-11-21"),
     ]
 
     /// Web resolution contract: strip diacritics and punctuation, lower-case ("TikTok Shop" → `tiktokshop`).

@@ -5,7 +5,11 @@ struct DealsView: View {
     @AppEnvironmentState private var localization: LocalizationManager
     @AppEnvironmentState private var router: AppRouter
 
+    /// The server's own origin: a partner card's tracked link may be a path on it (`/go/at?...`).
+    private let baseURL: URL
+
     init(deps: AppDependencies) {
+        baseURL = deps.env.apiBaseURL
         _vm = AppStateObject(wrappedValue: DealsViewModel(service: DealsService(api: deps.api)))
     }
 
@@ -39,7 +43,11 @@ struct DealsView: View {
                     ScrollView {
                         VStack(spacing: Spacing.lg) {
                             askHero(partners: [])
-                            TappyEmptyState(systemImage: "tag", title: "deals.empty")
+                            if vm.partnerCards.isEmpty {
+                                TappyEmptyState(systemImage: "tag", title: "deals.empty")
+                            } else {
+                                partnerSection
+                            }
                         }
                         .padding(Spacing.md)
                     }
@@ -53,6 +61,56 @@ struct DealsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task { await vm.load(lang: localization.language.rawValue) }
         .refreshable { await vm.load(lang: localization.language.rawValue) }
+    }
+
+    /// Web `/deals` with no managed deal: the booking partners that really have a tracked link, as "open the partner's site" cards.
+    /// No price, discount or availability is claimed (the hint says Tappy has not verified them).
+    private var partnerSection: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("deals.partnersTitle").font(.system(size: 14, weight: .semibold)).foregroundStyle(TappyColor.textPrimary)
+                Text("deals.partnersHint").font(.system(size: 11.5)).foregroundStyle(TappyColor.textSecondary)
+            }
+            ForEach(vm.partnerCards) { card in
+                partnerCard(card)
+            }
+        }
+        .accessibilityIdentifier("deal-partners")
+    }
+
+    @ViewBuilder
+    private func partnerCard(_ card: DealPartnerCard) -> some View {
+        Button {
+            if let url = DealPartnerCardLink.url(for: card, base: baseURL) { UIApplication.shared.open(url) }
+        } label: {
+            HStack(spacing: Spacing.md) {
+                if let brand = BrandRegistry.resolve(card.partnerName) {
+                    BrandLogoView(brand: brand, size: 40, decorative: true)
+                } else {
+                    Text(String(card.partnerName.prefix(1)).uppercased())
+                        .font(.system(size: 16, weight: .bold)).foregroundStyle(TappyColor.primary)
+                        .frame(width: 40, height: 40)
+                        .background(TappyColor.surface).clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(card.partnerName).font(.system(size: 13, weight: .semibold)).foregroundStyle(TappyColor.textPrimary)
+                    Text(LocalizedStringKey(card.descriptionKey)).font(.system(size: 11.5)).foregroundStyle(TappyColor.textSecondary)
+                }
+                Spacer()
+                HStack(spacing: 4) {
+                    Text(String(format: NSLocalizedString("deals.partnerCta", comment: ""), card.partnerName))
+                        .font(.system(size: 11, weight: .semibold))
+                    Image(systemName: "arrow.up.right.square").font(.system(size: 12))
+                }
+                .foregroundStyle(TappyColor.primary)
+            }
+            .padding(Spacing.md)
+        }
+        .buttonStyle(.plain)
+        .background(TappyColor.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
+        .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
+        .accessibilityIdentifier("deal-partner-" + card.providerId)
     }
 
     private var list: some View {
