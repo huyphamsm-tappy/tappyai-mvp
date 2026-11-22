@@ -92,6 +92,7 @@ struct ChatMessageList: View {
                                 research: msg.research ?? (isLast && isStreaming ? liveResearch : nil),
                                 charts: msg.charts.isEmpty && isLast && isStreaming ? liveCharts : msg.charts,
                                 docMedia: msg.docMedia,
+                                safetyCards: msg.safetyCards,
                                 segments: parsed.segments,
                                 chartLang: locale == "vi" ? "vi" : "en",
                                 isStreaming: isStreaming && isLast,
@@ -260,6 +261,8 @@ private struct AssistantBubble: View {
     var charts: [ResearchChart] = []
     /// The pictures that go under the answer's headings / list items (`tappy.doc_media.v1`; empty on every other reply).
     var docMedia: [DocMediaItem] = []
+    /// The emergency hotlines of this reply (`tappy.safety.v1`), drawn as a card with call buttons (empty on every other reply).
+    var safetyCards: [EmergencyCardItem] = []
     /// The reply's prose and pictures in the order written (`ParsedContent.segments`).
     var segments: [ReplySegment] = []
     /// "vi" or "en": the language the charts' figures are written in.
@@ -329,6 +332,11 @@ private struct AssistantBubble: View {
                     if !images.isEmpty {
                         ChatImageStrip(images: images, onZoom: onZoomImage)
                     }
+                }
+
+                // The emergency hotlines, one tap each (web: the safety card under the reply)
+                if !safetyCards.isEmpty {
+                    EmergencyCardView(cards: safetyCards)
                 }
 
                 // Plan card

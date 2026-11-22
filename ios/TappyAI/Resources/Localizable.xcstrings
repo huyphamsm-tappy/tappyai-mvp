@@ -991,6 +991,54 @@
         }
       }
     },
+    "safety.emergency.cardsTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency numbers"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số điện thoại khẩn cấp"
+          }
+        }
+      }
+    },
+    "safety.emergency.hours": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trực %@"
+          }
+        }
+      }
+    },
+    "safety.emergency.free": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miễn phí"
+          }
+        }
+      }
+    },
     "review.comments.hide": {
       "localizations": {
         "en": {

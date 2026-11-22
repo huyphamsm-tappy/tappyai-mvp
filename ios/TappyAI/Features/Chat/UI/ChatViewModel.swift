@@ -793,6 +793,10 @@ final class ChatViewModel: AppObservableObject {
                         edit { $0.docMedia = items }
                         self.liveDocMedia = items
 
+                    // The emergency hotlines: held on the reply (never in `content`), drawn as a card with call buttons.
+                    case .safety(let cards):
+                        edit { $0.safetyCards = cards }
+
                     case .messageStart, .unknown:
                         break
                     }

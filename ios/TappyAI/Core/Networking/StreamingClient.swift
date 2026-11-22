@@ -36,6 +36,9 @@ enum StreamFrame: Equatable, Sendable {
     /// A message ANNOTATION (`8:`) of kind `tappy.doc_media.v1`: the pictures that go under the answer's headings
     /// (`OneBrainFrames.docMedia`). Live only; never text, never saved.
     case docMedia([DocMediaItem])
+    /// A message ANNOTATION (`8:`) of kind `tappy.safety.v1`: the emergency hotlines the server verified, drawn as a card with a call button
+    /// each (`EmergencyFrames.cards`). The same numbers are also in the reply's text. Live only; never text, never saved.
+    case safety([EmergencyCardItem])
     case done
     case unknown(prefix: String, payload: Data)
 }
@@ -116,6 +119,9 @@ enum DataStreamLineParser {
             case docMediaAnnotationKind:
                 let items = OneBrainFrames.docMedia(item)
                 return items.isEmpty ? nil : .docMedia(items)
+            case safetyAnnotationKind:
+                let cards = EmergencyFrames.cards(item)
+                return cards.isEmpty ? nil : .safety(cards)
             case placesAnnotationKind:
                 guard let data = try? JSONSerialization.data(withJSONObject: item),
                       let view = try? JSONDecoder().decode(PlacesLiveView.self, from: data),

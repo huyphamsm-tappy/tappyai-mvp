@@ -28,6 +28,8 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     var charts: [ResearchChart] = []
     /// The pictures that go under the answer's headings (`tappy.doc_media.v1`). Live only: in memory, never saved; empty on every other reply.
     var docMedia: [DocMediaItem] = []
+    /// The emergency hotlines of this reply (`tappy.safety.v1`), drawn as a card with call buttons. In memory only; empty on every other reply.
+    var safetyCards: [EmergencyCardItem] = []
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
          status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = [],
