@@ -4,10 +4,13 @@ import XCTest
 /// In-app account deletion (`POST /api/account/delete`, rc/web-uat) and its email fallback.
 final class AccountDeletionTests: XCTestCase {
 
-    func testRowUsesInAppDeletionOnlyWhenTheServerFlagIsOn() {
-        XCTAssertTrue(AccountDeletion.usesInAppDeletion(flag: true))
-        XCTAssertFalse(AccountDeletion.usesInAppDeletion(flag: false))
-        XCTAssertFalse(AccountDeletion.usesInAppDeletion(flag: nil), "absent (production /api/config) → email request")
+    func testASignedInPersonAlwaysStartsTheDeletionInTheApp() {
+        // 03/11: the row no longer waits for /api/config; an early, slow or failed fetch must not leave Apple's reviewer with an email request.
+        XCTAssertTrue(AccountDeletion.usesInAppDeletion(signedIn: true))
+    }
+
+    func testAPersonWhoIsNotSignedInKeepsTheEmailRequest() {
+        XCTAssertFalse(AccountDeletion.usesInAppDeletion(signedIn: false), "nothing to delete yet → the published email request")
     }
 
     func testConfigDecodesTheFlagAndToleratesItsAbsence() throws {

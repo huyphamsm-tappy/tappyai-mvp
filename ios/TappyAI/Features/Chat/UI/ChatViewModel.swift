@@ -353,6 +353,10 @@ final class ChatViewModel: AppObservableObject {
             // The stored history goes IN FRONT of whatever is already on screen: a question sent while it
             // was loading must not be overwritten when it arrives.
             messages = history + messages
+        } catch where Task.isCancelled || (error as? AppError) == .cancellation {
+            // 03/11: leaving the screen cancelled the load; that is not a failed history. Keep the id so the next appearance loads it again
+            // (before, it turned the chat into a new one and the person came back to an empty screen).
+            log.debug("load conversation cancelled")
         } catch {
             // Saving is a PUT that replaces the whole stored list. A chat that could not load its history
             // and kept this id would overwrite the stored conversation with the new messages only: it is a
@@ -424,7 +428,7 @@ final class ChatViewModel: AppObservableObject {
 
     func sendQuickPrompt(_ text: String) {
         guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
-        inputText = ""
+        // 03/11: the box is NOT cleared here. A suggestion chip sends its own text; wiping what the person was typing lost their draft.
         error = nil
 
         let userMsg = ChatMessage(role: .user, content: text, status: .complete)

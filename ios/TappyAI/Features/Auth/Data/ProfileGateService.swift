@@ -14,17 +14,21 @@ struct ProfileGateService: Sendable {
 
     func isOnboarded(userId: String) async -> Bool {
         do {
-            let row: Row = try await supabase
+            // 03/11: an array read, not `.single()`: "no profile row yet" (a new account) must be told apart from "the read failed".
+            let rows: [Row] = try await supabase
                 .from("profiles")
                 .select("onboarded")
                 .eq("id", value: userId)
-                .single()
+                .limit(1)
                 .execute()
                 .value
+            guard let row = rows.first else { return false }   // no row: a new account, onboarding is next
             return row.onboarded ?? false
         } catch {
-            AppLogger.auth.info("profiles.onboarded read failed/absent → treat as not onboarded")
-            return false
+            // The read FAILED (offline, a timeout, a server hiccup). That says nothing about this person: before, it sent a signed-in
+            // user back to the full-screen onboarding with no way out. The server still enforces what onboarding gates.
+            AppLogger.auth.info("profiles.onboarded read failed → keep the person where they are, not onboarding")
+            return true
         }
     }
 }

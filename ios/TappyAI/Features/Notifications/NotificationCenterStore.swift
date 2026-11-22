@@ -90,12 +90,16 @@ final class NotificationCenterStore: AppObservableObject {
                 try await channel.subscribeWithError()
             } catch {
                 self?.log.error("badge realtime subscribe failed: \(error)")
+                await supabase.removeChannel(channel)
                 return
             }
             for await _ in changes {
-                guard !Task.isCancelled else { return }
+                guard !Task.isCancelled else { break }
                 self?.scheduleRefresh()
             }
+            // 03/11: cancelling the task only stopped listening; the channel stayed joined (and registered on the client), so every
+            // sign-out/sign-in left another live subscription behind. Leave it for real.
+            await supabase.removeChannel(channel)
         }
         // A new message re-reads the badge too. The subscription is the one the Inbox's own list would use: unfiltered, scoped to the
         // person's conversations by row-level security. Best effort — `refresh()` on launch, on foreground and after a visit keeps it right.

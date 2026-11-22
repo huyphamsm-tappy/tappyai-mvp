@@ -132,6 +132,14 @@ final class StoreKitProvider: PaymentProvider {
         }
     }
 
+    /// 03/11: the listener starts at launch, before anyone is signed in; a purchase that arrived then stayed unfinished and was only retried on the
+    /// NEXT launch. The shell calls this when a person signs in, so a payment made earlier reaches the account now.
+    func retryUnfinished() async {
+        for await result in Transaction.unfinished {
+            await handleTransactionUpdate(result)
+        }
+    }
+
     private func handleTransactionUpdate(_ result: VerificationResult<Transaction>) async {
         guard case .verified(let transaction) = result,
               ProductCatalog.allProductIds.contains(transaction.productID) else {

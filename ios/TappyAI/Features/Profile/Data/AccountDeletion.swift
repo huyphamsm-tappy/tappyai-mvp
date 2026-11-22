@@ -30,8 +30,11 @@ enum AccountDeletion {
         return acceptedWords.contains(normalised)
     }
 
-    /// Which way the Settings row goes.
-    static func usesInAppDeletion(flag: Bool?) -> Bool { flag == true }
+    /// Which way the Settings row goes. 03/11 (App Review 5.1.1(v), build 179 rejected): a SIGNED-IN person always starts the deletion inside the
+    /// app, whatever /api/config said and even if it never loaded (a slow or failed fetch had left the email request, which Apple does not accept
+    /// for an app outside a highly regulated industry). The email request stays for a person who is not signed in (there is nothing to delete yet)
+    /// and as the way out when the server answers `not_available` from inside the flow.
+    static func usesInAppDeletion(signedIn: Bool) -> Bool { signedIn }
 }
 
 /// What the delete screen shows after the request (web `DeleteAccountView` + Android mapping).

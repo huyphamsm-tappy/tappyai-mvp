@@ -23,7 +23,8 @@ final class NotificationsViewModel: AppObservableObject {
     }
 
     func load() async {
-        state = .loading
+        // 03/11: a reload of a list already on screen (after mark-read, a realtime push) must not blank it to the spinner.
+        if state != .loaded { state = .loading }
         do {
             let response = try await service.fetchNotifications()
             items = response.notifications
@@ -67,11 +68,15 @@ final class NotificationsViewModel: AppObservableObject {
                 try await channel.subscribeWithError()
             } catch {
                 self.log.error("notifications realtime subscribe failed: \(error)")
+                await self.supabase.removeChannel(channel)
                 return
             }
             for await _ in changes {
+                guard !Task.isCancelled else { break }
                 self.scheduleRefetch()
             }
+            // 03/11: see NotificationCenterStore: leaving the screen must leave the channel too.
+            await self.supabase.removeChannel(channel)
         }
     }
 

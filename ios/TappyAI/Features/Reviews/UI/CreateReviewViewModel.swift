@@ -173,8 +173,12 @@ final class CreateReviewViewModel: AppObservableObject {
             for item in toProcess {
                 do {
                     guard let data = try await item.loadTransferable(type: Data.self) else { continue }
+                    // Decoding and re-encoding a full-size photo is off the main actor (it froze the form).
                     // I-08: a photo that cannot be decoded is NOT sent as it came - the original bytes keep their EXIF (GPS included).
-                    guard let compressed = Self.reencodedPhoto(data) else {
+                    let reencoded = await Task.detached(priority: .userInitiated) {
+                        Self.reencodedPhoto(data)
+                    }.value
+                    guard let compressed = reencoded else {
                         self.error = NSLocalizedString("review.error.photoUpload", comment: "")
                         continue
                     }
@@ -192,7 +196,7 @@ final class CreateReviewViewModel: AppObservableObject {
 
     /// The photo as a fresh JPEG (drawn from the decoded image, so the original's metadata - location, camera - does not travel), or nil
     /// when the bytes are not an image the system can decode.
-    static func reencodedPhoto(_ raw: Data) -> Data? {
+    nonisolated static func reencodedPhoto(_ raw: Data) -> Data? {
         UIImage(data: raw)?.jpegData(compressionQuality: 0.85)
     }
 
@@ -210,6 +214,8 @@ final class CreateReviewViewModel: AppObservableObject {
         uploadTask = Task {
             do {
                 let videoURL = try await loadVideoURL(from: item)
+                // 03/11: the picked clip's temp copy stayed on disk when the person cancelled, the clip was too long/large, or the upload failed.
+                defer { try? FileManager.default.removeItem(at: videoURL) }
                 try await processVideo(url: videoURL)
             } catch is CancellationError {
                 // user cancelled
@@ -281,7 +287,10 @@ final class CreateReviewViewModel: AppObservableObject {
         uploadStep = .uploading(progress: 0)
         // GPS location, device and creation times removed before the bytes leave the phone — the
         // server refuses a clip that still carries them (422 identifying_metadata).
-        let videoData = ClipMetadata.neutralize(try Data(contentsOf: url))
+        // 03/11: this ran on the main actor: reading a clip of up to hundreds of MB and walking its boxes froze the screen (and the cancel button).
+        let videoData = try await Task.detached(priority: .userInitiated) {
+            ClipMetadata.neutralize(try Data(contentsOf: url))
+        }.value
         let ext = url.pathExtension.isEmpty ? "mp4" : url.pathExtension.lowercased()
         let result = try await service.uploadVideoFile(data: videoData, ext: ext)
 

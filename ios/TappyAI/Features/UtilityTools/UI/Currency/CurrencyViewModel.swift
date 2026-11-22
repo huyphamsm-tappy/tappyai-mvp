@@ -37,7 +37,9 @@ final class CurrencyViewModel: AppObservableObject {
     }
 
     var numAmount: Double {
-        Double(amount.replacingOccurrences(of: "[^0-9.]", with: "", options: .regularExpression)) ?? 0
+        // 03/11: "1,5" read as 15. With no dot, a comma is the decimal mark (Vietnamese keyboards); with both, commas are thousands separators.
+        let marked = amount.contains(".") ? amount : amount.replacingOccurrences(of: ",", with: ".")
+        return Double(marked.replacingOccurrences(of: "[^0-9.]", with: "", options: .regularExpression)) ?? 0
     }
 
     var convertedAmount: Double? {

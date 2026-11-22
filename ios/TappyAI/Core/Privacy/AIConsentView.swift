@@ -4,7 +4,11 @@ import SwiftUI
 struct AIConsentSheet: ViewModifier {
     @ObservedObject var consent: AIConsentCoordinator
     func body(content: Content) -> some View {
-        content.sheet(isPresented: Binding(get: { consent.isPresenting }, set: { _ in })) {
+        content.sheet(isPresented: Binding(get: { consent.isPresenting }, set: { shown in
+            // 03/11: a swipe-down dismissed the sheet without answering, so the caller waiting in `ensure()` never resumed (a chat send hung).
+            // Dismissing is «Để sau».
+            if !shown { consent.later() }
+        })) {
             AIConsentView(consent: consent)
         }
     }

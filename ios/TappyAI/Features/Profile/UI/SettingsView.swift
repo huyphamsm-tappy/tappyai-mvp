@@ -29,8 +29,6 @@ struct ProfileSettingsView: View {
     @State private var showSignOutConfirm = false
     @State private var confirmDeleteAccount = false
     @State private var noMailAppMessage: String?
-    /// Server flag `accountSelfDelete`; false until /api/config says otherwise.
-    @State private var selfDeleteEnabled = false
     @State private var showSelfDelete = false
     @State private var showLanguagePicker = false
     @State private var showAppearancePicker = false
@@ -111,16 +109,11 @@ struct ProfileSettingsView: View {
         .sheet(isPresented: $showSelfDelete) {
             NavigationStack {
                 AccountDeletionView(deps: deps, onUnavailable: {
-                    // Switched off between showing the row and submitting: email request instead.
+                    // The server answered `not_available` (deletion switched off on this deployment): the email request is the way out.
                     showSelfDelete = false
-                    selfDeleteEnabled = false
                     confirmDeleteAccount = true
                 })
             }
-        }
-        .task {
-            let flag = (try? await deps.configService.config())?.flags.accountSelfDelete
-            selfDeleteEnabled = AccountDeletion.usesInAppDeletion(flag: flag)
         }
     }
 
@@ -264,11 +257,11 @@ struct ProfileSettingsView: View {
                 }
                 divider
                 // ── Account deletion ── 🚨 REQUIRED BY APP STORE REVIEW GUIDELINE 5.1.1(v).
-                // Request-based by default, identical to Android and to the public /delete-account page
-                // (step 3 fixes this label word for word). Where the server offers it
-                // (`flags.accountSelfDelete`) a signed-in user gets the in-app deletion instead; the
-                // email request stays the fallback whenever the flag is off, absent, or off at submit.
-                if selfDeleteEnabled && isSignedIn {
+                // A signed-in user always starts the deletion IN the app (03/11: build 179 was rejected because the row
+                // depended on a remote flag and fell back to an email request). The email request, identical to Android and
+                // to the public /delete-account page (step 3 fixes this label word for word), stays for a person who is not
+                // signed in, and as the way out when the server answers `not_available`.
+                if AccountDeletion.usesInAppDeletion(signedIn: isSignedIn) {
                     row(id: "delete", icon: "trash", accent: 0xF43F5E, labelKey: "settings.deleteAccountSelf", desc: "settings.deleteAccountSelf.desc") {
                         showSelfDelete = true
                     }
