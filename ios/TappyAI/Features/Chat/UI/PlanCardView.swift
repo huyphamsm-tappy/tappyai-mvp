@@ -42,6 +42,8 @@ struct ChatPlanCardView: View {
                 if !m.highlights.isEmpty { highlights(m) }
                 tips
                 costLines
+                staysPanel
+                dishesPanel
                 fullPlanCta
                 Text("chat.planV2.madeBy").font(.system(size: 12)).foregroundStyle(PlanPal.muted)
                     .frame(maxWidth: .infinity)
@@ -310,6 +312,76 @@ struct ChatPlanCardView: View {
                     .font(.system(size: 13))
                 }
             }
+        }
+    }
+
+    /// "Chỗ ở gợi ý" (web `v206.trip.stays`, owner 20/11): hotels the turn's own lookups returned, each with the nightly price and the Agoda page the
+    /// server fixed. Nothing here is written by the app.
+    @ViewBuilder private var staysPanel: some View {
+        if let stays = plan.stays, !stays.isEmpty {
+            panel("chat.plan.stays", id: "plan-stays") {
+                ForEach(Array(stays.enumerated()), id: \.offset) { _, stay in
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(stay.name).font(.system(size: 14, weight: .semibold)).foregroundStyle(PlanPal.text)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer(minLength: 6)
+                            if let price = stay.price {
+                                Text(price).font(.system(size: 12, weight: .semibold)).foregroundStyle(Color(hex: 0xFFD27A))
+                            }
+                        }
+                        if let why = stay.why { Text(why).font(.system(size: 12)).foregroundStyle(PlanPal.muted).fixedSize(horizontal: false, vertical: true) }
+                        if let address = stay.address {
+                            HStack(spacing: 3) {
+                                Image(systemName: "mappin.and.ellipse").font(.system(size: 11)).foregroundStyle(PlanPal.accent)
+                                Text(address).font(.system(size: 12)).foregroundStyle(PlanPal.muted)
+                            }
+                        }
+                        if let url = PlanCardContent.link(stay.bookingLink) { planLink("arrow.up.right.square", "chat.plan.bookStay", url) }
+                    }
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier("plan-stay")
+                }
+            }
+        }
+    }
+
+    /// "Món nên thử" (web `v206.trip.dishes`): a venue, address and price show only for a place the turn searched; otherwise the dish and a short note.
+    @ViewBuilder private var dishesPanel: some View {
+        if let dishes = plan.dishes, !dishes.isEmpty {
+            panel("chat.plan.dishes", id: "plan-dishes") {
+                ForEach(Array(dishes.enumerated()), id: \.offset) { _, d in
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(d.dish).font(.system(size: 14, weight: .semibold)).foregroundStyle(PlanPal.text)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer(minLength: 6)
+                            if let price = d.price {
+                                Text(price).font(.system(size: 12, weight: .semibold)).foregroundStyle(Color(hex: 0xFFD27A))
+                            }
+                        }
+                        if let line = Self.dishLine(d) { Text(line).font(.system(size: 12)).foregroundStyle(PlanPal.muted).fixedSize(horizontal: false, vertical: true) }
+                        if let address = d.address {
+                            HStack(spacing: 3) {
+                                Image(systemName: "mappin.and.ellipse").font(.system(size: 11)).foregroundStyle(PlanPal.accent)
+                                Text(address).font(.system(size: 12)).foregroundStyle(PlanPal.muted)
+                            }
+                        }
+                    }
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier("plan-dish")
+                }
+            }
+        }
+    }
+
+    /// The web's second line of a dish: "venue · note", or the note alone when there is no venue.
+    static func dishLine(_ d: TappyPlan.Dish) -> String? {
+        switch (d.venue, d.note) {
+        case let (venue?, note?): return venue + " · " + note
+        case let (venue?, nil): return venue
+        case let (nil, note?): return note
+        default: return nil
         }
     }
 

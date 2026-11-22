@@ -6678,6 +6678,57 @@
         }
       }
     },
+    "chat.plan.stays": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where to stay"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỗ ở gợi ý"
+          }
+        }
+      }
+    },
+    "chat.plan.dishes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What to try"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Món nên thử"
+          }
+        }
+      }
+    },
+    "chat.plan.bookStay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt chỗ"
+          }
+        }
+      }
+    },
     "chat.plan.localTips": {
       "extractionState": "manual",
       "localizations": {

@@ -162,6 +162,10 @@ struct TappyPlan: Equatable, Sendable, Decodable {
     let budgetPerPerson: String?
     /// Up to 4 "Điểm nổi bật" tiles, each with its STORED image key.
     let highlights: [Highlight]?
+    /// "Where to stay" (web `v206.trip.stays`): up to 3 hotels the turn's own lookups returned; the server fixed the price and the booking page.
+    let stays: [Stay]?
+    /// "What to try" (web `v206.trip.dishes`): up to 6 dishes; a venue, address and price appear only for a place the turn searched.
+    let dishes: [Dish]?
 
     /// One line of the cost block: the server's label and its amount (a number the server wrote is kept as text).
     struct CostLine: Equatable, Sendable {
@@ -279,6 +283,71 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         }
     }
 
+    /// Words the plan card may show: one line, no link, no protocol marker (the server's `planStaysDishes.ts` drops the same).
+    static func cleanLine(_ raw: String?, max: Int) -> String? {
+        guard let raw else { return nil }
+        let folded = raw.unicodeScalars.map { $0.value < 0x20 || $0.value == 0x7f ? " " : String($0) }.joined()
+        let t = folded.split(whereSeparator: { $0 == " " }).joined(separator: " ")
+        let lower = t.lowercased()
+        guard !t.isEmpty, !lower.contains("http://"), !lower.contains("https://"), !lower.contains("www."),
+              !lower.contains("[tappy_"), !lower.contains("[/tappy_"), !lower.contains("[cta_"), !lower.contains("[followups")
+        else { return nil }
+        return String(t.prefix(max))
+    }
+
+    struct Stay: Equatable, Sendable, Decodable {
+        let name: String
+        let why: String?
+        /// The nightly price the server took from the Agoda offer, as text ("1.200.000đ/đêm").
+        let price: String?
+        let address: String?
+        /// `https` only; the server attaches the Agoda page of that hotel.
+        let bookingLink: String?
+
+        private enum CodingKeys: String, CodingKey { case name, why, price, address, bookingLink = "booking_link" }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            func line(_ key: CodingKeys, _ max: Int) -> String? {
+                TappyPlan.cleanLine((try? c.decodeIfPresent(String.self, forKey: key)) ?? nil, max: max)
+            }
+            guard let name = line(.name, 80) else {
+                throw DecodingError.keyNotFound(CodingKeys.name, .init(codingPath: c.codingPath, debugDescription: "stay without a name"))
+            }
+            self.name = name
+            why = line(.why, 160)
+            price = line(.price, 40)
+            address = line(.address, 120)
+            let link = ((try? c.decodeIfPresent(String.self, forKey: .bookingLink)) ?? nil)?.trimmingCharacters(in: .whitespacesAndNewlines)
+            bookingLink = link.flatMap { $0.lowercased().hasPrefix("https://") && $0.count <= 1500 ? $0 : nil }
+        }
+    }
+
+    struct Dish: Equatable, Sendable, Decodable {
+        let dish: String
+        let venue: String?
+        let address: String?
+        let price: String?
+        let note: String?
+
+        private enum CodingKeys: String, CodingKey { case dish, venue, address, price, note }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            func line(_ key: CodingKeys, _ max: Int) -> String? {
+                TappyPlan.cleanLine((try? c.decodeIfPresent(String.self, forKey: key)) ?? nil, max: max)
+            }
+            guard let dish = line(.dish, 60) else {
+                throw DecodingError.keyNotFound(CodingKeys.dish, .init(codingPath: c.codingPath, debugDescription: "dish without a name"))
+            }
+            self.dish = dish
+            venue = line(.venue, 80)
+            address = line(.address, 120)
+            price = line(.price, 40)
+            note = line(.note, 120)
+        }
+    }
+
     struct LocalTip: Equatable, Sendable, Decodable {
         let text: String
         /// "tool" | "general"
@@ -290,7 +359,7 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         case type, title, people, days
         case budgetTotal = "budget_total", costBreakdown = "cost_breakdown"
         case shareText = "share_text", localTips = "local_tips"
-        case domain, destination, duration, tagline, highlights
+        case domain, destination, duration, tagline, highlights, stays, dishes
         case heroImage = "hero_image", budgetPerPerson = "budget_per_person"
     }
 
@@ -337,6 +406,13 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         budgetPerPerson = PlanPrice.amount(text(.budgetPerPerson))
         let marked: [Lossy<Highlight>]? = (try? c.decodeIfPresent([Lossy<Highlight>].self, forKey: .highlights)) ?? nil
         highlights = marked?.compactMap(\.value)
+        // Web: "where to stay" up to 3, "what to try" up to 6; one odd entry costs only itself.
+        let stayRows: [Lossy<Stay>]? = (try? c.decodeIfPresent([Lossy<Stay>].self, forKey: .stays)) ?? nil
+        let keptStays = Array((stayRows?.compactMap(\.value) ?? []).prefix(3))
+        stays = keptStays.isEmpty ? nil : keptStays
+        let dishRows: [Lossy<Dish>]? = (try? c.decodeIfPresent([Lossy<Dish>].self, forKey: .dishes)) ?? nil
+        let keptDishes = Array((dishRows?.compactMap(\.value) ?? []).prefix(6))
+        dishes = keptDishes.isEmpty ? nil : keptDishes
     }
 
     /// Decodes an element or yields nil, so one malformed element does not sink the whole array.

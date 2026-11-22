@@ -349,7 +349,7 @@ enum ContentParser {
     /// them yet; what matters is that their raw JSON never reaches a user.
     static let markerNames = [
         "TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES", "TAPPY_ASK",
-        "TAPPY_MEDIA", "TAPPY_TASK", "TAPPY_RANK",
+        "TAPPY_MEDIA", "TAPPY_TASK", "TAPPY_RANK", "TAPPY_FUTURE",
     ]
 
     /// Removes every marker block the decode steps did not consume.
