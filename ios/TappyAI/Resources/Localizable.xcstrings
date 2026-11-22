@@ -6678,6 +6678,23 @@
         }
       }
     },
+    "chat.sources.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sources · %d"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nguồn · %d"
+          }
+        }
+      }
+    },
     "chat.plan.stays": {
       "extractionState": "manual",
       "localizations": {

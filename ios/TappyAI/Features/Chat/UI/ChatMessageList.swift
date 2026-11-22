@@ -334,6 +334,11 @@ private struct AssistantBubble: View {
                     }
                 }
 
+                // "Nguồn · N": the pages the finished answer links to (web SourcesFooter). A research report lists its own sources on its card.
+                if research == nil, !isStreaming, status == .complete {
+                    SourcesFooterView(sources: AnswerSources.of(content))
+                }
+
                 // The emergency hotlines, one tap each (web: the safety card under the reply)
                 if !safetyCards.isEmpty {
                     EmergencyCardView(cards: safetyCards)
