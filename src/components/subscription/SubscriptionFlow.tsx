@@ -409,9 +409,7 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
             ))}
           </ul>
         </div>
-        {/* The whole otter (head to feet), never the cropped bust: the full-body Tappy art, contained. */}
-        {/* eslint-disable-next-line @next/next/no-img-element -- owner-supplied art in /public/subscription */}
-        <div className="hidden lg:block"><img src="/subscription/tappy.webp" alt="" width={471} height={640} className="mx-auto h-72 w-auto object-contain" data-testid="sub-hero-mascot" /></div>
+        <div className="hidden lg:block"><TappyMascot pose="travel" size={260} className="mx-auto" /></div>
       </section>
 
       {active && sub.plan && (
