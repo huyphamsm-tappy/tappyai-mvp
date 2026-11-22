@@ -392,6 +392,20 @@ final class ChatViewModel: AppObservableObject {
         }
     }
 
+    /// Asks the phone for a NEW fix (up to 10 s). Success replaces the kept one; failure (no permission, no answer) clears it, so this question
+    /// goes out without a location and the next one cannot reuse a position that may be hours or days old.
+    private func freshLocation() async -> [String: Double]? {
+        guard let loc = await locationCoordinator.requestOnce(timeout: 10) else {
+            cachedLocation = nil
+            hasLocationContext = false
+            return nil
+        }
+        let fix = ["lat": loc.coordinate.latitude, "lng": loc.coordinate.longitude]
+        cachedLocation = fix
+        hasLocationContext = true
+        return fix
+    }
+
     func completeOnboarding(prefs: [String]) {
         showOnboarding = false
         UserDefaults.standard.set(true, forKey: Self.onboardedKey)
@@ -701,11 +715,20 @@ final class ChatViewModel: AppObservableObject {
             @MainActor func reply() -> ChatMessage? {
                 self.messages.first(where: { $0.id == assistantId })
             }
+            // A "near me" question goes out with a NEW fix and never an older one (web Round 42: maximumAge 0, 10 s, and without a location
+            // when it fails, so the server asks where the person is). Any other question keeps the fix taken when the chat opened.
+            var sentLocation = self.activeLocation
+            if self.locationContextEnabled, let asked = payloads.last(where: { $0.role == MessageRole.user.rawValue })?.content,
+               NearMeRequest.matches(asked) {
+                sentLocation = await self.freshLocation()
+                // Stopped or replaced while the phone was locating: this turn does not start.
+                guard !Task.isCancelled, self.turnToken == token else { return }
+            }
             let stream = self.service.chatWithContext(
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
-                userLocation: self.activeLocation,
+                userLocation: sentLocation,
                 guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil,
                 chatSessionId: self.chatSessionId,
                 decisionEvidenceId: self.decisionEvidenceId,
