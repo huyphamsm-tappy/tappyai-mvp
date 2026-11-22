@@ -27,7 +27,7 @@ Production là bản chắp vá: một phần tháng 10 và đầu tháng 11 đ�
 
 ## 2. Hai bẫy đã thấy (CHƯA xử lý)
 
-1. **20261208 (ẩn bình luận) cần 20260928c đã áp**, mà 20260928c bị script khóa vào nhóm "sau kiểm khói". Nhưng web mới đọc cột `hidden_at` nên nếu deploy trước khi áp 20261208 thì bình luận lỗi. Em đề xuất kiểm điều này trên bản thử (mục 3) rồi chốt thứ tự: nhiều khả năng 20260928c phải áp trước deploy, cùng nhóm với 20261208. Cần đổi một dòng chính sách trong script, em sẽ xin anh duyệt riêng.
+1. **(ĐÃ XỬ LÝ sau diễn tập, xem mục 4)** **20261208 (ẩn bình luận) cần 20260928c đã áp**, mà 20260928c bị script khóa vào nhóm "sau kiểm khói". Nhưng web mới đọc cột `hidden_at` nên nếu deploy trước khi áp 20261208 thì bình luận lỗi. Em đề xuất kiểm điều này trên bản thử (mục 3) rồi chốt thứ tự: nhiều khả năng 20260928c phải áp trước deploy, cùng nhóm với 20261208. Cần đổi một dòng chính sách trong script, em sẽ xin anh duyệt riêng.
 2. **Vercel đang để `ACCOUNT_SELF_DELETE_ENABLED=true`** (theo tài liệu 29/09). Hoãn xóa tài khoản nghĩa là phải đặt rõ `false` khi deploy. Em sẽ kiểm lại giá trị thật trong bảng điều khiển trước.
 
 ## 3. Quy trình đề xuất (an toàn theo thứ tự)
@@ -46,7 +46,16 @@ Thứ tự:
 
 **Bản gỡ:** mỗi bản có tệp gỡ trong `supabase/migrations/rollback/`; thứ tự gỡ là ngược lại của thứ tự đã áp, chỉ gỡ cái đã áp. Cảnh báo: gỡ `20261114` (kiểm duyệt video) làm mất lịch sử quyết định; gỡ L1/S1 mở lại lỗ riêng tư cũ.
 
-## 4. Cần anh quyết (ngắn)
+## 4. KẾT QUẢ DIỄN TẬP BƯỚC A (ĐÃ KIỂM, 22/11/2026, trên bản sao, production không bị đụng)
+
+Cách làm: Postgres 17 tạm trong Docker, phục hồi `prod.dump` + cấu trúc `safety_private` (lấy riêng từ production, chỉ đọc). Số dòng sau phục hồi khớp production: 676 tài khoản, 46 hồ sơ, 10 bài.
+- **53/53 migration áp thành công**, từng bản một giao dịch, theo đúng thứ tự `MIGRATION_ORDER.txt`, không bản nào lỗi. (Đã bỏ: các bản production đã có, các bản hoãn, và `20261001e`.)
+- Bộ kiểm sau áp: mọi bản `t`; H1 và M1 đã đóng (`f`) như mong muốn.
+- **Rollback thử 6 bản mới nhất** (`20261203` → `20261208`): cả 6 chạy sạch.
+- **Bẫy 1 được xác nhận:** áp `20261208` khi chưa có `20260928c` thì lỗi `function public.is_content_moderator() does not exist`. Đã sửa: `20260928c` chuyển từ nhóm "sau kiểm khói" sang "trước deploy" trong `apply-migration.sh`; test chính sách cập nhật kèm lý do (header của 28c ghi "no code dependency - apply any time"; còn bản gỡ).
+- **Phát hiện mới:** bản sao lưu `backup-prod.ps1` chỉ gồm schema `public`, `auth`, `storage`, **không có `safety_private`** (chứa hàm chặn người dùng). Sao lưu vẫn đủ dữ liệu người dùng, nhưng muốn phục hồi hoàn chỉnh phải kèm tệp `safety_private-schema.sql` em đã lưu cạnh bản sao lưu.
+- **Chưa kiểm:** chạy thử mã web trên cơ sở dữ liệu sao; thử rollback toàn bộ chuỗi; thử `20261001e`.
+
+## 5. Cần anh quyết (ngắn)
 - Có áp `20261001e` không? (em nghiêng về hỏi lại phiên trước đã chặn nó vì lý do gì)
-- Cho em diễn tập bước A trước (không rủi ro, mất khoảng 1–2 giờ máy chạy).
-- Sau khi anh nói "UAT ổn", em mới sang bước B.
+- Sau khi anh nói "UAT ổn", em mới sang bước B (áp lên production).
