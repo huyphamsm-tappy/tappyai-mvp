@@ -4,6 +4,7 @@ import {
   updateMemory,
   clearMemory,
 } from '@/lib/memory/memoryService'
+import { isPersonKey, PERSON_KEYS } from '@/lib/memory/personFacts'
 import { NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -63,7 +64,14 @@ export async function PATCH(req: Request) {
     if (body.preferences && typeof body.preferences === 'object') {
       const cleaned: Record<string, string[]> = {}
       for (const [k, v] of Object.entries(body.preferences as Record<string, unknown>)) {
-        if (/^(food|spa|entertainment|shopping|avoid)$/.test(k)) cleaned[k] = strArr(v)
+        if (/^(food|spa|entertainment|shopping|avoid)$/.test(k) || isPersonKey(k)) cleaned[k] = strArr(v)
+      }
+      // `updateMemory` REPLACES the whole `preferences` column, and what the user said about themselves (work, projects, goals) lives in the same column
+      // (personFacts.ts). A client that edits one food card and does not send those three groups must not erase them: keep every stored person group
+      // the request did not carry. A group the request DOES carry replaces it (an empty list removes it), so the user can still delete one.
+      const stored = ((await getMemory(user.id, supabase))?.preferences ?? {}) as Record<string, unknown>
+      for (const k of PERSON_KEYS) {
+        if (!(k in cleaned) && Array.isArray(stored[k])) cleaned[k] = strArr(stored[k])
       }
       patch.preferences = cleaned
     }

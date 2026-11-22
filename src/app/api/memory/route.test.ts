@@ -107,6 +107,16 @@ describe('the supported methods are unchanged', () => {
     expect(h.generate).not.toHaveBeenCalled()
   })
 
+  it('PATCH preferences: removing a food card keeps the stored work/projects/goals; a person group that IS sent replaces it', async () => {
+    h.getMemory.mockResolvedValue({ preferences: { food: ['phở', 'bún'], work: ['kế toán'], projects: ['mở quán'], goals: ['mua nhà'] } })
+    const send = (preferences: unknown) =>
+      PATCH(new Request(url, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ preferences }) }))
+    expect((await send({ food: [] })).status).toBe(200)
+    expect(h.updateMemory).toHaveBeenLastCalledWith('u1', { preferences: { food: [], work: ['kế toán'], projects: ['mở quán'], goals: ['mua nhà'] } }, { tag: 'supabase' })
+    await send({ food: ['phở'], work: [], goals: ['x'], bogus: ['y'] })
+    expect(h.updateMemory).toHaveBeenLastCalledWith('u1', { preferences: { food: ['phở'], work: [], goals: ['x'], projects: ['mở quán'] } }, { tag: 'supabase' })
+  })
+
   it('DELETE: 401 signed out; clears the caller\'s memory only', async () => {
     h.user = null
     expect((await DELETE(new Request(url, { method: 'DELETE' }))).status).toBe(401)
