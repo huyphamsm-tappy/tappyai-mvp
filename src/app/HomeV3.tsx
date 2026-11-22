@@ -133,14 +133,16 @@ const CATEGORY_ART_VARIANTS: Record<string, readonly string[]> = {
   entertainment: ['/home/inspire/entertainment.webp', '/home/inspire/entertainment-2.webp', '/home/inspire/entertainment-3.webp'],
 }
 const ART_POOL: readonly string[] = Object.values(CATEGORY_ART_VARIANTS).flat()
-/** Owner-supplied photographs (21/11/2026) for the any-topic cards, 840x320, one or two per topic. Topics without a file (tech, writing) show the mascot. */
+/** Owner-supplied photographs (21/11/2026) for the any-topic cards, 840x320, one or two per topic. Topics without a file show the mascot. */
 export const TOPIC_ART: Record<string, readonly string[]> = {
   work: ['/home/topics/work.webp', '/home/topics/work-2.webp'],
-  study: ['/home/topics/study.webp'],
+  study: ['/home/topics/study.webp', '/home/topics/study-2.webp'],
   money: ['/home/topics/money.webp', '/home/topics/money-2.webp'],
   health: ['/home/topics/health.webp', '/home/topics/health-2.webp'],
   family: ['/home/topics/family.webp', '/home/topics/family-2.webp'],
-  news: ['/home/topics/news.webp'],
+  news: ['/home/topics/news.webp', '/home/topics/news-2.webp'],
+  tech: ['/home/topics/tech.webp'],
+  writing: ['/home/topics/writing.webp'],
 }
 /** Neutral Tappy poses for cards outside the five photographed categories (see `assignCardArt`). Files in /public/tappy. */
 const NEUTRAL_MASCOT_ART: readonly string[] = ['/tappy/thinking.png', '/tappy/speaking.png', '/tappy/recommendation.png', '/tappy/aitools.png', '/tappy/welcome.png']

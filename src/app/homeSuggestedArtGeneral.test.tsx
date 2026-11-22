@@ -23,10 +23,19 @@ describe('art for general (non-photographed) categories', () => {
     expect(art[2]).toMatch(/^\/tappy\//)
   })
 
-  it('a topic with no picture yet (tech, writing) or no topic at all shows the mascot, never another topic\'s photograph', () => {
+  it('tech and writing now have their own photograph; a card with no topic at all shows the mascot, never another topic\'s photograph', () => {
     const art = assignCardArt([{ category: 'general', topic: 'tech' }, { category: 'general', topic: 'writing' }, { category: 'general' }])
-    expect(art.every((a) => /^\/tappy\/[a-z]+\.png$/.test(a))).toBe(true)
-    expect(new Set(art).size).toBe(3)
+    expect(art[0]).toBe('/home/topics/tech.webp')
+    expect(art[1]).toBe('/home/topics/writing.webp')
+    expect(art[2]).toMatch(/^\/tappy\/[a-z]+\.png$/)
+  })
+
+  it('study and news now have a second picture, so two cards on one of them differ', () => {
+    for (const topic of ['study', 'news']) {
+      const art = assignCardArt([{ category: 'general', topic }, { category: 'general', topic }])
+      expect(art[0]).toBe(`/home/topics/${topic}.webp`)
+      expect(art[1]).toBe(`/home/topics/${topic}-2.webp`)
+    }
   })
 
   it('is deterministic', () => {
