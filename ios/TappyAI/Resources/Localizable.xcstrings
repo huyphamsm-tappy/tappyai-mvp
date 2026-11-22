@@ -6763,6 +6763,69 @@
         }
       }
     },
+    "chat.plan.pdf": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Download PDF" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tải PDF" } }
+      }
+    },
+    "chat.plan.pdfBudget": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Budget" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Dự toán" } }
+      }
+    },
+    "chat.plan.pdfItem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Item" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hạng mục" } }
+      }
+    },
+    "chat.plan.pdfCost": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Cost" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chi phí" } }
+      }
+    },
+    "chat.plan.pdfTotal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Total" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tổng" } }
+      }
+    },
+    "chat.plan.pdfTips": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tips for following the plan" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mẹo khi đi theo kế hoạch" } }
+      }
+    },
+    "chat.plan.pdfDays": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "{n} days" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "{n} ngày" } }
+      }
+    },
+    "chat.plan.pdfStops": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "{n} stops" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "{n} điểm dừng" } }
+      }
+    },
+    "chat.plan.pdfPeople": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "{n} people" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "{n} người" } }
+      }
+    },
     "chat.plan.stays": {
       "extractionState": "manual",
       "localizations": {

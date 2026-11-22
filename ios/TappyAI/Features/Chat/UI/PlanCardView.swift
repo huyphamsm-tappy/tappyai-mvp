@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// The plan card v2 (owner 29/09) — drawn to the approved sample `docs/design/share-layouts/plan-share.png`
 /// ("Quy Nhơn · 3 ngày 2 đêm") at chat width, for ALL FIVE areas, and mirroring Android `TripPlanCard.kt`:
@@ -22,6 +23,11 @@ struct ChatPlanCardView: View {
     @State private var publishing = false
     @State private var linkNote: String?
     @State private var selectedDay = 0
+    // «Tải PDF»: the file is built on the phone and handed to the system's save dialog (nothing is uploaded).
+    @State private var pdfDocument = ReportFileDocument()
+    @State private var pdfExporting = false
+    @State private var pdfPreparing = false
+    @State private var pdfNotice: ReportSaveNotice? = nil
 
     private var model: PlanCardModel { PlanCardModel.of(plan) }
 
@@ -45,6 +51,7 @@ struct ChatPlanCardView: View {
                 staysPanel
                 dishesPanel
                 fullPlanCta
+                pdfButton
                 Text("chat.planV2.madeBy").font(.system(size: 12)).foregroundStyle(PlanPal.muted)
                     .frame(maxWidth: .infinity)
             }
@@ -56,6 +63,16 @@ struct ChatPlanCardView: View {
         .padding(.top, 8)
         .environment(\.colorScheme, .dark)
         .onAppear { PlanImageStore.shared.ensureLoaded(api: DIContainer.shared.resolve(APIClient.self)) }
+        .fileExporter(isPresented: $pdfExporting, document: pdfDocument, contentType: .pdf,
+                      defaultFilename: PlanPdf.fileName(for: plan)) { result in
+            pdfNotice = ResearchReportFile.notice(for: result)
+        }
+        // the line under the button goes away by itself
+        .task(id: pdfNotice) {
+            guard pdfNotice != nil else { return }
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            if !Task.isCancelled { pdfNotice = nil }
+        }
     }
 
     // MARK: Brand row + hero
@@ -412,6 +429,46 @@ struct ChatPlanCardView: View {
                     .multilineTextAlignment(.center)
                     .accessibilityIdentifier("plan-link-note")
             }
+        }
+    }
+
+    // MARK: «Tải PDF» (web `v206.trip.pdf`)
+
+    /// The plan as a PDF file in the same A4 layout as a research report: the plan's own days, stays, dishes, budget table and tips.
+    private var pdfButton: some View {
+        VStack(spacing: 6) {
+            Button { startPdfExport() } label: {
+                HStack(spacing: 8) {
+                    if pdfPreparing { ProgressView().tint(PlanPal.accent) } else { Image(systemName: "arrow.down.doc").font(.system(size: 14, weight: .semibold)) }
+                    Text("chat.plan.pdf").font(.system(size: 14, weight: .semibold))
+                }
+                .foregroundStyle(PlanPal.accent)
+                .frame(maxWidth: .infinity, minHeight: 46)
+                .overlay(Capsule().stroke(PlanPal.accent, lineWidth: 1))
+                .opacity(pdfPreparing ? 0.6 : 1)
+            }
+            .buttonStyle(.plain)
+            .disabled(pdfPreparing)
+            .accessibilityIdentifier("plan-pdf")
+            if let pdfNotice {
+                Text(LocalizedStringKey(pdfNotice.key)).font(.system(size: 12))
+                    .foregroundStyle(pdfNotice == .failed ? Color.red : PlanPal.muted)
+                    .accessibilityIdentifier("plan-pdf-note")
+            }
+        }
+    }
+
+    // Built off the main thread (a long plan takes a moment), then handed to the system's save dialog.
+    private func startPdfExport() {
+        guard !pdfPreparing else { return }
+        pdfPreparing = true
+        let plan = self.plan
+        let labels = PlanPdf.labels(for: plan)
+        Task { @MainActor in
+            let data = await Task.detached(priority: .userInitiated) { PlanPdf.data(for: plan, labels: labels) }.value
+            pdfDocument = ReportFileDocument(data: data)
+            pdfPreparing = false
+            pdfExporting = true
         }
     }
 
