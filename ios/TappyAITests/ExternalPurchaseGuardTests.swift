@@ -44,6 +44,9 @@ final class ExternalPurchaseGuardTests: XCTestCase {
             "TappyAI/Core/Share/TappyShareSheet.swift",
             "TappyAI/Features/Auth/UI/AuthTermsConsentView.swift",
             "TappyAI/Features/Chat/UI/ChatMessageList.swift",
+            // 22/11 review for 3.1.1: the emergency card opens a `tel:` address (the phone's dialer, a 2-4 digit hotline number the app
+            // re-checks as digits only, `EmergencyFrames`). It cannot reach a web page and has nothing to do with paying.
+            "TappyAI/Features/Chat/UI/EmergencyCardView.swift",
             "TappyAI/Features/Chat/UI/MediaBlocksView.swift",
             "TappyAI/Features/Chat/UI/PlaceCardView.swift",
             "TappyAI/Features/Chat/UI/PlanCardView.swift",

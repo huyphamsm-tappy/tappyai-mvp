@@ -497,6 +497,7 @@ extension LivePlace {
             phone: try? c.decode(String.self, forKey: .phone),
             priceLevel: try? c.decode(Int.self, forKey: .priceLevel),
             priceSignal: try? c.decode(String.self, forKey: .priceSignal),
+            stayOffer: try? c.decode(LenientStayOffer.self, forKey: .stayOffer),
             distanceKm: try? c.decode(Double.self, forKey: .distanceKm),
             categories: c.lossyArray(String.self, forKey: .categories),
             flags: c.lossyArray(String.self, forKey: .flags),

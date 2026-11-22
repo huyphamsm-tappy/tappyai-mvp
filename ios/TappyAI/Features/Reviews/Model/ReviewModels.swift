@@ -157,7 +157,7 @@ struct UserSearchResult: Decodable, Sendable, Identifiable, Hashable {
 }
 
 extension ReviewComment {
-    enum CodingKeys: String, CodingKey { case id, body, createdAt, userId, profiles, parentCommentId, reactions, myReaction }
+    enum CodingKeys: String, CodingKey { case id, body, createdAt, userId, profiles, parentCommentId, reactions, myReaction, hiddenAt, hiddenBy }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -169,6 +169,9 @@ extension ReviewComment {
         parentCommentId = c.lenient(String.self, forKey: .parentCommentId)
         reactions = c.lenient([String: Int].self, forKey: .reactions, default: [:])
         myReaction = c.lenient(String.self, forKey: .myReaction)
+        // Migration 20261208: `hidden_at` / `hidden_by` (owner | auto | moderator). An older server sends neither: the comment is visible.
+        hiddenAt = c.lenient(String.self, forKey: .hiddenAt)
+        hiddenBy = c.lenient(String.self, forKey: .hiddenBy)
     }
 }
 
