@@ -12,7 +12,7 @@ Người đọc: phiên Claude mới, không nhớ gì về hôm nay. **Đọc h
 4. **Bộ não iOS đã ĐÓNG BĂNG** theo web local `web-freeze-20261123`: tag `ios-brain-freeze-20261123` (commit `fce7147`). Đọc `docs/ios/IOS-BRAIN-FREEZE-20261123.md`.
 5. **Bản 1.1.0 build 234 đã lên TestFlight** (commit `fce7147`, CI xanh 1.248 test). **Chưa nộp duyệt Apple**: nút "Submit for Review" là của anh Huy, Claude không bấm.
 6. **Web mới (có bộ não mới) CHƯA lên production.** Production web = deploy 04/11 từ `main` `33cef8b`, không có mã bộ não mới. Nên bản iOS 234 với máy chủ production **chưa hiện** bộ não mới (viết sẵn để "sáng lên" khi web deploy).
-7. **Đang làm dở:** cơ chế "bản thử trỏ vào web local" (commit `63a2545`, **mới ở máy, chưa push**).
+7. **Đang làm dở:** cơ chế "bản thử trỏ vào web local" (commit `63a2545`, **mới ở máy, chưa push**). Cũng **chưa push**: `3a3fcda` (bàn giao) và `3b29cf2` (sửa 1 UI test Deal hỏng; UI test chỉ chạy khi dispatch hoặc commit có `[shots]`).
 8. **Chờ anh Huy:** xem mục 7.
 9. **Chưa làm:** các chức năng ngoài bộ não (nhóm ăn, lịch sử chat…), xem mục 6.
 10. **Máy này không có Mac.** Swift chỉ biên dịch được trên CI (GitHub Actions macOS). Chưa có lần chạy CI xanh thì **không được ghi "PASS"**.
@@ -96,7 +96,7 @@ Chip Wikipedia trên tên in đậm + ngăn kéo (bố cục màn rộng của w
 ### 3.4 Phát hành 1.1.0
 - `MARKETING_VERSION` 1.1.0; nháp "What's New" song ngữ + ghi chú người duyệt + checklist anh: `docs/ios/RELEASE-1.1.0-20261123.md` (chỉ ghi những gì người dùng thấy được với máy chủ HIỆN TẠI).
 - CI xanh `fce7147` (run 45123065856, 1.248 test). Tag `ios-brain-freeze-20261123` gắn đúng commit đó.
-- **TestFlight run #234** (`https://github.com/huyphamsm-tappy/tappyai-mvp/actions/runs/45124428669`): job "Archive + upload to TestFlight" **thành công** (job này tự chờ Apple xử lý rồi mới xanh); anh Huy xác nhận đã thấy build 234 trong TestFlight. Job "Build + TappyAITests" của lần chạy đó lúc em kiểm vẫn đang chạy (chưa đọc kết quả cuối; nên mở xem). Cảnh báo "Apple 90725" chỉ là thông báo SDK từ 4/2027, không phải lỗi.
+- **TestFlight run #234** (`https://github.com/huyphamsm-tappy/tappyai-mvp/actions/runs/45124428669`): job "Archive + upload to TestFlight" **thành công** (job này tự chờ Apple xử lý rồi mới xanh); anh Huy xác nhận đã thấy build 234 trong TestFlight. **Kết quả cuối của cả lần chạy (đã đọc):** run tổng "cancelled" (job Build+Tests bị hủy sau khi job TestFlight đã xong; chưa rõ vì sao, **không ảnh hưởng bản đã tải lên**), nhưng trước khi bị hủy nó đã chạy **70 UI test (chụp màn hình): 69 qua, 1 hỏng**: `ScreenshotTests.testDealsProductionShaped` (chờ chữ của Shopee, mà Deal nay chỉ vẽ Accesstrade/Lazada/Agoda/Vexere). **Phát hiện quan trọng:** UI test **không chạy** khi push thường (điều kiện `github.event_name != 'push' || commit message có [shots]`), nên 1.248 test "xanh" ở các lần push trước KHÔNG gồm 70 UI test này; chỉ lần dispatch này mới chạy chúng. Cách sửa đã commit **chỉ ở máy** (`3b29cf2`, stub `ios/scripts/ui_stub_server.py` thêm Lazada/Vexere, test khẳng định Agoda+Lazada có, Shopee không; app không đổi). Muốn kiểm: push commit có `[shots]` trong thông điệp (đã có sẵn trong `3b29cf2`) rồi đọc kết quả UI test. Cảnh báo "Apple 90725" chỉ là thông báo SDK từ 4/2027, không phải lỗi.
 
 ### 3.5 Bản thử trỏ vào web local (dang dở, mục 4)
 
@@ -120,7 +120,7 @@ Chip Wikipedia trên tên in đậm + ngăn kéo (bố cục màn rộng của w
 |---|---|---|
 | Anh thử bản 234 trên iPhone thật | Huy | **Chưa có phần nào của công việc này từng chạy trên thiết bị.** Với máy chủ production hiện tại chỉ thấy các điểm ở mục 3.4 (báo cáo + bỏ chặn, Deal, xóa cache ảnh, giọng điệu, "gần tôi", chip Nguồn, Tải PDF, gỡ thẻ trí nhớ). Thử gói Pro bằng mua thử sandbox của Apple trong TestFlight (production **chưa có** gói Promax/MoMo/Coco) |
 | Anh tạo version 1.1.0 trong App Store Connect, gắn build 234, dán "What's New", **bấm Submit for Review (chọn Manual release)** | Huy | Claude không làm. Checklist trong `RELEASE-1.1.0-20261123.md` |
-| Kết quả cuối của run TestFlight #234 (job Build+Tests) | Claude | Mở `https://github.com/huyphamsm-tappy/tappyai-mvp/actions/runs/45124428669` xem |
+| Push 3 commit đang ở máy: `63a2545` (workflow bản thử), `3a3fcda` (file bàn giao này), `3b29cf2` (sửa UI test Deal, có `[shots]` nên push sẽ chạy 70 UI test) | Claude hỏi, Huy gật | Hỏi "Push cho CI?" một lần. Sau khi CI chạy xong, đọc cả kết quả UI test (xem mục 3.4). Nếu còn UI test hỏng thì sửa trước khi tin "xanh" |
 | Anh trả lời: iOS có **ẩn Tỷ giá, Quét hóa đơn, Bói, Gợi ý** như web không? | Huy | Web đã ẩn 4 công cụ này (`lib/config/product.ts:121-141`), iOS vẫn hiện. Em khuyên ẩn (web là chuẩn) nhưng đó là bỏ chức năng người dùng đang có nên cần anh gật. Chưa trả lời. iOS đã ẩn đúng Dịch/Viết nội dung/Nhạc như web |
 | Anh quyết có push `63a2545` (workflow bản thử) | Huy | Đã hỏi, chưa trả lời |
 | Web mới deploy lên production | Huy | Việc trước deploy: `D:\TappyAI-wt\wt-integration\docs\handoff\DANH-SACH-VIEC-TRUOC-DEPLOY-20261121.md`. Khi web lên, bản iOS 234 "sáng lên" phần bộ não mới. Cần cả migration 20261111–20261208 và các cờ |
