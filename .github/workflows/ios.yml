@@ -17,6 +17,16 @@ on:
       - "ios/**"
       - ".github/workflows/ios.yml"
   workflow_dispatch:
+    inputs:
+      backend:
+        description: "production (the default: what is released) or test (a build the owner tries against the web build on his own machine; NEVER for App Review)"
+        type: choice
+        options: [production, test]
+        default: production
+      test_api_base_url:
+        description: "Only for backend=test: the https address of the tunnel to the local web build (https://....trycloudflare.com)"
+        type: string
+        required: false
 
 concurrency:
   group: ios-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -238,6 +248,8 @@ jobs:
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       # CFBundleVersion must increase on every upload; the workflow run number always does.
       BUILD_NUMBER: ${{ github.run_number }}
+      # "production" unless the person who started the run chose "test" (see the inputs above). Only the three config steps below read it.
+      BACKEND: ${{ inputs.backend || 'production' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
@@ -274,7 +286,18 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           TAPPY_API_BASE_URL: ${{ secrets.TAPPY_API_BASE_URL }}
+          # Only read when BACKEND=test. They are separate secrets on purpose: a missing one STOPS the run below, it never falls back to production.
+          TEST_SUPABASE_URL: ${{ secrets.TEST_SUPABASE_URL }}
+          TEST_SUPABASE_ANON_KEY: ${{ secrets.TEST_SUPABASE_ANON_KEY }}
+          TEST_API_BASE_URL: ${{ inputs.test_api_base_url }}
         run: |
+          if [ "$BACKEND" = "test" ]; then
+            for v in TEST_SUPABASE_URL TEST_SUPABASE_ANON_KEY TEST_API_BASE_URL; do
+              [ -n "${!v}" ] || { echo "::error::backend=test needs $v (a repository secret, or the test_api_base_url input); refusing to build"; exit 1; }
+            done
+            SUPABASE_URL="$TEST_SUPABASE_URL"; SUPABASE_ANON_KEY="$TEST_SUPABASE_ANON_KEY"; TAPPY_API_BASE_URL="$TEST_API_BASE_URL"
+            echo "::warning::TEST BACKEND BUILD: it talks to a web build on the owner's machine, never to production. Never submit it for review."
+          fi
           for v in SUPABASE_URL SUPABASE_ANON_KEY TAPPY_API_BASE_URL; do
             [ -n "${!v}" ] || { echo "::error::secret $v is not set; refusing to ship a placeholder build"; exit 1; }
           done
@@ -295,7 +318,23 @@ jobs:
       - name: Refuse a build that is not pointed at production
         env:
           TAPPY_API_BASE_URL: ${{ secrets.TAPPY_API_BASE_URL }}
+          TEST_API_BASE_URL: ${{ inputs.test_api_base_url }}
         run: |
+          # backend=test: the only other address allowed is a Cloudflare tunnel (https, no credentials in the address), and it must answer /api/config
+          # now, so a stale tunnel cannot become a build that fails every request on the tester's phone. The production checks below do not apply.
+          if [ "$BACKEND" = "test" ]; then
+            tb="${TEST_API_BASE_URL%/}"
+            thost="$(printf '%s' "$tb" | sed -E 's|^https://([^/:@]+)(:[0-9]+)?$|\1|')"
+            echo "Test API host for this build: $thost"
+            case "$tb" in https://*) ;; *) echo "::error::test_api_base_url is not an https address"; exit 1 ;; esac
+            # The whole address must be https://<labels>.trycloudflare.com: no credentials, port, path, query or fragment can ride along.
+            printf '%s' "$tb" | grep -Eq '^https://[a-z0-9-]+(\.[a-z0-9-]+)*\.trycloudflare\.com$' \
+              || { echo "::error::test_api_base_url must be exactly https://<name>.trycloudflare.com (got host '$thost')"; exit 1; }
+            tcode="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "$tb/api/config" || echo 000)"
+            echo "GET /api/config on the test host -> HTTP $tcode"
+            [ "$tcode" = "200" ] || { echo "::error::the tunnel answered $tcode: start the web build and the tunnel first, then run this again"; exit 1; }
+            exit 0
+          fi
           base="${TAPPY_API_BASE_URL%/}"
           host="$(printf '%s' "$base" | sed -E 's|^https?://([^/:]+).*|\1|')"
           echo "API host for this build: $host"
@@ -438,10 +477,11 @@ jobs:
               echo "::error::the archive still carries placeholder config"; exit 1 ;;
           esac
           [ "$(pb CFBundleVersion)" = "$BUILD_NUMBER" ] || { echo "::error::CFBundleVersion is not $BUILD_NUMBER"; exit 1; }
-          # Production host, and no Vercel bypass key anywhere in the app's Info.plist.
-          case "$(pb TAPPY_API_BASE_URL)" in
-            https://www.tappyai.com|https://tappyai.com) echo "API base                      production" ;;
-            *) echo "::error::the archive's API base is not production"; exit 1 ;;
+          # Production host, and no Vercel bypass key anywhere in the app's Info.plist. A backend=test build must carry a tunnel host and NOT production.
+          case "$BACKEND:$(pb TAPPY_API_BASE_URL)" in
+            production:https://www.tappyai.com|production:https://tappyai.com) echo "API base                      production" ;;
+            test:https://*.trycloudflare.com) echo "API base                      TEST (tunnel to the owner's machine) - never submit for review" ;;
+            *) echo "::error::the archive's API base does not match backend=$BACKEND"; exit 1 ;;
           esac
           if plutil -p "$app/Info.plist" | grep -qi 'bypass'; then
             echo "::error::a bypass value is present in Info.plist"; exit 1
@@ -486,6 +526,9 @@ jobs:
               --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee build/altool.log
           fi
           echo "### TestFlight upload: build $BUILD_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$BACKEND" = "test" ]; then
+            echo "**TEST BACKEND BUILD (not production).** It talks to a web build on the owner's machine through a tunnel. Never attach it to a version, never submit it for review." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       # "Upload succeeded" only means the file arrived. Apple processes it afterwards and can
       # still reject it (build 16: ITMS-90683, missing NSSpeechRecognitionUsageDescription) while
