@@ -12,8 +12,17 @@ import { isAuthorizationId, safeOAuthRedirect, scopeLines } from '@/lib/mcp/cons
 import { CONSENT_COPY } from '@/lib/i18n/mcpConsent'
 import { TappyMascot } from '@/components/TappyMascot'
 
-type Details = { authorization_id: string; client: { name: string }; scope: string; user: { email: string } }
-type State = { kind: 'loading' } | { kind: 'invalid' } | { kind: 'error' } | { kind: 'ask'; d: Details } | { kind: 'sending' }
+type Details = { authorization_id: string; client: { id?: string; name: string }; scope: string; user: { email: string } }
+type State = { kind: 'loading' } | { kind: 'invalid' } | { kind: 'error' } | { kind: 'unapproved' } | { kind: 'ask'; d: Details } | { kind: 'sending' }
+
+async function clientApproved(clientId: string | undefined): Promise<boolean> {
+  if (!clientId) return false
+  try {
+    const r = await fetch(`/api/oauth/client-approval?client_id=${encodeURIComponent(clientId)}`, { cache: 'no-store' })
+    if (!r.ok) return false
+    return ((await r.json()) as { approved?: unknown }).approved === true
+  } catch { return false }
+}
 
 export default function ConsentView() {
   const { locale } = useTranslation()
@@ -42,7 +51,14 @@ export default function ConsentView() {
         if (to) { setState({ kind: 'sending' }); window.location.assign(to) } else setState({ kind: 'error' })
         return
       }
-      setState({ kind: 'ask', d: data as unknown as Details })
+      const d = data as unknown as Details
+      // Dynamic registration is on, so anyone can register an app with a trustworthy-sounding name. Only an app Tappy recognises (by where it sends the user back) may even be ASKED about:
+      // any other is denied here, without a button, and nothing is granted. Fails closed: if the check cannot be made, it is not approved.
+      if (!(await clientApproved(d.client?.id))) {
+        await supabase.auth.oauth.denyAuthorization(d.authorization_id, { skipBrowserRedirect: true }).catch(() => null)
+        setState({ kind: 'unapproved' }); return
+      }
+      setState({ kind: 'ask', d })
     })().catch(() => setState({ kind: 'error' }))
   }, [id])
 
@@ -64,6 +80,7 @@ export default function ConsentView() {
       {state.kind === 'sending' && <p>{c.sending}</p>}
       {state.kind === 'invalid' && <p role="alert">{c.invalid}</p>}
       {state.kind === 'error' && <p role="alert">{c.error}</p>}
+      {state.kind === 'unapproved' && <p role="alert" data-testid="oauth-unapproved">{c.unapproved}</p>}
       {state.kind === 'ask' && (
         <>
           <h1 className="text-xl font-bold">{c.title}</h1>

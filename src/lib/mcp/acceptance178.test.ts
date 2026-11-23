@@ -341,7 +341,9 @@ describe('17.8 #18 no regression: nothing outside the MCP files depends on MCP',
       // 22/11/2026: the connector's OAuth consent screen. It may import ONLY the pure helpers of the consent view, never the Gateway (checked in the next test).
       /src[\\/]app[\\/]oauth[\\/]consent[\\/]/,
       // 22/11/2026: the Agoda source for the gateway's hotel port. It imports only TYPES from lib/mcp/providers (checked in the next test); the chat never depends on it.
-      /src[\\/]lib[\\/]ccp[\\/]tracking[\\/]mcpHotelSource(\.test)?\.ts$/]
+      /src[\\/]lib[\\/]ccp[\\/]tracking[\\/]mcpHotelSource(\.test)?\.ts$/,
+      // 23/11/2026: the consent screen's "is this app approved?" answer (one boolean). It only asks the connector's own approval resolver and registry.
+      /src[\\/]app[\\/]api[\\/]oauth[\\/]client-approval[\\/]/]
     const offenders = walk(join(process.cwd(), 'src')).filter(f => !allowed.some(a => a.test(f))).filter(f => /from '@\/lib\/mcp\//.test(readFileSync(f, 'utf8')))
     expect(offenders.map(f => f.replace(process.cwd(), ''))).toEqual([])
   })

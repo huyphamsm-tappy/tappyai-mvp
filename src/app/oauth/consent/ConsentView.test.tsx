@@ -16,11 +16,15 @@ vi.mock('@/components/TappyMascot', () => ({ TappyMascot: () => null }))
 
 import ConsentView from './ConsentView'
 
-const ASK = { data: { authorization_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', client: { name: 'Claude' }, scope: 'places:read itinerary:create', user: { email: 'me@example.test' } }, error: null }
+const CID = 'c20558f1-e1bf-4315-997a-4cb2f54e627e'
+const ASK = { data: { authorization_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', client: { id: CID, name: 'Claude' }, scope: 'places:read itinerary:create', user: { email: 'me@example.test' } }, error: null }
+const approval = vi.fn()
 
-afterEach(() => cleanup())
+afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 beforeEach(() => {
   vi.clearAllMocks()
+  approval.mockResolvedValue({ ok: true, json: async () => ({ approved: true }) })
+  vi.stubGlobal('fetch', approval)
   h.id = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'; h.user = { id: 'u1', is_anonymous: false }
   Object.defineProperty(window, 'location', { value: { assign: h.assign, href: 'http://localhost/oauth/consent' }, writable: true })
   h.details.mockResolvedValue(ASK)
@@ -86,6 +90,30 @@ describe('/oauth/consent', () => {
     await waitFor(() => expect(h.assign).toHaveBeenCalledWith('https://claude.ai/cb?code=z'))
     expect(h.details).toHaveBeenCalledTimes(1)
     expect(screen.queryByRole('alert')).toBeNull()
+  })
+  it('an app Tappy does not recognise (any answer but approved:true, or no answer) is denied WITHOUT a button, and nothing is granted', async () => {
+    for (const answer of [{ ok: true, json: async () => ({ approved: false }) }, { ok: false, json: async () => ({}) }, { ok: true, json: async () => ({ approved: 'yes' }) }]) {
+      cleanup(); vi.clearAllMocks(); h.details.mockResolvedValue(ASK); h.deny.mockResolvedValue({ data: { redirect_url: 'https://evil.example/cb' }, error: null })
+      approval.mockResolvedValue(answer)
+      render(<ConsentView />)
+      await screen.findByTestId('oauth-unapproved')
+      expect(screen.queryByTestId('oauth-allow')).toBeNull(); expect(h.approve).not.toHaveBeenCalled()
+      expect(h.deny).toHaveBeenCalledTimes(1); expect(h.assign).not.toHaveBeenCalled() // the unapproved app's own redirect is never followed
+    }
+    cleanup(); vi.clearAllMocks(); h.details.mockResolvedValue(ASK); approval.mockRejectedValue(new Error('down'))
+    render(<ConsentView />)
+    await screen.findByTestId('oauth-unapproved') // the check could not be made: not approved (fail closed)
+    expect(h.approve).not.toHaveBeenCalled()
+  })
+  it('asks the approval check about the client id the server reported, and an app with no client id is not approved', async () => {
+    render(<ConsentView />)
+    await screen.findByTestId('oauth-allow')
+    expect(String(approval.mock.calls[0][0])).toBe(`/api/oauth/client-approval?client_id=${CID}`)
+    cleanup(); vi.clearAllMocks(); approval.mockResolvedValue({ ok: true, json: async () => ({ approved: true }) })
+    h.details.mockResolvedValue({ data: { ...ASK.data, client: { name: 'No id' } }, error: null })
+    render(<ConsentView />)
+    await screen.findByTestId('oauth-unapproved')
+    expect(approval).not.toHaveBeenCalled()
   })
   it('an error from the server is shown as invalid', async () => {
     h.details.mockResolvedValue({ data: null, error: { message: 'x' } })

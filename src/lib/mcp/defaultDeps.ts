@@ -15,6 +15,8 @@ import { attributionConfig } from './attribution'
 import { createMetrics } from './metrics'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
 import { createSupabaseTokenVerifier, parseClientRegistry, type ProviderUser } from './identity'
+import type { ClientLookup } from './clientApproval'
+import { approvalResolver } from './approvalWiring'
 
 type Env = Record<string, string | undefined>
 
@@ -34,12 +36,14 @@ function supabaseGetUser(env: Env): (token: string) => Promise<ProviderUser | nu
  * The token verifier: the Supabase-backed one ONLY when the resource URL (https), at least one registered client and the identity provider settings are all configured; otherwise deny-all.
  * `getUser` is a test seam. Presence of settings is checked, their values are never read into any output.
  */
-export function buildVerifier(env: Env, getUser?: (token: string) => Promise<ProviderUser | null>): TokenVerifier {
+export function buildVerifier(env: Env, getUser?: (token: string) => Promise<ProviderUser | null>, lookup?: ClientLookup | null): TokenVerifier {
   const audience = env.MCP_RESOURCE_URL ?? ''
   const registry = parseClientRegistry(env.MCP_OAUTH_CLIENTS)
   const providerConfigured = !!env.NEXT_PUBLIC_SUPABASE_URL && !!env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!audience.startsWith('https://') || Object.keys(registry).length === 0 || (!getUser && !providerConfigured)) return denyAllVerifier
-  return createSupabaseTokenVerifier({ expectedAudience: audience, registry, now: () => new Date(), getUser: getUser ?? supabaseGetUser(env) })
+  // A client is approved by hand (MCP_OAUTH_CLIENTS) or, when the admin lookup is configured, by where it redirects (clientApproval.ts). With neither, nobody is let in.
+  const resolveClient = approvalResolver(env, lookup)
+  if (!audience.startsWith('https://') || (Object.keys(registry).length === 0 && !resolveClient) || (!getUser && !providerConfigured)) return denyAllVerifier
+  return createSupabaseTokenVerifier({ expectedAudience: audience, registry, now: () => new Date(), getUser: getUser ?? supabaseGetUser(env), ...(resolveClient ? { resolveClient } : {}) })
 }
 
 /** Per-principal rate limit: the shared sliding window, which refuses when its store is missing or down (fail closed). PLACEHOLDER numbers. */

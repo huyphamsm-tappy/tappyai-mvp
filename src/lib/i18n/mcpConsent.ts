@@ -6,12 +6,14 @@ export const CONSENT_COPY = {
     title: 'Cho phép kết nối với Tappy?', wantSuffix: 'muốn dùng Tappy thay mặt bạn với tài khoản', may: 'Ứng dụng này sẽ được phép:',
     safe: 'Chỉ đọc và soạn kế hoạch. Không đặt chỗ, không thanh toán, không đổi thông tin tài khoản. Bạn có thể thu hồi quyền bất cứ lúc nào.',
     allow: 'Cho phép', deny: 'Từ chối', invalid: 'Liên kết không hợp lệ hoặc đã hết hạn. Hãy quay lại ứng dụng AI và thử kết nối lại.',
+    unapproved: 'Ứng dụng này chưa được Tappy xác nhận nên yêu cầu đã bị từ chối. Bạn không cần làm gì thêm.',
     error: 'Không thể tải yêu cầu kết nối. Hãy thử lại sau.', loading: 'Đang tải…', sending: 'Đang chuyển bạn về ứng dụng…', unknownApp: 'Một ứng dụng AI',
   },
   en: {
     title: 'Allow this app to connect to Tappy?', wantSuffix: 'wants to use Tappy on your behalf, signed in as', may: 'It will be allowed to:',
     safe: 'Read-only and trip planning. No booking, no payment, no account changes. You can revoke access at any time.',
     allow: 'Allow', deny: 'Deny', invalid: 'This link is invalid or has expired. Go back to the AI app and try connecting again.',
+    unapproved: 'This app is not recognised by Tappy, so the request was declined. You do not need to do anything.',
     error: 'Could not load the connection request. Please try again later.', loading: 'Loading…', sending: 'Sending you back to the app…', unknownApp: 'An AI app',
   },
 } as const

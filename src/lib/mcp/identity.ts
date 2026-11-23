@@ -94,7 +94,7 @@ export interface ProviderUser { id: string; is_anonymous?: boolean }
  * The verifier of the Gateway. `getUser` is the identity provider's own check (Supabase `auth.getUser(token)`: signature, expiry, session revocation); it is called on EVERY request.
  * Its answer is authoritative for "is this token alive and whose is it": the payload is read only afterwards, and its subject must equal the provider's user.
  */
-export function createSupabaseTokenVerifier(o: IdentityOptions & { getUser: (token: string) => Promise<ProviderUser | null> }): TokenVerifier {
+export function createSupabaseTokenVerifier(o: IdentityOptions & { getUser: (token: string) => Promise<ProviderUser | null>; /** approves a client that is not in the registry by where it redirects (clientApproval.ts); absent = the registry alone decides */ resolveClient?: (clientId: string) => Promise<{ host: HostPlatform } | null> }): TokenVerifier {
   return async authorization => {
     const token = bearerOf(authorization)
     if (!token) return null
@@ -103,7 +103,15 @@ export function createSupabaseTokenVerifier(o: IdentityOptions & { getUser: (tok
     let user: ProviderUser | null
     try { user = await o.getUser(token) } catch { return null }
     if (!user || user.id !== payload.sub) return null
-    return claimsFromJwtPayload(payload, o)
+    // A Host that registered itself is not in the hand-written registry: ask the resolver (fail closed on any error). A hand-written entry always wins.
+    let registry = o.registry
+    const cid = typeof payload.client_id === 'string' ? payload.client_id : ''
+    if (cid && !Object.prototype.hasOwnProperty.call(registry, cid) && o.resolveClient) {
+      let r: { host: HostPlatform } | null = null
+      try { r = await o.resolveClient(cid) } catch { r = null }
+      if (r) registry = { ...registry, [cid]: { host: r.host } }
+    }
+    return claimsFromJwtPayload(payload, { ...o, registry })
   }
 }
 
