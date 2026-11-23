@@ -120,5 +120,16 @@ export function protectedResourceMetadata(env: Env): Record<string, unknown> | n
   const resource = env.MCP_RESOURCE_URL ?? ''
   const server = env.MCP_AUTH_SERVER_URL ?? ''
   if (!resource.startsWith('https://') || !server.startsWith('https://')) return null
-  return { resource, authorization_servers: [server], scopes_supported: [...MCP_SCOPES], bearer_methods_supported: ['header'], resource_name: 'TappyAI MCP' }
+  // 🚨 FOUND LIVE with ChatGPT (23/11/2026): a Host asks the authorization server for the scopes listed HERE. Supabase's OAuth server only knows OpenID scopes and answers any other with
+  // "invalid_request: unsupported scope: places:read", so advertising our own scope names made every Host fail to connect. Advertise what the authorization server really accepts; what the connector
+  // may DO is decided by the registered client (claimsFromJwtPayload), not by the scope string.
+  return { resource, authorization_servers: [server], scopes_supported: [...AUTH_SERVER_SCOPES], bearer_methods_supported: ['header'], resource_name: 'TappyAI MCP' }
+}
+
+/** The scopes Supabase's OAuth server accepts and a connector needs: know who the person is. */
+export const AUTH_SERVER_SCOPES = ['openid', 'profile'] as const
+
+/** The path of the MCP resource ("/api/mcp"), for the RFC 9728 path-specific discovery address. Null when the resource is not a valid https URL. Pure. */
+export function resourcePath(env: Env): string | null {
+  try { const u = new URL(env.MCP_RESOURCE_URL ?? ''); return u.protocol === 'https:' ? u.pathname : null } catch { return null }
 }

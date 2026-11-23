@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { claimsFromJwtPayload, createSupabaseTokenVerifier, bearerOf, decodeJwtPayload, protectedResourceMetadata, MCP_SCOPES, type ClientRegistry } from './identity'
+import { claimsFromJwtPayload, createSupabaseTokenVerifier, bearerOf, decodeJwtPayload, protectedResourceMetadata, resourcePath, MCP_SCOPES, type ClientRegistry } from './identity'
 import { handleMcpRequest, type GatewayDeps } from './gateway'
 import { createSpendPool } from './spendPool'
 import { createInMemoryJobStore } from './jobs'
@@ -155,7 +155,13 @@ describe('end to end through the Gateway: cross-principal and wrong-audience tok
 describe('protected resource metadata (RFC 9728)', () => {
   it('is built from configuration and advertises only what exists', () => {
     const m = protectedResourceMetadata({ MCP_RESOURCE_URL: AUD, MCP_AUTH_SERVER_URL: 'https://auth.example/auth/v1' })!
-    expect(m).toEqual({ resource: AUD, authorization_servers: ['https://auth.example/auth/v1'], scopes_supported: [...MCP_SCOPES], bearer_methods_supported: ['header'], resource_name: 'TappyAI MCP' })
+    // the scopes advertised are the ones the authorization server ACCEPTS (found live with ChatGPT: Supabase answers "unsupported scope: places:read" to anything but OpenID names)
+    expect(m).toEqual({ resource: AUD, authorization_servers: ['https://auth.example/auth/v1'], scopes_supported: ['openid', 'profile'], bearer_methods_supported: ['header'], resource_name: 'TappyAI MCP' })
+    for (const s of m.scopes_supported as string[]) expect(MCP_SCOPES as readonly string[]).not.toContain(s)
+  })
+  it('the path of the resource, for the RFC 9728 path-specific address; null when it is not https', () => {
+    expect(resourcePath({ MCP_RESOURCE_URL: AUD })).toBe('/api/mcp')
+    for (const v of [undefined, '', 'http://x.example/api/mcp', 'not a url']) expect(resourcePath({ MCP_RESOURCE_URL: v })).toBeNull()
   })
   it('is null (the route 404s) when the resource or the authorization server is not configured or not https', () => {
     expect(protectedResourceMetadata({})).toBeNull()
