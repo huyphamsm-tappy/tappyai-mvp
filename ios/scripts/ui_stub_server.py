@@ -374,7 +374,11 @@ class Handler(BaseHTTPRequestHandler):
                     deal(4, "Grab", "Vận chuyển", "transport", "Đặt xe, giao đồ ăn & giao hàng", "https://www.grab.com/vn/"),
                     deal(5, "Be", "Vận chuyển", "transport", "Ứng dụng gọi xe & giao hàng Việt", "https://be.com.vn"),
                     deal(6, "Agoda", "Du lịch", "travel", "Đặt khách sạn & vé máy bay giá tốt", "https://www.agoda.com/vi-vn"),
-                    deal(7, "Booking.com", "Du lịch", "travel", "Đặt phòng & chỗ nghỉ khắp thế giới", "https://www.booking.com")]})
+                    deal(7, "Booking.com", "Du lịch", "travel", "Đặt phòng & chỗ nghỉ khắp thế giới", "https://www.booking.com"),
+                    # 23/11: the page draws only Accesstrade, Lazada, Agoda and Vexere (the web's rule, owner 20/11/2026), so the two partners
+                    # that were missing from this fixture are here, and the other rows prove the filter.
+                    deal(8, "Lazada", "Mua sắm", "shopping", "Mua sắm online, giao hàng tận nơi", "https://www.lazada.vn"),
+                    deal(9, "Vexere", "Vận chuyển", "transport", "Đặt vé xe khách trên Vexere", "https://vexere.com")]})
             # The audit DB has no deals either: the page must still show the ask-Tappy card.
             return self._send(200, {"deals": []})
         return self._send(200, {})

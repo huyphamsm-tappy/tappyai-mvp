@@ -353,7 +353,10 @@ final class ScreenshotTests: XCTestCase {
         setStub(["deals": "on"])
         let app = launch(route: "deals", extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "deals-ask-tappy").waitForExistence(timeout: 40))
-        XCTAssertTrue(app.staticTexts["Sàn mua sắm online — mọi thứ bạn cần"].waitForExistence(timeout: 20), "the subtitle, not the name twice")
+        // The page draws only Accesstrade, Lazada, Agoda and Vexere (the web's rule, owner 20/11/2026): Agoda's subtitle is there, Shopee's is not.
+        XCTAssertTrue(app.staticTexts["Đặt khách sạn & vé máy bay giá tốt"].waitForExistence(timeout: 20), "the subtitle, not the name twice")
+        XCTAssertTrue(app.staticTexts["Mua sắm online, giao hàng tận nơi"].exists, "Lazada is one of the four")
+        XCTAssertFalse(app.staticTexts["Sàn mua sắm online — mọi thứ bạn cần"].exists, "Shopee is not one of the four, so it is not drawn")
         shot("74-deals-prod-shaped")
         setStub(["deals": "off"])
     }
