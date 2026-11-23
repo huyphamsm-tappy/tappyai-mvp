@@ -33,7 +33,8 @@ struct LenientStayOffer: Codable, Equatable, Sendable {
             guard let n = (try? c.decodeIfPresent(Int.self, forKey: k)) ?? nil, (1...30).contains(n) else { return nil }
             return n
         }
-        guard let amount = number(.amount), amount.isFinite, amount > 0,
+        // A price is finite, positive and below a trillion: a number beyond that is not a hotel price, and `Int(Double)` traps on a huge one.
+        guard let amount = number(.amount), amount.isFinite, amount > 0, amount <= StayOfferLine.maxAmount,
               let currency = string(.currency), currency == "VND" || currency == "USD",
               let unit = string(.unit), unit == "per_night" || unit == "total",
               let platform = string(.platform)?.trimmingCharacters(in: .whitespacesAndNewlines), !platform.isEmpty,
@@ -57,6 +58,9 @@ struct LenientStayOffer: Codable, Equatable, Sendable {
 }
 
 enum StayOfferLine {
+    /// The largest price the line will state (a trillion): an offer above it is no offer.
+    static let maxAmount = 1e12
+
     /// The one reference-price line ("Giá tham khảo: 1.200.000đ/đêm cho 2 người, chưa gồm thuế và phí; Agoda kiểm tra lúc 09:30 ngày 20/11/2026. ..."),
     /// or nil when the time of the check cannot be read. `lang` is `vi` or `en`.
     static func text(_ o: LiveStayOffer, lang: String) -> String? {
@@ -74,6 +78,8 @@ enum StayOfferLine {
 
     /// "1.200.000đ" (vi) or "1,200,000 VND" (en); a USD price is "120 USD". Never a computed figure: the amount is the provider's.
     static func money(_ o: LiveStayOffer, lang: String) -> String {
+        // Out of range (never from the decoder, which caps it): shown without an integer conversion, which would trap.
+        guard o.amount.isFinite, o.amount <= maxAmount else { return String(format: "%.0f", o.amount) + (o.currency == "USD" ? " USD" : "") }
         if o.currency == "USD" {
             return (o.amount == o.amount.rounded() ? String(Int(o.amount)) : String(o.amount)) + " USD"
         }

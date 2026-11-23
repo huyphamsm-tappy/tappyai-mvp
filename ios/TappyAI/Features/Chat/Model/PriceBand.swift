@@ -35,7 +35,15 @@ enum PriceBand {
         return (1..<m.numberOfRanges).map { i in Range(m.range(at: i), in: text).map { String(text[$0]) } }
     }
 
+    /// The largest bound a band may state (ten trillion đồng): a provider text beyond it is shown verbatim, and no integer conversion can trap.
+    static let maxBound = 1e13
+
     static func parse(_ text: String?) -> Band? {
+        guard let band = parseUnchecked(text), band.lo <= maxBound, band.hi <= maxBound || band.hi == .infinity else { return nil }
+        return band
+    }
+
+    private static func parseUnchecked(_ text: String?) -> Band? {
         guard let source = text?.trimmingCharacters(in: .whitespacesAndNewlines), !source.isEmpty else { return nil }
         if let g = groups(range, source), let a = g[0], let b = g[1] {
             let s = scale[(g[2] ?? "").lowercased()] ?? 1
@@ -59,6 +67,7 @@ enum PriceBand {
     /// "100.000" or "1,5 triệu": the way a Vietnamese reader writes an amount (`lang` is `vi` or `en`).
     static func vnd(_ n: Double, lang: String) -> String {
         let vi = lang == "vi"
+        guard n.isFinite, n <= maxBound else { return String(format: "%.0f", n.isFinite ? n : 0) }
         if n >= 1_000_000 {
             let m = n / 1_000_000
             var s = m == m.rounded() ? String(Int(m)) : String(format: "%.1f", m)
