@@ -59,6 +59,16 @@ export const PARSE_ERROR = Symbol('mcp_parse_error')
 export const PROTOCOL_VERSION = '2025-06-18'
 export const SERVER_NAME = 'tappyai_mcp'
 const INSTRUCTIONS = TAPPY_INSTRUCTIONS
+
+/** Who the server says it is. `icons`/`title`/`websiteUrl` are the MCP server-icon fields: a Host that supports them shows the Tappy otter logo; one that does not ignores them. The logo is the app's own public file, on the same origin as this gateway. */
+export function serverInfo(resourceUrl: string): Record<string, unknown> {
+  const base: Record<string, unknown> = { name: SERVER_NAME, title: 'TappyAI', version: '0.1.0-skeleton', websiteUrl: 'https://tappyai.com' }
+  try {
+    const u = new URL(resourceUrl)
+    if (u.protocol === 'https:' || u.hostname === 'localhost') base.icons = [{ src: `${u.origin}/branding/otter-logo.png`, mimeType: 'image/png', sizes: ['512x512'] }]
+  } catch { /* no usable origin: no icon */ }
+  return base
+}
 const DEFAULT_LIMIT = 5
 const JSON_HEADERS = { 'content-type': 'application/json' } as const
 
@@ -150,7 +160,7 @@ export async function handleMcpRequest(input: GatewayRequest, deps: GatewayDeps)
   if (!hasId) return { status: 202, headers: {}, body: null } // a notification gets no response
 
   switch (msg.method) {
-    case 'initialize': return ok(msg.id, { protocolVersion: PROTOCOL_VERSION, capabilities: { tools: { listChanged: false } }, serverInfo: { name: SERVER_NAME, version: '0.1.0-skeleton' }, instructions: INSTRUCTIONS })
+    case 'initialize': return ok(msg.id, { protocolVersion: PROTOCOL_VERSION, capabilities: { tools: { listChanged: false } }, serverInfo: serverInfo(deps.expectedAudience), instructions: INSTRUCTIONS })
     case 'ping': return ok(msg.id, {})
     case 'tools/list': return ok(msg.id, { tools: listTools() })
     case 'tools/call': return callTool(msg.id, msg.params, claims, input, deps, now)

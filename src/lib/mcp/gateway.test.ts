@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { handleMcpRequest, type GatewayDeps, type GatewayResponse } from './gateway'
+import { handleMcpRequest, serverInfo, type GatewayDeps, type GatewayResponse } from './gateway'
 import { createSpendPool } from './spendPool'
 import { createInMemoryJobStore, unavailableJobStore } from './jobs'
 import { createAbuseMonitor } from './abuseGuard'
@@ -54,6 +54,12 @@ describe('transport and protocol', () => {
     expect(JSON.stringify(res.capabilities)).not.toMatch(/tasks/)
     expect(res.serverInfo.name).toBe('tappyai_mcp')
     expect(res.instructions).toMatch(/Vietnam/)
+  })
+  it('the server presents itself with the Tappy name and its own public logo (same origin as the gateway)', async () => {
+    const res = result(await run(rpc('initialize', { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'x', version: '1' } }), mk().deps)) as any
+    expect(res.serverInfo).toMatchObject({ title: 'TappyAI', websiteUrl: 'https://tappyai.com', icons: [{ src: 'https://mcp.test/branding/otter-logo.png', mimeType: 'image/png' }] })
+    expect(serverInfo('not a url').icons).toBeUndefined()
+    expect(serverInfo('http://evil.example/api/mcp').icons).toBeUndefined() // plain http off localhost: no icon
   })
   it('ping returns an empty result; a notification gets 202 and no body', async () => {
     expect(result(await run(rpc('ping'), mk().deps))).toEqual({})
