@@ -78,6 +78,36 @@ final class ReaderLinksTests: XCTestCase {
         XCTAssertNil(p.publishedAt, "a date that does not read is no date")
     }
 
+    // MARK: A server that does not have the reader
+
+    private func result(_ handler: @escaping @Sendable (Endpoint) async throws -> Data) async throws -> LinkPreviewResult {
+        let service = LinkPreviewService(api: ChatTestAPI(handler: handler))
+        return await service.preview(of: try XCTUnwrap(URL(string: "https://vnexpress.net/a")))
+    }
+
+    func testAMissingRouteMeansTheLinkOpensWhereItAlwaysDid() async throws {
+        let r = try await result { _ in throw AppError.network(status: 404, code: nil) }
+        XCTAssertEqual(r, .unavailable, "an older server has no /api/link-preview: no sheet that can only say 'cannot read'")
+    }
+
+    func testAnyOtherFailureIsAnUnreadablePageNotAMissingRoute() async throws {
+        for failure in [AppError.network(status: 500, code: nil), AppError.network(status: 429, code: nil), AppError.offline] {
+            let r = try await result { _ in throw failure }
+            XCTAssertEqual(r, .page(LinkPreview()), "\(failure)")
+        }
+    }
+
+    func testTheRequestAsksForExactlyThePageTapped() async throws {
+        let api = ChatTestAPI { _ in Data(#"{"ok":true,"title":"T"}"#.utf8) }
+        let r = await LinkPreviewService(api: api).preview(of: try XCTUnwrap(URL(string: "https://vnexpress.net/a?x=1&y=2")))
+        guard case .page(let page) = r else { return XCTFail("a page") }
+        XCTAssertTrue(page.ok)
+        let sent = try XCTUnwrap(api.sentEndpoints.first)
+        XCTAssertEqual(sent.path, "/api/link-preview")
+        XCTAssertEqual(sent.query.first(where: { $0.name == "u" })?.value, "https://vnexpress.net/a?x=1&y=2")
+        XCTAssertFalse(sent.requiresAuth, "nothing of the person is sent")
+    }
+
     func testEveryStringTheSheetShowsHasACatalogEntry() {
         for key in ["chat.link.kind", "chat.link.loading", "chat.link.open", "chat.link.unreadable", "chat.link.note", "chat.link.published"] {
             XCTAssertNotEqual(NSLocalizedString(key, comment: ""), key, key)

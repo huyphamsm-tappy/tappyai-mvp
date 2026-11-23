@@ -64,13 +64,29 @@ struct LinkPreview: Equatable, Sendable {
     }
 }
 
+/// What asking for a preview came to.
+enum LinkPreviewResult: Equatable, Sendable {
+    /// The server answered (a readable page, or one it cannot read: both are an answer).
+    case page(LinkPreview)
+    /// The server has no such route (404: an older server). The link then opens where it always did, without a sheet in between.
+    case unavailable
+}
+
 struct LinkPreviewService: Sendable {
     let api: APIClient
 
-    /// The preview of `url`, or an unreadable one on any failure (never throws): the sheet shows the address and the original page's button.
-    func preview(of url: URL) async -> LinkPreview {
+    /// The preview of `url`. Any failure other than a missing route is an unreadable page (never throws): the sheet shows the address and the
+    /// original page's button, as the web does. A missing route (404) is `unavailable`, so a server without the reader never puts a sheet that can
+    /// only say "cannot read" between the person and the page.
+    func preview(of url: URL) async -> LinkPreviewResult {
         let endpoint = Endpoint(path: "/api/link-preview", method: .get, query: [URLQueryItem(name: "u", value: url.absoluteString)], requiresAuth: false)
-        guard let data = try? await api.send(endpoint) else { return LinkPreview() }
-        return LinkPreview.read(data)
+        do {
+            return .page(LinkPreview.read(try await api.send(endpoint)))
+        } catch let error as AppError {
+            if case .network(status: 404, _) = error { return .unavailable }
+            return .page(LinkPreview())
+        } catch {
+            return .page(LinkPreview())
+        }
     }
 }

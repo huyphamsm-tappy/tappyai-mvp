@@ -86,7 +86,14 @@ struct LinkReaderSheet: View {
             }
         }
         .task {
-            preview = await LinkPreviewService(api: DIContainer.shared.resolve(APIClient.self)).preview(of: target.url)
+            switch await LinkPreviewService(api: DIContainer.shared.resolve(APIClient.self)).preview(of: target.url) {
+            case .page(let page):
+                preview = page
+            case .unavailable:
+                // An older server has no reader: open the page itself, as a link always did.
+                UIApplication.shared.open(target.url)
+                dismiss()
+            }
         }
         .accessibilityIdentifier("link-reader")
     }
