@@ -91,7 +91,8 @@ struct LinkReaderSheet: View {
                 preview = page
             case .unavailable:
                 // An older server has no reader: open the page itself, as a link always did.
-                UIApplication.shared.open(target.url)
+                // The completion-handler form: in an async context the plain call resolves to the async overload, which needs an await.
+                UIApplication.shared.open(target.url, options: [:], completionHandler: nil)
                 dismiss()
             }
         }
