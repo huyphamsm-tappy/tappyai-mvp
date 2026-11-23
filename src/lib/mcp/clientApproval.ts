@@ -12,7 +12,8 @@ export type RedirectRules = Readonly<Partial<Record<HostPlatform, HostRedirectRu
 
 export const DEFAULT_REDIRECT_RULES: RedirectRules = Object.freeze({
   claude: { exact: ['https://claude.ai/api/mcp/auth_callback', 'https://claude.com/api/mcp/auth_callback'] },
-  chatgpt: { exact: ['https://chatgpt.com/connector_platform_oauth_redirect', 'https://platform.openai.com/apps-manage/oauth'] },
+  // SEEN ON A REAL REGISTRATION (23/11/2026): ChatGPT registers "https://chatgpt.com/connector/oauth/<random id per connector>", so it is matched by prefix. The two exact URIs are older / platform forms, not seen yet.
+  chatgpt: { exact: ['https://chatgpt.com/connector_platform_oauth_redirect', 'https://platform.openai.com/apps-manage/oauth'], prefix: ['https://chatgpt.com/connector/oauth/'] },
   cursor: { prefix: ['cursor://anysphere.cursor-mcp/'] },
 })
 

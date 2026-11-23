@@ -10,12 +10,14 @@ describe('which Host a client is, by where it redirects', () => {
     expect(hostForRedirects(['https://claude.ai/api/mcp/auth_callback'])).toBe('claude')
     expect(hostForRedirects(['https://claude.ai/api/mcp/auth_callback', 'https://claude.com/api/mcp/auth_callback'])).toBe('claude')
     expect(hostForRedirects(['https://chatgpt.com/connector_platform_oauth_redirect'])).toBe('chatgpt')
+    expect(hostForRedirects(['https://chatgpt.com/connector/oauth/OhSOCbKrr4gZ'])).toBe('chatgpt') // the address ChatGPT really registered on 23/11/2026
     expect(hostForRedirects(['cursor://anysphere.cursor-mcp/oauth/callback'])).toBe('cursor')
   })
   it('anything else is NOT approved: another site, a look-alike host, a mix of Hosts, localhost, wrong scheme, none, too many, junk', () => {
     const no: unknown[] = [
       ['https://evil.example/cb'], ['https://claude.ai.evil.example/api/mcp/auth_callback'], ['https://evil.example/https://claude.ai/api/mcp/auth_callback'],
       ['https://claude.ai/api/mcp/auth_callback', 'https://evil.example/cb'], ['https://claude.ai/api/mcp/auth_callback', 'https://chatgpt.com/connector_platform_oauth_redirect'],
+      ['https://chatgpt.com/connector/oauth/'], ['https://chatgpt.com.evil.example/connector/oauth/abc'], ['http://chatgpt.com/connector/oauth/abc'], ['https://chatgpt.com/connector/oauthx/abc'], ['https://evil.example/connector/oauth/abc'],
       ['http://localhost:8788/cb'], ['http://claude.ai/api/mcp/auth_callback'], ['https://claude.ai/api/mcp/auth_callback/extra'], ['cursor://anysphere.cursor-mcp/'], ['cursor://evil/oauth/callback'],
       [], 'https://claude.ai/api/mcp/auth_callback', null, undefined, [5], [''], ['https://claude.ai/api/mcp/auth_callback ' + 'x'], Array.from({ length: 6 }, () => 'https://claude.ai/api/mcp/auth_callback'),
     ]
