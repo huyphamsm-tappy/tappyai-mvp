@@ -36,6 +36,17 @@ describe('which Host a client is, by where it redirects', () => {
   })
 })
 
+describe('loopback redirects (a client installed on the person\'s own machine) are OFF by default and ON only for the Host the owner names', () => {
+  const LOOP = ['http://localhost:54321/callback']
+  it('off by default for every Host', () => { expect(hostForRedirects(LOOP)).toBeNull(); expect(hostForRedirects(['http://127.0.0.1:5555/cb'])).toBeNull() })
+  it('MCP_REDIRECT_RULES can switch it on for one Host; only a real loopback URL with a port counts', () => {
+    const rules = parseRedirectRules(JSON.stringify({ claude: { exact: ['https://claude.ai/api/mcp/auth_callback'], loopback: true } }))
+    for (const ok of [LOOP, ['http://127.0.0.1:5555/cb'], ['http://[::1]:7000/x'], [...LOOP, 'https://claude.ai/api/mcp/auth_callback']]) expect(hostForRedirects(ok, rules), JSON.stringify(ok)).toBe('claude')
+    for (const no of [['http://localhost/cb'], ['https://localhost:5555/cb'], ['http://localhost.evil.example:5555/cb'], ['http://user:pw@localhost:5555/cb'], ['http://evil.example:5555/cb'], ['http://localhost:5555/cb', 'https://evil.example/cb']]) expect(hostForRedirects(no, rules), JSON.stringify(no)).toBeNull()
+    expect(hostForRedirects(LOOP, parseRedirectRules(JSON.stringify({ claude: { exact: [], loopback: 'yes' } })))).toBeNull() // only the boolean true
+  })
+})
+
 describe('the resolver', () => {
   it('approves a registered Host client, caches it, and refuses non-UUID ids before any lookup', async () => {
     const lookup = vi.fn(async () => ({ redirect_uris: ['https://claude.ai/api/mcp/auth_callback'] }))

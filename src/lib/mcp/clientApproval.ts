@@ -7,7 +7,8 @@
 // (read the client list at Supabase after the first connection). MCP_REDIRECT_RULES (JSON) replaces the rules of a Host; MCP_OAUTH_CLIENTS still approves a client_id by hand.
 import { HOST_PLATFORMS, type HostPlatform } from './connectorContract'
 
-export interface HostRedirectRule { exact?: readonly string[]; prefix?: readonly string[] }
+/** `loopback`: also accept http://localhost:<port>/... (a client installed on the person's own machine, e.g. Claude Code). OFF by default: only MCP_REDIRECT_RULES can turn it on, per Host. */
+export interface HostRedirectRule { exact?: readonly string[]; prefix?: readonly string[]; loopback?: boolean }
 export type RedirectRules = Readonly<Partial<Record<HostPlatform, HostRedirectRule>>>
 
 export const DEFAULT_REDIRECT_RULES: RedirectRules = Object.freeze({
@@ -31,14 +32,20 @@ export function parseRedirectRules(raw: string | undefined, base: RedirectRules 
     for (const [h, v] of Object.entries(j as Record<string, unknown>)) {
       if (!(HOST_PLATFORMS as readonly string[]).includes(h) || !v || typeof v !== 'object') continue
       const exact = strs((v as { exact?: unknown }).exact), prefix = strs((v as { prefix?: unknown }).prefix)
-      out[h as HostPlatform] = { exact, prefix }
+      out[h as HostPlatform] = { exact, prefix, ...((v as { loopback?: unknown }).loopback === true ? { loopback: true } : {}) }
     }
     return out
   } catch { return base }
 }
 
+/** http://localhost:<port>/..., http://127.0.0.1:<port>/... or http://[::1]:<port>/... with no credentials: the "native app" redirect (RFC 8252) of a client installed on the person's own machine. */
+function isLoopbackRedirect(uri: string): boolean {
+  try { const u = new URL(uri); return u.protocol === 'http:' && !u.username && !u.password && ['localhost', '127.0.0.1', '[::1]'].includes(u.hostname) && u.port !== '' }
+  catch { return false }
+}
+
 const matches = (uri: string, rule: HostRedirectRule | undefined): boolean =>
-  !!rule && ((rule.exact ?? []).includes(uri) || (rule.prefix ?? []).some(p => p.endsWith('/') && uri.startsWith(p) && uri.length > p.length))
+  !!rule && ((rule.exact ?? []).includes(uri) || (rule.prefix ?? []).some(p => p.endsWith('/') && uri.startsWith(p) && uri.length > p.length) || (rule.loopback === true && isLoopbackRedirect(uri)))
 
 /** The Host a client is, or null. EVERY redirect URI must belong to ONE Host's rules; no URI, too many, a non-string, an over-long one, or a mix of Hosts all mean null. Pure. */
 export function hostForRedirects(uris: unknown, rules: RedirectRules = DEFAULT_REDIRECT_RULES): HostPlatform | null {

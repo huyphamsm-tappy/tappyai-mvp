@@ -74,15 +74,20 @@ const inVietnam = (lat: number, lng: number): boolean => lat >= 8.0 && lat <= 23
 
 interface Ctx { marketId: string | null; source: 'explicit_coordinates' | 'explicit_location' | 'service_default' | 'none'; precision: 'coordinates' | 'text' | 'none'; userNamed: boolean }
 
-/** The market of a call from what the person gave in THIS call: coordinates, else a named Vietnamese place. A Host's IP is not an input, and no Home Market is guessed. Pure. */
+/**
+ * The market of a call from what the person gave in THIS call. A Vietnamese destination the person NAMED wins over coordinates: the coordinates describe where the person is, and the connector's own
+ * instructions say a named destination in Vietnam is enough even when the person is elsewhere. Found live (23/11/2026) with an OpenAI model: it sent latitude 0 / longitude 0 (a model's placeholder
+ * for "unknown") next to location_query "Đà Lạt", and the call was refused as MARKET_UNSUPPORTED. So (0, 0) is never a position, and a named Vietnamese place is checked first.
+ * Then coordinates; else nothing. A Host's IP is not an input, and no Home Market is guessed. Pure.
+ */
 function resolveContext(args: Record<string, unknown>, needsLocation: boolean): Ctx {
-  const loc = connectorLocation({ explicit: { lat: args.latitude, lng: args.longitude } })
-  if (loc.kind === 'explicit') return { marketId: inVietnam(loc.lat, loc.lng) ? 'vn' : 'xx', source: 'explicit_coordinates', precision: 'coordinates', userNamed: true }
   const text = typeof args.location_query === 'string' ? args.location_query : typeof args.destination === 'string' ? args.destination : ''
-  if (text) {
-    const city = cityForName(text) ?? cityInText(text)
-    return { marketId: city ? 'vn' : null, source: 'explicit_location', precision: 'text', userNamed: true }
-  }
+  const city = text ? (cityForName(text) ?? cityInText(text)) : null
+  if (city) return { marketId: 'vn', source: 'explicit_location', precision: 'text', userNamed: true }
+  const nullIsland = args.latitude === 0 && args.longitude === 0
+  const loc = nullIsland ? { kind: 'none' as const } : connectorLocation({ explicit: { lat: args.latitude, lng: args.longitude } })
+  if (loc.kind === 'explicit') return { marketId: inVietnam(loc.lat, loc.lng) ? 'vn' : 'xx', source: 'explicit_coordinates', precision: 'coordinates', userNamed: true }
+  if (text) return { marketId: null, source: 'explicit_location', precision: 'text', userNamed: true }
   return needsLocation ? { marketId: null, source: 'none', precision: 'none', userNamed: false } : { marketId: 'vn', source: 'service_default', precision: 'none', userNamed: false }
 }
 

@@ -180,6 +180,19 @@ describe('search tools: validation, context, market, shaping', () => {
     expect(errCode(await run(call('search_places', { query: 'pho', location_query: 'Paris' }), deps))).toBe('SUPPORTED_MARKET_REQUIRED')
     expect(placesAdapter).not.toHaveBeenCalled()
   })
+  it('(0,0) is "no position", not a place: a named Vietnamese city still resolves (what OpenAI sent), and (0,0) alone is SUPPORTED_MARKET_REQUIRED', async () => {
+    const { deps, placesAdapter } = mk()
+    expect((await run(call('search_places', { query: 'pho', latitude: 0, longitude: 0, location_query: 'Đà Lạt, Vietnam' }), deps)).status).toBe(200)
+    expect(placesAdapter).toHaveBeenCalledTimes(1)
+    expect(errCode(await run(call('search_places', { query: 'pho', latitude: 0, longitude: 0 }), deps))).toBe('SUPPORTED_MARKET_REQUIRED')
+  })
+  it('a named Vietnamese city wins over coordinates outside Vietnam; coordinates alone still decide', async () => {
+    const { deps, placesAdapter } = mk()
+    expect((await run(call('search_places', { query: 'pho', ...PARIS, location_query: 'Hội An' }), deps)).status).toBe(200)
+    expect(placesAdapter).toHaveBeenCalledTimes(1)
+    expect(errCode(await run(call('search_places', { query: 'pho', ...PARIS }), deps))).toBe('MARKET_UNSUPPORTED')
+    expect((await run(call('search_places', { query: 'pho', ...HCMC }), deps)).status).toBe(200)
+  })
   it('a known Vietnamese destination in text resolves the market; shopping needs no location', async () => {
     const { deps } = mk()
     const r = await run(call('search_places', { query: 'pho', location_query: 'Hội An' }), deps)
