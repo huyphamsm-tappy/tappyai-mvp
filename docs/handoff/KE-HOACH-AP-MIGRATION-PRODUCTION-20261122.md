@@ -19,7 +19,7 @@ Production là bản chắp vá: một phần tháng 10 và đầu tháng 11 đ�
 | Tháng 9–10 (sau kiểm khói) | H1 20260927 và M1 20260928 (cả hai còn MỞ), 20260928b, 20260928c, 20260930, 20260930b |
 | Thanh toán / gói | **20261016_p7_pip_one_time, 20261017_p7_pip_trial_any_source, 20261203_payments_no_refund** (cần cho SePay) |
 | Tháng 11 | video 20261111–20261117 (5+2 bản), 20261118 ghim/lưu trữ, 20261119 dự án chat, 20261120 TVI, 20261201 Scam Shield, 20261202 xác nhận 18+ |
-| Nhóm ăn / kiểm duyệt | 20261204, 20261205, 20261206, 20261207, 20261208 |
+| Nhóm ăn / kiểm duyệt | 20261204, 20261205, 20261206, 20261207, 20261208, **20261209_authority_takedowns (MỚI 25/11: sổ yêu cầu gỡ bài, APPLY, chưa diễn tập trên bản sao; có bản gỡ)** |
 
 **Chưa kiểm được (cần thêm một lần dò trước khi áp):** 20261019_ai_data_consent_client_acl, 20261102_plans_promax, 20261107_chat_hardening, 20261112–20261116 (phụ thuộc 20261111, chắc chắn chưa có vì video_assets chưa có).
 
