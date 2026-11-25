@@ -96,6 +96,22 @@
     {
       "path": "/api/cron/business-order-expiry",
       "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/cron/takedown-clock?run=1",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/takedown-clock?run=2",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/takedown-clock?run=3",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/takedown-clock?run=4",
+      "schedule": "0 18 * * *"
     }
   ]
 }

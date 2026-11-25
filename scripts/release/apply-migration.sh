@@ -145,6 +145,9 @@ policy_of() {
     # Hiding a comment (owner 21/11/2026): the post owner hides a comment; enough different reporters hide it until a moderator looks. Needs 20260928c (comment read boundary) and 20261001b/d (reports + queue). Rollback in supabase/migrations/rollback/.
     20261208_comment_hiding.sql)
       echo APPLY ;;
+    # Authority takedown register (owner 25/11/2026): one service-role-only table + a no-delete trigger; nothing uses it until the admin takedown routes run behind MODERATION_ADMIN_ENABLED. Rollback in supabase/migrations/rollback/.
+    20261209_authority_takedowns.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
