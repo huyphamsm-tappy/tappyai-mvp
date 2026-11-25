@@ -123,9 +123,11 @@ struct ScamRecommendedAction: Decodable, Identifiable {
     let priority: String
     let labelVi: String
     let labelEn: String
+    /// The action code (`INCONCLUSIVE`, …). Optional: an older server may not send it.
+    let action: String?
 
     enum CodingKeys: String, CodingKey {
-        case priority
+        case priority, action
         case labelVi = "label_vi"
         case labelEn = "label_en"
     }

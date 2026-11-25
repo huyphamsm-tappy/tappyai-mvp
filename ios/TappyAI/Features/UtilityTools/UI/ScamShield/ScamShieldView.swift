@@ -279,13 +279,25 @@ struct ScamShieldView: View {
                         systemImage: "checkmark.seal.fill"
                     )
                     .font(TappyFont.caption)
+                    // The official hotline, tappable (web `ScamShieldResult.tsx:211-217`).
+                    if let hotline = entity.hotline, !hotline.isEmpty,
+                       let tel = URL(string: "tel:" + hotline.filter { !$0.isWhitespace }) {
+                        Link(destination: tel) {
+                            Label(hotline, systemImage: "phone.fill").font(TappyFont.caption)
+                        }
+                    }
                 }
 
-                if !result.actions.isEmpty {
+                // Web `ScamShieldResult.tsx:279`: for an «unrecognised» verdict the INCONCLUSIVE action text IS the body
+                // above, so it is not repeated as a bullet.
+                let shownActions = result.verdict == .unrecognized
+                    ? result.actions.filter { $0.action != "INCONCLUSIVE" }
+                    : result.actions
+                if !shownActions.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
                         // Advice comes from the backend, already written for a human in the user's
                         // language. The phone does not invent recommendations of its own.
-                        ForEach(result.actions) { action in
+                        ForEach(shownActions) { action in
                             Text("• " + action.label(vietnamese: Self.isVietnamese))
                                 .font(TappyFont.body)
                                 .fontWeight(action.isPrimary ? .semibold : .regular)

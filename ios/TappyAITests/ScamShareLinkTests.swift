@@ -31,6 +31,12 @@ final class ScamShareLinkTests: XCTestCase {
         XCTAssertEqual(body["locale"], "vi")
     }
 
+    func testAnActionKeepsItsCodeSoTheInconclusiveOneCanBeHidden() throws {
+        let json = #"[{"priority":"primary","action":"INCONCLUSIVE","label_vi":"a","label_en":"b"},{"priority":"secondary","label_vi":"c","label_en":"d"}]"#
+        let actions = try ResponseDecoder.json.decode([ScamRecommendedAction].self, from: Data(json.utf8))
+        XCTAssertEqual(actions.map(\.action), ["INCONCLUSIVE", nil])
+    }
+
     func testTheFlagIsReadFromConfig() throws {
         let flags = try JSONDecoder().decode(AppConfig.Flags.self, from: Data(#"{"showProUpgrade":false,"publicShare":true}"#.utf8))
         XCTAssertEqual(flags.publicShare, true)
