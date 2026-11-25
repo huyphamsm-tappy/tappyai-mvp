@@ -65,6 +65,29 @@ export function paymentMailContent(m: PaymentMail): { subject: string; text: str
   return { subject, text: lines.join('\n\n'), html: lines.map((l) => `<p>${esc(l)}</p>`).join('') }
 }
 
+/**
+ * Keep-alive for the Brevo key (owner 25/11/2026): Brevo disables an API key that sees no call for 90 days, and payment
+ * mails are only sent when someone pays. One read-only call to the account endpoint (no mail, no cost) counts as use.
+ * Called by the daily subscriptions-expire cron. Never throws; key unset ⇒ 'skipped'; a non-2xx (e.g. 401 = key disabled) ⇒ 'failed'.
+ */
+export async function pingBrevo(
+  env: NodeJS.ProcessEnv = process.env,
+  fetchImpl: typeof fetch = fetch,
+): Promise<'ok' | 'skipped' | 'failed'> {
+  const apiKey = env.BREVO_API_KEY?.trim()
+  if (!apiKey) return 'skipped'
+  try {
+    const res = await fetchImpl('https://api.brevo.com/v3/account', {
+      method: 'GET',
+      headers: { 'api-key': apiKey, accept: 'application/json' },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    })
+    return res.ok ? 'ok' : 'failed'
+  } catch {
+    return 'failed'
+  }
+}
+
 export async function sendPaymentMail(
   m: PaymentMail,
   env: NodeJS.ProcessEnv = process.env,

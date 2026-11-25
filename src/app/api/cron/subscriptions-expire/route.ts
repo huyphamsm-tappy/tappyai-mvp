@@ -9,6 +9,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
+import { pingBrevo } from '@/lib/payments/mail'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
@@ -18,6 +19,8 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   if (!subscriptionsEnabled()) return NextResponse.json({ ok: true, skipped: 'flag_off' })
+  // Keeps the Brevo key from being disabled for inactivity (see pingBrevo). Its result never changes the response.
+  if ((await pingBrevo()) === 'failed') console.error('[subscriptions-expire] brevo key check failed')
   const { data, error } = await createAdminClient().rpc('p8_subscriptions_expire')
   if (error) {
     console.error('[subscriptions-expire] failed:', error.code)
