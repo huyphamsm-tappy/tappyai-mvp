@@ -12,9 +12,8 @@ enum HistoryFilter {
     /// server's order (newest first) is kept inside each group.
     static func visible(_ items: [ChatHistoryItem], segment: HistorySegment, query: String) -> [ChatHistoryItem] {
         let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        let matched = needle.isEmpty ? items : items.filter {
-            $0.title.range(of: needle, options: [.caseInsensitive, .diacriticInsensitive]) != nil
-        }
+        let folded = fold(needle)
+        let matched = needle.isEmpty ? items : items.filter { fold($0.title).contains(folded) }
         switch segment {
         case .all:
             let live = matched.filter { !$0.isArchived }
@@ -24,6 +23,14 @@ enum HistoryFilter {
         case .archived:
             return matched.filter(\.isArchived)
         }
+    }
+
+    /// Lowercase and without accents. `đ` is a letter of its own, not a `d` with a mark, so the
+    /// system's diacritic folding leaves it alone; Vietnamese people type "da nang" for "Đà Nẵng".
+    static func fold(_ s: String) -> String {
+        s.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+            .replacingOccurrences(of: "đ", with: "d")
+            .replacingOccurrences(of: "Đ", with: "d")
     }
 
     /// The cursor for the next, older page: the `updated_at` of the last row held. Nil when the last
