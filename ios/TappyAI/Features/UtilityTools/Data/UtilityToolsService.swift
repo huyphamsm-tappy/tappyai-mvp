@@ -128,4 +128,32 @@ final class UtilityToolsService: Sendable {
                                 requiresAuth: true, timeout: 20)
         return try await api.send(endpoint, as: ScamCheckResult.self)
     }
+
+    /// `POST /api/scam-shield/share { url, locale }` → a public result page (`/r/<slug>`) so the
+    /// person can warn the group a suspicious link came from. The address is rebuilt from the
+    /// returned `path` on our own origin and only if it is a plain `/r/<slug>`; nothing else the
+    /// server sends is opened or shared.
+    func shareScamResult(url: String, locale: String) async throws -> URL {
+        let body = try JSONSerialization.data(withJSONObject: ["url": url, "locale": locale == "en" ? "en" : "vi"])
+        let endpoint = Endpoint(path: "/api/scam-shield/share", method: .post, body: body, requiresAuth: true, timeout: 20)
+        let response = try await api.send(endpoint, as: ScamShareResponse.self)
+        guard let link = Self.sharedResultURL(path: response.path) else { throw AppError.unexpected(message: "bad share path") }
+        return link
+    }
+
+    static func sharedResultURL(path: String?) -> URL? {
+        guard let path, path.hasPrefix("/r/"), DeepLinkHandler.isSafeId(String(path.dropFirst(3))) else { return nil }
+        return URL(string: TappyShare.canonicalOrigin + path)
+    }
+}
+
+struct ScamShareResponse: Decodable, Sendable {
+    let path: String?
+
+    enum CodingKeys: String, CodingKey { case path }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        path = c.lenient(String.self, forKey: .path)
+    }
 }

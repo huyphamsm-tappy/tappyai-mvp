@@ -15,6 +15,13 @@ struct ScamShieldView: View {
     @State private var evidenceOpen = false
     @State private var section: Pane = .check
     @State private var confirmOpenLink: URL?
+    /// The result-page link feature is shown only while the server's `flags.publicShare` is on.
+    @State private var publicShare = false
+    @State private var sharedLink: URL?
+    @State private var creatingLink = false
+    @State private var linkFailed = false
+    private let deps: AppDependencies
+    private let service: UtilityToolsService
     private let knowledge = ScamKnowledge.load()
 
     private enum Pane { case check, message, qr, library }
@@ -23,6 +30,8 @@ struct ScamShieldView: View {
 
     init(deps: AppDependencies) {
         let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
+        self.deps = deps
+        self.service = service
         _vm = AppStateObject(wrappedValue: ScamShieldViewModel(service: service))
     }
 
@@ -186,6 +195,40 @@ struct ScamShieldView: View {
                 Label { Text("scam.share") } icon: { Image(systemName: "square.and.arrow.up") }.font(TappyFont.callout.weight(.semibold))
             }
             .accessibilityIdentifier("scam-link-share")
+
+            if publicShare {
+                // A public page of this verdict (web `/r/<slug>`), to warn the group the link came from.
+                if let sharedLink {
+                    ShareLink(item: sharedLink) {
+                        Label { Text("scam.shareLink.send") } icon: { Image(systemName: "link") }.font(TappyFont.callout.weight(.semibold))
+                    }
+                    .accessibilityIdentifier("scam-result-link-send")
+                } else {
+                    Button {
+                        Task { await createLink(result) }
+                    } label: {
+                        Label { Text("scam.shareLink.create") } icon: { Image(systemName: "link.badge.plus") }.font(TappyFont.callout.weight(.semibold))
+                    }
+                    .disabled(creatingLink)
+                    .accessibilityIdentifier("scam-result-link-create")
+                    if linkFailed {
+                        Text("scam.shareLink.failed").font(TappyFont.caption).foregroundStyle(TappyColor.danger)
+                    }
+                }
+            }
+        }
+        .task { publicShare = (try? await deps.configService.config())?.flags.publicShare == true }
+    }
+
+    private func createLink(_ result: ScamCheckResult) async {
+        creatingLink = true
+        linkFailed = false
+        defer { creatingLink = false }
+        do {
+            let lang = Locale.current.language.languageCode?.identifier ?? "vi"
+            sharedLink = try await service.shareScamResult(url: result.url, locale: lang)
+        } catch {
+            linkFailed = true
         }
     }
 

@@ -76,6 +76,9 @@ struct AppConfig: Decodable, Sendable {
         /// Sign in with Apple. No server sends it yet (neither rc/web-uat nor main); absent = the
         /// button stays hidden. See `AppleSignIn.isEnabled`.
         let appleSignIn: Bool?
+        /// Public result pages (`/r/<slug>`) — mirrors Web `publicShareEnabled()`. Absent = off:
+        /// the share-a-result-link button stays hidden.
+        let publicShare: Bool?
     }
 
     struct Upload: Decodable, Sendable {

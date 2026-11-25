@@ -12846,6 +12846,24 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Chưa đặt được ảnh. Hãy chọn ảnh dưới 3 MB và thử lại." } }
       }
     },
+    "scam.shareLink.create": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Create a link to this result" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tạo link kết quả để chia sẻ" } }
+      }
+    },
+    "scam.shareLink.send": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Send the result link" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gửi link kết quả" } }
+      }
+    },
+    "scam.shareLink.failed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Could not create the link. Please try again." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa tạo được link. Bạn thử lại nhé." } }
+      }
+    },
     "likers.title": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Likes" } },
