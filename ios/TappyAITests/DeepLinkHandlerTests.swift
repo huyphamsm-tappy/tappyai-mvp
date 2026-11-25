@@ -43,6 +43,17 @@ final class DeepLinkHandlerTests: XCTestCase {
         XCTAssertEqual(handler.target(for: "/copyright"), .copyrightPolicy)
     }
 
+    func testSharedResultAndPlanLinksOpenTheirPage() {
+        XCTAssertEqual(handler.target(for: "/r/abc-123"), .webPage(path: "/r/abc-123"))
+        XCTAssertEqual(handler.target(for: "https://www.tappyai.com/plan/p_9?utm=x"), .webPage(path: "/plan/p_9"))
+        XCTAssertEqual(handler.target(for: "tappyai://scam-shield/xyz"), .webPage(path: "/scam-shield/xyz"))
+    }
+
+    func testSharedPageLinkWithAnUnsafeIdResolvesToNothing() {
+        XCTAssertNil(handler.target(for: "/r/..%2Fadmin"))
+        XCTAssertNil(handler.target(forPath: "/plan/a b"))
+    }
+
     func testTabLinkStillWinsWhenThereIsNoID() {
         // The prefix match must still apply where there is nothing more specific to match.
         XCTAssertEqual(handler.target(for: "/reviews"), .tab(.explore))

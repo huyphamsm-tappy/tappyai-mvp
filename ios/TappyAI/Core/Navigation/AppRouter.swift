@@ -103,6 +103,10 @@ final class AppRouter: AppObservableObject {
             // Music is hidden everywhere (copyright), so the native music-policy screen is no longer a
             // destination: the general policy is the web page, the same one Settings opens.
             if let url = URL(string: TappyShare.canonicalOrigin + "/copyright") { UIApplication.shared.open(url) }
+
+        case .webPage(let path):
+            // A shared result/plan page of our own site; the path was rebuilt from a plain id by the parser.
+            if let url = URL(string: TappyShare.canonicalOrigin + path) { UIApplication.shared.open(url) }
         }
     }
 

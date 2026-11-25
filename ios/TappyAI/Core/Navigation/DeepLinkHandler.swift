@@ -26,6 +26,10 @@ enum DeepLinkTarget: Equatable {
     case groupCreate
     /// `/copyright` — the music copyright policy.
     case copyrightPolicy
+    /// `/r/{slug}` (a shared Scam Shield result), `/plan/{id}` (a shared travel plan) and
+    /// `/scam-shield/{slug}`: public pages the web renders. The app opens that page instead of
+    /// ignoring the link; `path` is rebuilt from a plain id only, never the raw input.
+    case webPage(path: String)
 }
 
 /// Parses inbound URLs (custom scheme `tappyai://…`, universal links, and push `data.url` paths)
@@ -87,6 +91,8 @@ struct DeepLinkHandler {
                 case "users": return .userProfile(id: id)
                 // `/group/new` is the CREATE screen, not a room with the id "new".
                 case "group": return id == "new" ? .groupCreate : .group(id: id)
+                case "r", "plan", "scam-shield":
+                    return Self.isSafeId(id) ? .webPage(path: "/" + segments[0] + "/" + id) : nil
                 default: break
                 }
             }
