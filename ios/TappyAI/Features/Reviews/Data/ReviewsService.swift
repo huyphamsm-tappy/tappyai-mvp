@@ -152,6 +152,17 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: LikeResponse.self)
     }
 
+    // MARK: - Who likes it
+
+    /// `GET /api/reviews/{id}/likes` — the people who like the post right now (public read: a name
+    /// and a picture only). `before` is the previous page's `next_cursor`.
+    func fetchLikers(reviewId: String, before: String? = nil) async throws -> LikersPage {
+        guard DeepLinkHandler.isSafeId(reviewId) else { throw AppError.validation(message: "invalid review id") }
+        let query = before.map { [URLQueryItem(name: "before", value: $0)] } ?? []
+        let endpoint = Endpoint(path: "/api/reviews/\(reviewId)/likes", query: query)
+        return try await api.send(endpoint, as: LikersPage.self)
+    }
+
     // MARK: - Save toggle
 
     func toggleSave(reviewId: String) async throws -> SaveResponse {

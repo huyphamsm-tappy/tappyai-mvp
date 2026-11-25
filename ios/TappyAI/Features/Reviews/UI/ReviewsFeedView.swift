@@ -14,6 +14,7 @@ struct ReviewsFeedView: View {
     @State private var soundPageTrackId: String?
     @ObservedObject private var safety: SafetyStore
     @State private var safetyTarget: SafetyTarget?
+    @State private var likersReviewId: StringIdentifiable?
 
     init(deps: AppDependencies, seed: ClipSeed? = nil) {
         self.deps = deps
@@ -86,6 +87,12 @@ struct ReviewsFeedView: View {
                 )
                 .presentationDetents([.large])
             }
+        }
+        .sheet(item: $likersReviewId) { wrapper in
+            ReviewLikersSheet(service: ReviewsService(api: deps.api), reviewId: wrapper.id) { uid in
+                router.push(ReviewsDestination.userProfile(id: uid), on: .explore)
+            }
+            .presentationDetents([.medium, .large])
         }
         .fullScreenCover(isPresented: $showCreateReview) {
             CreateReviewView(deps: deps)
@@ -259,6 +266,7 @@ struct ReviewsFeedView: View {
                 onSave: { vm.toggleSave(reviewId: review.id) },
                 onComment: { vm.openComments(reviewId: review.id) },
                 onShare: { vm.openShare(reviewId: review.id) },
+                onShowLikers: { likersReviewId = StringIdentifiable(id: review.id) },
                 onFollow: {
                     if let uid = review.userId { vm.toggleFollow(userId: uid) }
                 },

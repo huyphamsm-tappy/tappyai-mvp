@@ -12810,6 +12810,24 @@
     "notices.ruleGroup.ip_privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Copyright and privacy" } }, "vi": { "stringUnit": { "state": "translated", "value": "Bản quyền và quyền riêng tư" } } } },
     "notices.ruleGroup.illegal_goods": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Illegal goods and services" } }, "vi": { "stringUnit": { "state": "translated", "value": "Hàng và dịch vụ trái pháp luật" } } } },
     "notices.ruleGroup.child_safety": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Child safety" } }, "vi": { "stringUnit": { "state": "translated", "value": "An toàn trẻ em" } } } },
+    "likers.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Likes" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lượt thích" } }
+      }
+    },
+    "likers.empty": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No likes yet." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có lượt thích nào." } }
+      }
+    },
+    "likers.error": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Could not load the list. Please try again." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không tải được danh sách. Bạn thử lại nhé." } }
+      }
+    },
     "history.segment.all": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "All" } },

@@ -21,8 +21,11 @@ struct ReviewDetailView: View {
     private let baseURL: String
     @ObservedObject private var safety: SafetyStore
     @State private var safetyTarget: SafetyTarget?
+    @State private var likersReviewId: StringIdentifiable?
+    private let reviewsService: ReviewsService
 
     init(deps: AppDependencies, reviewId: String) {
+        reviewsService = ReviewsService(api: deps.api)
         _safety = ObservedObject(wrappedValue: deps.safety)
         _vm = AppStateObject(wrappedValue: ReviewDetailViewModel(
             reviewId: reviewId,
@@ -110,6 +113,12 @@ struct ReviewDetailView: View {
                 .presentationDetents([.large])
         }
         .task { await vm.load() }
+        .sheet(item: $likersReviewId) { wrapper in
+            ReviewLikersSheet(service: reviewsService, reviewId: wrapper.id) { uid in
+                router.push(ReviewsDestination.userProfile(id: uid))
+            }
+            .presentationDetents([.medium, .large])
+        }
         .sheet(isPresented: Binding(get: { vm.showComments }, set: { if !$0 { vm.closeComments() } })) {
             ReviewCommentSheet(
                 comments: vm.comments,
@@ -164,6 +173,7 @@ struct ReviewDetailView: View {
                 onSave: { vm.toggleSave() },
                 onComment: { vm.openComments() },
                 onShare: { vm.showShare = true },
+                onShowLikers: { likersReviewId = StringIdentifiable(id: review.id) },
                 onFollow: { if let uid = review.userId { vm.toggleFollow(userId: uid) } },
                 onDelete: { vm.deleteReview { router.pop() } },
                 onHide: { vm.hideReview { router.pop() } },

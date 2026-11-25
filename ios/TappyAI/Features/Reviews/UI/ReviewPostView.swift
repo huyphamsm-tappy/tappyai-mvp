@@ -12,6 +12,8 @@ struct ReviewPostView: View {
     let onSave: () -> Void
     let onComment: () -> Void
     let onShare: () -> Void
+    /// Who likes this post (the like count's own tap target); nil = not offered.
+    var onShowLikers: (() -> Void)?
     let onFollow: () -> Void
     let onDelete: () -> Void
     let onHide: () -> Void
@@ -388,7 +390,8 @@ struct ReviewPostView: View {
                     onComment: onComment,
                     onSave: onSave,
                     onShare: onShare,
-                    onMusicTap: onMusicTap
+                    onMusicTap: onMusicTap,
+                    onShowLikers: onShowLikers
                 )
             }
             .padding(.horizontal, Spacing.md)

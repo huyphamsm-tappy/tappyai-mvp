@@ -9,6 +9,8 @@ struct ReviewActionRail: View {
     let onSave: () -> Void
     let onShare: () -> Void
     var onMusicTap: (() -> Void)?
+    /// Opens "who likes this" from the like count; nil keeps the count inside the like button.
+    var onShowLikers: (() -> Void)?
 
     private var isUploadVideo: Bool {
         review.contentType == "video"
@@ -18,12 +20,33 @@ struct ReviewActionRail: View {
 
     var body: some View {
         VStack(spacing: Spacing.lg) {
-            railButton(
-                icon: review.likedByMe ? "heart.fill" : "heart",
-                label: formatCount(review.likeCount),
-                tint: review.likedByMe ? .red : TappyColor.feedTextPrimary,
-                action: onLike
-            )
+            if let onShowLikers, review.likeCount > 0 {
+                // The count is its own target (web): the heart toggles, the number lists who likes it.
+                VStack(spacing: 2) {
+                    railButton(
+                        icon: review.likedByMe ? "heart.fill" : "heart",
+                        label: "",
+                        tint: review.likedByMe ? .red : TappyColor.feedTextPrimary,
+                        action: onLike
+                    )
+                    Button(action: onShowLikers) {
+                        Text(formatCount(review.likeCount))
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(TappyColor.feedTextPrimary)
+                            .frame(minWidth: 44, minHeight: 20)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(Text("likers.title"))
+                    .accessibilityIdentifier("review-likers")
+                }
+            } else {
+                railButton(
+                    icon: review.likedByMe ? "heart.fill" : "heart",
+                    label: formatCount(review.likeCount),
+                    tint: review.likedByMe ? .red : TappyColor.feedTextPrimary,
+                    action: onLike
+                )
+            }
 
             railButton(
                 icon: "bubble.right",
