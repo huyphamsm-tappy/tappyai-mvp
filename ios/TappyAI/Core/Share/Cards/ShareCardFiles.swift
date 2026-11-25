@@ -141,8 +141,8 @@ final class ShareCardFiles {
         case .plan:
             guard let plan = input.plan else { return nil }
             var photos = plan.highlights.map(\.photo)
-            for d in plan.days.prefix(PlanCardData.cardDays) {
-                photos += d.items.prefix(PlanCardData.cardStops).compactMap(\.photoUrl)
+            for d in plan.days.prefix(PlanCardData.photoDays) {
+                photos += d.items.prefix(PlanCardData.photoStops).compactMap(\.photoUrl)
             }
             let images = await CardImageLoader.loadAll(photos)
             image = Self.rasterise(PlanCardView(data: plan, url: input.url, strings: PlanCardStrings.of(lang), images: images),

@@ -45,6 +45,18 @@ struct ReviewsFeedView: View {
                 // The picture runs to the very top: the status bar is hidden here, so a safe-area inset would only
                 // leave a black band above the clip (seen at the top of the App Store picture).
                 feedContent.ignoresSafeArea(edges: .top)
+                    // A horizontal swipe changes the tab (Theo dõi ‹ Dành cho bạn › Mới nhất), as in TikTok and as the owner
+                    // asked in UAT. Simultaneous with the vertical pager, and only for a mostly-horizontal stroke; not in a
+                    // profile's clip viewer (`seed`), which has no tabs.
+                    .simultaneousGesture(
+                        DragGesture(minimumDistance: 40)
+                            .onEnded { value in
+                                guard seed == nil,
+                                      let target = FeedTab.neighbour(of: vm.activeTab, dx: value.translation.width, dy: value.translation.height)
+                                else { return }
+                                vm.switchTab(target)
+                            }
+                    )
             }
 
             if seed == nil {

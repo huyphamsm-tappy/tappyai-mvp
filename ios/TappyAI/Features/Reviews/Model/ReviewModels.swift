@@ -297,8 +297,19 @@ enum FeedSort: String, CaseIterable, Sendable {
     case latest
 }
 
-enum FeedTab: Hashable, Sendable {
+enum FeedTab: Hashable, Sendable, CaseIterable {
     case following
     case forYou
     case latest
+
+    /// The tab a horizontal swipe leads to: a swipe LEFT goes to the next tab (Theo dõi → Dành cho bạn → Mới nhất), a swipe
+    /// RIGHT to the previous one; nil at either end, or when the stroke is not clearly horizontal (a vertical page swipe
+    /// that drifts sideways must not change the tab) or too short.
+    static func neighbour(of tab: FeedTab, dx: CGFloat, dy: CGFloat, minimum: CGFloat = 60) -> FeedTab? {
+        guard abs(dx) >= minimum, abs(dx) > abs(dy) * 2 else { return nil }
+        let all = FeedTab.allCases
+        guard let index = all.firstIndex(of: tab) else { return nil }
+        let next = dx < 0 ? index + 1 : index - 1
+        return all.indices.contains(next) ? all[next] : nil
+    }
 }

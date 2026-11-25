@@ -27,8 +27,13 @@ struct PlanCardData: Equatable, Sendable {
     var summary: String?
 
     static let maxSummary = 160
-    static let cardDays = 3
-    static let cardStops = 4
+    // The card's height is free (1080 wide), so it shows far more of the plan than the old 3 days × 4 stops
+    // (owner UAT 25/11: the shared card «không thể hiện hết toàn bộ»); the rest still reads «+N ngày».
+    static let cardDays = 7
+    static let cardStops = 8
+    /// Only the first days' stops have a picture downloaded for the card (56 downloads would be slow and heavy); the rest are text rows.
+    static let photoDays = 3
+    static let photoStops = 4
 
     private static let photoHosts = ["googleusercontent.com", "gstatic.com", "ggpht.com"]
 
@@ -242,7 +247,7 @@ struct PlanCardView: View {
                 CardPhoto(image: img, width: 150, height: 100, radius: 16) { Color.clear }.padding(.trailing, 20)
             }
             VStack(alignment: .leading, spacing: 6) {
-                Text(it.name).font(.system(size: 30, weight: .bold)).foregroundStyle(CardDark.text).lineLimit(1)
+                Text(it.name).font(.system(size: 30, weight: .bold)).foregroundStyle(CardDark.text).lineLimit(2)
                 if let d = it.description, !d.isEmpty {
                     Text(d).font(.system(size: 23)).foregroundStyle(CardDark.muted).lineLimit(1)
                 }
