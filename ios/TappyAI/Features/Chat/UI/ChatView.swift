@@ -15,11 +15,17 @@ struct ChatView: View {
     @State private var showPhotoPicker = false
     @State private var showPdfPicker = false
     @State private var pickedPhoto: PhotosPickerItem?
+    /// The given name for the opening greeting («Huy ơi, chào buổi sáng!»): the last word of the profile's name, when signed in.
+    @State private var givenName: String?
+    private let profileService: ProfileService
+    private let isSignedIn: () -> Bool
 
     init(deps: AppDependencies, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
         let service = ChatService(api: deps.api, streaming: deps.streaming)
         let session = deps.session
+        profileService = ProfileService(api: deps.api)
+        isSignedIn = { session.state.isAuthenticated }
         _vm = AppStateObject(wrappedValue: ChatViewModel(
             service: service, session: session,
             category: category, conversationId: conversationId,
@@ -44,10 +50,16 @@ struct ChatView: View {
                     Spacer()
                 } else if vm.messages.isEmpty && vm.error == nil {
                     ChatEmptyState(
+                        greeting: ChatGreeting.line(at: Date(), english: localization.language.rawValue != "vi", name: givenName),
                         locale: localization.language.rawValue,
                         hasMemory: vm.hasMemory,
                         onQuickPrompt: { vm.sendQuickPrompt($0) }
                     )
+                    .task {
+                        // Read after the first paint, like the web: a signed-in person is greeted by name; a failure just leaves the plain line.
+                        guard isSignedIn(), givenName == nil else { return }
+                        givenName = ChatGreeting.givenName(of: (try? await profileService.fetchProfile())?.fullName)
+                    }
                 } else {
                     ChatMessageList(
                         messages: vm.messages,

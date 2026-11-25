@@ -35,7 +35,6 @@ struct ChatInputBar: View {
     var onRemoveAttachment: () -> Void = {}
 
     @FocusState private var isFocused: Bool
-    @State private var showEmojiPanel = false
 
     /// Editing ends BEFORE the turn starts: once a reply is streaming the field is disabled, and a SwiftUI focus change made on a disabled field
     /// does not reach UIKit (CI run 37326705659: the keyboard was still up over the error card). Resigning the first responder here, while the
@@ -151,9 +150,10 @@ struct ChatInputBar: View {
                     TextField("chat.input.placeholder", text: $text, axis: .vertical)
                         .font(TappyFont.body)
                         .foregroundStyle(ChatTheme.text)
-                        .lineLimit(1...6)
+                        .lineLimit(1...8)
                         .padding(.horizontal, Spacing.md)
-                        .padding(.vertical, Spacing.sm)
+                        .padding(.vertical, 14)
+                        .frame(minHeight: 52)   // a roomier box (owner UAT 25/11: «khung chat ở dưới nhỏ, cần làm rộng ra»)
                         .background(ChatTheme.panel)
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(ChatTheme.border, lineWidth: 1))
@@ -174,32 +174,16 @@ struct ChatInputBar: View {
                         .onChange(of: isStreaming) { streaming in
                             if streaming { isFocused = false }
                         }
-                        .onTapGesture {
-                            showEmojiPanel = false
-                        }
 
-                    // Emoji button
-                    Button {
-                        showEmojiPanel.toggle()
-                        if showEmojiPanel { isFocused = false }
-                    } label: {
-                        Image(systemName: "face.smiling")
-                            .font(.system(size: 18))
-                            .foregroundStyle(showEmojiPanel ? TappyColor.secondary : TappyColor.textSecondary)
-                            .frame(width: 44, height: 44)
-                            .background(showEmojiPanel ? TappyColor.secondary.opacity(0.1) : ChatTheme.panel)
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(Text("chat.pickEmoji"))
-                    .accessibilityAddTraits(showEmojiPanel ? .isSelected : [])
+                    // The emoji button and its panel are gone (owner UAT 25/11: «thừa», and tapping elsewhere did not close the
+                    // panel). The phone keyboard has its own emoji key.
 
                     // Mic button (orange)
                     Button(action: onToggleVoice) {
                         Image(systemName: "mic.fill")
-                            .font(.system(size: 16))
+                            .font(.system(size: 18))
                             .foregroundStyle(isListening ? .white : Color.orange)
-                            .frame(width: 44, height: 44)
+                            .frame(width: 52, height: 52)
                             .background(isListening ? Color.orange : ChatTheme.panel)
                             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     }
@@ -214,7 +198,7 @@ struct ChatInputBar: View {
                             Image(systemName: "stop.fill")
                                 .font(.system(size: 14))
                                 .foregroundStyle(TappyColor.textPrimary)
-                                .frame(width: 44, height: 44)
+                                .frame(width: 52, height: 52)
                                 .background(ChatTheme.panel)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
@@ -223,9 +207,9 @@ struct ChatInputBar: View {
                     } else {
                         Button(action: sendAndEndEditing) {
                             Image(systemName: "paperplane.fill")
-                                .font(.system(size: 16))
+                                .font(.system(size: 18))
                                 .foregroundStyle(.white)
-                                .frame(width: 44, height: 44)
+                                .frame(width: 52, height: 52)
                                 .background(canSend ? ChatTheme.userBubble : ChatTheme.userBubble.opacity(0.4))
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
@@ -236,13 +220,6 @@ struct ChatInputBar: View {
                     }
                 }
                 .padding(.horizontal, Spacing.md)
-
-                // Emoji panel
-                if showEmojiPanel {
-                    emojiGrid
-                        .padding(.horizontal, Spacing.md)
-                        .transition(.opacity)
-                }
             }
             .padding(.vertical, Spacing.xs)
             .background(ChatTheme.background)
@@ -288,7 +265,7 @@ struct ChatInputBar: View {
             Image(systemName: "plus")
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(ChatTheme.textSecondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 52, height: 52)
                 .background(ChatTheme.panel)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
