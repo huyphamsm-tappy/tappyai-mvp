@@ -11231,6 +11231,174 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Xem bản đồ" } }
       }
     },
+    "group.bill.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Split the bill" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chia tiền" } }
+      }
+    },
+    "group.bill.start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Split this meal" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chia tiền bữa này" } }
+      }
+    },
+    "group.bill.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Whoever paid enters the bill. It is split equally among the people who ate; a personal item is charged to that person only." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ai trả tiền thì nhập hóa đơn. Mặc định chia đều cho những người cùng ăn; món riêng của ai thì tính riêng người đó." } }
+      }
+    },
+    "group.bill.total": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Bill total (dong)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tổng hóa đơn (đồng)" } }
+      }
+    },
+    "group.bill.tip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tip (dong, if any)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tiền tip (đồng, nếu có)" } }
+      }
+    },
+    "group.bill.who": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Who shares equally?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ai cùng chia đều?" } }
+      }
+    },
+    "group.bill.itemsTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Personal items (if any)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Món riêng (nếu có)" } }
+      }
+    },
+    "group.bill.itemName": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Item" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tên món" } }
+      }
+    },
+    "group.bill.itemAmount": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Amount (dong)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Số tiền (đồng)" } }
+      }
+    },
+    "group.bill.itemFor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "For" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Của ai" } }
+      }
+    },
+    "group.bill.addItem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Add a personal item" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thêm món riêng" } }
+      }
+    },
+    "group.bill.save": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Save the bill" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lưu hóa đơn" } }
+      }
+    },
+    "group.bill.invalid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Those amounts are not valid. Check the total, the tip and the personal items." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Số tiền chưa hợp lệ. Kiểm tra lại tổng, tiền tip và món riêng." } }
+      }
+    },
+    "group.bill.paidBy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%@ paid %@ for the table" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@ đã trả %@ cho cả bàn" } }
+      }
+    },
+    "group.bill.shared": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Shared equally among those who share: %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Phần chia đều giữa những người cùng chia: %@" } }
+      }
+    },
+    "group.bill.owes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%@ pays %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@ trả %@" } }
+      }
+    },
+    "group.bill.nothing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%@: owes nothing" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@: không phải trả" } }
+      }
+    },
+    "group.bill.markPaid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Paid" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã trả" } }
+      }
+    },
+    "group.bill.paid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Paid ✓" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã trả ✓" } }
+      }
+    },
+    "group.bill.unmark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Undo" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bỏ dấu" } }
+      }
+    },
+    "group.bill.edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Edit the bill" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Sửa hóa đơn" } }
+      }
+    },
+    "group.bill.delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete the bill" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa hóa đơn" } }
+      }
+    },
+    "group.bill.confirmDelete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete this bill?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa hóa đơn này?" } }
+      }
+    },
+    "group.bill.needsUpdate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The bill needs to be entered again because the payer is no longer in the group." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hóa đơn cần nhập lại vì người trả tiền không còn trong nhóm." } }
+      }
+    },
     "group.title": {
       "extractionState": "manual",
       "localizations": {

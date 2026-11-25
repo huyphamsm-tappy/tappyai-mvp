@@ -178,6 +178,41 @@ final class GroupDetailViewModel: AppObservableObject {
         }
     }
 
+    // MARK: - Bill (G7)
+
+    /// Two or more people share the meal, so a bill makes sense (what the web requires).
+    var canShowBill: Bool { (room?.people.count ?? 0) >= 2 && (isCreator || room?.state == "member") }
+    var bill: GroupBill? { room?.bill }
+
+    func saveBill(_ draft: GroupService.BillDraft) async -> Bool {
+        await runBill { _ = try await self.service.saveBill(groupId: self.groupId, draft: draft) }
+    }
+
+    func markPaid(_ key: String, paid: Bool) {
+        Task { _ = await runBill { _ = try await self.service.markPaid(groupId: self.groupId, memberKey: key, paid: paid) } }
+    }
+
+    func deleteBill() {
+        Task { _ = await runBill { try await self.service.deleteBill(groupId: self.groupId) } }
+    }
+
+    /// One write, then a reload: the server computes the split, so the screen shows what it says.
+    private func runBill(_ call: @escaping () async throws -> Void) async -> Bool {
+        guard !isWorking else { return false }
+        isWorking = true
+        errorMessage = nil
+        defer { isWorking = false }
+        do {
+            try await call()
+            await load()
+            return true
+        } catch {
+            errorMessage = GroupErrorMessages.text(for: error, action: .bill)
+            log.error("group bill failed: \(error)")
+            return false
+        }
+    }
+
     // MARK: - Cards and vote (G5–G6)
 
     var cards: [GroupCard] { room?.suggestionOptions ?? [] }

@@ -73,6 +73,7 @@ struct GroupDetailView: View {
                         joinForm
                     }
                     suggestionSection
+                    if vm.canShowBill { GroupBillView(vm: vm) }
                     exitSection
                 }
             }

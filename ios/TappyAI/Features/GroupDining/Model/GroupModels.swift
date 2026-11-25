@@ -47,11 +47,22 @@ struct GroupRoom: Decodable, Sendable, Identifiable, Hashable {
     let chosenOption: String?
     /// Who has voted and how (nil from a server without the vote migration).
     let votes: GroupVotes?
+    /// The bill of the meal, computed by the server (nil: none yet, or a server without the bill migration).
+    let bill: GroupBill?
+    /// The people of the meal by opaque key (the leader is `leader`, others their member-row id) —
+    /// never account ids. The bill form needs them before any bill exists.
+    let people: [GroupPerson]
+    /// Which of `people` is the caller.
+    let myKey: String?
 
     init(id: String, name: String?, creatorId: String?, status: String?, suggestion: String?,
          createdAt: String?, members: [GroupMember]?, state: String? = nil,
          pendingRequests: [GroupMember]? = nil, avatarUrl: String? = nil,
-         suggestionOptions: [GroupCard] = [], chosenOption: String? = nil, votes: GroupVotes? = nil) {
+         suggestionOptions: [GroupCard] = [], chosenOption: String? = nil, votes: GroupVotes? = nil,
+         bill: GroupBill? = nil, people: [GroupPerson] = [], myKey: String? = nil) {
+        self.bill = bill
+        self.people = people
+        self.myKey = myKey
         self.suggestionOptions = suggestionOptions
         self.chosenOption = chosenOption
         self.votes = votes
@@ -72,7 +83,8 @@ struct GroupRoom: Decodable, Sendable, Identifiable, Hashable {
         GroupRoom(id: id, name: name, creatorId: creatorId, status: status, suggestion: text,
                   createdAt: createdAt, members: members, state: state,
                   pendingRequests: pendingRequests, avatarUrl: avatarUrl,
-                  suggestionOptions: suggestionOptions, chosenOption: chosenOption, votes: votes)
+                  suggestionOptions: suggestionOptions, chosenOption: chosenOption, votes: votes,
+                  bill: bill, people: people, myKey: myKey)
     }
 
     /// A fresh suggestion replaces the cards and clears the vote and the decision (what the web does).
@@ -80,7 +92,8 @@ struct GroupRoom: Decodable, Sendable, Identifiable, Hashable {
         GroupRoom(id: id, name: name, creatorId: creatorId, status: status, suggestion: text,
                   createdAt: createdAt, members: members, state: state,
                   pendingRequests: pendingRequests, avatarUrl: avatarUrl,
-                  suggestionOptions: cards, chosenOption: nil, votes: nil)
+                  suggestionOptions: cards, chosenOption: nil, votes: nil,
+                  bill: bill, people: people, myKey: myKey)
     }
 
     /// The card the group chose, if it is one of the cards.
@@ -179,6 +192,109 @@ struct GroupVotes: Decodable, Sendable, Hashable {
     var isTie: Bool { allVoted && majority == nil }
 }
 
+/// A person of the meal by opaque key.
+struct GroupPerson: Decodable, Sendable, Hashable, Identifiable {
+    let key: String
+    let name: String
+    var id: String { key }
+
+    enum CodingKeys: String, CodingKey { case key, name }
+
+    init(key: String, name: String) { self.key = key; self.name = name }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        key = try c.requiredId(forKey: .key)
+        name = c.lenient(String.self, forKey: .name) ?? ""
+    }
+}
+
+/// The bill of a group meal as the participants see it. The SERVER computes the split (`settlement`);
+/// the app shows it and never recalculates, so the two can never disagree about who owes what.
+struct GroupBill: Decodable, Sendable, Hashable {
+    struct Item: Decodable, Sendable, Hashable {
+        let name: String
+        let amountVnd: Int
+        let forId: String
+
+        enum CodingKeys: String, CodingKey { case name, amountVnd, forId }
+
+        init(name: String, amountVnd: Int, forId: String) {
+            self.name = name; self.amountVnd = amountVnd; self.forId = forId
+        }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            name = c.lenient(String.self, forKey: .name) ?? ""
+            amountVnd = c.lenientInt(forKey: .amountVnd) ?? 0
+            forId = try c.requiredId(forKey: .forId)
+        }
+    }
+
+    struct Share: Decodable, Sendable, Hashable {
+        let id: String
+        let name: String
+        let personalVnd: Int
+        let dueVnd: Int
+
+        enum CodingKeys: String, CodingKey { case id, name, personalVnd, dueVnd }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            id = try c.requiredId(forKey: .id)
+            name = c.lenient(String.self, forKey: .name) ?? ""
+            personalVnd = c.lenientInt(forKey: .personalVnd) ?? 0
+            dueVnd = c.lenientInt(forKey: .dueVnd) ?? 0
+        }
+    }
+
+    struct Settlement: Decodable, Sendable, Hashable {
+        let sharedVnd: Int
+        let shares: [Share]
+
+        enum CodingKeys: String, CodingKey { case sharedVnd, shares }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            sharedVnd = c.lenientInt(forKey: .sharedVnd) ?? 0
+            shares = c.lossyArray(Share.self, forKey: .shares)
+        }
+    }
+
+    let payerKey: String?
+    let payerName: String?
+    let totalVnd: Int
+    let tipVnd: Int
+    let items: [Item]
+    let excluded: [String]
+    /// Person key -> has paid the payer back.
+    let paid: [String: Bool]
+    let isPayer: Bool
+    /// nil when the payer has left the group: the bill must be entered again.
+    let settlement: Settlement?
+
+    enum CodingKeys: String, CodingKey { case payerKey, payerName, totalVnd, tipVnd, items, excluded, paid, isPayer, settlement }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        payerKey = c.lenient(String.self, forKey: .payerKey)
+        payerName = c.lenient(String.self, forKey: .payerName)
+        totalVnd = c.lenientInt(forKey: .totalVnd) ?? 0
+        tipVnd = c.lenientInt(forKey: .tipVnd) ?? 0
+        items = c.lossyArray(Item.self, forKey: .items)
+        excluded = c.lenient([String].self, forKey: .excluded) ?? []
+        paid = c.lenient([String: Bool].self, forKey: .paid) ?? [:]
+        isPayer = c.lenient(Bool.self, forKey: .isPayer) ?? false
+        settlement = c.lenient(Settlement.self, forKey: .settlement)
+    }
+}
+
+/// `PUT/PATCH /api/group/{id}/bill` — the stored bill after the change.
+struct GroupBillResponse: Decodable, Sendable {
+    let ok: Bool?
+    let bill: GroupBill?
+}
+
 /// `POST /api/group/{id}/vote` and `.../choose` — the decision, if one was reached.
 struct GroupVoteResponse: Decodable, Sendable {
     let ok: Bool?
@@ -228,7 +344,7 @@ enum GroupLimits {
 
 /// Lenient (LenientDecoding.swift): a member that does not decode is dropped, not the room.
 extension GroupRoom {
-    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members, state, pendingRequests, avatarUrl, suggestionOptions, chosenOption, votes }
+    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members, state, pendingRequests, avatarUrl, suggestionOptions, chosenOption, votes, bill, people, myKey }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -245,6 +361,9 @@ extension GroupRoom {
         suggestionOptions = c.lossyArray(GroupCard.self, forKey: .suggestionOptions)
         chosenOption = c.lenient(String.self, forKey: .chosenOption)
         votes = c.lenient(GroupVotes.self, forKey: .votes)
+        bill = c.lenient(GroupBill.self, forKey: .bill)
+        people = c.lossyArray(GroupPerson.self, forKey: .people)
+        myKey = c.lenient(String.self, forKey: .myKey)
     }
 }
 

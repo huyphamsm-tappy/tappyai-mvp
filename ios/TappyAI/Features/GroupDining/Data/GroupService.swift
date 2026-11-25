@@ -95,6 +95,43 @@ struct GroupService: Sendable {
         _ = try await api.send(endpoint, as: GroupOkResponse.self)
     }
 
+    /// What the payer enters. Whole dong; `forId` and `excluded` are person KEYS from the group read.
+    struct BillDraft: Sendable, Equatable {
+        var totalVnd: Int
+        var tipVnd: Int = 0
+        var items: [GroupBill.Item] = []
+        var excluded: [String] = []
+    }
+
+    /// `PUT /api/group/{id}/bill` — enter or replace the bill; the caller becomes its payer, and only
+    /// the payer can change it afterwards (403 `payer_only`). Editing clears the "paid" marks.
+    func saveBill(groupId: String, draft: BillDraft) async throws -> GroupBillResponse {
+        guard DeepLinkHandler.isSafeId(groupId) else { throw AppError.validation(message: "invalid group id") }
+        let items: [[String: Any]] = draft.items.map { ["name": $0.name, "amountVnd": $0.amountVnd, "forId": $0.forId] }
+        let payload = try JSONSerialization.data(withJSONObject: [
+            "totalVnd": draft.totalVnd, "tipVnd": draft.tipVnd, "items": items, "excluded": draft.excluded,
+        ] as [String: Any])
+        let endpoint = Endpoint(path: "/api/group/\(groupId)/bill", method: .put, body: payload, requiresAuth: true)
+        return try await api.send(endpoint, as: GroupBillResponse.self)
+    }
+
+    /// `PATCH /api/group/{id}/bill` — the payer marks a person as paid back, or unmarks.
+    func markPaid(groupId: String, memberKey: String, paid: Bool) async throws -> GroupBillResponse {
+        guard DeepLinkHandler.isSafeId(groupId), DeepLinkHandler.isSafeId(memberKey) else {
+            throw AppError.validation(message: "invalid id")
+        }
+        let payload = try JSONSerialization.data(withJSONObject: ["memberKey": memberKey, "paid": paid] as [String: Any])
+        let endpoint = Endpoint(path: "/api/group/\(groupId)/bill", method: .patch, body: payload, requiresAuth: true)
+        return try await api.send(endpoint, as: GroupBillResponse.self)
+    }
+
+    /// `DELETE /api/group/{id}/bill` — the payer or the leader removes the bill.
+    func deleteBill(groupId: String) async throws {
+        guard DeepLinkHandler.isSafeId(groupId) else { throw AppError.validation(message: "invalid group id") }
+        let endpoint = Endpoint(path: "/api/group/\(groupId)/bill", method: .delete, requiresAuth: true)
+        _ = try await api.send(endpoint, as: GroupOkResponse.self)
+    }
+
     /// `POST /api/group/{id}/vote` — one vote per person, changeable until the decision.
     /// 409 `already_decided`: the caller reloads. The server decides the majority, never the app.
     func vote(groupId: String, optionId: String) async throws -> GroupVoteResponse {
