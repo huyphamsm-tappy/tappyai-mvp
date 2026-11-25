@@ -14,8 +14,11 @@ struct SplitBillView: View {
     ]
 
     private var activeTip: Double {
-        if !customTip.isEmpty { return Double(customTip) ?? 0 }
-        return Double(tip)
+        // Never negative (web page.tsx:41 `Math.max(0, …)`): `tip` is -1 while the custom field is in use, and a
+        // preset tap or an emptied field used to leave that -1 in the sum. A comma typed as the decimal mark counts.
+        let typed = customTip.replacingOccurrences(of: ",", with: ".")
+        if !customTip.isEmpty { return max(0, Double(typed) ?? 0) }
+        return max(0, Double(tip))
     }
 
     private var totalNum: Double {
@@ -152,7 +155,9 @@ struct SplitBillView: View {
                         .font(.system(size: 13, weight: .semibold))
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
-                        .onChange(of: customTip) { _ in tip = -1 }
+                        // No onChange: a non-empty custom field already wins over the presets (`activeTip`, and the
+                        // highlight tests `customTip.isEmpty`). The old handler wrote tip = -1 and so a preset tap
+                        // or an emptied field left a -1% tip in the sum.
                     if !customTip.isEmpty {
                         Text("%")
                             .font(.system(size: 11))
@@ -401,6 +406,7 @@ struct SplitBillView: View {
         formatter.numberStyle = .decimal
         formatter.locale = Locale(identifier: "vi_VN")
         formatter.maximumFractionDigits = 0
+        formatter.roundingMode = .halfUp   // JS `toLocaleString` (web) rounds .5 away from zero; the default here is half-even
         return formatter.string(from: NSNumber(value: n)) ?? "0"
     }
 }

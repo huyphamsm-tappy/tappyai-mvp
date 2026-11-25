@@ -55,6 +55,16 @@ final class FeedPlaybackTests: XCTestCase {
         XCTAssertFalse(a.isPlaying)
     }
 
+    func testAClipHasSoundWithoutAnyTapWhenTheFeedIsUnlocked() {
+        // The shipped default (`feedAudioUnlocked = true`): owner UAT, «clip phải chạm thêm mới nghe tiếng».
+        FeedVideoPlayer.feedAudioUnlocked = true
+        let p = FeedVideoPlayer()
+        p.setActive(true)
+        XCTAssertFalse(p.isMuted, "sound is on the moment the clip is the active one")
+        p.setMuted(true)
+        XCTAssertTrue(p.isMuted, "the person can still mute")
+    }
+
     func testTheFirstTapUnlocksSoundAndTheClipKeepsPlaying() {
         let p = FeedVideoPlayer()
         p.setActive(true)

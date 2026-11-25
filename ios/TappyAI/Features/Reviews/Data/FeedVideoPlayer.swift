@@ -4,6 +4,7 @@ import Combine
 @MainActor
 final class FeedVideoPlayer: AppObservableObject {
     @AppPublished private(set) var isPlaying = false
+    /// A player is born muted; `setActive(true)` turns the sound on at once while `feedAudioUnlocked` (now the default).
     @AppPublished private(set) var isMuted = true
     @AppPublished var userPaused = false
     /// True from the moment a clip is asked for until it is really playing (the cover and a spinner show meanwhile).
@@ -21,7 +22,10 @@ final class FeedVideoPlayer: AppObservableObject {
     private var endObserver: Any?
     private var watchStart: Date?
 
-    static var feedAudioUnlocked = false
+    /// Sound is ON from the first clip (owner UAT: «clip phải chạm thêm mới nghe tiếng»; Android plays with sound since 20/07).
+    /// The web starts muted only because a browser forbids autoplay with sound; a native AVPlayer is not bound by that rule and
+    /// the audio session is `.playback`, so the phone's volume decides. The person can still mute (setMuted(true) turns it off).
+    static var feedAudioUnlocked = true
 
     // MARK: - One coherent lifecycle (the invariant: ONLY THE ACTIVE CLIP MAY PLAY)
     //
