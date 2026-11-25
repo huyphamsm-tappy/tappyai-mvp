@@ -249,13 +249,41 @@ private struct UserBubble: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, Spacing.md)
                         .padding(.vertical, Spacing.sm)
-                        .background(TappyColor.primary)
-                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                        // web: the person's bubble is #0062CC, all corners round except a nearly square bottom-right
+                        .background(ChatTheme.userBubble)
+                        .clipShape(UserBubbleShape(radius: ChatTheme.userBubbleRadius, squareCorner: ChatTheme.userBubbleSquareCorner))
                 }
                 // the answers have their action bar; the question has its copy button (web UserMessageCopy)
                 UserMessageCopyButton(text: content)
             }
         }
+    }
+}
+
+/// Rounded rectangle whose bottom-right corner has a small radius (iOS 16 has no UnevenRoundedRectangle).
+private struct UserBubbleShape: Shape {
+    var radius: CGFloat
+    var squareCorner: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        let r = min(radius, min(rect.width, rect.height) / 2)
+        let s = min(squareCorner, r)
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX + r, y: rect.minY))
+        p.addLine(to: CGPoint(x: rect.maxX - r, y: rect.minY))
+        p.addRelativeArc(center: CGPoint(x: rect.maxX - r, y: rect.minY + r), radius: r,
+                         startAngle: .degrees(-90), delta: .degrees(90))
+        p.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - s))
+        p.addRelativeArc(center: CGPoint(x: rect.maxX - s, y: rect.maxY - s), radius: s,
+                         startAngle: .degrees(0), delta: .degrees(90))
+        p.addLine(to: CGPoint(x: rect.minX + r, y: rect.maxY))
+        p.addRelativeArc(center: CGPoint(x: rect.minX + r, y: rect.maxY - r), radius: r,
+                         startAngle: .degrees(90), delta: .degrees(90))
+        p.addLine(to: CGPoint(x: rect.minX, y: rect.minY + r))
+        p.addRelativeArc(center: CGPoint(x: rect.minX + r, y: rect.minY + r), radius: r,
+                         startAngle: .degrees(180), delta: .degrees(90))
+        p.closeSubpath()
+        return p
     }
 }
 
@@ -344,7 +372,7 @@ private struct AssistantBubble: View {
                         Text(attributedContent)
                             .readerLinks { readerLink = $0 }
                             .font(TappyFont.body)
-                            .foregroundStyle(TappyColor.textPrimary)
+                            .foregroundStyle(ChatTheme.text)
                             .textSelection(.enabled)
                             .fixedSize(horizontal: false, vertical: true)
                     }

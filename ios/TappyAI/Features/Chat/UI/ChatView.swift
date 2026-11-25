@@ -139,7 +139,7 @@ struct ChatView: View {
                     .accessibilityHint(vm.isAgeBlocked ? Text("chat.age.blocked.title") : Text(verbatim: ""))
                 }
             }
-            .background(TappyColor.background)
+            .background(ChatTheme.background.ignoresSafeArea())
 
             // Image zoom lightbox
             if let url = vm.zoomedImageUrl {
@@ -149,6 +149,12 @@ struct ChatView: View {
                 .transition(.opacity)
             }
         }
+        // The chat is ALWAYS dark like the web. Scoped to this screen's content and its nav bar (environment, not
+        // preferredColorScheme, which would turn the whole window dark); the modifiers below, sheets and covers, stay outside it.
+        .environment(\.colorScheme, .dark)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(ChatTheme.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         // One presentation per anchor view.
         .background(Color.clear.photosPicker(isPresented: $showPhotoPicker, selection: $pickedPhoto, matching: .images))

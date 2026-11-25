@@ -56,8 +56,9 @@ struct ChatInputBar: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Divider()
-                .foregroundStyle(TappyColor.separator)
+            Rectangle()
+                .fill(ChatTheme.border)
+                .frame(height: 1)
 
             VStack(spacing: Spacing.xs) {
                 // The row of action chips (Gần bạn / Tối nay / Lên kế hoạch / Theo dõi giá) is gone: the web hides it
@@ -149,12 +150,13 @@ struct ChatInputBar: View {
                     // Text input
                     TextField("chat.input.placeholder", text: $text, axis: .vertical)
                         .font(TappyFont.body)
-                        .foregroundStyle(TappyColor.textPrimary)
+                        .foregroundStyle(ChatTheme.text)
                         .lineLimit(1...6)
                         .padding(.horizontal, Spacing.md)
                         .padding(.vertical, Spacing.sm)
-                        .background(TappyColor.surface)
-                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                        .background(ChatTheme.panel)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(ChatTheme.border, lineWidth: 1))
                         .focused($isFocused)
                         .accessibilityIdentifier("chat-input")
                         .disabled(isStreaming)
@@ -185,8 +187,8 @@ struct ChatInputBar: View {
                             .font(.system(size: 18))
                             .foregroundStyle(showEmojiPanel ? TappyColor.secondary : TappyColor.textSecondary)
                             .frame(width: 44, height: 44)
-                            .background(showEmojiPanel ? TappyColor.secondary.opacity(0.1) : TappyColor.surface)
-                            .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                            .background(showEmojiPanel ? TappyColor.secondary.opacity(0.1) : ChatTheme.panel)
+                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(Text("chat.pickEmoji"))
@@ -198,8 +200,8 @@ struct ChatInputBar: View {
                             .font(.system(size: 16))
                             .foregroundStyle(isListening ? .white : Color.orange)
                             .frame(width: 44, height: 44)
-                            .background(isListening ? Color.orange : TappyColor.surface)
-                            .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                            .background(isListening ? Color.orange : ChatTheme.panel)
+                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     }
                     .buttonStyle(.plain)
                     .disabled(isStreaming)
@@ -213,8 +215,8 @@ struct ChatInputBar: View {
                                 .font(.system(size: 14))
                                 .foregroundStyle(TappyColor.textPrimary)
                                 .frame(width: 44, height: 44)
-                                .background(TappyColor.surface)
-                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                                .background(ChatTheme.panel)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(Text("chat.stop"))
@@ -224,8 +226,8 @@ struct ChatInputBar: View {
                                 .font(.system(size: 16))
                                 .foregroundStyle(.white)
                                 .frame(width: 44, height: 44)
-                                .background(canSend ? TappyColor.primary : TappyColor.primary.opacity(0.4))
-                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                                .background(canSend ? ChatTheme.userBubble : ChatTheme.userBubble.opacity(0.4))
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
                         .buttonStyle(.plain)
                         .disabled(!canSend)
@@ -243,7 +245,7 @@ struct ChatInputBar: View {
                 }
             }
             .padding(.vertical, Spacing.xs)
-            .background(TappyColor.background)
+            .background(ChatTheme.background)
         }
     }
 
@@ -285,10 +287,10 @@ struct ChatInputBar: View {
         } label: {
             Image(systemName: "plus")
                 .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(TappyColor.textSecondary)
+                .foregroundStyle(ChatTheme.textSecondary)
                 .frame(width: 44, height: 44)
-                .background(TappyColor.surface)
-                .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                .background(ChatTheme.panel)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .disabled(isStreaming)
         .opacity(isStreaming ? 0.4 : 1)

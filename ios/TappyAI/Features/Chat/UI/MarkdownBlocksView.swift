@@ -81,12 +81,18 @@ private struct MarkdownBlockView: View {
         case .quote(let text):
             inline(text)
                 .font(TappyFont.body)
-                .foregroundStyle(TappyColor.textSecondary)
+                .foregroundStyle(ChatTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.leading, Spacing.sm)
+                .padding(.vertical, Spacing.xs)
+                .padding(.trailing, Spacing.sm)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                // web ArticleAnswer (dark): orange left bar on #2a2113
+                .background(ChatTheme.quoteBackground)
                 .overlay(alignment: .leading) {
-                    Rectangle().fill(TappyColor.border).frame(width: 3)
+                    Rectangle().fill(ChatTheme.quoteBar).frame(width: 3)
                 }
+                .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
 
         case .code(let lines):
             ScrollView(.horizontal, showsIndicators: false) {

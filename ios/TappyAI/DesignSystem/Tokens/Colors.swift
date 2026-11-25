@@ -57,3 +57,26 @@ enum TappyColor {
         })
     }
 }
+
+/// The Chat screen is ALWAYS dark, like the web (`v3-theme dark`, globals.css `--v3-*`). Fixed colors, not adaptive:
+/// added for the chat only; no existing token changes.
+enum ChatTheme {
+    /// `--v3-bg`
+    static let background = Color(hex: 0x0A0F1C)
+    /// `--v3-panel` (composer, cards)
+    static let panel = Color(hex: 0x111827)
+    /// `--v3-border`
+    static let border = Color(hex: 0x1F2937)
+    /// `--v3-text`
+    static let text = Color(hex: 0xF3F4F6)
+    /// `--v3-text-secondary`
+    static let textSecondary = Color(hex: 0xDCE2EC)
+    /// `--v3-interactive`: the person's own bubble
+    static let userBubble = Color(hex: 0x0062CC)
+    /// The user bubble's corners: the bottom-right one nearly square (web `rounded-br-[4px]`).
+    static let userBubbleRadius: CGFloat = 18
+    static let userBubbleSquareCorner: CGFloat = 4
+    /// Quote / callout block (web ArticleAnswer, dark): orange bar on a dark amber ground.
+    static let quoteBar = Color(hex: 0xFF9500)
+    static let quoteBackground = Color(hex: 0x2A2113)
+}
