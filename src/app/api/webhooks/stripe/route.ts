@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { readCappedBody } from '@/lib/http/readCappedBody'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
 export async function POST(req: NextRequest) {
-  const body = await req.text()
-  const sig = req.headers.get('stripe-signature')!
+  // webhook payloads are small: the body is capped while it is read, and a request with no signature is refused before any work
+  const capped = await readCappedBody(req, 512 * 1024)
+  if (!capped.ok) return NextResponse.json({ error: 'Invalid request' }, { status: 413 })
+  const body = capped.text
+  const sig = req.headers.get('stripe-signature')
+  if (!sig) return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
 
   let event: Stripe.Event
   try {

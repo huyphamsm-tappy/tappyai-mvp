@@ -5,6 +5,8 @@
 // answer's ITEMS (the dishes, places, films… a list answer names) — the server resolves a picture per item, the client places each picture next
 // to the item it belongs to. Pure, no I/O, shared by server and client; nothing here depends on the language or script of the text.
 
+import { repairGluedMarkdown } from '@/lib/chat/markdownNormalize'
+
 export type DocBlock =
   | { t: 'heading'; level: number; text: string }
   | { t: 'para'; text: string }
@@ -28,7 +30,9 @@ const IMAGE_LINE = /^\s*!\[[^\]]*\]\([^)\s]+\)\s*$/
 const BOLD_LINE = /^\s{0,3}\*\*([^*\n]{1,90})\*\*\s*[:：]?\s*$/
 
 export function parseDoc(md: string): DocBlock[] {
-  const lines = md.replace(/\r\n?/g, '\n').split('\n')
+  // 18/11: items of a list and rows of a table the model wrote with no line break are items and rows here too. The server and the client both read the document through this
+  // function, so they agree on the items (the picture of an item goes to the item it belongs to) whether or not the stream that carried the text could be repaired.
+  const lines = repairGluedMarkdown(md.replace(/\r\n?/g, '\n')).split('\n')
   const out: DocBlock[] = []
   let para: string[] = []
   const flushPara = () => { if (para.length) { out.push({ t: 'para', text: para.join('\n') }); para = [] } }

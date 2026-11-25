@@ -1,0 +1,287 @@
+/* Workspace v206 (NEXT_PUBLIC_WORKSPACE_V206): the itinerary timeline, the overlay drawers and the document restyle of the RFC-001 mockup, built from the app's own tokens
+   (the workspace shell's deep navy #050B18 / #091022, blue #1D68FE / sky, amber callouts). In flow the pieces follow the `.dark` ancestor; the drawers are portals on <body>
+   and are always dark, like the mockup's. Nothing here is loaded without the flag. */
+.v206 {
+  --v-ink: #14181f; --v-ink-2: #4a5260; --v-ink-3: #7b8494; --v-line: #dfe5ee; --v-glass: #f5f8fd; --v-glass-2: #eaf1fb; --v-blue: #1D68FE; --v-sky: #0b6bcb;
+  --v-chip: #e4edfb; --v-tip-bg: #fff4e5; --v-tip-line: #f59e0b; --v-tip-ink: #6b4400; --v-node: #ffffff;
+}
+.dark .v206 {
+  --v-ink: #e8edf6; --v-ink-2: #b9c4d8; --v-ink-3: #8593ad; --v-line: rgb(59 130 246 / .25); --v-glass: rgb(9 18 38 / .72); --v-glass-2: rgb(13 27 56 / .8); --v-blue: #3d8bff; --v-sky: #7cc4ff;
+  --v-chip: rgb(37 99 235 / .28); --v-tip-bg: rgb(245 158 11 / .1); --v-tip-line: #f59e0b; --v-tip-ink: #fcd9a0; --v-node: #080e1e;
+}
+
+/* ---- trip header ---- */
+.v206-trip { margin: 4px 0; color: var(--v-ink); }
+.v206-trip-head { padding: 16px 18px; border: 1px solid var(--v-line); border-radius: 16px; background: linear-gradient(120deg, var(--v-glass), var(--v-glass-2)); }
+.v206-trip-title { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+.v206-trip-eyebrow { margin: 0 0 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--v-sky); }
+.v206-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.v206-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--v-line); border-radius: 10px; background: var(--v-chip); color: var(--v-ink-2); font-size: 12px; font-weight: 500; }
+.v206-chip[data-strong="true"] { color: #047857; border-color: rgb(52 211 153 / .35); background: rgb(16 185 129 / .14); font-weight: 700; }
+.dark .v206-chip[data-strong="true"] { color: #6ee7b7; }
+
+/* ---- day tabs ---- */
+.v206-tabs { display: flex; gap: 8px; margin: 14px 0 4px; padding-bottom: 8px; overflow-x: auto; border-bottom: 1px solid var(--v-line); scrollbar-width: none; }
+.v206-tabs::-webkit-scrollbar { display: none; }
+.v206-tab { flex: none; min-height: 34px; padding: 4px 14px; border: 0; border-radius: 10px; background: transparent; color: var(--v-ink-2); font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; }
+.v206-tab:hover { background: var(--v-chip); color: var(--v-ink); }
+.v206-tab[aria-selected="true"] { background: var(--v-blue); color: #fff; font-weight: 700; }
+.v206 button:focus-visible, .v206 a:focus-visible { outline: 2px solid var(--v-blue); outline-offset: 2px; }
+
+/* ---- timeline ---- */
+.v206-day-title { margin: 18px 0 0; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--v-sky); }
+.v206-tl { position: relative; margin: 14px 0 6px 14px; padding: 0 0 0 26px; border-left: 2px solid rgb(59 130 246 / .35); list-style: none; }
+.v206-stop { position: relative; padding-bottom: 26px; }
+.v206-stop:last-child { padding-bottom: 6px; }
+.v206-node { position: absolute; left: -41px; top: 1px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 2px solid var(--v-sky); border-radius: 999px; background: var(--v-node); color: var(--v-sky); font: 700 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.v206-stop-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.v206-time { padding: 2px 8px; border-radius: 6px; background: var(--v-chip); color: var(--v-sky); font: 700 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+.v206-stop-name { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; }
+.v206-price { margin-left: auto; padding: 1px 9px; border-radius: 999px; background: var(--v-chip); color: var(--v-ink-2); font-size: 12px; font-weight: 600; }
+.v206-desc { margin: 6px 0 0; color: var(--v-ink-2); font-size: 13.5px; line-height: 1.6; }
+.v206-addr { margin: 6px 0 0; color: var(--v-ink-3); font-size: 12.5px; }
+.v206-photo { position: relative; display: block; margin-top: 10px; overflow: hidden; border: 1px solid var(--v-line); border-radius: 12px; background: var(--v-glass-2); }
+.v206-photo img { display: block; width: 100%; height: 11rem; object-fit: cover; }
+@media (min-width: 640px) { .v206-photo img { height: 13rem; } }
+/* the mockup's hero: the picture darkens toward the bottom, a caption chip (the stop's own name and address) and the profile button sit on it */
+.v206-photo-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgb(6 11 24 / .85), transparent 55%); }
+.v206-photo-bar { position: absolute; right: 10px; bottom: 10px; left: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.v206-photo-cap { min-width: 0; max-width: 100%; overflow: hidden; padding: 3px 10px; border: 1px solid rgb(255 255 255 / .12); border-radius: 8px; background: rgb(3 6 18 / .82); color: #fff; font-size: 11.5px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; backdrop-filter: blur(6px); }
+.v206-photo-open { flex: none; padding: 3px 10px; border: 1px solid rgb(255 255 255 / .22); border-radius: 8px; background: rgb(255 255 255 / .12); color: #e8f1ff; font-size: 11px; font-weight: 600; cursor: pointer; backdrop-filter: blur(6px); }
+.v206-photo-open:hover { background: rgb(255 255 255 / .24); color: #fff; }
+.v206-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.v206-link { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 3px 12px; border: 1px solid var(--v-line); border-radius: 999px; background: transparent; color: var(--v-ink-2); font-size: 12.5px; font-weight: 500; text-decoration: none; cursor: pointer; }
+.v206-link:hover { background: var(--v-chip); color: var(--v-ink); }
+.v206-link[data-primary="true"] { border-color: transparent; background: var(--v-blue); color: #fff; font-weight: 600; }
+
+/* a tip beside its stop: a flat amber callout, not a box */
+.v206-tip { margin: 10px 0 0; padding: 10px 12px; border-left: 3px solid var(--v-tip-line); border-radius: 0 10px 10px 0; background: var(--v-tip-bg); color: var(--v-tip-ink); font-size: 13px; line-height: 1.55; }
+.v206-tip strong { font-weight: 700; }
+
+/* ---- budget ---- */
+.v206-budget { margin-top: 18px; border: 1px solid var(--v-line); border-radius: 14px; overflow: hidden; }
+.v206-budget h4 { margin: 0; padding: 10px 14px; background: var(--v-glass-2); font-size: 13px; font-weight: 700; }
+.v206-budget table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.v206-budget th, .v206-budget td { padding: 8px 14px; text-align: left; border-top: 1px solid var(--v-line); }
+.v206-budget td:last-child { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.v206-budget tfoot td { font-weight: 800; color: var(--v-sky); }
+/* three columns like the mockup's: item / basis / cost, the header a quiet mono caps row */
+.v206-budget thead th { border-top: 0; background: var(--v-glass); color: var(--v-ink-2); font: 700 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.v206-budget thead th:last-child { text-align: right; }
+.v206-budget td[data-basis] { color: var(--v-ink-3); font-size: 12.5px; font-weight: 500; text-align: left; }
+.v206-budget td[data-basis="estimate"] { color: #b45309; }
+.dark .v206-budget td[data-basis="estimate"] { color: #fcd34d; }
+.v206-budget tfoot th { font-weight: 800; }
+.v206-budget tfoot td { background: var(--v-glass); }
+.v206-note { margin: 8px 2px 0; color: var(--v-ink-3); font-size: 12px; }
+
+.v206-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+/* ---- overlay drawers (portal on <body>, always dark) ---- */
+.v206-backdrop { position: fixed; inset: 0; z-index: 90; background: rgb(3 6 18 / .55); backdrop-filter: blur(2px); animation: v206-fade .18s ease-out both; }
+.v206-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 91; display: flex; flex-direction: column; width: min(440px, 100vw); border-left: 1px solid rgb(59 130 246 / .3); background: #070D1E; color: #e8edf6; box-shadow: -24px 0 60px rgb(2 6 23 / .6); animation: v206-slide .22s ease-out both; }
+.v206-drawer-wide { width: min(980px, 100vw); }
+.v206-drawer-wide .v206-drawer-body { padding: 0 18px 18px; }
+.v206-drawer-head { display: flex; align-items: flex-start; gap: 12px; padding: 16px 18px; border-bottom: 1px solid rgb(59 130 246 / .2); }
+.v206-drawer-head h2 { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.3; }
+.v206-drawer-head p { margin: 2px 0 0; color: #f59e0b; font-size: 12px; }
+.v206-x { margin-left: auto; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 10px; background: transparent; color: #b9c4d8; cursor: pointer; }
+.v206-x:hover { background: rgb(59 130 246 / .18); color: #fff; }
+.v206-drawer :focus-visible { outline: 2px solid #3d8bff; outline-offset: 2px; }
+.v206-drawer-body { flex: 1; min-height: 0; padding: 14px 18px; overflow-y: auto; overscroll-behavior: contain; }
+.v206-drawer-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 18px; border-top: 1px solid rgb(59 130 246 / .2); color: #8593ad; font-size: 12px; }
+.v206-kbd { padding: 4px 12px; border: 1px solid rgb(59 130 246 / .3); border-radius: 8px; background: rgb(30 41 59 / .8); color: #e8edf6; font: 600 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; flex: none; cursor: pointer; }
+.v206-search { width: 100%; min-height: 40px; padding: 6px 14px; border: 1px solid rgb(59 130 246 / .3); border-radius: 999px; background: rgb(9 18 38 / .8); color: #e8edf6; font-size: 14px; }
+.v206-search::placeholder { color: #7f8ca3; }
+.v206-tipcard { margin-top: 12px; padding: 12px 14px; border: 1px solid rgb(59 130 246 / .25); border-radius: 14px; background: rgb(13 27 56 / .6); }
+.v206-tipcard-tag { display: inline-block; padding: 1px 8px; border-radius: 6px; background: rgb(245 158 11 / .18); color: #fcd34d; font: 700 10.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .04em; text-transform: uppercase; }
+.v206-tipcard h3 { margin: 8px 0 0; font-size: 14px; font-weight: 700; }
+.v206-tipcard p { margin: 6px 0 0; color: #c7d1e3; font-size: 13.5px; line-height: 1.6; }
+.v206-facts { margin: 14px 0 0; border: 1px solid rgb(59 130 246 / .25); border-radius: 12px; overflow: hidden; background: #091226; }
+.v206-facts > div { display: flex; justify-content: space-between; gap: 14px; padding: 9px 12px; border-top: 1px solid rgb(59 130 246 / .18); font-size: 13px; }
+.v206-facts > div:first-child { border-top: 0; }
+.v206-facts dt { color: #8593ad; }
+.v206-facts dd { margin: 0; text-align: right; font-weight: 600; color: #f1f5f9; }
+.v206-hero { display: block; width: 100%; height: 11rem; object-fit: cover; border: 1px solid rgb(59 130 246 / .3); border-radius: 12px; background: #0b1328; }
+.v206-drawer .v206-link { color: #c7d1e3; border-color: rgb(59 130 246 / .35); }
+.v206-drawer .v206-link:hover { background: rgb(59 130 246 / .2); color: #fff; }
+.v206-drawer .v206-link[data-primary="true"] { background: #1D68FE; color: #fff; }
+.v206-drawer .v206-note { color: #8593ad; }
+
+@keyframes v206-slide { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes v206-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .v206-drawer, .v206-backdrop { animation: none; } }
+
+/* ---- conversation header ---- */
+.v206-badge { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border: 1px solid rgb(59 130 246 / .35); border-radius: 999px; background: rgb(37 99 235 / .18); color: #bcd7ff; font-size: 11px; font-weight: 600; }
+
+/* ---- place card (dark glass, like the mockup's; always dark) ---- */
+/* 14/11 colour pass (owner: "too blue"; the first layout had a dark navy ground with MANY accents - a rank badge in its own colour, a warm call to action - and blue only on the send button and the user's bubble):
+   neutral borders, blue kept for focus; one warm action per card (the lead / book links), every other control a quiet ghost; the rank badge takes its own colour. */
+.v206-pc { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 14px; border: 1px solid rgb(255 255 255 / .1); border-radius: 16px; background: linear-gradient(160deg, rgb(13 27 56 / .92), rgb(9 18 38 / .86)); color: #e8edf6; box-shadow: 0 14px 34px rgb(2 6 23 / .45); }
+.v206-pc:hover { border-color: rgb(255 255 255 / .22); }
+.v206-pc-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; }
+.v206-pc-badge { max-width: 70%; overflow: hidden; padding: 2px 8px; border: 1px solid rgb(99 102 241 / .4); border-radius: 6px; background: rgb(79 70 229 / .22); color: #c4b5fd; font: 700 10px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .05em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.v206-pc[data-rank="1"] .v206-pc-badge { border-color: rgb(52 211 153 / .45); background: rgb(16 185 129 / .2); color: #6ee7b7; }
+.v206-pc[data-rank="2"] .v206-pc-badge { border-color: rgb(167 139 250 / .5); background: rgb(124 58 237 / .24); color: #ddd6fe; }
+.v206-pc[data-rank="3"] .v206-pc-badge { border-color: rgb(251 146 60 / .5); background: rgb(234 88 12 / .22); color: #fed7aa; }
+/* a card of a group with a real picture: the picture runs to the card's edges at the top, the rank badge sits on it (first layout) */
+.v206-pc-thumb { position: relative; margin: -14px -14px 2px; height: 124px; overflow: hidden; border-radius: 16px 16px 0 0; background: #0b1630; }
+.v206-pc-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.v206-pc-thumb-badge { position: absolute; top: 8px; left: 8px; max-width: calc(100% - 16px); backdrop-filter: blur(6px); }
+.v206-pc-rating { flex: none; padding: 2px 8px; border: 1px solid rgb(245 158 11 / .4); border-radius: 8px; background: rgb(245 158 11 / .16); color: #fcd34d; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.v206-pc-count { color: #9fb0cc; font-weight: 400; }
+.v206-pc-name { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.3; color: #fff; }
+.v206-pc-namebtn { display: inline-flex; align-items: flex-start; gap: 6px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.v206-pc-namebtn:hover { color: #7cc4ff; }
+.v206-pc-arrow { flex: none; margin-top: 4px; color: #7cc4ff; }
+.v206-pc-addr { margin: 0; color: #b4c0d6; font-size: 12.5px; line-height: 1.45; }
+.v206-pc-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0; font: 500 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: #c7d1e3; }
+.v206-pc-hours { display: inline-flex; align-items: center; gap: 6px; }
+.v206-pc-dot { width: 7px; height: 7px; border-radius: 999px; background: #64748b; }
+.v206-pc-hours[data-open="open"] .v206-pc-dot { background: #34d399; }
+.v206-pc-hours[data-open="open"] .v206-pc-state { color: #6ee7b7; }
+.v206-pc-hours[data-open="closed"] .v206-pc-dot { background: #f87171; }
+.v206-pc-hours[data-open="closed"] .v206-pc-state { color: #fca5a5; }
+.v206-pc-price { color: #fcd34d; font-weight: 700; }
+/* the mockup's "ĐẶC TRƯNG NỔI BẬT" box: the points the answer gave about this venue, each with its bold label */
+.v206-pc-notes { margin: 2px 0 0; padding: 9px 11px; border: 1px solid rgb(59 130 246 / .28); border-radius: 12px; background: rgb(7 13 30 / .7); }
+.v206-pc-notes-title { margin: 0 0 4px; color: #fcd34d; font: 700 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.v206-pc-notes ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; }
+.v206-pc-notes li { position: relative; padding-left: 12px; color: #cbd5e1; font-size: 12.5px; line-height: 1.45; }
+.v206-pc-notes li::before { content: ''; position: absolute; left: 0; top: .55em; width: 5px; height: 5px; border-radius: 999px; background: #38bdf8; }
+.v206-pc-notes strong { color: #e2e8f0; font-weight: 600; }
+.v206-pc-notes-src { margin: 6px 0 0; color: #7f8ea8; font: 400 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.v206-pc-primary { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 38px; margin-top: auto; padding: 6px 12px; border: 1px solid rgb(255 255 255 / .16); border-radius: 12px; background: rgb(255 255 255 / .06); color: #e8edf6; font-size: 13.5px; font-weight: 700; text-decoration: none; cursor: pointer; }
+.v206-pc-primary:hover { background: rgb(255 255 255 / .12); }
+/* the one action that DOES the thing (order, book, buy): warm, like the first layout's "Đặt ngay" */
+.v206-pc-primary[data-kind="lead"], .v206-pc-primary[data-kind="book"] { border-color: rgb(251 191 36 / .55); background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #1c1203; }
+.v206-pc-primary[data-kind="lead"]:hover, .v206-pc-primary[data-kind="book"]:hover { background: linear-gradient(90deg, #f59e0b, #fbbf24); filter: brightness(1.08); }
+.v206-pc-primary + .v206-pc-primary { margin-top: 0; }
+.v206-pc-row { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+.v206-pc-row > .v206-pc-primary { flex: 1 1 100%; margin-top: 0; }
+.v206-pc-small { margin-top: 0; }
+.v206-pc-btn { display: inline-flex; flex: 1 1 0; align-items: center; justify-content: center; gap: 5px; min-width: max-content; min-height: 32px; padding: 3px 10px; border: 1px solid rgb(255 255 255 / .14); border-radius: 10px; background: rgb(255 255 255 / .04); color: #d6deee; font-size: 12px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; }
+.v206-pc-btn:hover { background: rgb(255 255 255 / .12); color: #fff; }
+.v206-pc-btn[data-active="true"] { border-color: rgb(52 211 153 / .4); color: #6ee7b7; }
+.v206-pc-btn:disabled { opacity: .6; cursor: wait; }
+.v206-pc a:focus-visible, .v206-pc button:focus-visible { outline: 2px solid #3d8bff; outline-offset: 2px; }
+
+/* ---- a card standing alone under the text about its place (wide; the real photo on the left when there is one) ---- */
+.v206-pc[data-solo="true"] { height: auto; margin: 4px 0; padding: 16px; }
+.v206-pc[data-solo="true"][data-photo="true"] { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); align-items: start; column-gap: 18px; row-gap: 8px; }
+.v206-pc[data-solo="true"][data-photo="true"] > :not(.v206-pc-solo-photo) { grid-column: 2; }
+.v206-pc-solo-photo { grid-column: 1; grid-row: 1 / span 12; overflow: hidden; border-radius: 12px; border: 1px solid rgb(59 130 246 / .25); background: #0b1630; }
+.v206-pc-solo-photo img { display: block; width: 100%; height: 100%; min-height: 150px; max-height: 260px; object-fit: cover; }
+@media (max-width: 640px) {
+  .v206-pc[data-solo="true"][data-photo="true"] { display: flex; flex-direction: column; }
+  .v206-pc-solo-photo { width: 100%; }
+}
+
+/* ---- composer (look flag, the owner's reference bar, 14/11): a round "+" on the left, ONE pill holding the text and the picture / mic icons, a round glowing send on the right. One compact
+   row; the text area grows to the right height when the message is long. Specificity beats the utility classes on the children, so the flag-off composer is untouched. ---- */
+.v206-composer { gap: 12px; }
+/* the round "+" (its menu keeps working: only the button is restyled) */
+.v206-composer > div:first-child > button { width: 44px; height: 44px; border: 1px solid rgb(255 255 255 / .14); border-radius: 999px; background: rgb(255 255 255 / .06); color: #e8edf6; font-size: 22px; }
+.v206-composer > div:first-child > button:hover { background: rgb(255 255 255 / .14); }
+/* the pill */
+.v206-pill { position: relative; display: flex; flex: 1 1 0; min-width: 0; align-items: center; gap: 2px; min-height: 44px; padding: 0 8px 0 6px; border: 1px solid rgb(255 255 255 / .16); border-radius: 22px; background: linear-gradient(180deg, rgb(20 36 72 / .78), rgb(11 22 46 / .82)); box-shadow: inset 0 1px 0 rgb(255 255 255 / .05); transition: border-color .15s, box-shadow .15s; }
+.v206-pill:focus-within { border-color: rgb(125 170 255 / .55); box-shadow: 0 0 0 3px rgb(61 139 255 / .16); }
+.v206-pill > textarea[data-v206-input] { flex: 1 1 0; min-width: 0; min-height: 42px; padding: 10px 12px; border-radius: 0; background: transparent; box-shadow: none; color: #f1f5f9; }
+.v206-pill > textarea[data-v206-input]:focus { box-shadow: none; }
+.v206-pill > textarea[data-v206-input]::placeholder { color: #8e9bb4; }
+/* the picture and mic icons sit inside the pill, quiet; the emoji picker is not part of this bar */
+.v206-pill > div:has(> button[aria-label][class*="w-11"]) { display: none; }
+.v206-pill-icon, .v206-pill > button { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 34px; height: 34px; border: 0; border-radius: 999px; background-color: transparent !important; color: #cfd8e8; cursor: pointer; }
+.v206-pill-icon:hover, .v206-pill > button:hover { background-color: rgb(255 255 255 / .1) !important; color: #fff; }
+.v206-pill > button[aria-pressed="true"] { background-color: #FF9500 !important; }
+.v206-pill-icon:disabled, .v206-pill > button:disabled { opacity: .4; cursor: default; }
+.v206-pill > button[aria-pressed="false"] svg { color: #cfd8e8; }
+/* the round send: blue, with a soft glow */
+.v206-composer > button[type="submit"] { width: 48px; height: 48px; border-radius: 999px; background: linear-gradient(180deg, #3d8bff, #1d68fe); box-shadow: 0 0 20px rgb(29 104 254 / .55), inset 0 1px 0 rgb(255 255 255 / .3); }
+.v206-composer > button[type="submit"]:hover { filter: brightness(1.1); }
+/* an empty bar keeps the bright send like the reference; only a touch dimmer so it still reads as "nothing to send yet" */
+.v206-composer > button[type="submit"]:disabled { opacity: .78; }
+.v206-composer > button:not([type="submit"]):last-child { width: 48px; height: 48px; border-radius: 999px; }
+/* the reference draws a small gold star before the disclaimer, directly under the bar (a glyph, so the shared sentence component is untouched) */
+form:has(> div > .v206-composer) + p[data-testid="ai-disclaimer"]::before { content: "\2726"; margin-right: 6px; color: #fbbf24; }
+form:has(.v206-composer) + [data-testid="ai-disclaimer"]::before { content: "\2726"; margin-right: 6px; color: #fbbf24; }
+
+/* ---- the first layout's floating panels (NEXT_PUBLIC_SHELL_REF): a soft light edge and a shadow that falls DOWN and outward, so each panel (rail, history, banner, conversation) lifts off the ground.
+   `.shell-panel-bg` is the glass: a touch lighter at the top, darker toward the bottom. ---- */
+.shell-panel { border: 1px solid rgb(125 165 255 / .2); box-shadow: inset 0 1px 0 rgb(255 255 255 / .07), 0 24px 46px -14px rgb(2 6 23 / .92), 0 0 30px rgb(37 99 235 / .1); backdrop-filter: blur(14px); }
+/* the banner's frame: the same lift, but NO border (a border would shrink the picture's box); the picture's own edge is its edge */
+.shell-panel-art { box-shadow: 0 24px 46px -14px rgb(2 6 23 / .92), 0 0 30px rgb(37 99 235 / .1); }
+.shell-panel-bg { background: linear-gradient(180deg, rgb(20 36 72 / .86), rgb(8 16 36 / .92)); }
+
+/* ---- follow-up chips under an answer (look flag): the lead suggestion glows violet like the reference's "Tư vấn chi tiết", the others are quiet ghost pills ---- */
+.v206-followup-lead { border-color: rgb(167 139 250 / .6); background: linear-gradient(180deg, rgb(91 60 190 / .38), rgb(60 40 140 / .3)); color: #f3eeff; box-shadow: 0 0 18px rgb(124 58 237 / .3); }
+.v206-followup-lead:hover { background: linear-gradient(180deg, rgb(104 72 210 / .5), rgb(72 48 160 / .4)); }
+
+/* ---- history row icon ---- */
+.v206-rowicon { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 9px; background: rgb(37 99 235 / .14); font-size: 15px; line-height: 1; }
+
+/* ---- conversation header (icon tile + title + status line) ---- */
+.v206-convicon { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgb(59 130 246 / .3); border-radius: 12px; background: rgb(37 99 235 / .16); font-size: 20px; line-height: 1; }
+.v206-status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: #38bdf8; }
+
+/* ---- product header (80 px, above the three columns) ---- */
+.v206-product { display: none; }
+@media (min-width: 1024px) { .v206-product { display: flex; } }
+
+/* ---- the research document restyled for the workspace (an opt-in class on the canvas) ---- */
+.dark .tappy-doc.v206-doc { --rp-paper: rgb(9 18 38 / .72); --rp-line: rgb(59 130 246 / .25); border-radius: 18px; backdrop-filter: blur(6px); box-shadow: 0 18px 50px rgb(2 6 23 / .45); }
+/* section headings as the mockup's mono eyebrows; the numbers are the report's own (none is added) */
+.tappy-doc.v206-doc h2 { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--rp-primary); }
+.tappy-doc.v206-doc [data-md="table"] { border: 1px solid var(--rp-line); border-radius: 12px; }
+.tappy-doc.v206-doc [data-md="table"] table { border-collapse: collapse; width: 100%; }
+.tappy-doc.v206-doc [data-md="table"] th { position: sticky; top: 0; background: var(--rp-chip); color: var(--rp-ink); font-weight: 700; text-align: left; }
+.tappy-doc.v206-doc [data-md="table"] th, .tappy-doc.v206-doc [data-md="table"] td { padding: 9px 12px; border-top: 1px solid var(--rp-line); font-size: 14px; vertical-align: top; }
+.tappy-doc.v206-doc [data-md="table"] td:first-child { font-weight: 600; color: var(--rp-ink-2); }
+.tappy-doc.v206-doc [data-md="table"] tbody tr:hover { background: color-mix(in srgb, var(--rp-primary) 8%, transparent); }
+
+/* ---- dossier cover (the opened full report) ---- */
+.tappy-report-eyebrow.v206-dossier-kind { display: inline-block; padding: 3px 10px; border: 1px solid rgb(14 165 233 / .4); border-radius: 6px; background: rgb(14 165 233 / .12); color: #0369a1; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .08em; }
+.dark .tappy-report-eyebrow.v206-dossier-kind { color: #7dd3fc; }
+.v206-dossier-by { margin: 10px 0 0; color: var(--rp-ink-3, #64748b); font-size: 13px; }
+.tappy-doc.v206-doc h2 .v206-hnum { color: var(--rp-accent, #38bdf8); }
+
+/* ---- editorial answers (look flag): section headings as mono caps eyebrows, tables as a titled data box ---- */
+.v206-ed .v206-h { margin-top: 1.7rem; margin-bottom: .6rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; font-weight: 700; letter-spacing: .05em; line-height: 1.5; text-transform: uppercase; color: #0369a1; }
+.dark .v206-ed .v206-h { color: #38bdf8; }
+.v206-ed .v206-h:first-child { margin-top: .4rem; }
+.v206-hnum { margin-right: .3em; }
+.v206-databox { margin: 14px 0; overflow: hidden; border: 1px solid rgb(14 116 144 / .3); border-radius: 12px; background: rgb(240 249 255 / .6); }
+.dark .v206-databox { border-color: rgb(59 130 246 / .35); background: rgb(11 21 44 / .72); box-shadow: 0 10px 28px rgb(2 6 23 / .35); }
+.v206-databox-title { padding: 8px 14px; border-bottom: 1px solid rgb(14 116 144 / .25); background: rgb(14 165 233 / .1); color: #0369a1; font: 700 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.dark .v206-databox-title { border-bottom-color: rgb(59 130 246 / .3); color: #38bdf8; }
+.v206-databox [data-md="table"] { margin: 0; max-width: 100%; }
+.v206-databox table { width: 100%; font-size: 13.5px; }
+.v206-databox th { padding: 10px 14px; background: rgb(14 165 233 / .1); color: #0c4a6e; font-weight: 700; white-space: nowrap; }
+.dark .v206-databox th { background: rgb(15 30 62 / .9); color: #7dd3fc; }
+.v206-databox td { padding: 10px 14px; vertical-align: top; }
+.v206-databox td:first-child { font-weight: 600; color: #475569; }
+.dark .v206-databox td:first-child { color: #94a3b8; }
+.v206-databox tbody tr:last-child td { border-bottom: 0; }
+/* the mockup's source line under a data table */
+.v206-ed .v206-caption { margin: -6px 2px 14px; color: #64748b; font: 400 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.dark .v206-ed .v206-caption { color: #94a3b8; }
+/* the mockup's highlighted remark: a soft blue card instead of the orange quote */
+.v206-ed .tappy-callout { border: 1px solid rgb(59 130 246 / .22); border-radius: 12px; background: rgb(239 246 255); color: #1e293b; padding: .875rem 1rem; }
+.dark .v206-ed .tappy-callout { border-color: rgb(59 130 246 / .25); background: rgb(23 37 84 / .4); color: #e2e8f0; }
+
+/* ---- entity chips: a bold name that has a real profile (icon + name, like the mockup's) ---- */
+.v206-ent { display: inline-flex; align-items: center; gap: 4px; padding: 0 7px; border: 1px solid rgb(14 165 233 / .35); border-radius: 6px; background: rgb(14 165 233 / .1); color: #0369a1; font-size: .9em; font-weight: 600; line-height: 1.55; vertical-align: baseline; cursor: pointer; transition: background .15s, border-color .15s; }
+.dark .v206-ent { color: #38bdf8; background: rgb(14 165 233 / .1); }
+.v206-ent:hover { background: rgb(14 165 233 / .22); border-color: rgb(14 165 233 / .6); }
+.v206-ent:focus-visible { outline: 2px solid #3d8bff; outline-offset: 2px; }
+.v206-ent-i { font-size: .95em; line-height: 1; }
+
+/* ---- entity (Wikipedia) drawer ---- */
+.v206-wiki-kind { margin: 0 0 10px; color: #38bdf8; font: 700 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.v206-wiki-photo { height: auto; max-height: 18rem; object-fit: cover; }
+.v206-wiki-title { margin: 12px 0 0; color: #f1f5f9; font-size: 15px; font-weight: 700; }
+.v206-wiki-extract { margin: 10px 0 0; color: #d6deee; font-size: 14.5px; line-height: 1.7; }
+.v206-wiki-src { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid rgb(59 130 246 / .2); color: #8593ad; font: 500 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.v206-wiki-link { color: #7cc4ff; text-decoration: underline; text-underline-offset: 3px; }
+.v206-wiki-link:hover { color: #fff; }

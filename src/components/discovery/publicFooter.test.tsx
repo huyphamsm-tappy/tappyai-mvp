@@ -24,8 +24,11 @@ describe('PublicFooter — the crawlable link block on discovery pages', () => {
     const hrefs = [...container.querySelectorAll('a')].map((a) => a.getAttribute('href') ?? '')
     for (const d of HUB_DOMAINS) expect(hrefs).toContain(`/${d}`)
     for (const p of PUBLIC_FOOTER_ABOUT_LINKS) expect(hrefs).toContain(p)
-    expect(hrefs.every((h) => h.startsWith('/') && !h.includes('?') && !h.includes('#'))).toBe(true)
-    expect(container.querySelectorAll('nav[aria-label]').length).toBe(2)
+    // Every link is an internal plain path, except the official store listings and social accounts (https, opened with rel=noopener).
+    const internal = hrefs.filter((h) => !/^https:\/\/(play\.google\.com|apps\.apple\.com|www\.(facebook|tiktok|instagram|threads|linkedin)\.com)\//.test(h))
+    expect(internal.every((h) => h.startsWith('/') && !h.includes('?') && !h.includes('#'))).toBe(true)
+    expect(hrefs.length - internal.length).toBeLessThanOrEqual(8)
+    expect(container.querySelectorAll('nav[aria-label]').length).toBe(3)
   })
   it('is bilingual and never hard-codes the labels', () => {
     const { container } = render(<PublicFooter />)

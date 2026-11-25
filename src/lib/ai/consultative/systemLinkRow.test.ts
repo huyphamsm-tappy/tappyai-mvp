@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { compactSystemLinks, SYSTEM_LINK_ROW_CAP } from './systemLinkRow'
+import { compactSystemLinks, systemLinkLines, SYSTEM_LINK_ROW_CAP } from './systemLinkRow'
 
 // 29/10: a flight + hotel turn ended in a row of ~13 "partner" buttons. Nobody reads 13; the first few the tool ranked are the useful ones.
 
@@ -18,6 +18,10 @@ describe('compactSystemLinks', () => {
     const out = compactSystemLinks([mk('Agoda · Hotel A', 'https://a/1'), mk('Agoda · Hotel A', 'https://a/2'), mk('Booking · Hotel A', 'https://b/1')])
     expect(out.map(l => l.url)).toEqual(['https://a/1', 'https://b/1'])
   })
+  it('19/11 (owner): the affiliate partners lead the row (Agoda, Vexere, Lazada), every other platform follows, each group in ranked order', () => {
+    const out = compactSystemLinks([mk('Booking.com'), mk('Shopee'), mk('Hotel A · Agoda'), mk('Tiki'), mk('Vexere'), mk('Product · Lazada')])
+    expect(out.map(l => l.name)).toEqual(['Hotel A · Agoda', 'Vexere', 'Product · Lazada', 'Booking.com', 'Shopee', 'Tiki'])
+  })
   it('a short row is returned untouched', () => {
     const links = [mk('A'), mk('B')]
     expect(compactSystemLinks(links)).toEqual(links)
@@ -25,9 +29,30 @@ describe('compactSystemLinks', () => {
   it('cap is 6', () => { expect(SYSTEM_LINK_ROW_CAP).toBe(6) })
 })
 
+describe('systemLinkLines (owner 20/11: the partners on one line, the other platforms under "more")', () => {
+  const labels = { main: 'MAIN:', more: 'MORE:' }
+  const md = (l: { name: string; url: string }) => `[${l.name}](${l.url})`
+  it('Agoda and Vexere lead on their own line; Booking, Trip and the rest go on a second line', () => {
+    const out = systemLinkLines([mk('Booking.com'), mk('Agoda trang chủ'), mk('Trip.com'), mk('Vexere vé tàu')], labels, md)
+    const [a, b] = out.split('\n\n')
+    expect(a.startsWith('MAIN:')).toBe(true)
+    expect(a).toContain('Agoda')
+    expect(a).toContain('Vexere')
+    expect(a).not.toContain('Booking')
+    expect(b.startsWith('MORE:')).toBe(true)
+    expect(b).toContain('Booking.com')
+    expect(b).toContain('Trip.com')
+  })
+  it('no partner: only the "more" line; no link: nothing', () => {
+    expect(systemLinkLines([mk('Booking.com')], labels, md)).toMatch(/^MORE:/)
+    expect(systemLinkLines([], labels, md)).toBe('')
+  })
+})
+
 describe('wiring', () => {
   const src = readFileSync(join(process.cwd(), 'src/lib/ai/streamEnrichment.ts'), 'utf8')
-  it('the row is compacted for one brain only, and only where it is rendered', () => {
-    expect(src).toContain('collector?.oneBrain === true ? compactSystemLinks(missingSystemLinks) : missingSystemLinks')
+  it('the row is compacted and split for one brain only, and only where it is rendered', () => {
+    expect(src).toContain('collector?.oneBrain === true')
+    expect(src).toContain('systemLinkLines(missingSystemLinks')
   })
 })

@@ -24,9 +24,12 @@ describe('apply-migration.sh policy covers the release window', () => {
     expect(policyOf('20260929130000_commerce_click_attributions.sql')).toBe('APPLY')
     expect(policyOf('20260929140000_commerce_click_attributions_r21.sql')).toBe('APPLY')
     for (const f of ['20260927_owner_update_column_privileges.sql', '20260928_revoke_reviews_insert.sql', '20260928b_revoke_increment_deal_click_public.sql',
-      '20260928c_review_comments_publication_boundary.sql', '20260930_content_reports_insert_check.sql', '20260930b_review_interactions_bounds.sql']) {
+      '20260930_content_reports_insert_check.sql', '20260930b_review_interactions_bounds.sql']) {
       expect(policyOf(f)).toBe('AFTER-SMOKE')
     }
+    // 22/11/2026 rehearsal on a restore of the production dump: 20261208_comment_hiding fails ("function public.is_content_moderator() does not exist") unless
+    // 20260928c is already applied, and the new web code reads review_comments.hidden_at, so 28c is a BEFORE-DEPLOY migration (its own header: "no code dependency - apply any time").
+    expect(policyOf('20260928c_review_comments_publication_boundary.sql')).toBe('APPLY')
     const sec = ['20260927_owner', '20260928_revoke', '20260928b', '20260928c', '20260930_content', '20260930b'].map(p => order.findIndex(f => f.startsWith(p)))
     expect(sec.every(i => i >= 0)).toBe(true)
     expect([...sec].sort((a, b) => a - b)).toEqual(sec)

@@ -81,6 +81,12 @@ export interface MediaProvider {
   deleteObject?(key: string): Promise<boolean>
   /** F-099 · `length` bytes of a stored object from `offset` (authenticated ranged read). */
   readRange?(key: string, offset: number, length: number): Promise<Uint8Array>
+  /**
+   * Explore video · a SERVER-SIDE copy of one object from another bucket into THIS provider's bucket (the bytes never pass through the app). Used to promote an
+   * approved video's HLS files from the private source bucket into the delivery bucket. `opts` REPLACES the destination's metadata (content type, cache control).
+   * Throws on any failure (a missing source is a 404 failure, not a silent success).
+   */
+  copyObject?(src: { bucket: string; key: string }, destKey: string, opts?: { contentType?: string; cacheControl?: string }): Promise<void>
 }
 
 /** The minimum an upload must satisfy to count as complete. */
@@ -129,7 +135,7 @@ export class MediaUploadSessionError extends Error {
  * provider's response body or an object name, which carries a user id.
  */
 export class MediaStorageError extends Error {
-  constructor(provider: MediaProviderId, operation: 'list' | 'delete' | 'read', status?: number) {
+  constructor(provider: MediaProviderId, operation: 'list' | 'delete' | 'read' | 'copy', status?: number) {
     super(`Media provider "${provider}" ${operation} failed${status === undefined ? '' : ` (HTTP ${status})`}`)
     this.name = 'MediaStorageError'
   }

@@ -4,6 +4,7 @@ import { AI } from '@/lib/ai/llm'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { sanitizeMemoryPatch } from './memoryContract'
 import { buildConsultativeMemoryBlock } from '@/lib/ai/consultative/memoryBlock'
+import { PERSON_EXTRACTION_SCHEMA, PERSON_EXTRACTION_RULES, personLine } from './personFacts'
 
 export interface UserMemory {
   location_base: string | null   // residence / usual area — where the user lives or usually is
@@ -176,6 +177,8 @@ export function buildMemoryBlock(
     if (prefs.avoid && prefs.avoid.length > 0)
       prefParts.push(`khong thich: ${prefs.avoid.join(', ')}`)
     if (prefParts.length > 0) parts.push(`- So thich: ${prefParts.join('; ')}`)
+    const who = personLine(prefs)
+    if (who) parts.push(who)
 
     const budgets = memory.budget || {}
     const budgetParts: string[] = []
@@ -236,6 +239,8 @@ export async function extractMemoryFromConversation(
      * whole thread each turn re-bills the same text and re-emits old one-off subjects as "new".
      */
     lastUserOnly?: boolean
+    /** CONSULT_PERSON_MODEL (personFacts.ts): also extract what the user says about THEMSELVES (work, projects, goals). Off, the prompt is byte-identical. */
+    person?: boolean
   } = {},
 ): Promise<Partial<UserMemory>> {
   try {
@@ -282,7 +287,7 @@ Tra ve JSON (chi cac truong co du lieu RO RANG tu user):
     "spa": ["loai spa/massage thich"],
     "entertainment": ["hoat dong giai tri ua thich"],
     "shopping": ["thuong hieu/loai hang hay mua"],
-    "avoid": ["thu khong thich/di ung/kieng"]
+    "avoid": ["thu khong thich/di ung/kieng"]${opts.person ? PERSON_EXTRACTION_SCHEMA : ''}
   },
   "budget": {
     "food": {"min": 0, "max": 200000},
@@ -295,7 +300,7 @@ Tra ve JSON (chi cac truong co du lieu RO RANG tu user):
 Quy tac:
 - Chi dien truong neu co bang chung RO RANG tu user (khong suy doan)
 - location_base va discovery_city LA HAI KHAI NIEM KHAC NHAU: noi song KHAC noi muon di choi. TUYET DOI khong suy ra cai nay tu cai kia. Cau ve du lich/tim dich vu o mot noi -> discovery_city, KHONG dong vao location_base. Cau ve noi song -> location_base, KHONG dong vao discovery_city.
-- history: ghi chu de chinh cua cuoc hoi thoai NAY, khong copy tu memory cu
+- history: ghi chu de chinh cua cuoc hoi thoai NAY, khong copy tu memory cu${opts.person ? PERSON_EXTRACTION_RULES : ''}
 - Neu khong co thong tin gi moi, tra ve {}
 - Chi tra ve JSON, khong giai thich.`,
     })

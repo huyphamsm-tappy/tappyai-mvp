@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getAgeEligibility } from '@/lib/account/ageEligibility'
+import { safeReturnTo } from '@/lib/auth/returnTo'
 import { AgeCheckView } from './AgeCheckView'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,7 +72,7 @@ export default async function AgeCheckPage({
   // Same restriction the auth callback and the view both apply: a relative path
   // only, so a crafted link cannot turn either redirect below into an open one.
   const rawNext = Array.isArray(searchParams?.next) ? searchParams?.next[0] : searchParams?.next
-  const next = rawNext && rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/'
+  const next = safeReturnTo(rawNext)
 
   const supabase = createClient()
   const {

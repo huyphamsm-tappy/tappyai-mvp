@@ -1,6 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { runChatMediaRetention, CHAT_MEDIA_RETENTION_DAYS, ORPHAN_MIN_AGE_HOURS } from './mediaRetention'
+import { runChatMediaRetention as run, chatMediaRetentionDays, ORPHAN_MIN_AGE_HOURS } from './mediaRetention'
+
+// the expiry is OFF by default (owner 21/11/2026); the cases below that exercise it pass 30 days explicitly
+const runChatMediaRetention = (db: SupabaseClient, now: Date, days: number | null = 30) => run(db, now, days)
 
 /**
  * The retention job: pictures older than the period are removed from the private bucket and their message is stamped; unused uploads are removed; the object goes BEFORE
@@ -36,11 +39,28 @@ function fakeDb(o: Opts = {}) {
 }
 const NOW = new Date('2026-12-01T00:00:00.000Z')
 
-describe('runChatMediaRetention', () => {
+describe('the expiry is off by default (owner 21/11/2026: pictures stay, like Messenger and TikTok; the Zalo expiry is the complaint)', () => {
+  it('no setting = no expiry; a whole number of days of 1 or more turns it on; anything else is off', () => {
+    expect(chatMediaRetentionDays({})).toBeNull()
+    expect(chatMediaRetentionDays({ CHAT_MEDIA_RETENTION_DAYS: '' })).toBeNull()
+    expect(chatMediaRetentionDays({ CHAT_MEDIA_RETENTION_DAYS: '0' })).toBeNull()
+    expect(chatMediaRetentionDays({ CHAT_MEDIA_RETENTION_DAYS: 'abc' })).toBeNull()
+    expect(chatMediaRetentionDays({ CHAT_MEDIA_RETENTION_DAYS: '-3' })).toBeNull()
+    expect(chatMediaRetentionDays({ CHAT_MEDIA_RETENTION_DAYS: '90' })).toBe(90)
+  })
+  it('with no period the job removes and stamps NO picture of a message; unused uploads are still cleaned', async () => {
+    const { db, calls } = fakeDb({ due: [[{ id: 'm1', media_path: 't/u/a.webp' }]], orphans: [[{ name: 't/u/o1.webp' }]] })
+    const r = await runChatMediaRetention(db, NOW, null)
+    expect(r).toEqual({ expired: 0, orphans: 1 })
+    expect(calls.stamped).toEqual([])
+    expect(calls.removed.flat()).toEqual(['t/u/o1.webp'])
+  })
+})
+
+describe('runChatMediaRetention (expiry on, 30 days)', () => {
   it('expires pictures older than the period: the cutoff is exactly the retention period before now', async () => {
     const { db, calls } = fakeDb()
     await runChatMediaRetention(db, NOW)
-    expect(CHAT_MEDIA_RETENTION_DAYS).toBe(30)
     expect(calls.cutoff).toBe('2026-11-01T00:00:00.000Z')
   })
 

@@ -4,9 +4,13 @@
 // New admin modules/screens should add keys here (or a sibling file merged
 // into `vi`/`en` below) rather than hardcoding strings in components.
 import { deskVi, deskEn } from './moderationDesk'
+import { videoVi, videoEn } from './videoModeration'
+import { takedownVi, takedownEn } from './takedowns'
 
 export const vi: Record<string, string> = {
   ...deskVi,
+  ...videoVi,
+  ...takedownVi,
   // Shell / navigation
   'admin.shell.brand': 'TappyAI',
   // Renders beside the brand as "TappyAI Controller" (sidebar + mobile header).
@@ -711,6 +715,8 @@ export const vi: Record<string, string> = {
 
 export const en: Record<string, string> = {
   ...deskEn,
+  ...videoEn,
+  ...takedownEn,
   // Shell / navigation
   'admin.shell.brand': 'TappyAI',
   // Renders beside the brand as "TappyAI Controller" (sidebar + mobile header).

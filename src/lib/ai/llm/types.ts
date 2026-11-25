@@ -61,8 +61,9 @@ export interface AIGenerateOptions {
   /**
    * 03/11 (Deep Research): serve THIS call with Claude Haiku 5.5 when the Anthropic key is present; otherwise the role's own model. Read by
    * `AI.extract` (the research notes) and by `AI.stream` (the report writer). Unset = unchanged.
+   * 'sonnet55' (R13 Advanced Research Lead): Claude Sonnet 5.5, same rule.
    */
-  claudeModel?: 'haiku55'
+  claudeModel?: 'haiku55' | 'sonnet55'
   /**
    * The call is made by the Phase 8 agent runtime (src/lib/ai/agent/runtime). Only read by the registry under AGENT_MODEL=haiku55,
    * where it routes the runtime's non-`agent` role (its final `plan` step) to the agent model too. No effect otherwise.
@@ -111,9 +112,9 @@ export interface AIStreamOptions extends AIGenerateOptions {
   autoThink?: { on: boolean; effort: ReasoningEffort }
   /**
    * 03/11 (Deep Research's report writer): serve THIS streamed call with Claude Haiku 5.5 (same list price as Luna, a better long-form writer on the
-   * same findings in the 03/11 writer swap) when the Anthropic key is present; otherwise the role's own model. Unset = unchanged.
+   * same findings in the 03/11 writer swap) when the Anthropic key is present; otherwise the role's own model. Unset = unchanged. 'sonnet55': R13 Advanced Research Lead (Claude Sonnet 5.5).
    */
-  claudeModel?: 'haiku55'
+  claudeModel?: 'haiku55' | 'sonnet55'
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "khách sạn Nha Trang cho 2 người từ 28 đến 30 tháng 11, gần biển, dưới 1,5 triệu một đêm",
+        "done": true,
+        "seconds": 92,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 2453,
+        "head": "Mình tìm được 2 lựa chọn dưới 1.500.000đ/đêm cho 2 người, từ 28 đến 30/11/2026. Tuy nhiên, dữ liệu tra cứu chưa xác nhận khoảng cách đi bộ ra biển, nên chưa thể đảm bảo chúng đáp ứng đúng tiêu chí “gần biển”.\n1.THÔNG TIN ĐỂ CHỌN\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nKhách sạn Sophia Central Nha Trang by HT\n\nĐiểm Maps khớp gần tên khách sạn Agoda\n\nĐịa chỉ Maps: Sophia central nha trang hotel, 35 Trần Quang Khải.\nĐánh giá Maps: 3,9⭐ từ 127 đánh giá.\n\nNguồn: Google Maps\n\nKhách sạn Prime New Nha Trang\n\nMaps ghi tên là Prime New Hotel\n\nĐịa chỉ Maps: Prime New Hotel, 22 Tôn Đản.\nĐánh giá Maps: 3,7⭐ từ 668 đánh giá.\n\nNguồn: Google Maps\n\n\tSophia Central by HT\tPrime New Nha Trang\nGiá Agoda ",
+        "tail": " review trên YouTube\nA\nT\nB\nNguồn · 5\n🔖 Lưu địa điểm\n\nMột số gợi ý khác cho bạn:\n\nGiữ mức dưới 1,5 triệu và cần gần biển xác nhận\nƯu tiên gần biển, có thể cao hơn ngân sách\nChọn Sophia Central rẻ nhất",
+        "links": 31,
+        "hosts": {
+          "agoda.com": 4,
+          "go.isclix.com": 5,
+          "maps.google.com": 5,
+          "all.accor.com": 1,
+          "tiktok.com": 2,
+          "youtube.com": 4,
+          "facebook.com": 1,
+          "tappyai.com": 3,
+          "booking.com": 3,
+          "vn.trip.com": 2,
+          "havanahotel.vn": 1
+        },
+        "sourcesChip": "A T B Nguồn · 5",
+        "tables": 1,
+        "images": 6,
+        "actionKinds": [
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "booking:Tìm phòng trên Booki",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 30,
+        "path": "/chat/739cc550-c840-4edb-9e28-40126e36ab60",
+        "proNote": 0
+      }
+    ]
+  }
+]

@@ -92,7 +92,25 @@ export interface DocMediaResult {
   trace: Record<string, unknown>
 }
 
-const wikiLangOf = (u: TurnUnderstanding) => (/^vi\b/i.test(u.reply_language) ? 'vi' : 'en')
+export const wikiLangOf = (u: Pick<TurnUnderstanding, 'reply_language'>) => (/^vi\b/i.test(u.reply_language) ? 'vi' : 'en')
+
+/**
+ * The Wikipedia article of a subject for a reader of `lang`. The lookup falls back to the English article when the Vietnamese one has another name; for a Vietnamese reader the SAME article in Vietnamese
+ * (its interlanguage link) is better, and when there is none the English one stays. Never throws.
+ */
+export async function localizedWikiEntity(
+  name: string, lang: string,
+  wiki: (subject: string, lang: string) => Promise<MediaEntity | null>,
+  langlink: (title: string, from: 'vi' | 'en', to: 'vi' | 'en') => Promise<string | null>,
+): Promise<MediaEntity | null> {
+  const a = await wiki(name, lang).catch(() => null)
+  if (a && lang === 'vi' && /^https:\/\/en\.wikipedia\.org\//.test(a.href ?? '')) {
+    const viTitle = await langlink(a.name, 'en', 'vi').catch(() => null)
+    const vi = viTitle ? await wiki(viTitle, 'vi').catch(() => null) : null
+    if (vi && /^https:\/\/vi\.wikipedia\.org\//.test(vi.href ?? '')) return vi
+  }
+  return a
+}
 
 export async function resolveDocMedia(
   u: TurnUnderstanding,
@@ -128,8 +146,8 @@ export async function resolveDocMedia(
     return !!en && sameSubject(en, wikiTitle)
   }
   const bySense = async (e: TurnUnderstanding['entities'][number]): Promise<MediaEntity | null> => {
-    const a = await wiki(e.name, lang).catch(() => null)
-    if (a && (await sameSense(a, e.wiki_title))) return a
+    const a = await localizedWikiEntity(e.name, lang, wiki, langlink)
+    if (a &&(await sameSense(a, e.wiki_title))) return a
     if (!e.wiki_title) return null
     const local = lang === 'vi' ? await langlink(e.wiki_title, 'en', 'vi').catch(() => null) : null
     const b = local ? await wiki(local, 'vi').catch(() => null) : null
@@ -141,13 +159,23 @@ export async function resolveDocMedia(
 
   const entitiesP = (async (): Promise<MediaEntity[]> => {
     if (o.skipEntities) return []
-    if (o.subjectIntents && !o.subjectIntents.has(u.intent)) return []
+    // 18/11 (UAT 60, question 16 "cách nấu bún riêu cua": a recipe with no picture of the dish): a how-to is ABOUT the dish it teaches to cook, whatever the shape of the steps.
+    // Only a dish: a how-to that merely names a place, a tool or a concept stays without a card, as before.
+    const taught = u.intent === 'how_to' ? u.entities.filter(e => e.type === 'dish') : []
+    const outOfIntent = !!o.subjectIntents && !o.subjectIntents.has(u.intent)
+    if (outOfIntent && !taught.length) return []
     // A list answer illustrates its items; its subject card would only repeat the question. A comparison shows its subjects side by side.
-    if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest' || u.answer_shape === 'steps') return []
-    const wanted = u.entities.filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
+    if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest' || (u.answer_shape === 'steps' && !taught.length)) return []
+    const wanted = (taught.length ? taught : u.entities).filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
+    // 15/11 (owner: "hỏi hai chủ thể trở lên là lấy layout so sánh mà không hiểu câu hỏi"): side-by-side cards are the layout of a COMPARISON. A lookup that merely mentions two things
+    // (two oil benchmarks, a person and his company) is answered in its own shape; the understanding of the question decides, not the count of names.
+    if (wanted.length > 1 && u.answer_shape !== 'comparison') return []
     const found = await Promise.all(wanted.map(bySense))
     const seen = new Set<string>()
-    const cards = found.filter((x): x is MediaEntity => !!x && isAllowedMediaPage(x.href) && !seen.has(x.href) && !!seen.add(x.href))
+    // 16/11 (UAT 60, question 39: an English "REST is a software architectural style…" card in a Vietnamese answer): a card's words are the article's own, so a Vietnamese reader gets a card only when
+    // there is a Vietnamese article; an English-only subject gets none (the answer's own text and, where the model asked for them, its pictures carry it).
+    const inReadersLanguage = (x: MediaEntity) => !(lang === 'vi' && /^https:\/\/en\.wikipedia\.org\//.test(x.href ?? ''))
+    const cards = found.filter((x): x is MediaEntity => !!x && isAllowedMediaPage(x.href) && inReadersLanguage(x) && !seen.has(x.href) && !!seen.add(x.href))
     const confirm = deps.confirmSense ?? (deps.wiki ? null : confirmSenseWithModel)
     if (!o.confirmSense || !confirm || !cards.length) return cards
     const same = await confirm(answer, cards).catch(() => null)
@@ -193,4 +221,25 @@ export async function resolveDocMedia(
   const block: MediaBlock | null = entities.length === 1 ? { v: 1, kind: 'entity', entity: entities[0] } : entities.length > 1 ? { v: 1, kind: 'entities', entities } : null
   const annotation: DocMediaAnnotation | null = items.length ? { kind: DOC_MEDIA_KIND, v: 1, items } : null
   return { block, annotation, webImages, trace }
+}
+
+/**
+ * Latency, quality-neutral (21/11/2026): the subject cards depend only on the UNDERSTANDING of the question, which settles while the answer is still being
+ * written — yet they used to be looked up after the answer ended (1.6–2.6 s of tail measured on UAT). This starts exactly the lookups `resolveDocMedia` will make
+ * for those entities (same names, same language, the memoised Wikipedia helpers) so they are already in flight, or finished, when the answer ends. It decides
+ * nothing: the cards, the sense checks and every guard run afterwards as before, on the same data. Fire-and-forget; never throws; a no-op for the shapes that
+ * get no subject card.
+ */
+export function prewarmDocMedia(u: TurnUnderstanding): void {
+  try {
+    if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest') return
+    const taught = u.intent === 'how_to' ? u.entities.filter(e => e.type === 'dish') : []
+    if (u.answer_shape === 'steps' && !taught.length) return
+    const wanted = (taught.length ? taught : u.entities).filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
+    if (!wanted.length || (wanted.length > 1 && u.answer_shape !== 'comparison')) return
+    const lang = wikiLangOf(u)
+    const wiki = (s: string, l: string) => fetchWikiEntity(s, l)
+    const langlink = (t: string, f: 'vi' | 'en', to: 'vi' | 'en') => wikiLanglink(t, f, to)
+    for (const e of wanted) void localizedWikiEntity(e.name, lang, wiki, langlink).catch(() => null)
+  } catch { /* a warm-up never breaks a turn */ }
 }

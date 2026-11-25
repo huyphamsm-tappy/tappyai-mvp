@@ -52,16 +52,17 @@ describe('payment mail', () => {
     expect(c.subject).toContain('Coco')
     expect(c.text).toContain('175.000đ')
     expect(c.text).toContain('27/10/2026')
-    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 10 lượt Nghiên cứu sâu mỗi tháng.')
+    // owner 20/11/2026: ONE allowance, Coco = 15 Deep Research reports a month (no kinds named)
+    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 15 lượt Nghiên cứu sâu mỗi tháng.')
     expect(c.text).not.toMatch(/câu hỏi AI mỗi ngày/)
   })
 
-  it('a Tappy (Promax) plan mail states 50 Deep Research a month', () => {
+  it('a Tappy (Promax) plan mail states 30 Deep Research reports a month (owner 20/11/2026)', () => {
     // Owner 01/11/2026: new plan catalog
     const c = paymentMailContent({ ...m, plan: 'promax1m', amountVnd: 225000 })
     expect(c.subject).toContain('Tappy')
     expect(c.text).toContain('225.000đ')
-    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 50 lượt Nghiên cứu sâu mỗi tháng.')
+    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 30 lượt Nghiên cứu sâu mỗi tháng.')
   })
 
   it('is skipped without Brevo settings, and never throws', async () => {
@@ -83,6 +84,15 @@ describe('sepayTransferType (P8-17: fail closed)', () => {
     expect(sepayTransferType({ transferType: 'in', accountNumber: null }, '0123')).toBe('other_account')
     expect(sepayTransferType({ transferType: 'in', accountNumber: '0123' }, null)).toBe('other_account')
     expect(sepayTransferType({ transferType: 'out', accountNumber: '0123' }, '0123')).toBe('out')
+  })
+
+  it('a BIDV virtual account: the VA in subAccount counts when the VA is what we configured; an unrelated VA or empty strings never do', () => {
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '8960520881', subAccount: '96247HUYPHAM1985' }, '96247HUYPHAM1985')).toBe('in')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '8960520881', subAccount: '96247HUYPHAM1985' }, '8960520881')).toBe('in')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '8960520881', subAccount: 'OTHERVA' }, '96247HUYPHAM1985')).toBe('other_account')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: '', subAccount: '' }, '')).toBe('other_account')
+    expect(sepayTransferType({ transferType: 'in', accountNumber: null, subAccount: null }, '96247HUYPHAM1985')).toBe('other_account')
+    expect(parseSepayTransaction({ id: 1, transferType: 'in', transferAmount: 25000, accountNumber: '8960520881', subAccount: '96247HUYPHAM1985', code: 'TAPPYF4U2L6' })?.subAccount).toBe('96247HUYPHAM1985')
   })
 })
 

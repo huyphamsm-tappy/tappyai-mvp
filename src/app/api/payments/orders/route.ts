@@ -6,16 +6,17 @@
 // database creates the order atomically: code TAPPY + 6, 15-minute expiry, at
 // most 3 live pending orders per user. Price and length come from PLAN_CONFIG —
 // the client only names the plan. The plan is granted ONLY by the SePay webhook.
-// SUBSCRIPTIONS (p8/subscriptions, security session): with SUBSCRIPTIONS_ENABLED an account with an
-// active plan gets 409; after it ends it buys again (web plans are one payment per period).
+// SUBSCRIPTIONS (p8/subscriptions, security session): with SUBSCRIPTIONS_ENABLED an account with a
+// running plan can top it up with the same kind of web plan (owner 20/11: the days add up); a store plan,
+// the one-time trial or another kind gets 409. Web plans are one payment per period, no auto-renew.
 
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requirePayer } from '@/lib/payments/authGuard'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
-import { mySubscription, type SubscriptionRowForState } from '@/lib/payments/subscriptionState'
+import { mySubscription, canBuyPlan, type SubscriptionRowForState } from '@/lib/payments/subscriptionState'
 import { MY_PLAN_COLUMNS } from '@/lib/payments/myPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -26,7 +27,7 @@ export const dynamic = 'force-dynamic'
 
 // Only the plans on sale (owner 01/11/2026: Milo and Sunny are no longer sold).
 const CreateSchema = z.object({ plan: z.enum(SALE_PLAN_IDS as unknown as [PaidPlanId, ...PaidPlanId[]]) })
-const ORDER_COLUMNS = 'id, plan, amount_vnd, code, status, expires_at, paid_at, created_at'
+const ORDER_COLUMNS = 'id, plan, amount_vnd, code, status, expires_at, paid_at, created_at, received_vnd, bonus_seconds'
 
 interface OrderRow {
   id: string
@@ -36,6 +37,10 @@ interface OrderRow {
   status: 'pending' | 'paid' | 'expired' | 'mismatch'
   expires_at: string
   paid_at: string | null
+  /** Everything received on this order so far (a short transfer stays here until topped up). */
+  received_vnd?: number | null
+  /** Extra time (seconds) given for money above the price; 0 when the transfer was exact. */
+  bonus_seconds?: number | null
 }
 
 /** Pending past its 15 minutes reads as expired (a late transfer is still honoured by the webhook). */
@@ -52,7 +57,10 @@ export async function POST(req: Request) {
   if (!bank) {
     return NextResponse.json({ error: 'payments_unavailable', message: serverMessage('payments.unavailable', locale) }, { status: 503 })
   }
-  if (!(await distributedRateLimit(`payments-orders:${auth.user.id}`, 10, 10 * 60_000)).ok) {
+  // 21/11/2026 (found by a real UAT run): the fail-closed distributedRateLimit refuses EVERY request when no shared
+  // store is configured (local UAT, a preview), so nobody could create an order. publicRateLimit is the same cap
+  // (10 per 10 minutes per account): no store = in-process limiter; store configured but silent = refuse.
+  if (!(await publicRateLimit(`payments-orders:${auth.user.id}`, 10, 10 * 60_000)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('payments.slowDown', locale) }, { status: 429 })
   }
   const parsed = CreateSchema.safeParse(await req.json().catch(() => null))
@@ -68,8 +76,9 @@ export async function POST(req: Request) {
     const { data: row } = await auth.supabase.from('subscriptions')
       .select(MY_PLAN_COLUMNS).eq('user_id', auth.user.id).maybeSingle()
     const mine = mySubscription(row as SubscriptionRowForState | null)
-    if (mine.state === 'ACTIVE') {
-      const key = mine.manage ? 'payments.manageInStore' : 'payments.alreadyActive'
+    // owner 20/11: a running WEB plan is topped up with the same kind of plan and the days add up (the database adds the time); everything else is refused with the reason
+    if (mine.state === 'ACTIVE' && !canBuyPlan(mine, plan.id)) {
+      const key = mine.manage ? 'payments.manageInStore' : mine.canBuy ? 'payments.stackSameKind' : 'payments.alreadyActive'
       return NextResponse.json({ error: 'already_active', message: serverMessage(key, locale) }, { status: 409 })
     }
   }
@@ -125,5 +134,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'not_found', message: serverMessage('payments.failed', requestLocale(req)) }, { status: 404 })
   }
   const o = data as OrderRow
-  return NextResponse.json({ order: { id: o.id, code: o.code, plan: o.plan, amountVnd: o.amount_vnd, status: publicStatus(o), expiresAt: o.expires_at, paidAt: o.paid_at } })
+  return NextResponse.json({ order: { id: o.id, code: o.code, plan: o.plan, amountVnd: o.amount_vnd, status: publicStatus(o), expiresAt: o.expires_at, paidAt: o.paid_at, receivedVnd: o.received_vnd ?? 0, bonusSeconds: o.bonus_seconds ?? 0 } })
 }

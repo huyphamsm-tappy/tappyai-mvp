@@ -9,8 +9,10 @@ import { CATEGORIES } from '@/lib/utils'
 import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { apiFetch } from '@/lib/account/ageGateClient'
+import { HiddenInWorkspace, useInChatWorkspace } from '@/components/chat/workspace/ChatWorkspaceContext'
 
 function ChatPageContent() {
+  const inWorkspace = useInChatWorkspace()
   const searchParams = useSearchParams()
   const router = useRouter()
   const { t } = useTranslation()
@@ -46,7 +48,7 @@ function ChatPageContent() {
   // the same product instead of a light page reached from a dark one. No behaviour changes: the
   // marker contract, the action boundary and the honesty rule are untouched.
   return (
-    <div data-chat-page className="v3-theme dark flex flex-col h-dvh">
+    <div data-chat-page className={`v3-theme dark flex flex-col h-dvh${inWorkspace ? ' lg:h-full' : ''}`}>
       {/*
         * 🚨 THE APPROVED OTTER, NOT A GENERIC EMOJI.
         *
@@ -60,16 +62,18 @@ function ChatPageContent() {
       {/* Phase 7 §13: Back pops the in-app history; Home is only the fallback. A fixed
         * `backHref="/"` sent Back to Home even when the user arrived from
         * /profile/history or from a notification. */}
-      <Header
-        showBack
-        backFallbackHref="/"
-        title={catInfo ? (
-          <span className="inline-flex items-center justify-center gap-2">
-            <TappyMascot pose={catInfo.id} size={24} alt="" />
-            {t(`tag.${catInfo.id}`)}
-          </span>
-        ) : 'TappyAI'}
-      />
+      <HiddenInWorkspace>
+        <Header
+          showBack
+          backFallbackHref="/"
+          title={catInfo ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <TappyMascot pose={catInfo.id} size={24} alt="" />
+              {t(`tag.${catInfo.id}`)}
+            </span>
+          ) : 'TappyAI'}
+        />
+      </HiddenInWorkspace>
       <div className="flex-1 overflow-hidden">
         <ChatInterface
           initialMessage={query}
@@ -78,8 +82,10 @@ function ChatPageContent() {
           onSave={handleSave}
         />
       </div>
-      <div className="h-16" />
-      <BottomNav />
+      <HiddenInWorkspace>
+        <div className="h-16" />
+        <BottomNav />
+      </HiddenInWorkspace>
     </div>
   )
 }

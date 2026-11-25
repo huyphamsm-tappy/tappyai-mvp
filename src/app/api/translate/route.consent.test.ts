@@ -32,6 +32,7 @@ vi.mock('@/lib/supabase/admin', () => ({
 
 vi.mock('@/lib/security/publicRateLimit', () => ({
   publicDailyRateLimit: async () => ({ ok: true }),
+  publicRateLimit: async () => ({ ok: true }),
 }))
 
 const post = async (body: unknown) => {

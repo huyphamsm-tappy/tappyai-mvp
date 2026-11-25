@@ -46,13 +46,23 @@ const MESSAGES = {
     vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
     en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
+  // R13 cost gate (10/11/2026): the account's day of AI work reached the safety ceiling. A graceful sentence with no figure; resets at 00:00 Vietnam time.
+  'chat.dailyCostLimit': {
+    vi: 'Hôm nay tài khoản của bạn đã dùng nhiều lượt hỏi AI hơn mức an toàn của một ngày. Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "Your account has reached today's safety ceiling for AI use. See you again tomorrow!",
+  },
+  'chat.costGateUnavailable': {
+    vi: 'Hệ thống đang kiểm tra hạn mức nên chưa trả lời được lúc này. Bạn thử lại sau ít phút nhé.',
+    en: 'The usage check is not responding, so Tappy cannot answer right now. Please try again in a few minutes.',
+  },
   // P7 closeout (02/10): a PAID plan that used its daily allowance — no upgrade nag, it resets at 00:00 Vietnam time.
   // Owner 01/11/2026: paid plans have no question limit; this is only the hidden anti-abuse ceiling (PAID_DAILY_CEILING).
   'chat.planLimit': {
     vi: 'Hôm nay bạn đã hỏi Tappy tới {n} câu với gói {plan} - mức trần để giữ dịch vụ ổn định cho mọi người. Lượt hỏi được làm mới lúc 00:00 (giờ Việt Nam).',
     en: "You've asked Tappy {n} questions today on the {plan} plan - a ceiling that keeps the service steady for everyone. It refreshes at 00:00 (Vietnam time).",
   },
-  // Owner 01/11/2026: Deep Research runs per month by plan (Coco 10, Tappy 69); the person can still use "Suy nghĩ".
+  // Owner 20/11/2026: ONE monthly allowance of Deep Research reports (Coco 15, Tappy 30). With none left the chat runs the question as Thinking instead of refusing it, so this refusal is only the race
+  // fallback (two reports started at once on the last unit); the person can still use "Suy nghĩ".
   'chat.deepResearchLimit': {
     vi: 'Bạn đã dùng hết {n} lượt Nghiên cứu sâu của tháng này. Bạn vẫn có thể dùng chế độ "Suy nghĩ" để có câu trả lời kỹ; lượt Nghiên cứu sâu được làm mới vào đầu tháng sau.',
     en: 'You have used all {n} Deep Research runs for this month. You can still use "Thinking" for a thorough answer; Deep Research runs refresh at the start of next month.',
@@ -130,6 +140,12 @@ const MESSAGES = {
   'age.invalidDate': {
     vi: 'Ngày sinh không hợp lệ.',
     en: 'That date of birth is not valid.',
+  },
+  // The one-button age confirmation could not be stored (database error, or the migration is not applied yet).
+  // Nobody is admitted on this answer; the screen stays and asks again.
+  'age.confirmUnavailable': {
+    vi: 'Chưa thể lưu xác nhận lúc này. Vui lòng thử lại sau ít phút.',
+    en: "We couldn't save your confirmation right now. Please try again in a few minutes.",
   },
 
   // Validation
@@ -267,6 +283,17 @@ const MESSAGES = {
   'media.imageTooLarge': { vi: 'File ảnh phải nhỏ hơn {n}MB', en: 'Images must be smaller than {n}MB' },
   'media.videoTooLongSec': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
   'media.noFile': { vi: 'Không có file', en: 'No file was provided' },
+  // Explore video (publishing + delivery): the video of a post that is not ready, not yours, or cannot be played right now.
+  'video.notAvailable': { vi: 'Video này hiện không xem được.', en: 'This video is not available right now.' },
+  'video.notReady': { vi: 'Video chưa sẵn sàng để đăng. Bạn đợi một chút rồi thử lại nhé.', en: "Your video isn't ready to post yet. Please try again in a moment." },
+  'video.deliveryUnavailable': { vi: 'Hiện chưa đăng được video. Vui lòng thử lại sau.', en: "Videos can't be posted right now. Please try again later." },
+  // Explore video (text overlay + download).
+  'video.invalidOverlay': { vi: 'Nội dung chữ trên video chưa hợp lệ. Bạn kiểm tra lại rồi lưu nhé.', en: "The text on your video isn't valid. Please check it and save again." },
+  'video.overlayTooLarge': { vi: 'Chữ trên video quá dài hoặc quá nhiều lớp.', en: 'The text on your video is too long or has too many layers.' },
+  'video.assetDeleted': { vi: 'Video này đã bị xoá.', en: 'This video has been deleted.' },
+  'video.versionConflict': { vi: 'Chữ trên video vừa được cập nhật ở nơi khác. Bạn tải lại rồi sửa tiếp nhé.', en: 'The text on this video was just updated somewhere else. Reload and continue editing.' },
+  'video.consentRequired': { vi: 'Bạn cần đồng ý điều kiện đăng clip trước khi đăng. Nếu không đồng ý, bạn vẫn xem được video nhưng không đăng được clip.', en: 'You need to accept the clip conditions before posting. If you decline you can still watch videos, but you cannot post a clip.' },
+  'video.downloadNotReady': { vi: 'Bản tải về chưa sẵn sàng. Bạn đợi một chút rồi thử lại nhé.', en: "The download isn't ready yet. Please try again in a moment." },
   'media.uploadProtocol': { vi: 'Giao thức tải lên không còn được hỗ trợ', en: 'That upload method is no longer supported' },
 
   // Music, remaining cases
@@ -306,6 +333,10 @@ const MESSAGES = {
   'comment.postFailed': { vi: 'Không thể gửi bình luận', en: "Couldn't post your comment" },
   'comment.length': { vi: 'Bình luận phải từ 1–300 ký tự', en: 'A comment must be 1–300 characters' },
   'comment.tooFast': { vi: 'Bạn bình luận quá nhanh, thử lại sau giây lát.', en: "You're commenting too fast — please try again in a moment." },
+  // Automatic moderation (src/lib/safety/autoModeration). The refusal never names the rule or the word that matched: that would teach how to get around it.
+  'moderation.blocked': { vi: 'Nội dung này có thể vi phạm quy định pháp luật Việt Nam và Nguyên tắc cộng đồng của Tappy nên chưa được đăng. Bạn hãy chỉnh sửa rồi thử lại.', en: "This content may break Vietnamese law and Tappy's Community Guidelines, so it can't be posted. Please edit it and try again." },
+  'moderation.unavailable': { vi: 'Hệ thống kiểm duyệt đang bận nên chưa đăng được nội dung này. Bạn thử lại sau ít phút nhé.', en: "The safety check is busy, so this can't be posted right now. Please try again in a few minutes." },
+  'moderation.locked': { vi: 'Bạn đã bị từ chối nhiều lần trong hôm nay nên tạm thời chưa đăng được nội dung mới. Hãy thử lại vào ngày mai.', en: "Several of your posts were declined today, so you can't post new content for now. Please try again tomorrow." },
   'reaction.invalid': { vi: 'Reaction không hợp lệ', en: 'That reaction is not valid' },
   'reaction.failed': { vi: 'Không thể react', en: "Couldn't react" },
   'reaction.removeFailed': { vi: 'Không thể xóa reaction', en: "Couldn't remove the reaction" },
@@ -318,6 +349,9 @@ const MESSAGES = {
   // Conversations
   'conversation.tooMany': { vi: 'Quá nhiều tin nhắn', en: 'Too many messages' },
   'conversation.tooLarge': { vi: 'Nội dung quá lớn', en: 'That content is too large' },
+  'chatProject.tooMany': { vi: 'Bạn đã có tối đa 50 dự án. Hãy xóa bớt dự án cũ rồi tạo mới.', en: 'You already have 50 projects. Delete an old one to create a new one.' },
+  'chatProject.notFound': { vi: 'Không tìm thấy dự án này.', en: 'That project was not found.' },
+  'chatProject.notYours': { vi: 'Dự án này không thuộc tài khoản của bạn.', en: 'That project does not belong to your account.' },
 
   // Subscription management
   'subscription.portalFailed': { vi: 'Không mở được trang quản lý đăng ký lúc này.', en: "Couldn't open subscription management right now." },
@@ -382,6 +416,10 @@ const MESSAGES = {
   'payments.alreadyActive': {
     vi: 'Bạn đang có gói còn hạn. Khi gói hết hạn, bạn có thể mua lại.',
     en: 'You already have an active plan. You can buy again once it ends.',
+  },
+  'payments.stackSameKind': {
+    vi: 'Bạn đang có gói còn hạn. Bạn có thể mua thêm gói cùng loại để cộng dồn ngày, hoặc nâng cấp lên gói cao hơn; gói thấp hơn và gói dùng thử chỉ mua được khi gói hiện tại hết hạn.',
+    en: 'You already have an active plan. You can buy the same kind of plan to add days, or upgrade to a higher plan; a lower plan and the trial can be bought once this one ends.',
   },
   'payments.pipUsed': {
     vi: 'Bạn đã sử dụng gói Pip. Gói dùng thử này chỉ có thể mua một lần cho mỗi tài khoản.',

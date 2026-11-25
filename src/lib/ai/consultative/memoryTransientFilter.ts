@@ -11,6 +11,7 @@
 import { normalizeVN } from '../intent'
 import { DESTINATION_SIGNAL } from '../memoryGate'
 import type { UserMemory } from '@/lib/memory/memoryService'
+import { isPersonKey } from '@/lib/memory/personFacts'
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
 
@@ -20,6 +21,14 @@ const TRANSIENT_RE = /\b(toi nay|trua nay|sang nay|hom nay|dem nay|cuoi tuan nay
 const ATMOSPHERE_RE = /\b(yen tinh|chill|soi dong|lang man|view|sang trong|binh dan|re|nhe nhang|thu gian|quiet|lively|romantic|fancy|cheap|cozy|am cung)\b/
 /** The user says it is a habit. */
 const HABITUAL_RE = /\b(minh|toi|tui|em|i)\s+(?:thuong|hay|luon|thich|ua|chuong|khoai|usually|always|often|prefer|like|love)\b|\b(?:thuong|hay|luon)\s+(?:di|an|chon|uong|ghe)\b|\bbudget cua (?:minh|toi|tui|em)\b|\bngan sach cua (?:minh|toi)\b|\bthuong (?:chi|xai|tieu)\b|\bmy (?:usual|normal|typical) budget\b|\bi usually spend\b/
+
+/** Words that only count or frame a group: with the digits and number words removed, a headcount has nothing else to say. */
+const HEADCOUNT_WORDS = /\b(?:\d+|mot|hai|ba|bon|nam|sau|bay|tam|chin|muoi|vai|may|one|two|three|four|five|six|seven|eight|nine|ten|nguoi|nhom|khach|suat|pax|people|persons?|guests?|di|cung|voi|khoang|tam|cho|of|a|group|party|with|for)\b/g
+/** "6 người", "nhóm 4", "đi 2 người", "a group of 5": a number of people and nothing about who they are. */
+export function isHeadcountOnly(value: string): boolean {
+  const f = fold(value)
+  return /\d|\b(?:mot|hai|ba|bon|nam|sau|bay|tam|chin|muoi|vai|may|two|three|four|five|six|seven|eight|nine|ten)\b/.test(f) && f.replace(HEADCOUNT_WORDS, '').replace(/[^a-z]/g, '') === ''
+}
 
 export interface TransientFilterStats {
   timing_dropped: boolean
@@ -37,6 +46,8 @@ export interface TransientFilterStats {
 export function filterTransientMemory(
   extracted: Partial<UserMemory>,
   userTexts: readonly string[],
+  /** CONSULT_PERSON_MODEL: style and company are about WHO the person is, so they stay unless they only describe this outing (a transient word). Timing, per-turn budget, search subjects and districts follow the rules above. */
+  opts: { keepPerson?: boolean } = {},
 ): { memory: Partial<UserMemory>; stats: TransientFilterStats } {
   const stats: TransientFilterStats = { timing_dropped: false, budget_dropped: 0, preferences_dropped: 0 }
   const out: Partial<UserMemory> = { ...extracted }
@@ -62,12 +73,16 @@ export function filterTransientMemory(
   // the next trip plan opened with "như sở thích trước đây"). Kept only when stated as a habit.
   // Measured E5: "hội bạn 5 người" from ONE outing came back as "đi cùng 5 người như thường lệ".
   // A trait about company or taste is durable only when the user's own words say it is a habit.
-  if (typeof out.personality === 'string' && out.personality && !habitual) {
+  const keepWho = (v: string) => !!opts.keepPerson && !TRANSIENT_RE.test(fold(v))
+  if (typeof out.personality === 'string' && out.personality && !habitual && !keepWho(out.personality)) {
     delete out.personality
     stats.personality_dropped = true
   }
   // companions: "hay đi 2 người" is a habit; "2 người tối nay" is one outing.
-  if (typeof out.companions === 'string' && out.companions && !habitual) {
+  // 17/11 (UAT: "tối nay đi ăn lẩu 6 người" was kept and three later, unrelated answers planned "cho nhóm 6 người"): WHO the person goes
+  // with (a partner, the family, colleagues) is about the person; HOW MANY came to one outing is about that outing. A value that is only
+  // a headcount is never durable unless the user states it as a habit.
+  if (typeof out.companions === 'string' && out.companions && !habitual && (!keepWho(out.companions) || isHeadcountOnly(out.companions))) {
     delete out.companions
     stats.companions_dropped = true
   }
@@ -92,6 +107,8 @@ export function filterTransientMemory(
       const kept = list.filter(v => {
         const f = fold(String(v))
         if (TRANSIENT_RE.test(f)) { stats.preferences_dropped++; return false }
+        // 14/11 (personFacts.ts): work / projects / goals are who the person is, not a taste: they need no habit marker, only the flag (keepPerson) and no transient word.
+        if (isPersonKey(k)) { if (!opts.keepPerson) { stats.preferences_dropped++; return false } return true }
         if (k !== 'avoid' && !habitual) { stats.preferences_dropped++; return false }
         if (ATMOSPHERE_RE.test(f) && !habitual) { stats.preferences_dropped++; return false }
         return true

@@ -11,6 +11,8 @@ vi.mock('@supabase/ssr', () => ({
   createServerClient: () => ({
     auth: { verifyOtp },
     from: () => ({ select: () => ({ eq: () => ({ maybeSingle: profileRow }) }) }),
+    // /auth/confirm now follows /auth/callback's order (age screen first): an eligible account passes through.
+    rpc: async () => ({ data: [{ has_dob: false, age_years: null, age_band: null, corrections_used: 0, declaration: 'adult' }], error: null }),
   }),
 }))
 

@@ -4,7 +4,7 @@ import { CHAT_MEDIA_BUCKET } from './media'
 /**
  * How long the server keeps a Messenger picture, and the job that enforces it (owner 04/11/2026: "coi Zalo làm thế nào chúng ta làm vậy").
  *
- * The server keeps a picture for CHAT_MEDIA_RETENTION_DAYS, then removes the object from the private bucket and stamps the message (media_expired_at). The message stays in the
+ * When an expiry period is configured (see chatMediaRetentionDays), the server keeps a picture for that long, then removes the object from the private bucket and stamps the message (media_expired_at). The message stays in the
  * history; its picture shows "expired" unless the device or browser that saw it still holds its own copy (src/lib/messaging/photoCache.ts). The same job also removes the
  * objects no message refers to (a picture uploaded and never sent) once they are ORPHAN_MIN_AGE_HOURS old. Neither list is derived from user input.
  *
@@ -13,7 +13,16 @@ import { CHAT_MEDIA_BUCKET } from './media'
  * Failure rules: an object is removed BEFORE its message is stamped, so a failure in between is retried and never loses track of a file; any storage or read failure throws
  * (the cron answers 500 and the next run retries). A database that does not have migration 20261110 yet (42703 column / 42883 function) is "nothing to do", not an error.
  */
-export const CHAT_MEDIA_RETENTION_DAYS = 30
+/**
+ * 21/11/2026 (owner): pictures are NO LONGER removed after 30 days. Messenger and TikTok keep what you send on their servers, and Zalo's expiry is exactly what its users complain about (photos
+ * lost after a while or when moving to a new phone). A Tappy picture now stays on the server with its conversation. The expiry job still exists and is OFF by default: set
+ * CHAT_MEDIA_RETENTION_DAYS (a whole number of days, 1 or more) to turn it back on. Pictures that were already removed under the old 30-day rule stay marked as expired (they cannot be recovered).
+ * Unused uploads (a picture uploaded and never sent) are still cleaned up after ORPHAN_MIN_AGE_HOURS.
+ */
+export function chatMediaRetentionDays(env: Record<string, string | undefined> = process.env): number | null {
+  const n = Number(env.CHAT_MEDIA_RETENTION_DAYS)
+  return Number.isFinite(n) && n >= 1 ? Math.floor(n) : null
+}
 export const ORPHAN_MIN_AGE_HOURS = 24
 
 const BATCH = 200
@@ -30,10 +39,10 @@ async function removeObjects(db: SupabaseClient, paths: string[]): Promise<void>
   }
 }
 
-export async function runChatMediaRetention(db: SupabaseClient, now: Date = new Date()): Promise<RetentionResult> {
-  const cutoff = new Date(now.getTime() - CHAT_MEDIA_RETENTION_DAYS * 86_400_000).toISOString()
+export async function runChatMediaRetention(db: SupabaseClient, now: Date = new Date(), days: number | null = chatMediaRetentionDays()): Promise<RetentionResult> {
+  const cutoff = new Date(now.getTime() - (days ?? 0) * 86_400_000).toISOString()
   let expired = 0
-  for (let b = 0; b < MAX_BATCHES; b++) {
+  for (let b = 0; days !== null && b < MAX_BATCHES; b++) {
     const { data, error } = await db
       .from('chat_messages')
       .select('id, media_path')

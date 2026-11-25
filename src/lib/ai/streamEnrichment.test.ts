@@ -668,3 +668,58 @@ describe('applyPlaceEnrichmentStreamFilter — Food identity flow (place_id / we
     expect(cafe?.website_uri).toBe('https://example.com')
   })
 })
+
+// 16/11: the blocks a one-brain turn declared reach the client whether or not the turn ran a place / product tool (a web lookup alone streams live and used to drop the declaration).
+describe('applyPlaceEnrichmentStreamFilter — declared presentation blocks', () => {
+  const line0 = (s: string) => '0:' + JSON.stringify(s)
+  const declared = { v: 1 as const, blocks: [{ id: 'p1', type: 'profiles' as const, items: [{ name: 'A', points: [{ text: 'one' }] }, { name: 'B', points: [{ text: 'two' }] }] }] }
+  async function run(withDeclaration: boolean, tool: string): Promise<string> {
+    const collector = createEnrichmentCollector('so sánh A với B')
+    collector.oneBrain = true
+    if (withDeclaration) collector.presentation = declared
+    const input = ['f:{"messageId":"m1"}', `9:{"toolCallId":"t1","toolName":"${tool}","args":{}}`, 'a:{"toolCallId":"t1","result":{"search_results":[]}}', line0('A hợp hơn B.'), 'd:{"finishReason":"stop"}'].join('\n') + '\n'
+    return await new Response(applyPlaceEnrichmentStreamFilter(new Response(input), 'vi', collector).body).text()
+  }
+
+  it('a turn that only searched the web still sends the declared blocks, once, before the finish frame', async () => {
+    const out = await run(true, 'web_search')
+    expect(count(out, 'tappy.presentation.v1')).toBe(1)
+    expect(idx(out, 'tappy.presentation.v1')).toBeLessThan(idx(out, 'd:{"finishReason"'))
+  })
+
+  it('a turn that ran a place tool sends them once as well', async () => {
+    const out = await run(true, 'search_places')
+    expect(count(out, 'tappy.presentation.v1')).toBe(1)
+  })
+
+  it('a turn that declared nothing sends no presentation frame', async () => {
+    expect(await run(false, 'web_search')).not.toContain('tappy.presentation.v1')
+  })
+
+  // 16/11 (owner: real data only): the points of the cards are checked against the turn's lookups before they go out
+  async function runChecked(verify: (p: typeof declared) => Promise<typeof declared | null>): Promise<string> {
+    const collector = createEnrichmentCollector('so sánh A với B')
+    collector.oneBrain = true
+    collector.presentation = { ...declared, blocks: [...declared.blocks, { id: 'c1', type: 'compare' as const, columns: ['A', 'B'], rows: [{ label: 'Giá', cells: ['1', '2'] }] }, { id: 'g1', type: 'gallery' as const, images: [{ caption: 'x', query: 'y' }] }] } as never
+    collector.verifyPresentation = verify as never
+    const input = ['f:{"messageId":"m1"}', '9:{"toolCallId":"t1","toolName":"web_search","args":{}}', 'a:{"toolCallId":"t1","result":{"search_results":[]}}', line0('A hợp hơn B.'), 'd:{"finishReason":"stop"}'].join('\n') + '\n'
+    return await new Response(applyPlaceEnrichmentStreamFilter(new Response(input), 'vi', collector).body).text()
+  }
+
+  it('the frame carries what the check returned (unsupported points gone), not what the model declared', async () => {
+    const out = await runChecked(async p => ({ v: 1, blocks: [{ ...p.blocks[0], items: [p.blocks[0].items[0]] }] }) as never)
+    const frame = JSON.parse(out.split('\n').find(l => l.startsWith('8:') && l.includes('tappy.presentation.v1'))!.slice(2))[0]
+    expect(frame.presentation.blocks).toHaveLength(1)
+    expect(frame.presentation.blocks[0].items).toHaveLength(1)
+  })
+
+  it('a check that fails sends only the blocks that carry no model fact: neither the cards nor the table cells go unchecked', async () => {
+    const out = await runChecked(async () => { throw new Error('down') })
+    const frame = JSON.parse(out.split('\n').find(l => l.startsWith('8:') && l.includes('tappy.presentation.v1'))!.slice(2))[0]
+    expect(frame.presentation.blocks.map((b: { type: string }) => b.type)).toEqual(['gallery'])
+  })
+
+  it('a check that leaves nothing sends no frame at all', async () => {
+    expect(await runChecked(async () => null)).not.toContain('tappy.presentation.v1')
+  })
+})

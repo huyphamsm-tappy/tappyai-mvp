@@ -1,6 +1,9 @@
 import { getCache, setCache, serperSearch } from './common'
 import { logText } from '@/lib/ai/logSafeText'
+import { encodeQuery } from '@/lib/links/encodeQuery'
 import { withRetrievedAt } from './retrievalClock'
+import { tviCaptureOn, captureTviFromPlaces } from '@/lib/tvi/capturePlaces'
+import { tviReadOn, readTviForPlaces } from '@/lib/tvi/readPlaces'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
@@ -39,46 +42,78 @@ export function rssItemImage(item: string): string | null {
   return url && isAllowedMediaImage(url) ? url : null
 }
 
+const NEWS_SECTIONS: Array<{ re: RegExp; feeds: Array<{ url: string; name: string }> }> = [
+  { re: /kinh te|kinh doanh|tai chinh|chung khoan|lai suat|gia vang|bat dong san|thi truong|economy|business|finance/, feeds: [
+    { url: 'https://vnexpress.net/rss/kinh-doanh.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/kinh-doanh.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/kinh-doanh.rss', name: 'Dan Tri' }] },
+  { re: /cong nghe|so hoa|tech|\bai\b|chuyen doi so/, feeds: [
+    { url: 'https://vnexpress.net/rss/so-hoa.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/nhip-song-so.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/nhip-song-so.rss', name: 'Dan Tri' }] },
+  { re: /the thao|bong da|sports?|football/, feeds: [
+    { url: 'https://vnexpress.net/rss/the-thao.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/the-thao.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/the-thao.rss', name: 'Dan Tri' }] },
+  { re: /the gioi|quoc te|world/, feeds: [
+    { url: 'https://vnexpress.net/rss/the-gioi.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/the-gioi.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/the-gioi.rss', name: 'Dan Tri' }] },
+]
+const NEWS_DEFAULT_FEEDS = [
+  { url: 'https://vnexpress.net/rss/tin-moi-nhat.rss', name: 'VnExpress' },
+  { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuoi Tre' },
+  { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dan Tri' },
+]
+/** The feeds of the section the question is about (economy, tech, sport, world), else the latest-news feeds. */
+const COMBINING = new RegExp(`[${String.fromCharCode(0x300)}-${String.fromCharCode(0x36f)}]`, 'g')
+/** Lower case, accents removed (including the stroked d), so one spelling of a word matches every other. */
+export function foldAccents(s: string): string {
+  return s.normalize('NFD').replace(COMBINING, '').replace(new RegExp(String.fromCharCode(0x111), 'g'), 'd').replace(new RegExp(String.fromCharCode(0x110), 'g'), 'd').toLowerCase()
+}
+export function newsFeedsFor(query: string): Array<{ url: string; name: string }> {
+  const q = foldAccents(query)
+  return NEWS_SECTIONS.find(s => s.re.test(q))?.feeds ?? NEWS_DEFAULT_FEEDS
+}
+const NEWS_FILLER = new Set(['tin', 'tuc', 'tuan', 'nay', 'hom', 'moi', 'nhat', 'noi', 'bat', 'dang', 'chu', 'viet', 'nam', 'the', 'and', 'news', 'latest', 'this', 'week', 'today', 'about', 'trong', 'cua', 'nhung', 'cac', 'mot'])
+/** The words of the question that can tell one headline from another, accents removed (filler such as "tin", "tuan nay", "Viet Nam" matches nothing in particular). */
+export function newsQueryTerms(query: string): string[] {
+  return foldAccents(query).split(/\s+/).filter(t => t.length > 2 && !NEWS_FILLER.has(t))
+}
+
 async function getNewsImpl(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
-  const feeds = [
-    { url: 'https://vnexpress.net/rss/tin-moi-nhat.rss', name: 'VnExpress' },
-    { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuoi Tre' },
-    { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dan Tri' },
-  ]
+  const feeds = newsFeedsFor(query)
   let result: unknown
   try {
-    const queryTerms = query.toLowerCase().split(' ').filter(t => t.length > 2)
-    const articles: Array<{ title: string; description: string; link: string; source: string; published: string; image?: string }> = []
+    const queryTerms = newsQueryTerms(query)
+    type Article = { title: string; description: string; link: string; source: string; published: string; image?: string }
+    const matched: Article[] = []
+    const latest: Article[] = []
     const withImages = consultV3Enabled()
     await Promise.all(feeds.map(async feed => {
       try {
-        const resp = await Promise.race([
-          fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
-        ])
-        const xml = await (resp as Response).text()
+        // the signal covers the body read too and aborts the socket; a failed answer is not a feed
+        const resp = await fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(6000), redirect: 'follow' })
+        if (!resp.ok) return
+        const xml = (await resp.text()).slice(0, 1_000_000)
         const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
-        for (const item of items.slice(0, 30)) {
-          if (articles.length >= 8) break
+        let kept = 0
+        for (const item of items.slice(0, 40)) {
+          if (kept >= 4) break // each outlet keeps its own share, so one fast feed cannot fill the list
           const title = (item.match(/<title><!\[CDATA\[(.*?)\]\]>/)?.[1] || item.match(/<title>(.*?)<\/title>/)?.[1] || '').trim()
           const desc = (item.match(/<description><!\[CDATA\[(.*?)\]\]>/)?.[1] || item.match(/<description>(.*?)<\/description>/)?.[1] || '').replace(/<[^>]*>/g, '').trim()
           const link = (item.match(/<link>(.*?)<\/link>/)?.[1] || item.match(/<guid>(.*?)<\/guid>/)?.[1] || '').trim()
           const pub = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || ''
           if (!title) continue
-          const tl = title.toLowerCase(), dl = desc.toLowerCase()
+          const tl = foldAccents(title), dl = foldAccents(desc)
           const matches = queryTerms.length === 0 || queryTerms.some(k => tl.includes(k) || dl.includes(k))
           const image = withImages ? rssItemImage(item) : null
-          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) })
+          const article: Article = { title, description: desc.slice(0, 200), link, source: feed.name, published: pub && Number.isFinite(Date.parse(pub)) ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) }
+          if (matches) { matched.push(article); kept++ } else if (latest.filter(a => a.source === feed.name).length < 3) latest.push(article)
         }
       } catch { /* skip feed */ }
     }))
+    // Nothing matched the words but the feeds answered: the newest headlines of the topic feed are the answer to "what is the news", not an empty list.
+    const articles = matched.length ? matched : latest
     result = articles.length === 0
       ? { note: messages.news.noResults(lang), articles: [] }
-      : { query, total: articles.length, articles: articles.slice(0, 5) }
+      : { query, total: articles.length, articles: articles.slice(0, 6) }
   } catch {
     result = { error: messages.news.fetchError(lang), articles: [] }
   }
@@ -181,7 +216,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
   // and the coordinate branch never reads `loc`. Empty is the honest value to
   // report back - the old code reported "Ha Noi" here, which is the fabrication.
   const loc = location ?? ''
-  const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
+  const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeQuery(query + ' ' + loc)
   try {
     /**
      * 🚨 TWO CITY TABLES, AND THE SMALLER ONE WAS IN CHARGE OF PLACES.
@@ -265,13 +300,11 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       searchRadius = 1500
       if (!city) {
         try {
-          const geoResp = await Promise.race([
-            fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
-              headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
-            }),
-            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
-          ])
-          const geoData = await (geoResp as Response).json()
+          const geoResp = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
+            headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' },
+            signal: AbortSignal.timeout(2500),
+          })
+          const geoData = await geoResp.json()
           if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon); located = true }
         } catch { /* use default */ }
       }
@@ -328,14 +361,11 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     let overpassData: { elements?: unknown[] } | null = null
     for (const endpoint of endpoints) {
       try {
-        const resp = await Promise.race([
-          fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
-          // Aligned with the query's own [timeout:10] budget + 1s network buffer —
-          // previously 5000ms, which aborted before the server's own declared timeout.
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
-        ])
-        if ((resp as Response).ok) {
-          overpassData = usableOverpass(await (resp as Response).json())
+        // Aligned with the query's own [timeout:10] budget + 1s network buffer (previously 5000ms, which aborted
+        // before the server's own declared timeout); the signal covers the body read too.
+        const resp = await fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(11000) })
+        if (resp.ok) {
+          overpassData = usableOverpass(await resp.json())
           if (overpassData) break
         }
       } catch { continue }
@@ -373,12 +403,9 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       const fallbackOql = buildOql('')
       for (const endpoint of endpoints) {
         try {
-          const resp = await Promise.race([
-            fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
-            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
-          ])
-          if ((resp as Response).ok) {
-          overpassData = usableOverpass(await (resp as Response).json())
+          const resp = await fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(11000) })
+          if (resp.ok) {
+          overpassData = usableOverpass(await resp.json())
           if (overpassData) break
         }
         } catch { continue }
@@ -623,7 +650,7 @@ async function searchPlacesSerper(
     location: location ?? '',
     results: rows.slice(0, 10),
     ...(abroad ? { centre_abroad: abroad } : {}),
-    google_maps_search: 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location ?? '')),
+    google_maps_search: 'https://maps.google.com/maps?q=' + encodeQuery(query + ' ' + (location ?? '')),
   }
 }
 
@@ -1078,7 +1105,7 @@ async function searchPlacesImpl(
         return {
           // review 30/10: said plainly, so the model does not read the empty list as "no such place exists"
           source: 'budget', count: 0, results: [], place_search_status: verdict.reason === 'budget_exhausted' ? 'not_run_turn_budget_used' : 'not_run_same_search_already_done',
-          note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location || ''))),
+          note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeQuery(query + ' ' + (location || ''))),
         }
       }
     }
@@ -1096,7 +1123,15 @@ async function searchPlacesImpl(
 }
 
 /** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
-export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> { return withRetrievedAt(() => searchPlacesImpl(...args)) }
+export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> {
+  return withRetrievedAt(() => searchPlacesImpl(...args)).then(async result => {
+    // R13 TVI capture (TVI_CAPTURE=1, off by default and locked in production): the stable facts of the rows go to the fact store AFTER the answer is built. Fire and forget; the result is returned as it is.
+    // It captures the LIVE result, before the stored facts below are merged in, so a stored fact is never written back as if it had just been read.
+    if (tviCaptureOn()) void captureTviFromPlaces(result, { city: args[1] })
+    // 14/11 TVI read (TVI_READ=1, same rule): what the store holds about the same places fills a field this call did not return, with its date and freshness (readPlaces.ts).
+    return tviReadOn() ? await readTviForPlaces(result, { city: args[1] }) as typeof result : result
+  })
+}
 
 /** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
 export function getNews(...args: Parameters<typeof getNewsImpl>): ReturnType<typeof getNewsImpl> { return withRetrievedAt(() => getNewsImpl(...args)) }

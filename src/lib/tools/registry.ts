@@ -2,7 +2,7 @@ import {
   ScanText, Calculator, Languages, ArrowLeftRight, ShieldCheck,
   Star, Users, Music2, Sparkle, PenLine,
 } from 'lucide-react'
-import { SHOW_SCAM_SHIELD, SHOW_MUSIC } from '@/lib/config/product'
+import { SHOW_SCAM_SHIELD, SHOW_MUSIC, SHOW_TRANSLATE, SHOW_FORTUNE, SHOW_RECOMMENDATIONS, SHOW_VIET_CONTENT, SHOW_CURRENCY, SHOW_SCAN } from '@/lib/config/product'
 
 // ── Smart Tools — THE registry ──────────────────────────────────────────────
 //
@@ -77,7 +77,7 @@ const ALL: readonly SmartTool[] = [
   // ── Discover ──────────────────────────────────────────────────────────────
   { id: 'suggest', href: '/recommendations', labelKey: 'v3.tool.suggest', descKey: 'v3.tool.suggestDesc', icon: Star, tone: 'var(--v3-amber)', group: 'v3.tools.discover', home: false },
   // The only auth-gated tool: `/group/new` redirects a signed-out visitor to /login. Measured.
-  { id: 'together', href: '/group/new', labelKey: 'v3.tool.together', descKey: 'v3.tool.togetherDesc', icon: Users, tone: 'var(--v3-rose)', group: 'v3.tools.discover', home: false, auth: true },
+  { id: 'together', href: '/group/new', labelKey: 'v3.tool.together', descKey: 'v3.tool.togetherDesc', icon: Users, tone: 'var(--v3-rose)', group: 'v3.tools.discover', home: true, auth: true }, // home: owner 21/11/2026 — Nhóm ăn sits on Home beside Cảnh báo lừa đảo and Chia bill
   { id: 'music', href: '/music', labelKey: 'v3.tool.music', descKey: 'v3.tool.musicDesc', icon: Music2, tone: 'var(--v3-violet)', group: 'v3.tools.discover', home: false },
 
   // ── Fun ───────────────────────────────────────────────────────────────────
@@ -101,6 +101,14 @@ export function smartTools(): SmartTool[] {
     // Music hidden by default (owner decision 2026-09-24). The /music route, its
     // APIs and the module stay intact; only this entry point is gated off.
     if (tool.id === 'music') return SHOW_MUSIC
+    // Translate and fortune telling hidden (owner decision 18/11/2026); routes answer 404, modules stay.
+    if (tool.id === 'translate') return SHOW_TRANSLATE
+    if (tool.id === 'fortune') return SHOW_FORTUNE
+    // Owner 20/11/2026: "Quét", "Tỷ giá", "Gợi ý cho bạn" and "Viết" hidden (routes answer 404, modules stay).
+    if (tool.id === 'scan') return SHOW_SCAN
+    if (tool.id === 'currency') return SHOW_CURRENCY
+    if (tool.id === 'suggest') return SHOW_RECOMMENDATIONS
+    if (tool.id === 'captions') return SHOW_VIET_CONTENT
     return true
   })
 }

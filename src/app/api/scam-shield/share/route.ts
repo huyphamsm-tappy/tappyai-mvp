@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: row.id, slug: row.slug, path, url: absoluteUrl(path), ...scamShareSummary(result), listed: !row.owner_is_anonymous }, { status: 201 })
   } catch (err) {
     if (err instanceof SharedResultError) {
-      return NextResponse.json({ error: 'not_shareable', reason: err.message, message: serverMessage('share.notShareable', requestLocale(req)) }, { status: 422 })
+      return NextResponse.json({ error: 'not_shareable', message: serverMessage('share.notShareable', requestLocale(req)) }, { status: 422 })
     }
     const message = err instanceof Error ? err.message : 'Check failed'
     if (message.includes('private') || message.includes('internal')) return apiError(req, 'private_url', 'scam.privateUrl', 400)

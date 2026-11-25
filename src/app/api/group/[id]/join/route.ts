@@ -4,7 +4,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { clipField } from '@/lib/group/fields'
+import { MAX_MEMBERS, MAX_PENDING } from '@/lib/group/limits'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { refuseUnsafeText } from '@/lib/safety/autoModeration/http'
+import { emitNotification } from '@/lib/notifications/emit'
+import { resolveUserLang } from '@/lib/priceWatch/messages'
+import { actorShortName, groupRequestNotice } from '@/lib/i18n/socialNotices'
 
+// POST /api/group/[id]/join — opening the invite link FILES A REQUEST (owner 20/11: a group is private; a Tappy account and the leader's acceptance are both needed).
+// The person is written as 'pending'; they read nothing of the group until the leader accepts them (POST /api/group/[id]/members). Opening the link never makes a membership.
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
   if (!groupId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
@@ -16,46 +26,59 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   // B17 — an anonymous session is authenticated but is not an account; social writes need one.
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+  // a request now pushes to the group leader, so a caller is capped (shared store): 20 requests per 10 minutes
+  const rl = await publicRateLimit(`group-join:${user.id}`, 20, 600_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'group_join')
 
   let name: string, budget: string, food_preferences: string, dietary_restrictions: string, area: string
   try {
     const body = await req.json()
-    name = (body.name || '').trim()
-    budget = (body.budget || '').trim()
-    food_preferences = (body.food_preferences || '').trim()
-    dietary_restrictions = (body.dietary_restrictions || '').trim()
-    area = (body.area || '').trim()
+    name = clipField(body.name, 60)
+    budget = clipField(body.budget, 40)
+    food_preferences = clipField(body.food_preferences, 200)
+    dietary_restrictions = clipField(body.dietary_restrictions, 200)
+    area = clipField(body.area, 80)
     if (!name || !area) throw new Error('missing fields')
   } catch {
     return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
-  // S-1. The cap must be counted with the service role. Under the read boundary
-  // in 20260904_group_read_boundary.sql a caller only sees groups they already
-  // belong to — and someone joining for the first time, by definition, does not.
-  // Counted with their own client the answer would always be 0, so the ten-member
-  // cap would stop existing for exactly the callers it exists for.
-  //
-  // The INSERT below deliberately stays on the caller's client: the write is
-  // still gated by `group_members_insert_self`, so a member row can only ever be
-  // attributed to the authenticated user making the request.
-  const { count } = await createAdminClient()
-    .from('group_members')
-    .select('id', { count: 'exact', head: true })
-    .eq('group_id', groupId)
+  // Automatic moderation (Vietnam-law rules): the name and the free-text fields are shown to the group, so they are checked before they are stored.
+  const moderationRefusal = await refuseUnsafeText(req, user.id, 'group', [name, food_preferences, dietary_restrictions, area])
+  if (moderationRefusal) return moderationRefusal
 
-  if ((count ?? 0) >= 10) {
-    return NextResponse.json({ error: 'group_full', message: serverMessage('group.full', requestLocale(req)) }, { status: 400 })
-  }
+  // The checks below read through the service role: under the read boundary a caller sees only the groups they already belong to, and someone asking to join, by definition, does not.
+  const admin = createAdminClient()
+  const { data: group } = await admin.from('groups').select('id, creator_id').eq('id', groupId).single()
+  if (!group) return NextResponse.json({ error: 'group_not_found', message: serverMessage('group.notFound', requestLocale(req)) }, { status: 404 })
+  if (group.creator_id === user.id) return NextResponse.json({ ok: true, alreadyJoined: true })
 
+  const { data: mine } = await admin.from('group_members').select('id, status').eq('group_id', groupId).eq('user_id', user.id).maybeSingle()
+  if (mine) return NextResponse.json(mine.status === 'member' ? { ok: true, alreadyJoined: true } : { ok: true, pending: true, alreadyRequested: true })
+
+  // a full group (accepted members only: a request is not a seat) takes no new request, and a link that went public cannot pile up requests without end
+  const { count: accepted } = await admin.from('group_members').select('id', { count: 'exact', head: true }).eq('group_id', groupId).eq('status', 'member')
+  if ((accepted ?? 0) >= MAX_MEMBERS) return NextResponse.json({ error: 'group_full', message: serverMessage('group.full', requestLocale(req)) }, { status: 400 })
+  const { count: waiting } = await admin.from('group_members').select('id', { count: 'exact', head: true }).eq('group_id', groupId).eq('status', 'pending')
+  if ((waiting ?? 0) >= MAX_PENDING) return NextResponse.json({ error: 'too_many_requests', message: serverMessage('group.full', requestLocale(req)) }, { status: 429 })
+
+  // The INSERT stays on the caller's client: the write is still gated by `group_members_insert_self`, so a row can only be attributed to the authenticated user, and only as 'pending'.
   const { error } = await supabase
     .from('group_members')
-    .insert({ group_id: groupId, user_id: user.id, name, budget, food_preferences, dietary_restrictions, area })
+    .insert({ group_id: groupId, user_id: user.id, name, budget, food_preferences, dietary_restrictions, area, status: 'pending' })
 
   if (error) {
-    // Unique (group_id, user_id) violation → already a member; treat as success.
-    if (error.code === '23505') return NextResponse.json({ ok: true, alreadyJoined: true })
+    // Unique (group_id, user_id) violation → the request already exists (two taps at once); treat as success.
+    if (error.code === '23505') return NextResponse.json({ ok: true, pending: true, alreadyRequested: true })
     return NextResponse.json({ error: 'join_failed', message: serverMessage('group.joinFailed', requestLocale(req)) }, { status: 500 })
   }
-  return NextResponse.json({ ok: true })
+  // owner 20/11/2026: tell the leader (best effort: a failing push never fails the request). Reached only for a NEW request: a repeat, the creator and an accepted member all returned above.
+  // The notice names the person and the group, never their budget, tastes or area.
+  try {
+    const leaderLang = await resolveUserLang(admin, group.creator_id as string)
+    const { data: groupRow } = await admin.from('groups').select('name').eq('id', groupId).maybeSingle()
+    const copy = groupRequestNotice(leaderLang, actorShortName(name, leaderLang), (groupRow as { name?: string } | null)?.name)
+    await emitNotification({ userId: group.creator_id as string, type: 'system', category: 'system', title: copy.title, body: copy.body, actorId: user.id, entityUrl: `/group/${groupId}` })
+  } catch { /* best-effort */ }
+  return NextResponse.json({ ok: true, pending: true })
 }

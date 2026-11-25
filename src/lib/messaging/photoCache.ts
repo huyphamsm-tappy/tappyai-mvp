@@ -13,7 +13,21 @@ export const PHOTO_CACHE_NAME = 'tappy-chat-photos-v1'
 /** Same ceiling as the upload limit (5 MB) plus a little: a larger answer is not one of our pictures. */
 const MAX_COPY_BYTES = 6 * 1024 * 1024
 
+/**
+ * 21/11/2026 (owner, after Zalo's "your storage is full" complaint): the copy on the device is a SMALL cache, not an archive. The server keeps every picture, so this browser keeps only the most
+ * recent MAX_COPIES (about 300 pictures, tens of MB at the usual few hundred KB each); older ones are dropped and simply load again from the server when the conversation is opened.
+ */
+export const MAX_COPIES = 300
+
 type CacheStore = Pick<CacheStorage, 'open' | 'delete'>
+
+/** Drops the oldest copies beyond MAX_COPIES (Cache Storage lists keys oldest first). Silent: a failure here only means the cache stays a little larger. */
+async function trimOldCopies(cache: Pick<Cache, 'keys' | 'delete'>): Promise<void> {
+  try {
+    const keys = await cache.keys()
+    for (let i = 0; i < keys.length - MAX_COPIES; i++) await cache.delete(keys[i])
+  } catch { /* best effort */ }
+}
 
 function store(injected?: CacheStore): CacheStore | null {
   if (injected) return injected
@@ -43,6 +57,7 @@ export async function savePhotoCopy(messageId: string, url: string, deps: { cach
     const blob = await res.blob()
     if (!blob.type.startsWith('image/') || blob.size === 0 || blob.size > MAX_COPY_BYTES) return false
     await cache.put(key, new Response(blob, { headers: { 'Content-Type': blob.type } }))
+    await trimOldCopies(cache)
     return true
   } catch {
     return false

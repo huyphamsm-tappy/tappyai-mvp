@@ -138,16 +138,40 @@ fun HomeTabHost(
         composable<GamesRoute.Main> {
             GamesScreen(onBack = { navController.popBackStack() })
         }
+        // Hidden (ProductFlags.SHOW_FORTUNE, owner decision 2026-11-18): a stale route to any fortune
+        // screen leaves at once.
         composable<FortuneRoute.Hub> {
-            FortuneHubScreen(
-                onBack = { navController.popBackStack() },
-                onOpenTarot = { navController.navigate(FortuneRoute.Tarot) },
-                onOpenTuVi = { navController.navigate(FortuneRoute.TuVi) },
-                onOpenZodiac = { navController.navigate(FortuneRoute.Zodiac) },
-            )
+            if (ProductFlags.SHOW_FORTUNE) {
+                FortuneHubScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenTarot = { navController.navigate(FortuneRoute.Tarot) },
+                    onOpenTuVi = { navController.navigate(FortuneRoute.TuVi) },
+                    onOpenZodiac = { navController.navigate(FortuneRoute.Zodiac) },
+                )
+            } else {
+                LeaveHiddenTool(onLeave = { navController.popBackStack() })
+            }
         }
-        composable<FortuneRoute.Tarot> { TarotScreen(onBack = { navController.popBackStack() }) }
-        composable<FortuneRoute.TuVi> { TuViScreen(onBack = { navController.popBackStack() }) }
-        composable<FortuneRoute.Zodiac> { ZodiacScreen(onBack = { navController.popBackStack() }) }
+        composable<FortuneRoute.Tarot> {
+            if (ProductFlags.SHOW_FORTUNE) {
+                TarotScreen(onBack = { navController.popBackStack() })
+            } else {
+                LeaveHiddenTool(onLeave = { navController.popBackStack() })
+            }
+        }
+        composable<FortuneRoute.TuVi> {
+            if (ProductFlags.SHOW_FORTUNE) {
+                TuViScreen(onBack = { navController.popBackStack() })
+            } else {
+                LeaveHiddenTool(onLeave = { navController.popBackStack() })
+            }
+        }
+        composable<FortuneRoute.Zodiac> {
+            if (ProductFlags.SHOW_FORTUNE) {
+                ZodiacScreen(onBack = { navController.popBackStack() })
+            } else {
+                LeaveHiddenTool(onLeave = { navController.popBackStack() })
+            }
+        }
     }
 }

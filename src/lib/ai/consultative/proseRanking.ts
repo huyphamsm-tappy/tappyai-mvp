@@ -18,7 +18,16 @@ const tokens = (s: string): string[] => fold(s).split(' ').filter(t => t.length 
 const MEASURE = /^\d+(?:gb|tb|mb|kb|mah|hz|ghz|mhz|kg|g|ml|l|w|v|inch|in|mm|cm|m|k|p|hp|btu)$/
 const isCode = (t: string): boolean => t.length >= 3 && /[a-z]/.test(t) && /\d/.test(t) && !MEASURE.test(t)
 
-export interface RankCandidate { name: string; /** VND, when the listing states one (a product). */ price?: number | null }
+export interface RankCandidate { name: string; /** VND, when the listing states one (a product). */ price?: number | null; /** the listing's address, when it has one: tells two branches of one name apart */ detail?: string }
+
+/** Do the street words of the listing's address (first part, "1 P. Hang Tre") appear in the words right after the name? Two or more of them. */
+function addressSaid(detail: string | undefined, after: string): boolean {
+  if (!detail) return false
+  const street = tokens(detail.split(',')[0]).filter(t => /[a-z]/.test(t) && t.length >= 3 && t !== 'duong')
+  if (street.length < 2) return false
+  const said = new Set(tokens(after))
+  return street.filter(t => said.has(t)).length >= 2
+}
 
 /** Bold spans of the answer prose (machine blocks and links removed), with their offsets and the prose right after them. */
 function boldSpans(text: string): Array<{ s: string; at: number; after: string; said: string | null }> {
@@ -57,13 +66,22 @@ function saidAfter(text: string, at: number, end: number): string | null {
 }
 
 /** Is the span a name of this candidate? The share of the span's tokens the candidate has, or null. */
-function overlap(span: string, name: string): number | null {
+function overlap(span: string, name: string, common?: ReadonlySet<string>): number | null {
   const f = fold(span), n = fold(name)
   if (f.length < 3) return null
   if (f === n) return 1
   const st = tokens(span), nt = new Set(tokens(name))
   if (st.length === 0 || nt.size === 0) return null
   const shared = st.filter(t => nt.has(t))
+  // The words most listings share ("hotel", the city) tell nothing: a name matches only when every DISTINCTIVE word of the span is in the listing (final UAT 19/11: "Khach san Menora Quy Nhon"
+  // took the card of "Khach san Sai Gon - Quy Nhon": four of five words are shared, the one that names the hotel is not).
+  if (common && !shared.some(isCode)) {
+    const spanSet = new Set(st)
+    const spanOnly = st.filter(t => !common.has(t) && !isCode(t) && !nt.has(t))
+    const listingOnly = [...nt].filter(t => !common.has(t) && !isCode(t) && !spanSet.has(t))
+    // both sides carry a word the other lacks: two different hotels of one city, not one hotel named loosely
+    if (spanOnly.length > 0 && listingOnly.length > 0 && spanOnly.length >= shared.filter(t => !common.has(t)).length) return null
+  }
   // a model code the span and the listing share names the listing, even inside a long bold sentence
   if (shared.some(isCode)) return 1
   const a = shared.length / st.length
@@ -78,18 +96,29 @@ function overlap(span: string, name: string): number | null {
 export function rankingFromProse(text: string, candidates: readonly RankCandidate[]): RankingContract | null {
   const tokenCount = new Map<string, number>()
   for (const c of candidates) for (const t of new Set(tokens(c.name))) tokenCount.set(t, (tokenCount.get(t) ?? 0) + 1)
+  const commonCut = Math.max(3, Math.ceil(candidates.length / 2))
+  // venues only (products carry a price and keep the older rule: a brand word shared by several of them is how they are told apart)
+  const venuesOnly = candidates.every(c => c.price === undefined || c.price === null)
+  const common = venuesOnly ? new Set([...tokenCount.entries()].filter(([, n]) => n >= commonCut).map(([t]) => t)) : undefined
   const first = new Map<number, number>()
   const said = new Map<number, string>()
   // The answer's first pick names a model code that no single listing could be matched to: a LATER pick that did match is not the answer's pick, so nothing is crowned.
   let firstPickUnresolved = false
   for (const { s, at, after, said: words } of boldSpans(text)) {
-    let pool = candidates.map((c, i) => ({ i, a: overlap(s, c.name) })).filter((x): x is { i: number; a: number } => x.a !== null).map(x => x.i)
+    let pool = candidates.map((c, i) => ({ i, a: overlap(s, c.name, common) })).filter((x): x is { i: number; a: number } => x.a !== null).map(x => x.i)
     if (pool.length === 0) { if (first.size === 0 && tokens(s).some(isCode)) firstPickUnresolved = true; continue }
     if (pool.length > 1) {
       // the price stated beside the name says which listing it is
       const stated = extractMoneyClaims(`${s} ${after}`).flatMap(c => [c.lo, c.hi])
       const byPrice = pool.filter(i => { const p = candidates[i].price; return typeof p === 'number' && stated.some(v => Math.abs(v - p) <= Math.max(1000, p * 0.005)) })
       if (byPrice.length >= 1) pool = byPrice
+    }
+    if (pool.length > 1) {
+      // The listing whose whole name IS the bold name wins over listings that merely contain it (19/11 final UAT: "Pho Thin Bo Ho" and the same place's second
+      // listing "Pho Thin Bo Ho (Hang Voi) Chon pho gan H..." left the third named venue without a card).
+      const exact = pool.filter(i => fold(candidates[i].name) === fold(s))
+      // two listings with the very same name (two branches of one place) are the same pick: the one whose address the answer says, else the better-ranked, earlier one
+      if (exact.length >= 1) pool = [exact.find(i => addressSaid(candidates[i].detail, after)) ?? exact[0]]
     }
     if (pool.length > 1) {
       // a token only one candidate has points at that candidate; a token every one of them has points at none
@@ -103,7 +132,32 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
     if (!first.has(pool[0])) first.set(pool[0], at)
     if (words && !said.has(pool[0])) said.set(pool[0], words)
   }
+  // A name the answer writes in plain text (not bold) is just as much a recommendation (final UAT 19/11: "I lean to Study-ik Coworking Books Coffee" had no card, only the other café did).
+  // The full listing name, or the part before " - " / " | ", found whole in the folded prose; a name two listings share is left to the bold path.
+  const plainProse = fold(text.replace(/\[TAPPY_[A-Z_]+\][\s\S]*?(?:\[\/TAPPY_[A-Z_]+\]|$)/g, ' ').replace(/\]\([^)\n]*\)/g, ' '))
+  const PLAIN_BASE = 1_000_000
+  // a mention that only repeats the start of a longer name already picked ("O Lac" inside "O Lac CN 2") is that pick, not another listing
+  const prefixOfPicked = (k: string): boolean => [...first.keys()].some(j => { const n = fold(candidates[j].name); return n !== k && (n.startsWith(`${k} `) || k.startsWith(`${n} `)) })
+  candidates.forEach((c, i) => {
+    if (first.has(i)) return
+    const keys = [c.name, c.name.split(/\s[-|–—]\s/)[0]].map(fold).filter(k => k.length >= 8 && k.includes(' '))
+    if (keys.length === 0) return
+    const twins = candidates.map((o, j) => ({ o, j })).filter(x => x.j !== i && fold(x.o.name) === fold(c.name))
+    for (const k of keys) {
+      if (prefixOfPicked(k)) continue
+      const at = plainProse.indexOf(k)
+      const ok = at >= 0 && (at === 0 || plainProse[at - 1] === ' ') && (plainProse[at + k.length] === undefined || plainProse[at + k.length] === ' ')
+      if (!ok) continue
+      if (twins.length > 0) {
+        // two listings share the name: only the one whose street the answer says right after the name is the pick (and only once)
+        const after = plainProse.slice(at + k.length, at + k.length + 160)
+        const said = [i, ...twins.map(x => x.j)].filter(j => addressSaid(candidates[j].detail, after))
+        if (said.length === 1 && said[0] === i) first.set(i, PLAIN_BASE + at)
+      } else first.set(i, PLAIN_BASE + at)
+      break
+    }
+  })
   if (first.size === 0) return null
-  const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[], said: said.get(i) ?? null }))
+  const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[], said: said.get(i) ?? null, at: i }))
   return { picks, none: false, confidence: firstPickUnresolved ? 'low' : 'medium' }
 }

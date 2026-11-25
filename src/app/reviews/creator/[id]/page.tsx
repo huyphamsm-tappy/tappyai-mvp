@@ -122,7 +122,7 @@ export default function CreatorPage() {
   )
   if (!profile) return null
 
-  const name = profile.full_name || 'Ẩn danh'
+  const name = profile.full_name || t('reviewDetail.anonymous')
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
 
   return (
@@ -149,7 +149,7 @@ export default function CreatorPage() {
         {/* Stats row — social */}
         <div className="flex gap-7 mb-4">
           {[
-            { label: 'Bài viết', value: profile.review_count },
+            { label: t('shell.posts'), value: profile.review_count },
             { label: 'Followers', value: profile.follower_count },
             { label: 'Following', value: profile.following_count },
             { label: 'Likes', value: totalLikes },
@@ -165,34 +165,34 @@ export default function CreatorPage() {
         <div className="flex gap-6 mb-4 text-center">
           <div>
             <p className="font-bold text-sm">{fmt(totalViews)}</p>
-            <p className="text-gray-500 text-[10px]">Lượt xem</p>
+            <p className="text-gray-500 text-[10px]">{t('shell.views')}</p>
           </div>
           <div>
             <p className="font-bold text-sm">{totalWatchMin >= 60 ? Math.round(totalWatchMin / 60) + 'g' : totalWatchMin + 'p'}</p>
-            <p className="text-gray-500 text-[10px]">Giờ xem</p>
+            <p className="text-gray-500 text-[10px]">{t('shell.watchTime')}</p>
           </div>
           <div>
             <p className="font-bold text-sm">{fmt(totalSaves)}</p>
-            <p className="text-gray-500 text-[10px]">Lưu</p>
+            <p className="text-gray-500 text-[10px]">{t('shell.saves')}</p>
           </div>
           <div>
             <p className="font-bold text-sm">{avgCompletion}%</p>
-            <p className="text-gray-500 text-[10px]">Hoàn thành</p>
+            <p className="text-gray-500 text-[10px]">{t('shell.completed')}</p>
           </div>
         </div>
 
         {/* Follow / Edit button */}
         {profile.is_self
-          ? <Link href="/profile" className="px-10 py-2 rounded-md bg-gray-800 text-white text-sm font-semibold">Chỉnh sửa hồ sơ</Link>
+          ? <Link href="/profile" className="px-10 py-2 rounded-md bg-gray-800 text-white text-sm font-semibold">{t('shell.editProfile')}</Link>
           : <button onClick={handleFollow} disabled={followLoading}
               className={`flex items-center gap-2 px-10 py-2 rounded-md text-sm font-semibold transition-colors ${profile.is_following ? 'bg-gray-800 text-white' : 'bg-[#fe2c55] text-white'}`}>
-              {followLoading ? <Loader2 size={14} className="animate-spin" /> : profile.is_following ? <><UserCheck size={14} /> Đang follow</> : <><UserPlus size={14} /> Follow</>}
+              {followLoading ? <Loader2 size={14} className="animate-spin" /> : profile.is_following ? <><UserCheck size={14} /> {t('shell.following')}</> : <><UserPlus size={14} /> {t('shell.follow')}</>}
             </button>}
       </div>
 
       {/* Posts grid */}
       {posts.length === 0
-        ? <p className="text-center text-gray-600 text-sm py-10">Chưa có bài viết</p>
+        ? <p className="text-center text-gray-600 text-sm py-10">{t('shell.noPosts')}</p>
         : <div className="grid grid-cols-3 gap-px bg-gray-900">
             {posts.map(p => {
               const isVideo = p.content_type === 'video'

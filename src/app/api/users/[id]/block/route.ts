@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { userBlocksEnabled, UUID_RE } from '@/lib/safety/userBlocks'
@@ -35,9 +36,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if (!UUID_RE.test(params.id) || params.id === user.id) {
     return NextResponse.json({ error: 'invalid_target', message: serverMessage('validation.invalid', locale) }, { status: 400 })
   }
-  if (!rateLimit(`user-block:${user.id}`, 30, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', locale) }, { status: 429 })
-  }
+  const rl = await publicRateLimit(`user-block:${user.id}`, 30, 60_000) // SEC4 slice 5: shared store (in-process only when none is configured)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'user_block')
 
   // 23505 = already blocked (idempotent). 23503 = no such account: answered like success so this is not an existence oracle.
   const benign = (code?: string) => code === '23505' || code === '23503'
@@ -76,10 +76,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   if (!UUID_RE.test(params.id) || params.id === user.id) {
     return NextResponse.json({ error: 'invalid_target', message: serverMessage('validation.invalid', locale) }, { status: 400 })
   }
-  if (!rateLimit(`user-block:${user.id}`, 30, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', locale) }, { status: 429 })
-  }
-  const a = await supabase.from('user_blocks').delete().eq('blocker_id', user.id).eq('blocked_id', params.id)
+  const rl = await publicRateLimit(`user-block:${user.id}`, 30, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'user_block')
+  const a =await supabase.from('user_blocks').delete().eq('blocker_id', user.id).eq('blocked_id', params.id)
   const b = await supabase.from('chat_blocks').delete().eq('blocker_id', user.id).eq('blocked_id', params.id)
   if (a.error || b.error) return NextResponse.json({ error: 'unblock_failed', message: serverMessage('server.error', locale) }, { status: 500 })
   return ok(false)

@@ -29,6 +29,24 @@ export function withThinkingDisabled(body: unknown, modelId: string): unknown {
   if (!json || typeof json !== 'object' || json.model !== modelId) return body
   const { temperature: _t, top_p: _p, top_k: _k, ...rest } = json
   void _t; void _p; void _k
+  // Claude Sonnet 5.5 (R13 Advanced lead) refuses `thinking: {type: "disabled"}` with a 400 ("The model does not think before responding", checked against the API 10/11/2026), so for it
+  // nothing is added; it still refuses `temperature`, which is removed above like for Haiku.
+  if (/^claude-sonnet-5-5/.test(modelId)) {
+    // Sonnet 5.5 also refuses a FORCED tool choice (`tool_choice` type "tool" or "any" → 400 "not supported for this model", measured 11/11/2026 when the Advanced plan call, a
+    // structured extraction that the AI SDK sends as one forced tool, failed). Auto works: the forced choice is dropped and the instruction to answer through the tool moves into the system prompt.
+    const choice = (rest as { tool_choice?: { type?: string; name?: string } }).tool_choice
+    if (choice && (choice.type === 'tool' || choice.type === 'any')) {
+      const tools = (rest as { tools?: Array<{ name?: string }> }).tools ?? []
+      const name = choice.name ?? tools[0]?.name
+      const hint = { type: 'text', text: name ? `Answer ONLY by calling the tool "${name}" with your complete answer; do not reply in plain text.` : 'Answer ONLY by calling the provided tool; do not reply in plain text.' }
+      const { tool_choice: _c, ...without } = rest as Record<string, unknown> & { tool_choice?: unknown }
+      void _c
+      const system = (without as { system?: unknown }).system
+      const nextSystem = Array.isArray(system) ? [...system, hint] : typeof system === 'string' && system ? [{ type: 'text', text: system }, hint] : [hint]
+      return JSON.stringify({ ...without, system: nextSystem })
+    }
+    return JSON.stringify(rest)
+  }
   return JSON.stringify(rest.thinking === undefined ? { ...rest, thinking: { type: 'disabled' } } : rest)
 }
 

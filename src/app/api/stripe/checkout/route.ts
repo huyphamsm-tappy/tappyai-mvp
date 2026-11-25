@@ -6,6 +6,8 @@ import { serverEnv } from '@/lib/config/env'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
@@ -15,6 +17,9 @@ export async function POST(req: Request) {
   try {
     const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+    // SEC4 slice 5: this route calls Stripe, so a signed-in caller is capped (shared store): 5 per minute.
+    const rl = await publicRateLimit(`stripe-checkout:${user.id}`, 5, 60_000)
+    if (!rl.ok) return rateLimitedResponse(req, rl, 'stripe_checkout')
 
     // stripe_customer_id lives in the restricted billing_customers table (not the
     // public profiles table), accessed only via the service-role client.

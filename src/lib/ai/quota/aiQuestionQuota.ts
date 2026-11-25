@@ -119,8 +119,10 @@ function bucket(identity: AiQuotaIdentity): { key: string; windowMs: number; lim
 // deployments only.
 // Held on globalThis so that every copy of this module in the process (Next bundles route handlers and
 // dev HMR can evaluate the module more than once) shares ONE counter: a second copy must not start from 0.
-const g = globalThis as { __tappyAiQuotaLocal?: Map<string, number[]> }
+const g = globalThis as { __tappyAiQuotaLocal?: Map<string, number[]>; __tappyAiQuotaLocalWindow?: Map<string, number> }
 const local: Map<string, number[]> = (g.__tappyAiQuotaLocal ??= new Map<string, number[]>())
+// each key's own window: the sweep below must judge a counter by ITS window, never by the window of whoever triggered the sweep
+const localWindow: Map<string, number> = (g.__tappyAiQuotaLocalWindow ??= new Map<string, number>())
 
 function localSpend(key: string, windowMs: number, limit: number): { ok: boolean; used: number; member?: number } {
   const now = Date.now()
@@ -131,8 +133,12 @@ function localSpend(key: string, windowMs: number, limit: number): { ok: boolean
   }
   hits.push(now)
   local.set(key, hits)
+  localWindow.set(key, windowMs)
   if (local.size > 5000) {
-    for (const [k, v] of local) if (v.every(t => now - t >= windowMs)) local.delete(k)
+    for (const [k, v] of local) {
+      const w = localWindow.get(k) ?? windowMs
+      if (v.every(t => now - t >= w)) { local.delete(k); localWindow.delete(k) }
+    }
   }
   return { ok: true, used: hits.length, member: now }
 }
@@ -157,6 +163,7 @@ function localCount(key: string, windowMs: number): number {
 /** Test seam: forget every in-process counter. */
 export function __resetAiQuestionQuotaLocal(): void {
   local.clear()
+  localWindow.clear()
 }
 
 // ── Public surface ───────────────────────────────────────────────────────────
@@ -228,14 +235,57 @@ export async function peekAiQuestionQuota(identity: AiQuotaIdentity): Promise<Ai
   return { limit: b.limit, period: b.period, used, remaining: used === null ? null : Math.max(0, b.limit - used) }
 }
 
-// ── Deep Research runs per VN calendar month (owner 01/11/2026: Coco/Pro 10, Tappy/Promax 69) ──────────────────────────────────────────────
+// ── Deep Research reports per VN calendar month (owner 20/11/2026: ONE allowance per account, Coco 15, Tappy 30; tiers.ts) ─────────────────
 // The same store, the same atomic admit-and-record, the same refund and fail-closed rules as the question pool above; its own key per
 // account and month (`ai:dr:u:<id>:<YYYY-MM>` in Vietnam time), a 32-day window so the key's month is the whole window.
 const MONTH_WINDOW_MS = 32 * ONE_DAY_MS
+const deepKey = (userId: string): string => `ai:dr:u:${userId}:${vnToday().slice(0, 7)}`
 
-export async function consumeDeepResearch(userId: string, limit: number): Promise<AiQuotaSpend> {
-  const key = `ai:dr:u:${userId}:${vnToday().slice(0, 7)}`
-  if (limit <= 0) return { ok: false, limit: 0, period: 'day', used: 0, remaining: 0, scope: 'instance', refund: null }
+// ── Carry-over (owner 21/11/2026: buying a new plan must not cost the person what they had left) ─────────────────────────────────────────────
+// When someone buys a plan while another is active, the days stack (p8_apply_entitlement 'stack') and the reports they had LEFT this month are added to the NEXT month's allowance, once.
+// Stored in the same shared store as the counter: one credit = one member of `ai:drb:u:<id>:<YYYY-MM>` (the month the credits are for). Added to the plan's limit for that month only.
+const CARRY_CAP = 60
+const bonusKey = (userId: string, month: string): string => `ai:drb:u:${userId}:${month}`
+/** 'YYYY-MM' of the VN month after the current one. */
+export function nextVnMonth(today: string = vnToday()): string {
+  const y = Number(today.slice(0, 4)), m = Number(today.slice(5, 7))
+  return m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, '0')}`
+}
+/** Credits carried INTO the current month (0 when none, or when the store did not answer). */
+async function deepBonus(userId: string): Promise<number> {
+  const key = bonusKey(userId, vnToday().slice(0, 7))
+  const n = isDistributedStoreConfigured() ? await distributedCountInWindow(key, MONTH_WINDOW_MS * 2) : localCount(key, MONTH_WINDOW_MS * 2)
+  return typeof n === 'number' && n > 0 ? Math.min(n, CARRY_CAP) : 0
+}
+/** Adds `credits` reports to NEXT month's allowance. Best effort: never throws; returns how many were recorded. */
+export async function grantDeepResearchCarryover(userId: string, credits: number): Promise<number> {
+  const n = Math.min(CARRY_CAP, Math.max(0, Math.floor(credits)))
+  if (n === 0) return 0
+  const key = bonusKey(userId, nextVnMonth())
+  let done = 0
+  try {
+    for (let i = 0; i < n; i++) {
+      if (isDistributedStoreConfigured()) { const r = await distributedRateLimit(key, CARRY_CAP, MONTH_WINDOW_MS * 2); if (!r.ok) break }
+      else if (!localSpend(key, MONTH_WINDOW_MS * 2, CARRY_CAP).ok) break
+      done++
+    }
+  } catch { /* the plan is already granted: a carry-over that fails is only logged by the caller */ }
+  return done
+}
+
+/** Reports left this month, WITHOUT spending one (the chat asks before it picks a mode). `remaining` is null when the shared store did not answer: the caller then lets the run try (it is metered again at the start). */
+export async function peekDeepResearch(userId: string, planLimit: number): Promise<{ limit: number; used: number | null; remaining: number | null }> {
+  if (planLimit <= 0) return { limit: 0, used: 0, remaining: 0 }
+  const limit = planLimit + (await deepBonus(userId))
+  const key = deepKey(userId)
+  const used = isDistributedStoreConfigured() ? await distributedCountInWindow(key, MONTH_WINDOW_MS) : localCount(key, MONTH_WINDOW_MS)
+  return { limit, used, remaining: used === null ? null : Math.max(0, limit - used) }
+}
+
+export async function consumeDeepResearch(userId: string, planLimit: number): Promise<AiQuotaSpend> {
+  const key = deepKey(userId)
+  if (planLimit <= 0) return { ok: false, limit: 0, period: 'day', used: 0, remaining: 0, scope: 'instance', refund: null }
+  const limit = planLimit + (await deepBonus(userId))
   if (!isDistributedStoreConfigured()) {
     const r = localSpend(key, MONTH_WINDOW_MS, limit)
     return { ok: r.ok, limit, period: 'day', used: r.used, remaining: Math.max(0, limit - r.used), scope: 'instance', refund: r.ok && r.member !== undefined ? { scope: 'instance', key, member: String(r.member) } : null }

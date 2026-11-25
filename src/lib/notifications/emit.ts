@@ -7,7 +7,13 @@ import { sendNotificationToUser, type PushResult } from './send'
 export type NotificationType =
   | 'like'
   | 'comment'
+  // A reply to someone's comment (the parent comment's author) and a share of someone's post (the post's author).
+  // The `type` column is plain text with no CHECK, so no migration is needed; clients render an unknown type as a generic row.
+  | 'reply'
+  | 'share'
   | 'follow'
+  // A person you follow published a new post or clip (src/lib/notifications/friendPost.ts).
+  | 'friend_post'
   | 'milestone'
   | 'deal'
   | 'morning_brief'

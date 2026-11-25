@@ -24,6 +24,7 @@ vi.mock('@/components/explore/VideoPlayer', async () => {
       return <div data-testid="player" data-url={url} data-active={String(!!active)}><video data-testid="video" /></div>
     }),
     isFeedAudioUnlocked: () => true,
+    consumeAudioUnlockTap: () => false,
   }
 })
 /** The off-screen poster: an image, never a player. */
@@ -548,7 +549,7 @@ describe('the three-column composition: shell sidebar · stage · right column',
     await waitFor(() => expect(document.querySelector('[data-xp-recs]')).toBeTruthy())
     const names = Array.from(document.querySelectorAll('[data-xp-recs] .v3-xp-rec-name')).map(e => e.textContent)
     expect(names).toEqual(['Cơm tấm Ba Ghiền', 'The Workshop', 'Bánh mì Huỳnh Hoa'])
-    expect(document.querySelector('[data-xp-recs] a[href="/recommendations"]')).toBeTruthy()
+    expect(document.querySelector('[data-xp-recs] a[href="/recommendations"]')).toBeNull() // the "see all" page is hidden (SHOW_RECOMMENDATIONS, owner 20/11/2026)
     const ask = document.querySelector('[data-xp-recs] a[href^="/chat?q="]')!
     expect(decodeURIComponent(ask.getAttribute('href')!)).toContain('Cơm tấm Ba Ghiền')
   })

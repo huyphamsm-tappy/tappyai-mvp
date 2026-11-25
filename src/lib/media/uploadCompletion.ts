@@ -37,12 +37,13 @@ export const COMPLETE_UPLOAD_TYPE = 'media.complete-upload'
  * metadata. Deal images joined in F-103: admin-only, but a logo photographed on a phone carries GPS too.
  * (`audio` / `audioCover` are minted by no route today; add them here if one ever does.)
  */
-const CHECKED_KINDS: readonly MediaUploadKind[] = ['video', 'videoThumbnail', 'dealLogo', 'dealBanner']
+const CHECKED_KINDS: readonly MediaUploadKind[] = ['video', 'videoThumbnail', 'dealLogo', 'dealBanner', 'videoSource']
 const CLIENT_DIRECT_CHECKED_KINDS = new Set<MediaUploadKind>(CHECKED_KINDS)
 
 /** What each checked kind accepts, said plainly — the refusal names the formats, not "an error". */
 const UNSUPPORTED_FORMAT_MESSAGE: Partial<Record<MediaUploadKind, string>> = {
   video: 'Chỉ nhận video MP4 hoặc MOV. Bạn xuất lại thành một trong hai định dạng này rồi thử lại nhé.',
+  videoSource: 'Chỉ nhận video MP4 hoặc MOV. Bạn xuất lại thành một trong hai định dạng này rồi thử lại nhé.',
   videoThumbnail: 'Ảnh bìa video phải là JPEG, PNG hoặc WebP.',
   dealLogo: 'Chỉ nhận ảnh JPEG, PNG, WebP hoặc SVG.',
   dealBanner: 'Chỉ nhận ảnh JPEG, PNG, WebP hoặc SVG.',
@@ -207,7 +208,7 @@ export async function completeUploadResponse(
         body: {
           error: 'identifying_metadata',
           reasons,
-          message: kind === 'video' ? IDENTIFYING_MESSAGE.video : IDENTIFYING_MESSAGE.image,
+          message: kind === 'video' || kind === 'videoSource' ? IDENTIFYING_MESSAGE.video : IDENTIFYING_MESSAGE.image,
         },
       }
     }

@@ -1,0 +1,127 @@
+[
+  {
+    "id": 1,
+    "group": "greeting",
+    "turns": [
+      {
+        "q": "Hi",
+        "done": true,
+        "seconds": 8,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 109,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nHi\nHi! Nice to see you—how’s your Wednesday going?",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nHi\nHi! Nice to see you—how’s your Wednesday going?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/ea7570aa-e796-421d-bdd6-0cea28edae39",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "group": "greeting",
+    "turns": [
+      {
+        "q": "Chào bạn",
+        "done": true,
+        "seconds": 7,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 110,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nChào bạn\nChào bạn! Mình đây 😊 Hôm nay bạn thế nào?",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nChào bạn\nChào bạn! Mình đây 😊 Hôm nay bạn thế nào?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/0fdd4ed1-dfd1-4349-8117-b8bff68fad93",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "smalltalk",
+    "turns": [
+      {
+        "q": "hello, hôm nay bạn khỏe không?",
+        "done": true,
+        "seconds": 8,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 137,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nhello, hôm nay bạn khỏe không?\nMình ổn, cảm ơn bạn hỏi 😊 Hôm nay bạn thế nào?",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nhello, hôm nay bạn khỏe không?\nMình ổn, cảm ơn bạn hỏi 😊 Hôm nay bạn thế nào?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9fcc92e9-f6a1-4865-920c-da61e674b801",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "group": "smalltalk",
+    "turns": [
+      {
+        "q": "cảm ơn nha",
+        "done": true,
+        "seconds": 7,
+        "screen": "screens/q04.jpg",
+        "answered": true,
+        "chars": 88,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\ncảm ơn nha\nKhông có gì nha 😊",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\ncảm ơn nha\nKhông có gì nha 😊",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/50a97ac7-7847-4ad1-b102-bec64c19f744",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "group": "smalltalk",
+    "turns": [
+      {
+        "q": "hôm nay mệt quá trời",
+        "done": true,
+        "seconds": 8,
+        "screen": "screens/q05.jpg",
+        "answered": true,
+        "chars": 123,
+        "head": "Nghe có vẻ hôm nay đuối thật rồi. Nghỉ một chút, uống miếng nước rồi làm từng việc một thôi—hôm nay không cần gồng hết đâu.",
+        "tail": "Nghe có vẻ hôm nay đuối thật rồi. Nghỉ một chút, uống miếng nước rồi làm từng việc một thôi—hôm nay không cần gồng hết đâu.",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/383cc9af-148e-4228-890c-73a66e5d015a",
+        "proNote": 0
+      }
+    ]
+  }
+]

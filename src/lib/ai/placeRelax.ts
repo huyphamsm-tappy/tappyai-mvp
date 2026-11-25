@@ -15,6 +15,7 @@
 // Pure functions + one async orchestrator that takes its side effects as callbacks.
 
 import type { ConstraintFilterOutcome, PlaceConstraints } from './placeConstraintFilter'
+import { encodeQuery } from '@/lib/links/encodeQuery'
 
 export type RelaxStep = 'price' | 'area'
 
@@ -87,7 +88,7 @@ export async function relaxEmptyPlaces(input: RelaxInput): Promise<RelaxOutcome>
 /** A Google Maps search link for the keywords + area — built here, never written by the model. */
 export function mapsSearchUrl(query: string, area?: string | null): string {
   const q = [query, area].map(s => (s ?? '').trim()).filter(Boolean).join(' ')
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`
+  return `https://www.google.com/maps/search/?api=1&query=${encodeQuery(q)}`
 }
 
 /**

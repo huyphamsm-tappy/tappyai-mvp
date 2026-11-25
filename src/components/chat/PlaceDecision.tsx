@@ -10,7 +10,10 @@ import { track } from '@/lib/tracking/tracker'
 import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
 import { reasonList, reasonText } from '@/lib/recommendation/reasonText'
 import { formatPriceBandText } from '@/lib/recommendation/priceBand'
+import { stayOfferLine } from '@/lib/recommendation/stayOffer'
 import { plainTextDeep } from '@/lib/chat/markdownNormalize'
+import { V206_LOOK } from '@/lib/chat/v206Look'
+import V206PlaceCard from '@/components/chat/v206/V206PlaceCard'
 
 // ── The place decision, as the approved Food composition renders it ─────────
 //
@@ -298,6 +301,11 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
           </p>
         )}
 
+        {stayOfferLine(p.stayOffer, t, locale) && (
+          // The provider's own structured figure, with the platform and its check time.
+          <p className="text-xs text-gray-600 dark:text-gray-400" data-testid="stay-offer-price">{stayOfferLine(p.stayOffer, t, locale)}</p>
+        )}
+
         {(p.flags?.length || p.categories?.length) && (
           <div className="flex flex-wrap gap-1.5 pt-0.5">
             {p.flags?.map(f => <Chip key={f}>{flagLabel[f]}</Chip>)}
@@ -393,7 +401,11 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
   )
 }
 
-export default function PlaceDecision({ view }: { view: PlacesLiveView | null }) {
+/**
+ * `forceV206` is a test seam: it overrides the build flags (NEXT_PUBLIC_WORKSPACE_V206 + NEXT_PUBLIC_RESPONSE_PRESENTATION).
+ * `layout="solo"` + `soloId`: ONE card of the view standing alone under the text that talks about it (placeAnchoring decides which and where); no filters, carousel or "show more".
+ */
+export default function PlaceDecision({ view, forceV206, layout, soloId, notes, noteSources, collapsed }: { view: PlacesLiveView | null; forceV206?: boolean; layout?: 'group' | 'solo'; soloId?: string; /** 18/11 (layout S5a): the answer already shows the places its text names as single cards, so the others wait behind "Xem thêm N chỗ" instead of standing beside them (cards that the advice does not mention read as a second, contradicting list) */ collapsed?: boolean; /** by place id: the points the answer gave about that venue (drawn inside its card in the v206 look) */ notes?: ReadonlyMap<string, ReadonlyArray<{ lead?: string; text: string }>>; /** by place id: the names of the sources those points rest on */ noteSources?: ReadonlyMap<string, readonly string[]> }) {
   const { t } = useTranslation()
   // Memoised together so the filter row is not rebuilt on every keystroke elsewhere
   // in the chat; `view` is a stable object for the life of the message.
@@ -409,20 +421,37 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
 
   if (!view || items.length === 0) return null
 
+  if (layout === 'solo') {
+    const one = items.find(i => i.id === soloId)
+    if (!one) return null
+    const ranked = view.ranked !== false && !view.pickUnmatched
+    const position = [...order.visible, ...order.hidden].findIndex(i => i.id === one.id)
+    return (
+      <div className={cn('mt-3 animate-fade-in', view.preliminary && 'opacity-80')} data-testid="place-decision" data-layout="solo" data-domain={view.domain} data-preliminary={view.preliminary ? 'true' : undefined}>
+        {(forceV206 ?? V206_LOOK)
+          ? <V206PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} solo notes={notes?.get(one.id)} noteSources={noteSources?.get(one.id)} />
+          : <PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} />}
+      </div>
+    )
+  }
+
   const filter = filters.find(f => f.id === active) ?? filters[0]
   // A filter shows every admitted row (a chip that could only choose among three is decoration);
   // "all" shows the fold. Filtering never reorders beyond the picks-first order.
   const ordered = [...order.visible, ...order.hidden]
-  const folded = active === 'all' && !expanded && order.hidden.length > 0
-  const shown = (folded ? order.visible : ordered).filter(filter.match)
-  const hiddenCount = folded ? order.hidden.filter(filter.match).length : 0
+  // 18/11 (layout S5a): a collapsed group shows nothing but its "Xem thêm N chỗ" button until it is opened
+  const collapsedGroup = !!collapsed && !expanded && active === 'all' && ordered.length > 0
+  const folded = collapsedGroup || (active === 'all' && !expanded && order.hidden.length > 0)
+  const shown = collapsedGroup ? [] : (folded ? order.visible : ordered).filter(filter.match)
+  const hiddenCount = collapsedGroup ? ordered.length : folded ? order.hidden.filter(filter.match).length : 0
+  const alone = (forceV206 ?? V206_LOOK) && ordered.length === 1
 
   return (
     <div className={cn('mt-3 animate-fade-in', view.preliminary && 'opacity-80')} data-testid="place-decision" data-domain={view.domain} data-pick-unmatched={view.pickUnmatched ? 'true' : undefined} data-preliminary={view.preliminary ? 'true' : undefined}>
       {/* The row shows when a chip can actually change the result, and also when
           the payload holds more rows than fit — the count is then the honest
           answer to "is this all of them?". */}
-      {(filters.length > 1 || items.length > VISIBLE) && (
+      {(filters.length > 1 || items.length > VISIBLE) && !collapsedGroup && (
         <div className="mb-3 flex flex-wrap gap-2" data-testid="place-filters">
           {filters.map(f => (
             <button
@@ -442,22 +471,26 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
         </div>
       )}
 
-      <div
+      {!collapsedGroup && <div
         data-testid="place-carousel"
         role="list"
         aria-label={t('placeDecision.carousel')}
         className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [scrollbar-width:thin]"
       >
         {shown.map((p) => (
-          <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
+          // the first layout: on a wide column the group is three cards that fill the row (gap 0.75rem x 2); more than three keep scrolling sideways
+          // 16/11: a group left with ONE card (the others stand under their own text) is drawn full width like a card standing alone, not a third-width card in an empty row
+          <div key={p.id} role="listitem" className={cn('flex-none snap-start', alone ? 'w-full' : 'w-[85%] sm:w-[320px]', (forceV206 ?? V206_LOOK) && !alone && 'lg:w-[calc((100%-1.5rem)/3)]')}>
             {/* A.4 (2026-09-19): when the reply named venues and none matched a row, the order is the
                 engine's, not the model's — no "#1" and no lead, exactly as an unranked set. */}
-            <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />
+            {(forceV206 ?? V206_LOOK)
+              ? <V206PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} solo={alone} notes={notes?.get(p.id)} noteSources={noteSources?.get(p.id)} />
+              : <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />}
           </div>
         ))}
-      </div>
+      </div>}
 
-      {(hiddenCount > 0 || (expanded && order.hidden.length > 0 && active === 'all')) && (
+      {(hiddenCount > 0 || (expanded && (order.hidden.length > 0 || !!collapsed) && active === 'all')) && (
         <button
           type="button"
           data-testid="place-show-more"

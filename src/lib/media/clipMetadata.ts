@@ -37,10 +37,10 @@ const typeAt = (b: Uint8Array, o: number) => String.fromCharCode(b[o], b[o + 1],
 const u32 = (b: Uint8Array, o: number) => ((b[o] << 24) >>> 0) + (b[o + 1] << 16) + (b[o + 2] << 8) + b[o + 3]
 const setType = (b: Uint8Array, o: number, t: string) => { for (let i = 0; i < 4; i++) b[o + i] = t.charCodeAt(i) }
 
-interface TopBox { type: string; offset: number; size: number; headerLen: number; uuid?: number[] }
+export interface TopBox { type: string; offset: number; size: number; headerLen: number; uuid?: number[] }
 
-/** Walks the top-level boxes by reading only their headers. Null when the file is not ISO-BMFF. */
-async function topLevelBoxes(read: RangeReader, total: number): Promise<TopBox[] | null> {
+/** Walks the top-level boxes by reading only their headers. Null when the file is not ISO-BMFF. (Shared with the Explore video header reader, src/lib/media/video/mp4Info.ts.) */
+export async function topLevelBoxes(read: RangeReader, total: number): Promise<TopBox[] | null> {
   const out: TopBox[] = []
   let p = 0
   while (p + 8 <= total && out.length < MAX_TOP_LEVEL_BOXES) {

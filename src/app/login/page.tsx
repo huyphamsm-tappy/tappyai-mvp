@@ -10,9 +10,11 @@ import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck,
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
+import LoginLanguageChooser from '@/components/LoginLanguageChooser'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 import { readReturnTo } from '@/lib/auth/returnTo'
+import { loginErrorKey, type LoginErrorKey } from '@/lib/auth/loginError'
 import { emailEntryRequested } from '@/lib/auth/emailEntry'
 import { isControllerLoginEntry } from '@/lib/auth/controllerLoginEntry'
 import { ControllerLoginCard, type LoginOutcome } from '@/components/controller/ControllerLoginCard'
@@ -68,6 +70,8 @@ export default function LoginPage() {
   const [pwPassword, setPwPassword] = useState('')
   const [pwBusy, setPwBusy] = useState(false)
   const [pwError, setPwError] = useState<string | null>(null)
+  // `?error=…` on arrival (a failed OAuth / magic-link / Zalo attempt), as a dictionary key.
+  const [urlError, setUrlError] = useState<LoginErrorKey | null>(null)
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
   // `/login?email=1` reveals the EXISTING email block in a normal browser. Starts
   // false so the server-rendered card is the unchanged V1 card (no hydration
@@ -111,6 +115,8 @@ export default function LoginPage() {
     const err = new URLSearchParams(window.location.search).get('error')
     if (!err) return
     emitAuthLoginFailed(err === 'zalo_failed' ? 'zalo' : (getPendingMethod() ?? 'unknown'), 'oauth_denied')
+    // Show it, in words: mapped to a fixed dictionary key, never the raw value (see lib/auth/loginError.ts).
+    setUrlError(loginErrorKey(err))
     const url = new URL(window.location.href)
     url.searchParams.delete('error')
     window.history.replaceState({}, '', url.toString())
@@ -548,14 +554,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-dvh bg-[#eef1f8] dark:bg-gray-950 flex items-center justify-center p-3 sm:p-6 lg:p-10">
+      {/* The language question comes BEFORE signing in (owner 18/11/2026): flags, once, then never again. */}
+      <LoginLanguageChooser />
       {/* Float animation for the hero chips — plain <style> (no styled-jsx: the App
           Router would need a style registry for it; a raw tag needs nothing). */}
       <style>{'@keyframes tappy-float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }'}</style>
 
       <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-[28px] shadow-[0_24px_80px_rgba(30,41,90,0.12)] overflow-hidden">
-        {/* Card header: logo. (Language selection stays with the app's global
-            first-visit LanguagePicker modal — rendering it again here duplicated
-            the overlay and blocked the whole card.) */}
+        {/* Card header: logo. (The language question is LoginLanguageChooser above: one modal, once, before
+            signing in. The app's own LanguagePicker never mounts on this page, so the two cannot stack.) */}
         <div className="flex items-center justify-between px-6 sm:px-10 pt-6">
           <div className="flex items-center gap-2.5">
             {/* Approved Tappy Otter mascot (pose 02 "wave" = default AI avatar) as the
@@ -682,6 +689,11 @@ export default function LoginPage() {
                 <>
                   <h2 className="text-center text-lg font-bold text-gray-900 dark:text-white">{t('login.signinTitle')}</h2>
                   <p className="text-center text-sm text-content-secondary mt-1 mb-6">{t('login.signinSubtitle')}</p>
+                  {urlError && (
+                    <p data-testid="login-url-error" role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-center text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+                      {t(urlError)}
+                    </p>
+                  )}
 
                   <div className="space-y-3">
                     {/* Google */}

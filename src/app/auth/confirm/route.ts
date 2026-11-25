@@ -1,13 +1,19 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { APP_STATE_COOKIE, checkAppState } from '@/lib/auth/appState'
+import { getAgeEligibility } from '@/lib/account/ageEligibility'
+import { safeReturnTo } from '@/lib/auth/returnTo'
+import { clientIpKey } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
+  // Public, unauthenticated and it talks to Supabase Auth: capped per IP (20/min).
+  const flood = await publicRateLimit(`auth-confirm:${clientIpKey(request)}`, 20, 60_000)
+  if (!flood.ok) return NextResponse.redirect(`${origin}/login?error=rate_limited`)
   const tokenHash = searchParams.get('token_hash')
   const type = searchParams.get('type') as 'magiclink' | 'email' | null
-  const rawNext = searchParams.get('next') ?? '/'
-  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/'
+  const next = safeReturnTo(searchParams.get('next'))
   // Native app flows (iOS/Android): instead of a cookie session + web redirect we
   // hand the session tokens back to the app via its custom scheme. Strict allowlist;
   // schemes are hardcoded. iOS registered tappyai://auth/callback; Android registered
@@ -88,8 +94,16 @@ export async function GET(request: NextRequest) {
     .eq('id', user.id)
     .maybeSingle()
 
+  // Same order as /auth/callback: authentication → 18+ eligibility → onboarding → product. An account that is not
+  // yet eligible (unknown, or ineligible) goes to the age screen first; it is convenience, the APIs refuse on their own.
+  const eligibility = await getAgeEligibility(supabase)
+
   let destination: string
-  if (!profile?.onboarded) {
+  if (eligibility.status !== 'eligible') {
+    destination = next !== '/'
+      ? `${origin}/age-check?next=${encodeURIComponent(next)}`
+      : `${origin}/age-check`
+  } else if (!profile?.onboarded) {
     destination = next !== '/'
       ? `${origin}/onboarding?next=${encodeURIComponent(next)}`
       : `${origin}/onboarding`

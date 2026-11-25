@@ -68,6 +68,12 @@ describe('addresses we refuse', () => {
     ['🚨 IPv4-mapped loopback, hex', '::ffff:7f00:1'],
     ['🚨 IPv4-mapped private, hex', '::ffff:0a00:0005'],
     ['🚨 NAT64-mapped metadata', '64:ff9b::169.254.169.254'],
+    // 18/11 review: the other ways IPv4 hides inside an IPv6 address
+    ['🚨 IPv4-compatible loopback, hex', '::7f00:1'],
+    ['🚨 IPv4-compatible metadata, dotted', '::169.254.169.254'],
+    ['🚨 6to4 of loopback (2002:7f00:0001::)', '2002:7f00:1::1'],
+    ['🚨 6to4 of the metadata address', '2002:a9fe:a9fe::1'],
+    ['🚨 Teredo', '2001:0:4136:e378:8000:63bf:3fff:fdd2'],
 
     // Not addresses at all. A guard that answers "true, it is not in a private range" for these
     // is answering the wrong question.

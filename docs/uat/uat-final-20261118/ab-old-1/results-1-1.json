@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "group": "food",
+    "turns": [
+      {
+        "q": "Tư vấn cho tôi quán ăn tối cao cấp ở Thảo Điền Quận 2",
+        "done": true,
+        "seconds": 47,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 1733,
+        "head": "Mình ưu tiên sang và có cơ hội trò chuyện yên tĩnh, nên chọn Lavelle Library làm lựa chọn đầu tiên: kết quả tìm kiếm xếp đây là nhà hàng cao cấp. Tuy vậy, chưa có dữ liệu xác nhận mức độ yên tĩnh hay giá món; khi đặt bàn, bạn nên nói rõ muốn chỗ ít ồn. Google Maps\nGỢI Ý ĂN TỐI CAO CẤP Ở THẢO ĐIỀN\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nNK\nNÚC Kitchen & Bar\n\nẨm thực Việt và Á đương đại, hợp muốn thử món sáng tạo\n\nHợp khi: đánh giá Google Maps 4,9/5 từ 718 lượt\n\nNguồn: Google Maps\n\nNHÀ HÀNG CAO CẤP\n★ 4.4 (198)\nLavelle Library\n\nTp, 12 Đ.Số 12, An Khánh, Hồ Chí Minh, Việt Nam\n\n11:00–22:00\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nHợp khi: Muốn chọn nhà hàng được xếp loại cao cấp\n\nNguồn: Google Maps\n",
+        "tail": "d\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nChốt lại: hẹn hò hoặc bữa tối chỉn chu thì thử Lavelle Library trước, nhưng nhớ yêu cầu bàn yên tĩnh khi đặt.\nM\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 16,
+        "hosts": {
+          "maps.google.com": 7,
+          "food.grab.com": 2,
+          "lavellelibrary.com": 1,
+          "tiktok.com": 1,
+          "youtube.com": 3,
+          "google.com": 1,
+          "madamelam.com": 1
+        },
+        "sourcesChip": "M Nguồn · 1",
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 24,
+        "path": "/chat/8895ce8b-c9a9-4fe2-a435-41e2902e5440",
+        "proNote": 0
+      }
+    ]
+  }
+]

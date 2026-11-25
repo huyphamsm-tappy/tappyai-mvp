@@ -17,7 +17,7 @@ export default function LocationProvider() {
         try {
           const resp = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
-            { headers: { 'Accept-Language': 'vi', 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }
+            { headers: { 'Accept-Language': 'vi' } }
           )
           if (resp.ok) {
             const data = await resp.json()

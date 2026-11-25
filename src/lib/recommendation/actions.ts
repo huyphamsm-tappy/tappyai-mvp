@@ -243,6 +243,11 @@ export interface ActionSource {
    */
   booking_links?: readonly string[]
   agoda_link?: string
+  /**
+   * THIS hotel's own Agoda page, as the realtime layer's offer for the same hotel returned it (set by `attachRealtime`, never composed).
+   * The lead booking action of a stay card — Agoda is the hotel affiliate partner; Booking.com is never the lead (owner, 19/11/2026).
+   */
+  agoda_offer_url?: string
   /** The registry provider the user NAMED this turn (stamped by the CCP seam); other merchants' legacy links step aside. */
   _tappy_requested_provider?: string
   order_links?: { name: string; url: string }[]
@@ -277,6 +282,10 @@ export interface ActionSource {
  * never in front of them. "Deeper" is not "more relevant".
  */
 const COMMERCE_PRIORITY = -1
+/** The shopping affiliate partner (providerId of the CCP registry) leads a product card; at most this many other platforms follow it. */
+const SHOPPING_DOMAIN = 'shopping'
+const SHOPPING_LEAD = 'lazada'
+const MAX_SECONDARY_SHOPPING_LINKS = 3
 
 /**
  * Normalised destination identity: scheme-insensitive host, path without a
@@ -297,6 +306,13 @@ function destinationKey(url: string | undefined): string | null {
 function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: string): Action[] {
   if (!Array.isArray(rows) || rows.length === 0) return []
   const out: Action[] = []
+  // 19/11/2026 (owner): Lazada is the shopping affiliate partner. CCP keeps its depth-first order (a deeper product page beats a search page);
+  // among rows of the same depth or deeper a Lazada row steps ahead of the other marketplaces. Pure re-ranking of rows that already exist.
+  const rankIndex = (row: CommerceLinkRow, index: number): number => {
+    if (domain !== SHOPPING_DOMAIN || row.providerId !== SHOPPING_LEAD || row.primary === false) return index
+    const ahead = rows.findIndex(o => isCommerceLinkRow(o) && !isSearchFallbackRow(o) && o.primary !== false && o.providerId !== SHOPPING_LEAD && o.depth <= row.depth)
+    return ahead >= 0 && ahead < index ? ahead - 0.5 : index
+  }
   rows.forEach((row, index) => {
     if (!isCommerceLinkRow(row)) return
     // A1 (UAT 2026-09-28): the row's ONE search-page fallback (no own page on any platform). It is a
@@ -318,16 +334,22 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
     const kind = actionKindFor(row.intentType)
     const a = action(kind, row.url, domain, { urlKind: urlKindFor(row.kind), platform: row.merchantName })
     if (!a) return
-    const primary = row.primary !== false
+    // 19/11/2026 (owner): Booking.com is not an affiliate partner — on a stay its page is a secondary link behind Maps, never the lead.
+    const nonPartnerStay = domain === 'travel' && row.providerId === 'booking'
+    const primary = row.primary !== false && !nonPartnerStay
     out.push({
       ...a,
       // Ranked order from CCP is preserved; a fraction keeps every PRIMARY commerce action ahead of
       // index 0. A secondary one keeps the table priority of its kind.
-      priority: primary ? COMMERCE_PRIORITY + index / 100 : a.priority,
+      priority: primary ? COMMERCE_PRIORITY + rankIndex(row, index) / 100 : nonPartnerStay ? priorityFor(domain, 'website') : a.priority,
       commerce: commerceFactsOf(row, primary),
     })
   })
-  return out
+  if (domain !== SHOPPING_DOMAIN) return out
+  // Lead + at most 3 other platforms. Search fallbacks (urlKind 'search', not primary) are not counted: withoutShadowedFallbacks judges them.
+  const isFallback = (a: Action) => a.urlKind === 'search' && a.commerce?.primary === false
+  const kept = new Set(out.filter(a => !isFallback(a)).sort((a, b) => a.priority - b.priority).slice(0, 1 + MAX_SECONDARY_SHOPPING_LINKS))
+  return out.filter(a => isFallback(a) || kept.has(a))
 }
 
 function commerceFactsOf(row: CommerceLinkRow, primary: boolean): CommerceActionFacts {
@@ -477,7 +499,10 @@ export function buildActions(
     for (const url of (src.booking_links ?? []).slice(0, 3)) {
       if (typeof url !== 'string' || !namesTheVenue(url)) continue
       const owner = providerOwning(url)
-      const kind: ActionKind = owner === 'shopeefood' || owner === 'grabfood' || owner === 'befood' ? 'order' : 'reservation'
+      // 17/11: "reservation" says WHAT the page does, and that is known only when the search was for a kind of venue that takes
+      // reservations (food, spa, entertainment). On a plain place search (a historic site, a museum, a park: domain 'place') the same
+      // provider link is kept, as the venue's page: a "Đặt chỗ" button on a monument claimed something no data said.
+      const kind: ActionKind = owner === 'shopeefood' || owner === 'grabfood' || owner === 'befood' ? 'order' : domain === 'place' ? 'website' : 'reservation'
       out.push(action(kind, url, domain, { urlKind: 'direct', attributed: true }))
     }
   }
@@ -503,6 +528,15 @@ export function buildActions(
   // or a Commerce Link with the stay applied).
   void otherMerchant
 
+  // 19/11/2026 (owner): the hotel card's lead booking action is THIS hotel's own Agoda page (the realtime offer's URL, which came from a
+  // tool result), never a Booking.com search. Only a deep page passes (a front door / search page is refused, A3.3); a Commerce Link to
+  // Agoda already on the row owns the slot; a turn that named another merchant keeps that merchant's links instead.
+  if (domain === 'travel' && src.agoda_offer_url && !commerceProviders.has('agoda') && !otherMerchant(src.agoda_offer_url) && providerOwning(src.agoda_offer_url) === 'agoda') {
+    const facts = outboundLinkFacts(src.agoda_offer_url, 'booking')
+    reportOutboundLink(src.agoda_offer_url, facts, { domain })
+    if (isDeepEnough(facts)) out.push(action('booking', src.agoda_offer_url, domain, { urlKind: 'direct', platform: 'Agoda' }))
+  }
+
   // ── The row's own link — and it is not a "product" outside shopping ───────
   //
   // 🚨 MEASURED ON A TRAVEL TURN: every hotel carried a `purchase` action
@@ -521,7 +555,13 @@ export function buildActions(
     // dropped — the card shows no CTA rather than a wrong one.
     const facts = outboundLinkFacts(rowLink, rowKind)
     reportOutboundLink(rowLink, facts, { domain })
-    if (isDeepEnough(facts)) out.push(action(rowKind, rowLink, domain, { urlKind: 'direct' }))
+    if (isDeepEnough(facts)) {
+      const a = action(rowKind, rowLink, domain, { urlKind: 'direct' })
+      // Booking.com is not an affiliate partner (owner, 19/11/2026): on a stay its page stays as a secondary link, behind Maps — never the lead.
+      // Lazada is the shopping affiliate partner (owner, 19/11/2026): a deep Lazada product page that came with the row leads the other marketplaces' pages (same kind).
+      const lazadaLead = a && domain === SHOPPING_DOMAIN && rowKind === 'purchase' && providerOwning(rowLink) === SHOPPING_LEAD
+      out.push(a && domain === 'travel' && providerOwning(rowLink) === 'booking' ? { ...a, priority: priorityFor(domain, 'website') } : a && lazadaLead ? { ...a, priority: COMMERCE_PRIORITY - 0.5 } : a)
+    }
   } else {
     out.push(action(rowKind, rowKind === 'website' ? venueSite(rowLink) : rowLink, domain, { urlKind: 'direct' }))
   }

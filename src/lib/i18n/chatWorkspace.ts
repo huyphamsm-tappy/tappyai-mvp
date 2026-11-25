@@ -1,0 +1,156 @@
+// Chat workspace (desktop): every word the history sidebar, its menu, the delete confirmations, the empty states and the .md export show.
+// One table of [vi, en] pairs, split into the two locale maps the dictionary merge expects. Keys are prefixed `chatWs.`.
+// Placeholders use {name}; translate() fills them.
+
+const T: Record<string, [string, string]> = {
+  'chatWs.rail.label': ['Điều hướng chính', 'Main navigation'],
+  'chatWs.sidebar.title': ['Lịch sử trò chuyện', 'Chat history'],
+  'chatWs.sidebar.newChat': ['Cuộc trò chuyện mới', 'New chat'],
+  'chatWs.search.placeholder': ['Tìm trong tiêu đề và tin nhắn...', 'Search titles and messages...'],
+  // the first layout's history panel (NEXT_PUBLIC_SHELL_REF)
+  'chatWs.search.placeholderRef': ['Tìm trong các cuộc trò chuyện...', 'Search your conversations...'],
+  'chatWs.search.clear': ['Xóa tìm kiếm', 'Clear search'],
+  'chatWs.row.updated': ['Cập nhật {when}', 'Updated {when}'],
+  'chatWs.loading': ['Đang tải…', 'Loading…'],
+  'chatWs.untitled': ['Cuộc trò chuyện mới', 'New conversation'],
+
+  'chatWs.group.today': ['Hôm nay', 'Today'],
+  'chatWs.group.sevenDays': ['7 ngày qua', 'Last 7 days'],
+  'chatWs.group.older': ['Cũ hơn', 'Older'],
+
+  'chatWs.select.on': ['Chọn', 'Select'],
+  'chatWs.select.done': ['Xong', 'Done'],
+  'chatWs.select.title': ['Chọn nhiều cuộc trò chuyện để xóa cùng lúc', 'Select several conversations to delete at once'],
+  'chatWs.select.count': ['Đã chọn {n} hội thoại', '{n} selected'],
+  'chatWs.select.cancel': ['Hủy chọn', 'Clear selection'],
+  'chatWs.select.delete': ['Xóa hàng loạt', 'Delete selected'],
+
+  'chatWs.menu.open': ['Tùy chọn', 'Options'],
+  'chatWs.menu.rename': ['Đổi tên', 'Rename'],
+  'chatWs.menu.export': ['Xuất cuộc trò chuyện (.md)', 'Export conversation (.md)'],
+  'chatWs.menu.delete': ['Xóa vĩnh viễn…', 'Delete permanently…'],
+
+  'chatWs.rename.hint': ['Nhấp đúp để đổi tên', 'Double-click to rename'],
+  'chatWs.rename.saved': ['Đã đổi tên cuộc trò chuyện', 'Conversation renamed'],
+  'chatWs.rename.empty': ['Tiêu đề không được để trống — đã giữ tên cũ', 'The title cannot be empty — the old name was kept'],
+  'chatWs.rename.failed': ['Không đổi được tên. Hãy thử lại.', 'Could not rename. Please try again.'],
+
+  'chatWs.delete.title': ['Xóa vĩnh viễn cuộc trò chuyện?', 'Delete this conversation permanently?'],
+  'chatWs.delete.body': ['Cuộc trò chuyện {title} và toàn bộ tin nhắn sẽ bị xóa. Không thể khôi phục.', 'The conversation {title} and all its messages will be deleted. This cannot be undone.'],
+  'chatWs.delete.batchTitle': ['Xóa vĩnh viễn {n} cuộc trò chuyện?', 'Delete {n} conversations permanently?'],
+  'chatWs.delete.batchBody': ['Toàn bộ tin nhắn của các cuộc trò chuyện này sẽ bị xóa. Không thể khôi phục.', 'All messages in these conversations will be deleted. This cannot be undone.'],
+  'chatWs.delete.confirm': ['Xác nhận xóa vĩnh viễn', 'Delete permanently'],
+  'chatWs.delete.cancel': ['Hủy bỏ', 'Cancel'],
+  'chatWs.delete.done': ['Đã xóa {n} cuộc trò chuyện', 'Deleted {n} conversation(s)'],
+  'chatWs.delete.failed': ['Không xóa được. Hãy thử lại.', 'Could not delete. Please try again.'],
+
+  'chatWs.export.done': ['Đã xuất {file}', 'Exported {file}'],
+  'chatWs.export.you': ['Bạn', 'You'],
+  'chatWs.export.tappy': ['Tappy', 'Tappy'],
+  'chatWs.export.from': ['Xuất từ TappyAI', 'Exported from TappyAI'],
+  'chatWs.export.count': ['{n} tin nhắn', '{n} messages'],
+
+  'chatWs.empty.none.title': ['Chưa có cuộc trò chuyện nào', 'No conversations yet'],
+  'chatWs.empty.none.desc': ['Bắt đầu một cuộc trò chuyện mới để Tappy giúp bạn lên kế hoạch, tìm địa điểm hoặc nghiên cứu chuyên sâu.', 'Start a new chat and Tappy will help you plan, find places or research in depth.'],
+  'chatWs.empty.none.action': ['Bắt đầu cuộc trò chuyện', 'Start a chat'],
+  'chatWs.empty.search.title': ['Không tìm thấy kết quả', 'No results'],
+  'chatWs.empty.search.desc': ['Không có cuộc trò chuyện nào khớp với "{q}". Thử từ khóa khác hoặc gõ không dấu (ví dụ: "da lat").', 'No conversation matches "{q}". Try another keyword.'],
+  'chatWs.empty.search.action': ['Xóa tìm kiếm', 'Clear search'],
+
+  'chatWs.signin.title': ['Đăng nhập để xem lịch sử', 'Sign in to see your history'],
+  'chatWs.signin.desc': ['Lịch sử trò chuyện được lưu theo tài khoản của bạn.', 'Your chat history is saved to your account.'],
+  'chatWs.signin.action': ['Đăng nhập', 'Sign in'],
+
+  'chatWs.tab.all': ['Tất cả', 'All'],
+  'chatWs.tab.pinned': ['Ghim', 'Pinned'],
+  'chatWs.tab.archived': ['Lưu trữ', 'Archived'],
+  'chatWs.tab.label': ['Lọc lịch sử', 'Filter history'],
+  'chatWs.group.pinned': ['Đã ghim', 'Pinned'],
+
+  'chatWs.menu.pin': ['Ghim lên đầu danh sách', 'Pin to the top'],
+  'chatWs.menu.unpin': ['Bỏ ghim', 'Unpin'],
+  'chatWs.menu.archive': ['Lưu trữ (ẩn khỏi danh sách)', 'Archive (hide from the list)'],
+  'chatWs.menu.restore': ['Khôi phục về danh sách chính', 'Restore to the main list'],
+  'chatWs.pinned.badge': ['Đã ghim', 'Pinned'],
+
+  'chatWs.pin.done': ['Đã ghim {n} cuộc trò chuyện', 'Pinned {n} conversation(s)'],
+  'chatWs.unpin.done': ['Đã bỏ ghim {n} cuộc trò chuyện', 'Unpinned {n} conversation(s)'],
+  'chatWs.archive.done': ['Đã lưu trữ {n} cuộc trò chuyện', 'Archived {n} conversation(s)'],
+  'chatWs.restore.done': ['Đã khôi phục {n} cuộc trò chuyện về danh sách chính', 'Restored {n} conversation(s) to the main list'],
+  'chatWs.action.failed': ['Không thực hiện được. Hãy thử lại.', 'That did not work. Please try again.'],
+
+  'chatWs.select.pin': ['Ghim hàng loạt', 'Pin selected'],
+  'chatWs.select.unpin': ['Bỏ ghim hàng loạt', 'Unpin selected'],
+  'chatWs.select.archive': ['Lưu trữ hàng loạt', 'Archive selected'],
+  'chatWs.select.restore': ['Khôi phục hàng loạt', 'Restore selected'],
+
+  'chatWs.empty.pinned.title': ['Chưa có cuộc trò chuyện nào được ghim', 'No pinned conversations'],
+  'chatWs.empty.pinned.desc': ['Nhấp vào menu ba chấm (⋮) trên một cuộc trò chuyện rồi chọn "Ghim lên đầu danh sách" để giữ cuộc trò chuyện quan trọng ở trên cùng.', 'Open the three-dot menu (⋮) on a conversation and choose "Pin to the top" to keep an important one up front.'],
+  'chatWs.empty.archived.title': ['Kho lưu trữ đang trống', 'Nothing archived'],
+  'chatWs.empty.archived.desc': ['Cuộc trò chuyện bạn lưu trữ sẽ được cất ở đây và có thể khôi phục bất cứ lúc nào. Dùng menu ba chấm (⋮) rồi chọn "Lưu trữ" để ẩn bớt cuộc trò chuyện cũ khỏi danh sách chính.', 'Conversations you archive are kept here and can be restored at any time. Use the three-dot menu (⋮) and choose "Archive" to tidy the main list.'],
+  'chatWs.empty.toAll': ['Xem tất cả cuộc trò chuyện', 'See all conversations'],
+
+  'chatWs.tab.projects': ['Dự án', 'Projects'],
+  'chatWs.menu.moveToProject': ['Chuyển vào dự án…', 'Move to a project…'],
+  'chatWs.menu.pickProject': ['Chọn dự án', 'Choose a project'],
+  'chatWs.menu.noProject': ['Không thuộc dự án nào', 'Not in any project'],
+  'chatWs.menu.noProjectsYet': ['Chưa có dự án nào. Tạo dự án ở tab Dự án.', 'No projects yet. Create one in the Projects tab.'],
+  'chatWs.menu.back': ['Quay lại', 'Back'],
+  'chatWs.moved.done': ['Đã chuyển vào dự án "{title}"', 'Moved to the project "{title}"'],
+  'chatWs.moved.removed': ['Đã đưa cuộc trò chuyện ra khỏi dự án', 'Removed from its project'],
+
+  'chatWs.project.new': ['Dự án mới', 'New project'],
+  'chatWs.project.titlePlaceholder': ['Tên dự án (tối đa 80 ký tự)', 'Project name (80 characters at most)'],
+  'chatWs.project.descPlaceholder': ['Mô tả ngắn (không bắt buộc)', 'Short description (optional)'],
+  'chatWs.project.create': ['Tạo dự án', 'Create project'],
+  'chatWs.project.cancel': ['Hủy', 'Cancel'],
+  'chatWs.project.count': ['{n} cuộc trò chuyện', '{n} conversation(s)'],
+  'chatWs.project.back': ['Tất cả dự án', 'All projects'],
+  'chatWs.project.rename': ['Đổi tên dự án', 'Rename project'],
+  'chatWs.project.delete': ['Xóa dự án', 'Delete project'],
+  'chatWs.project.created': ['Đã tạo dự án "{title}"', 'Created the project "{title}"'],
+  'chatWs.project.renamed': ['Đã đổi tên dự án', 'Project renamed'],
+  'chatWs.project.deleted': ['Đã xóa dự án. Các cuộc trò chuyện vẫn được giữ.', 'Project deleted. Its conversations were kept.'],
+  'chatWs.project.deleteTitle': ['Xóa dự án này?', 'Delete this project?'],
+  'chatWs.project.deleteBody': ['Dự án {title} sẽ bị xóa. Các cuộc trò chuyện trong dự án KHÔNG bị xóa, chúng chỉ không còn thuộc dự án nào.', 'The project {title} will be deleted. Its conversations are NOT deleted; they just stop belonging to a project.'],
+  'chatWs.project.deleteConfirm': ['Xóa dự án', 'Delete project'],
+  'chatWs.project.failed': ['Không thực hiện được. Hãy thử lại.', 'That did not work. Please try again.'],
+  'chatWs.project.empty.title': ['Chưa có dự án nào', 'No projects yet'],
+  'chatWs.project.empty.desc': ['Dự án gom các cuộc trò chuyện cùng chủ đề (chuyến đi, nghiên cứu, mua sắm…) vào một nơi. Tạo dự án rồi dùng menu ba chấm (⋮) → "Chuyển vào dự án…".', 'A project gathers conversations on the same topic (a trip, research, shopping…) in one place. Create one, then use the three-dot menu (⋮) → "Move to a project…".'],
+  'chatWs.project.emptyChats.title': ['Dự án này chưa có cuộc trò chuyện nào', 'No conversations in this project yet'],
+  'chatWs.project.emptyChats.desc': ['Mở menu ba chấm (⋮) của một cuộc trò chuyện và chọn "Chuyển vào dự án…".', 'Open the three-dot menu (⋮) of a conversation and choose "Move to a project…".'],
+  'chatWs.more.load': ['Xem thêm lịch sử', 'Load more history'],
+  'chatWs.more.loading': ['Đang tải…', 'Loading…'],
+
+  'chatWs.header.updated': ['Cập nhật {time}', 'Updated {time}'],
+  'chatWs.header.untitled': ['Cuộc trò chuyện mới', 'New conversation'],
+  'chatWs.header.saved': ['Đã lưu', 'Saved'],
+  'chatWs.header.export': ['Xuất .md', 'Export .md'],
+  'chatWs.drawer.title': ['Địa điểm đã lưu', 'Saved places'],
+  'chatWs.drawer.close': ['Đóng', 'Close'],
+  'chatWs.drawer.empty': ['Bạn chưa lưu địa điểm nào. Bấm biểu tượng lưu trên thẻ địa điểm trong khi trò chuyện.', 'You have not saved any place yet. Tap the save icon on a place card while chatting.'],
+  'chatWs.drawer.signin': ['Đăng nhập để xem địa điểm đã lưu.', 'Sign in to see your saved places.'],
+  'chatWs.drawer.error': ['Không tải được danh sách đã lưu.', 'Could not load your saved places.'],
+  'chatWs.drawer.remove': ['Bỏ lưu', 'Remove'],
+  'chatWs.drawer.removed': ['Đã bỏ lưu "{title}"', 'Removed "{title}" from saved'],
+  'chatWs.drawer.all': ['Xem tất cả mục đã lưu', 'See everything you saved'],
+
+  'chatWs.error.load':['Không tải được lịch sử trò chuyện.', 'Could not load your chat history.'],
+  'chatWs.error.retry': ['Thử lại', 'Try again'],
+
+  // mockup look: rail and history rows
+  'chatWs.rail.create': ['Tạo mới', 'New'],
+  'chatWs.rail.saved': ['Đã lưu', 'Saved'],
+  // the first layout's shell (NEXT_PUBLIC_SHELL_REF)
+  'chatWs.rail.inbox': ['Inbox', 'Inbox'],
+  'chatWs.rail.apps': ['Ứng dụng', 'Apps'],
+  'chatWs.shell.menu': ['Mở hoặc đóng lịch sử trò chuyện', 'Open or close the chat history'],
+  'chatWs.shell.bell': ['Thông báo', 'Notifications'],
+  'chatWs.shell.bellUnread': ['Thông báo, có tin chưa đọc', 'Notifications, unread items'],
+  'chatWs.shell.account': ['Tài khoản của bạn', 'Your account'],
+  'chatWs.group.collapse': ['Thu gọn nhóm', 'Collapse group'],
+  'chatWs.group.expand': ['Mở rộng nhóm', 'Expand group'],
+}
+
+export const vi: Record<string, string> = Object.fromEntries(Object.entries(T).map(([k, v]) => [k, v[0]]))
+export const en: Record<string, string> = Object.fromEntries(Object.entries(T).map(([k, v]) => [k, v[1]]))

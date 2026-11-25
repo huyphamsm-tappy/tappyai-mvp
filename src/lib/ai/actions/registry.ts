@@ -89,7 +89,14 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   { tool: 'think_deeper', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   // CONSULT_ONE_BRAIN only (31/10): the model hands the options of a recommendation to the option cards; nothing leaves the server
   { tool: 'present_options', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_PRESENT_BLOCKS only (14/11): the model declares compare / ask / booking blocks; checked server-side, nothing leaves the server
+  { tool: 'present_blocks', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only (19/11): the no-op a refused presentation call is turned into by the repair hook; returns a note, nothing leaves the server
+  { tool: 'present_failed', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only (20/11): explains how to use Tappy from Tappy's own guide (lib/features/explainFeature.ts); no provider call, no I/O, no state, nothing leaves the server
+  { tool: 'explain_feature', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_gold_price', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  { tool: 'get_market_rate', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_hotel_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_transport_options', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },

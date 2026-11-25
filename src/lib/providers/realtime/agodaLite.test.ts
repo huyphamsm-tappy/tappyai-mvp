@@ -131,6 +131,10 @@ describe('Agoda Lite — switch, credentials and wiring', () => {
     expect(verifiedRefsFor('Sài Gòn')?.agoda?.cityRef).toBe('13170')
     expect(verifiedRefsFor('Phú Quốc')?.agoda?.cityRef).toBe('17188')
     expect(verifiedRefsFor('Đà Lạt')?.agoda?.cityRef).toBe('15932')
-    expect(verifiedRefsFor('Quy Nhơn')).toBeUndefined() // no page found: no id is guessed
+    // 14/11: Quy Nhơn WAS pinned as "unknown" here because the 30/10 slug guess (quy-nhon-vn) returned 404; its real page (quy-nhon-binh-dinh-vn) and Agoda's Hotel Data File both give 17242.
+    // The guard this line existed for - "no id is guessed" - is kept, on a destination that really has none.
+    expect(verifiedRefsFor('Quy Nhơn')?.agoda?.cityRef).toBe('17242')
+    expect(verifiedRefsFor('Atlantis')).toBeUndefined() // no page, not in the feed: no id is guessed
+    expect(verifiedRefsFor('gần biển')).toBeUndefined() // a description is not a place
   })
 })

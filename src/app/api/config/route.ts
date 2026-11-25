@@ -8,6 +8,8 @@ import {
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
   SHOW_MUSIC,
+  SHOW_TRANSLATE,
+  SHOW_FORTUNE,
   SCAM_SHIELD_DAILY_LIMIT_AUTH,
   SCAM_SHIELD_DAILY_LIMIT_ANON,
   MAX_PHOTOS_PER_REVIEW,
@@ -68,6 +70,9 @@ export async function GET() {
         // Music is hidden on every platform while the catalogue licensing is undecided.
         // Native reads this; the underlying routes and catalogue are untouched.
         showMusic: SHOW_MUSIC,
+        // Translate and fortune telling are hidden on every platform (owner decision 18/11/2026); native reads these, the routes answer 404.
+        showTranslate: SHOW_TRANSLATE,
+        showFortune: SHOW_FORTUNE,
         // In-app account deletion (POST /api/account/delete). Native clients offer it only where the server can keep the promise
         // (ACCOUNT_SELF_DELETE_ENABLED AND the clean-up migration installed - lib/account/deletionReady.ts); off = the request-by-email
         // flow. The route is dynamic, so the value follows the running environment. A missing field (older server) means off.

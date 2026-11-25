@@ -71,8 +71,8 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
     describe(`anonymous — ${ANON_LIFETIME_LIMIT}, for the lifetime of the identity`, () => {
       it(`1. starts with ${ANON_LIFETIME_LIMIT}`, async () => {
         const q = await peekAiQuestionQuota(anon())
-        // owner 01/11/2026: 5 -> 10 (accounts have no visible limit; hidden anti-abuse ceiling)
-        expect(ANON_LIFETIME_LIMIT).toBe(10)
+        // owner 11/11/2026: 10 -> 5 ("hỏi 5 câu phải tạo account Tappy để hỏi tiếp")
+        expect(ANON_LIFETIME_LIMIT).toBe(5)
         expect(q).toMatchObject({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime', used: 0, remaining: ANON_LIFETIME_LIMIT })
         expect(quotaFor(anon())).toEqual({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime' })
       })

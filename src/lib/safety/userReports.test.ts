@@ -34,7 +34,9 @@ vi.mock('@/lib/supabase/admin', () => ({
       : { select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.profile, error: null }) }) }) },
   }),
 }))
-vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: (k: string) => { h.limitKeys.push(k); return { ok: h.limit.ok, retryAfter: 0 } } }))
+vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: (k: string) => { h.limitKeys.push(k); return { ok: h.limit.ok, retryAfter: 0 } }, clientIpKey: () => 'test-ip' }))
+// the route-level IP cap (shared store, SEC4 slice 5) is not what this file tests: it always admits here (each route has its own limiter.test.ts)
+vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }) }))
 
 import { POST as reportComment } from '@/app/api/comments/[commentId]/report/route'
 import { POST as reportUser } from '@/app/api/users/[id]/report/route'

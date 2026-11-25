@@ -30,6 +30,8 @@ import { attachRealtime } from './realtimeBooking'
 import type { ResolveDeps } from '@/lib/providers/realtime/resolve'
 import { normalizeVN } from '@/lib/ai/intent'
 import { linkDepthClass } from '@/lib/commerce/linkDepth'
+import { buildCoachLandingLink, buildVexereFlightLink, buildVexereTrainLandingLink, PLAIN_PLATFORM_LANDINGS } from '@/lib/platformLinks/travel'
+import { entryFromCcp, landingEntry, merchantOfLink, orderLeadFirst, transportAsked, withoutPartnerSet, TRANSPORT_LEAD, HOTEL_LEAD, SHOPPING_LEAD, type PartnerEntry, type PartnerLink } from './partnerLinkSet'
 import { fetchEventPageText, scheduleFacts, scheduleIsPast, statedScheduleOf, type FetchTextFn } from './eventSchedule'
 
 // ── The Phase-6 seam: tool result → CCP → `commerce_links` on the row ────────
@@ -765,7 +767,9 @@ function fallbackIntentOf(plan: Plan, ctx: CommerceAttachContext, listingsAdded:
   // tool's lodging rows or get_hotel_prices' `hotel_list`, never the OTA snippets the model reads —
   // with no page of its own gets the one OTA whose search grammar lands on a results page for the
   // hotel's name (Booking.com, depth 2; Traveloka/Agoda only reach a front door and are refused).
-  if (plan.domain === 'travel' && plan.listKey !== 'search_results' && plan.intents.some(i => i.intentType === 'book_hotel')) return 'book_hotel'
+  // 19/11/2026 (owner): NO Booking.com search fallback on a hotel card any more — Booking.com is not an affiliate partner and its search
+  // button led the card (the "find rooms on Booking.com" label). The lead booking action is the hotel's own Agoda page (realtime offer, set by
+  // attachRealtime as `agoda_offer_url`) or a Commerce Link; a hotel with neither shows Maps / website only.
   return null
 }
 
@@ -845,7 +849,60 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
   }
   // Realtime booking data (src/lib/providers/realtime): adds offers + a check time ONLY when a provider is switched on, credentialed and able to
   // answer; otherwise the result is returned as the CCP left it (no flag, no change). Never replaces a link, a card or the consultative wording.
-  return attachRealtime(toolName, out, ctx)
+  const withRealtime = await attachRealtime(toolName, out, ctx)
+  if (toolName === 'get_hotel_prices') attachHotelPartnerLinks(withRealtime, ctx)
+  return withRealtime
+}
+
+// ── The hotel answer's partner row (owner decision 17/11/2026) ───────────────────────────────────────────────────────────────
+//
+// `booking_links` of a hotel result = Agoda FIRST (the realtime offers' links when the realtime layer answered, else Agoda's tracked page from CCP),
+// then Booking.com (a dated results page for the destination when the stay is known), Traveloka and Trip.com — one entry per platform. The CCP
+// resolver validates every URL it composes; Trip.com has no composable destination page (city ids), so its public hotels page is linked as a landing
+// page and labelled so. A turn that NAMED a platform keeps the old, narrowed behaviour. Rebuilt on every call of a memoised result.
+function attachHotelPartnerLinks(result: unknown, ctx: CommerceAttachContext): void {
+  try {
+    if (!(ctx.enabled ?? CCP_ENABLED) || !isRecord(result) || requestedProvider(ctx)) return
+    const r = result
+    const now = ctx.now ?? new Date()
+    const subjectText = str(ctx.location) ?? str(ctx.query)
+    if (!subjectText) return
+    const checkIn = str(ctx.checkIn), checkOut = str(ctx.checkOut)
+    const dated = !!checkIn && !!checkOut && ISO_DATE.test(checkIn) && ISO_DATE.test(checkOut) && checkOut > checkIn
+    const request: CommerceRequest = {
+      domain: 'travel', intentType: 'book_hotel', capability: capabilityForIntent('book_hotel'), subject: subjectText.slice(0, 200),
+      ...(dated ? { configuration: { kind: 'hotel' as const, propertyRef: slug(subjectText), checkIn: checkIn!, checkOut: checkOut!, adults: DEFAULT_ADULTS } } : {}),
+      ...(ctx.location ? { constraints: { city: ctx.location.slice(0, 80) } } : {}),
+      context: { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), ...(ctx.actorSeal ? { actorSeal: ctx.actorSeal } : {}), allowTracking: true },
+    }
+    const out = (ctx.resolve ?? resolveCommerce)(request, { hints: [], now, enabled: true })
+    const ccp = 'links' in out ? out.links : []
+    const existing: PartnerEntry[] = withoutPartnerSet(Array.isArray(r.booking_links) ? (r.booking_links as unknown[]).filter(isRecord) as Array<{ name?: string; url?: string; platform?: string; _partnerSet?: unknown }> : [])
+      .filter(l => typeof l.url === 'string' && typeof l.name === 'string')
+      .map(l => ({ ...(l as Record<string, unknown>), merchant: merchantOfLink(l), name: l.name as string, url: l.url as string }))
+    const facts: RouteHandoffFacts[] = []
+    const fromCcp = (providerId: string): PartnerEntry[] => {
+      const l = ccp.find(x => x.providerId === providerId)
+      if (!l) return []
+      const row = projectCommerceLinkRow(l, 'links' in out ? out.requestId : '', 'book_hotel', dated ? ['adults'] : [], { primary: true })
+      facts.push(routeFacts(row))
+      return [entryFromCcp(row, ctx.locale)]
+    }
+    const extras: PartnerEntry[] = [
+      ...(existing.some(e => e.merchant === HOTEL_LEAD) ? [] : fromCcp(HOTEL_LEAD)),
+      ...fromCcp('booking'),
+      ...fromCcp('traveloka'),
+      landingEntry(PLAIN_PLATFORM_LANDINGS.tripcomHotels, ctx.locale, 'hotels'),
+    ]
+    const ordered = orderLeadFirst([...existing, ...extras], HOTEL_LEAD)
+    if (ordered.length === 0) return
+    r.booking_links = ordered
+    // The marker streamEnrichment reads (an array) to collect these as system links; the facts of a previous call's partner links are replaced.
+    const kept = Array.isArray(r._tappy_commerce) ? (r._tappy_commerce as Array<Record<string, unknown>>).filter(f => !(isRecord(f) && f.partnerSet === true)) : []
+    r._tappy_commerce = [...kept, ...facts.map(f => ({ ...f, partnerSet: true }))]
+  } catch {
+    /* the partner row is a bonus: a failure never costs the user the tool result */
+  }
 }
 
 // ── Route-level handoffs: flights and coaches (Completion Pass, 14 Sep 2026) ─
@@ -928,21 +985,65 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
       // The merchant's own route page behind that link (CCP's canonical, untracked): the transport tool reads its trains and fares.
       if (rail.page) r._tappy_rail_page = rail.page
     }
-    if (!('links' in out) || out.links.length === 0) return r
+    const routeLinks: CommerceLinkRow[] = 'links' in out ? out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })) : []
     // A3.3: the dated route page or nothing — a merchant's front door with the route to be typed is not a route link.
-    const rows = dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
-    if (rows.length === 0) return r
+    const rows = dedupeLinks([], routeLinks.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH), flight ? 4 : 1)
     // Owner Q10 (29/09): a flight turn says "Xem giá trên Traveloka" — there is no fare source. The model copies
     // `[name](url)` verbatim, so the label IS that sentence (replay TRAVEL-3: "[Traveloka](…)" on every more /
     // reject / plan turn, the sentence missing although the prompt asked for it).
     const projected = rows.map(l => ({ name: flight ? (/^en/i.test(ctx.locale ?? '') ? `See prices on ${l.merchantName}` : `Xem giá trên ${l.merchantName}`) : l.merchantName, url: l.url }))
-    if (flight) r.booking_links = projected
-    else r.vexere_link = projected[0].url
-    r._tappy_commerce = [...rows.map(routeFacts), ...railRows.map(routeFacts)]
+    if (rows.length > 0) {
+      if (flight) r.booking_links = projected
+      else r.vexere_link = projected[0].url
+    }
+    // 17/11 (owner): the row leads with Vexere and carries 2-3 other platforms (a named platform keeps the narrowed set above).
+    const partner = requested ? [] : routePartnerLinks({ flight, ctx, rows, routeLinks, railRows, trainResultsPresent: Array.isArray(r.train_search_results) && r.train_search_results.length > 0 })
+    if (partner.length > 0) r.booking_links = partner
+    if (rows.length > 0 || railRows.length > 0 || partner.length > 0) r._tappy_commerce = [...rows.map(routeFacts), ...railRows.map(routeFacts)]
     return r
   } catch {
     return r
   }
+}
+
+/**
+ * The `booking_links` of a flight / coach / train answer (owner decision 17/11/2026): Vexere first (our affiliate), then 2-3 other platforms.
+ *   flight: Vexere's flight landing (only while the direct programme is ON, as before), then CCP's dated fare lists (Trip.com, Traveloka).
+ *   coach:  Vexere's dated route page (else Vexere's front door), then FUTA Bus Lines and Baolau (public landing pages, labelled as such).
+ *   train:  Vexere's dated train list (else its train landing page), then the railway's own site (dsvn.vn) and Baolau.
+ * A coach+train answer carries both groups; a turn whose words ask only for one of them carries that group only. Empty = leave the result as it is.
+ */
+function routePartnerLinks(a: { flight: boolean; ctx: CommerceAttachContext; rows: CommerceLinkRow[]; routeLinks: CommerceLinkRow[]; railRows: CommerceLinkRow[]; trainResultsPresent: boolean }): PartnerLink[] {
+  const { ctx } = a
+  const en = /^en/i.test(ctx.locale ?? '')
+  if (a.flight) {
+    const vexere = buildVexereFlightLink()
+    if (!vexere) return []
+    const lead: PartnerEntry = { merchant: TRANSPORT_LEAD, name: en ? 'See prices on Vexere (flights page)' : 'Xem giá trên Vexere (trang vé máy bay)', url: vexere, _partnerSet: true }
+    const others: PartnerEntry[] = a.rows.map(l => ({ merchant: l.providerId, name: en ? `See prices on ${l.merchantName}` : `Xem giá trên ${l.merchantName}`, url: l.url }))
+    return orderLeadFirst([lead, ...others], TRANSPORT_LEAD)
+  }
+  const asked = transportAsked(userTurns(ctx))
+  const trainAvailable = a.railRows.length > 0 || a.trainResultsPresent
+  const wantCoach = asked.coach
+  const wantTrain = asked.train && trainAvailable
+  const groups: PartnerLink[] = []
+  if (wantCoach) {
+    const landing = a.routeLinks.find(l => l.providerId === TRANSPORT_LEAD)
+    const vexere: PartnerEntry = a.rows[0]
+      ? { merchant: TRANSPORT_LEAD, name: 'Vexere', url: a.rows[0].url, _partnerSet: true }
+      : landing ? entryFromCcp(landing, ctx.locale) : landingEntry({ merchant: TRANSPORT_LEAD, name: 'Vexere', url: buildCoachLandingLink() }, ctx.locale)
+    groups.push(...orderLeadFirst([vexere, landingEntry(PLAIN_PLATFORM_LANDINGS.futabus, ctx.locale), landingEntry(PLAIN_PLATFORM_LANDINGS.baolau, ctx.locale)], TRANSPORT_LEAD))
+  }
+  if (wantTrain) {
+    const vexere: PartnerEntry = a.railRows[0]
+      // The label says "trains" only when the coach link (also "Vexere") shares the row; a train-only row keeps the plain merchant name.
+      ? { merchant: TRANSPORT_LEAD, name: wantCoach ? (en ? 'Vexere (trains)' : 'Vexere (vé tàu)') : 'Vexere', url: a.railRows[0].url, _partnerSet: true }
+      : landingEntry({ merchant: TRANSPORT_LEAD, name: 'Vexere', url: buildVexereTrainLandingLink() }, ctx.locale, 'trains')
+    groups.push(...orderLeadFirst([vexere, landingEntry(PLAIN_PLATFORM_LANDINGS.dsvn, ctx.locale, 'trains'), landingEntry(PLAIN_PLATFORM_LANDINGS.baolau, ctx.locale)], TRANSPORT_LEAD))
+  }
+  const seen = new Set<string>()
+  return groups.filter(l => { const u = String(l.url); const k = `${String(l.name).toLowerCase()}|${u}`; if (seen.has(k) || seen.has(u)) return false; seen.add(k); seen.add(u); return true })
 }
 
 const routeFacts = (l: CommerceLinkRow): RouteHandoffFacts => ({
@@ -1022,6 +1123,7 @@ async function eventScheduleOf(url: string, ctx: CommerceAttachContext, now: Dat
 
 /** Product pages the platform offers from one web search. */
 const MAX_WEB_PRODUCT_LINKS = 3
+const MAX_WEB_PRODUCT_CANDIDATES = 8
 
 /**
  * A web result that IS a product page of a registry shopping merchant (the model searched `site:<store> <product>` itself, in
@@ -1035,7 +1137,8 @@ function attachProductHandoffs(r: Row, ctx: CommerceAttachContext, now: Date): R
   const rows: CommerceLinkRow[] = []
   const names: string[] = []
   for (const h of results) {
-    if (rows.length >= MAX_WEB_PRODUCT_LINKS) break
+    // Scan past the display cap: the shopping affiliate partner (Lazada) leads the row even when its page ranks later in the web results.
+    if (rows.length >= MAX_WEB_PRODUCT_CANDIDATES) break
     const url = str(h?.link)
     const title = str(h?.title)
     if (!url || !title) continue
@@ -1051,8 +1154,10 @@ function attachProductHandoffs(r: Row, ctx: CommerceAttachContext, now: Date): R
     names.push(title)
   }
   if (rows.length === 0) return r
-  r.product_links = rows.map((l, i) => ({ name: names[i], platform: l.merchantName, url: l.url }))
-  r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
+  // Owner decision 19/11/2026: the partner (Lazada) first, the other platforms behind it in their found order; stable, nothing re-composed.
+  const order = rows.map((l, i) => i).sort((a, b) => (rows[a].providerId === SHOPPING_LEAD ? 0 : 1) - (rows[b].providerId === SHOPPING_LEAD ? 0 : 1) || a - b).slice(0, MAX_WEB_PRODUCT_LINKS)
+  r.product_links = order.map(i => ({ name: names[i], platform: rows[i].merchantName, url: rows[i].url }))
+  r._tappy_commerce = order.map(i => rows[i]).map((l): RouteHandoffFacts => ({
     merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
     linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
   }))

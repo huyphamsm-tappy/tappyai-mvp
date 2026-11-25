@@ -8,6 +8,8 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { loadAllowedUserIds } from '@/lib/ai/consent/aiDataConsent'
+import { searchPlaces } from '@/lib/ai/tools/food'
+import { pickArea, foodQuery, buildPickPrompt, parsePicks, cardsFrom, renderSuggestionText, type Candidate, type SuggestionCard } from '@/lib/group/suggestCards'
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const groupId = params.id
@@ -36,6 +38,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .from('group_members')
     .select('user_id, name, budget, food_preferences, dietary_restrictions, area')
     .eq('group_id', groupId)
+    .eq('status', 'member') // owner 20/11: a pending request is not a member; its details are not read, not sent to the AI
     .order('created_at', { ascending: true })
 
   if (!members || members.length === 0) {
@@ -60,19 +63,39 @@ ${memberLines.join('\n')}
 
 Hãy gợi ý 3 địa điểm ăn uống phù hợp với TẤT CẢ mọi người, với lý do tại sao địa điểm đó phù hợp cho cả nhóm. Format đẹp, dễ đọc bằng tiếng Việt.`
 
+  // Owner 20/11: the suggestion is THREE CARDS of REAL places. They are searched for the area and tastes of the members who may be described (a search sends words to a provider, so it follows the
+  // same consent as the model prompt), the model only CHOOSES among the rows found and says why, and every fact on a card comes from the row (lib/group/suggestCards.ts). No area, no rows or a failing
+  // search: the text suggestion below, as before.
+  let cards: SuggestionCard[] = []
+  const area = pickArea(described)
+  if (area) {
+    try {
+      const found = await searchPlaces(foodQuery(described) || 'nha hang', area, 'restaurant', 'vi') as { results?: Candidate[] }
+      const candidates = (found.results ?? []).filter(r => r && typeof r.name === 'string' && r.name).slice(0, 8)
+      if (candidates.length > 0) {
+        const { text } = await AI.generate({ role: 'smart', prompt: buildPickPrompt(group.name, memberLines, candidates), maxTokens: 600 })
+        cards = cardsFrom(candidates, parsePicks(text, candidates.length), area)
+      }
+    } catch { cards = [] }
+  }
+
   try {
-    const { text: suggestion } = await AI.generate({
-      role: 'smart',
-      prompt,
-      maxTokens: 1024,
-    })
+    const suggestion = cards.length > 0
+      ? renderSuggestionText(cards)
+      : (await AI.generate({ role: 'smart', prompt, maxTokens: 1024 })).text
 
     await supabase
       .from('groups')
       .update({ suggestion })
       .eq('id', groupId)
 
-    return NextResponse.json({ suggestion })
+    // a new suggestion starts a new vote: the cards replace the old ones and the old decision and votes are cleared (columns of 20261205: before it is applied this is a no-op)
+    try {
+      await supabase.from('groups').update({ suggestion_options: cards.length > 0 ? cards : null, chosen_option: null, decided_at: null }).eq('id', groupId)
+      await admin.from('group_votes').delete().eq('group_id', groupId)
+    } catch { /* the database has not got 20261205 yet */ }
+
+    return NextResponse.json({ suggestion, options: cards })
   } catch {
     return NextResponse.json({ error: 'suggest_failed', message: serverMessage('group.suggestFailed', requestLocale(req)) }, { status: 500 })
   }

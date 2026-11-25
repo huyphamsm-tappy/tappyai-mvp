@@ -18,8 +18,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 //
 /**
  * Owner 01/11/2026: a signed-in account has NO question limit (every plan, Free included) - shown as "Không giới hạn câu hỏi AI".
- * These two numbers are only the HIDDEN anti-abuse ceilings per VN day (owner approved: 300 Free, 1000 paid), never advertised;
- * real use is far below them. (Was Free = 10/day, paid = 30/day.)
+ * These two numbers are the ceilings per VN day (owner 20/11/2026: Free 300 a day; Coco, Tappy and the Trial 1000 a day; on 11/11 the paid ceiling was 500, before that 1000). The owner's intent: the product stays "no limit" - the ceiling exists only so that
+ * a flood of requests (DoS) cannot take the system down; real use is far below it, and the message to people stays "Không giới hạn câu hỏi AI". The unit is a VN day for both ("1000 câu/ngày"). (Was Free = 10/day, paid = 30/day.)
  */
 export const FREE_DAILY_LIMIT = 300
 export const PAID_DAILY_CEILING = 1000
@@ -27,10 +27,10 @@ export const PAID_DAILY_CEILING = 1000
 export const ACCOUNT_QUESTIONS_UNLIMITED = true
 /**
  * Anonymous visitors: AI questions for the LIFETIME of the anonymous identity — a one-time trial,
- * not a daily allowance. Ten, once (owner 01/11/2026: "10 câu hỏi đầu, câu 11 bắt tạo account"; was five); then an account.
+ * not a daily allowance. Five, once (owner 11/11/2026: "hỏi 5 câu phải tạo account Tappy để hỏi tiếp"; 01/11 it was ten, before that five); then an account.
  * Not per day, not per session, not per return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
  */
-export const ANON_LIFETIME_LIMIT = 10
+export const ANON_LIFETIME_LIMIT = 5
 
 // ── G1 growth: share-out + anonymous follow-up policy ───────────────────────
 //
@@ -119,6 +119,26 @@ export const SHOW_SCAM_SHIELD = true
  * how one flag came to mean two different products.
  */
 export const SHOW_MUSIC = false
+/**
+ * Dịch (Translate) - HIDDEN, NOT DELETED (owner, 18/11/2026: "the old way no user will use it; we will rebuild it or do something else"). The page, its API and its module stay
+ * intact; every entry point (the Smart Tools list, Home, the sidebar) is gated off and the route answers 404 while this is `false`. Mirrors Android `ProductFlags.SHOW_TRANSLATE`
+ * and iOS `ProductFlags.showTranslate` (both already false). Flip them together.
+ */
+export const SHOW_TRANSLATE = false
+/**
+ * Coi bói / Tử vi - Tarot - Cung hoàng đạo (the /boi routes) - HIDDEN, NOT DELETED (owner, 18/11/2026, same decision as SHOW_TRANSLATE). Entry points are gated off and the
+ * routes answer 404 while this is `false`. Mirrored by `ProductFlags.SHOW_FORTUNE` (Android) and `ProductFlags.showFortune` (iOS). Flip them together.
+ */
+export const SHOW_FORTUNE = false
+/**
+ * Owner 20/11/2026: four web entry points are HIDDEN, NOT DELETED (same convention as SHOW_TRANSLATE): "Gợi ý cho bạn" (/recommendations), "Viết" (/viet-content), "Tỷ giá" (/currency) and "Quét" (/scan).
+ * The pages and their APIs stay; every entry point (Smart Tools, Home, the sidebar, the Explore panel link) is gated off and each route answers 404 while its flag is `false`. WEB ONLY: these are not
+ * exported in GET /api/config and the apps are untouched (mobile comes later).
+ */
+export const SHOW_RECOMMENDATIONS = false
+export const SHOW_VIET_CONTENT = false
+export const SHOW_CURRENCY = false
+export const SHOW_SCAN = false
 /**
  * Marketplace — HIDDEN, NOT DELETED.
  *

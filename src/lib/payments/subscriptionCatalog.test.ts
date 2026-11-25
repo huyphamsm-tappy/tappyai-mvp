@@ -12,7 +12,7 @@ describe('subscriptionCatalog', () => {
     expect(c.plans.map((p) => p.id)).toEqual(['pip', 'momo', 'promax1m', 'coco', 'promax3m'])
     expect(c.plans.map((p) => p.durationDays)).toEqual([7, 30, 30, 90, 90])
     for (const p of c.plans) {
-      // owner 01/11/2026: 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
+      // owner 20/11/2026: 1000 questions a day (11/11 it was 500)
       expect(PAID_DAILY_CEILING).toBe(1000)
       expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
       expect(p).not.toHaveProperty('popular')
@@ -37,7 +37,7 @@ describe('subscriptionCatalog', () => {
 
   it(`Free carries the value the backend enforces (hidden ${FREE_DAILY_LIMIT} a day); guest ${ANON_LIFETIME_LIMIT}; every paid plan ${PAID_DAILY_CEILING} a day`, () => {
     expect(FREE_DAILY_LIMIT).toBe(300)
-    expect(ANON_LIFETIME_LIMIT).toBe(10)
+    expect(ANON_LIFETIME_LIMIT).toBe(5) // owner 11/11/2026: 10 -> 5
     expect(subscriptionCatalog({ env: env() }).free.dailyAiQuestions).toBe(FREE_DAILY_LIMIT)
     for (const p of subscriptionCatalog({ env: env() }).plans) expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
     expect(subscriptionCatalog({ env: env() }).guest.aiQuestions).toBe(ANON_LIFETIME_LIMIT)
@@ -46,8 +46,8 @@ describe('subscriptionCatalog', () => {
   it('web gets VND prices; no catalog plan gets "about …/month"; no per-day price or hint anywhere; apps get no price', () => {
     const web = subscriptionCatalog({ env: env() })
     // Owner 01/11/2026: new plan catalog
-    expect(web.plans.find((p) => p.id === 'momo')).toMatchObject({ priceVnd: 175_000 })
-    expect(web.plans.find((p) => p.id === 'promax1m')).toMatchObject({ priceVnd: 225_000 })
+    expect(web.plans.find((p) => p.id === 'momo')).toMatchObject({ priceVnd: 225_000 }) // prices raised 18/11/2026
+    expect(web.plans.find((p) => p.id === 'promax1m')).toMatchObject({ priceVnd: 300_000 })
     // Owner 01/11/2026: new plan catalog - Sunny (the only showMonthlyApprox plan) is not sold, so no card has it
     expect(web.plans.find((p) => p.id === 'sunny')).toBeUndefined()
     for (const p of web.plans) {

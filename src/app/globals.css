@@ -4036,6 +4036,8 @@
 .v3-pb-row dt { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 12px; color: #8FB8FF; background-color: rgba(51, 145, 255, 0.14); }
 .v3-pb-row dd { font-size: 14px; font-weight: 600; color: var(--pb-fg); }
 .v3-pb-row-k { display: block; font-size: 12px; font-weight: 500; color: var(--pb-fg-3); }
+.v3-pb-row-wide { grid-template-columns: minmax(0, 1fr); }
+.v3-pb-tips { margin: 12px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: var(--pb-fg); }
 .v3-pb-hl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0 0; padding: 0; list-style: none; }
 .v3-pb-hl-item { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .v3-pb-hl-item img { width: 100%; aspect-ratio: 4 / 3; border-radius: 14px; object-fit: cover; background-color: rgba(255, 255, 255, 0.06); }
@@ -4546,6 +4548,8 @@
 .v3-pp-identity > .v3-pp-text { grid-area: text; }
 .v3-pp-identity > .v3-pp-stats { grid-area: stats; }
 .v3-pp-identity > .v3-pp-action { grid-area: action; }
+/* The "cannot message yet" hint has no named area: left to auto-placement it took a column and squeezed the name and the stats (UAT 21/11/2026). It gets its own full-width row. */
+.v3-pp-identity > [data-pp-message-error] { grid-area: auto; grid-column: 1 / -1; margin-top: 0; }
 @media (min-width: 640px) {
   .v3-pp-identity {
     margin-top: -56px; grid-template-columns: auto minmax(0, 1fr) auto;

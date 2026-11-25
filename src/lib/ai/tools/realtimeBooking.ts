@@ -2,6 +2,7 @@ import { CCP_ENABLED } from '@/lib/config/product'
 import { adapterState, claimableAvailability, claimablePrice, logRealtime } from '@/lib/providers/realtime/common'
 import { liveSentence, REALTIME_ADAPTERS, resolveBooking, type ResolveDeps } from '@/lib/providers/realtime/resolve'
 import type { RealtimeProviderId, SearchCriteria, SearchResult, Vertical } from '@/lib/providers/realtime/types'
+import { normalizeVN } from '@/lib/ai/intent'
 import { buildRecheckUrl } from '@/lib/providers/realtime/recheckLink'
 import type { CommerceAttachContext, CommerceToolName } from './commerce'
 
@@ -71,6 +72,7 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
 
   // Idempotent on a cached result object (the tools memoise it for minutes): the previous turn's realtime attachment goes first.
   for (const k of REALTIME_KEYS) delete result[k]
+  clearAgodaOfferUrls(result)
   if (Array.isArray(result.booking_links)) result.booking_links = (result.booking_links as Array<Row>).filter(l => !(isRecord(l) && l._realtime === true))
   if (Array.isArray(result.price_search_results)) result.price_search_results = (result.price_search_results as Array<Row>).filter(l => !(isRecord(l) && l._realtime === true))
 
@@ -104,6 +106,7 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
 
   const rows = offers.map(o => describe(o, now, built.assumedAdults, built.criteria))
   result.realtime_results = rows
+  if (built.criteria.vertical === 'hotel') attachAgodaOfferUrls(result, offers, now, built.criteria)
   result.realtime_note = noteFor(rows, built.assumedAdults, built.criteria)
   // Web only: ONE "Kiểm tra giá & tình trạng" link per offer whose provider can recheck, placed BEFORE its booking link (flow: recheck → booking CTA).
   // Native clients never receive it (no client shows a dead link); a provider with no recheck, or a result Tappy does not hold, gets none.
@@ -140,6 +143,73 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
   if (evidence.length > 0) result.price_search_results = [...(Array.isArray(result.price_search_results) ? result.price_search_results : []), ...evidence]
   for (const o of offers) logRealtime(o.provider, 'attach', { ok: true, results: offers.length })
   return result
+}
+
+const nameKey = (s: unknown): string => (typeof s === 'string' ? normalizeVN(s.toLowerCase()).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim() : '')
+
+function clearAgodaOfferUrls(result: Row): void {
+  if (Array.isArray(result.hotel_list)) for (const h of result.hotel_list) if (isRecord(h)) { delete h.agoda_offer_url; delete h.agoda_offer_price }
+}
+
+/**
+ * The hotel card's lead booking action is the hotel's own Agoda page (owner, 19/11/2026): each `hotel_list` row gets the Agoda offer's booking URL when
+ * an Agoda offer names the SAME hotel (normalised name equal, or one contains the other with at least two words). The URL is the one the provider
+ * returned (already restricted to Agoda's own hosts); nothing is composed, and a row with no matching offer gets nothing.
+ *
+ * The same row also gets `agoda_offer_price`: the matched offer's structured price, currency, nights, guests and check instant, for the card's one
+ * reference-price line. Only a FRESH price (claimablePrice: inside its TTL, a Tappy-checked offer with a currency and a check time) is attached;
+ * nothing is computed, so a stale or price-less offer leaves the row with its URL and no price.
+ */
+function attachAgodaOfferUrls(result: Row, offers: SearchResult[], now: Date, c: SearchCriteria): void {
+  if (!Array.isArray(result.hotel_list)) return
+  const agoda = offers.filter(o => o.provider === 'agoda' && typeof o.bookingUrl === 'string' && o.bookingUrl).map(o => ({ key: nameKey(o.title), short: nameKey(String(o.title).split(/\s[-–—]\s/)[0]), url: o.bookingUrl as string, offer: o }))
+  if (agoda.length === 0) return
+  // 19/11 (review): the match used to be a substring test, so a row "X Hotel" matched the offer "X Hotel Annex" and showed another hotel's page and price. A row matches an offer only when the names are equal, or
+  // when their DISTINCTIVE words (the name without generic words like hotel, resort, villa) are the same set, at least two of them, and exactly one offer fits.
+  const GENERIC = new Set(['hotel', 'khach', 'san', 'resort', 'the', 'and', 'spa', 'villa', 'apartment', 'homestay', 'hostel'])
+  const distinct = (k: string): string[] => [...new Set(k.split(' ').filter(w => w && !GENERIC.has(w)))].sort()
+  // A name followed by " - 08 Street" (a branch or address suffix on one side only) is the same hotel: the part before the dash is compared too (final UAT 19/11: "X Center" and "X Center - 08 Y" must meet)
+  const hitFor = (k: string, short: string) => {
+    const exact = agoda.find(a => a.key === k || (short && (a.short === short || a.key === short)) || (k && a.short === k))
+    if (exact) return exact
+    const kd = distinct(k)
+    if (kd.length < 2) return undefined
+    const sameSet = agoda.filter(a => { const ad = distinct(a.key); return ad.length === kd.length && ad.every((w, i) => w === kd[i]) })
+    return sameSet.length === 1 ? sameSet[0] : undefined
+  }
+  const priceOf = (o: SearchResult): Row | null => {
+    const price = claimablePrice(o, now)
+    if (price !== null && (o.currency === 'VND' || o.currency === 'USD') && o.lastCheckedAt !== null) {
+      const perNight = o.priceUnit === 'per_night'
+      const nightsRaw = c.vertical === 'hotel' && c.context.checkIn && c.context.checkOut ? Math.round((Date.parse(c.context.checkOut) - Date.parse(c.context.checkIn)) / 86_400_000) : null
+      return {
+        platform: MERCHANT.agoda,
+        amount: price,
+        currency: o.currency,
+        unit: perNight ? 'per_night' : 'total',
+        ...(nightsRaw !== null && nightsRaw >= 1 && nightsRaw <= 30 ? { nights: nightsRaw } : {}),
+        ...(c.context.adults !== undefined ? { guests: c.context.adults } : {}),
+        checkedAt: o.lastCheckedAt,
+      }
+    }
+    return null
+  }
+  const matchedUrls = new Set<string>()
+  for (const h of result.hotel_list) {
+    if (!isRecord(h)) continue
+    const k = nameKey(h.name)
+    if (!k) continue
+    const hit = hitFor(k, nameKey(String(h.name).split(/\s[-–—]\s/)[0]))
+    if (!hit) continue
+    h.agoda_offer_url = hit.url
+    matchedUrls.add(hit.url)
+    const pr = priceOf(hit.offer)
+    if (pr) h.agoda_offer_price = pr
+  }
+  // An Agoda offer that matched no row is still a hotel the answer may recommend (the model reads the offers beside the list): it becomes a row of its own, so the hotel it names has a card
+  // with its price and its own Agoda page instead of a card of a different hotel (final UAT 19/11: the answer named the Agoda hotels, the cards were three others). Priced offers only, at most 6.
+  const extra = agoda.filter(a => !matchedUrls.has(a.url)).map(a => ({ a, pr: priceOf(a.offer) })).filter(x => x.pr !== null).slice(0, 6)
+  for (const { a, pr } of extra) result.hotel_list.push({ name: String(a.offer.title), link: a.url, agoda_offer_url: a.url, agoda_offer_price: pr, source: 'agoda_offer' })
 }
 
 function describe(o: SearchResult, now: Date, assumedAdults: boolean, c: SearchCriteria): Row {

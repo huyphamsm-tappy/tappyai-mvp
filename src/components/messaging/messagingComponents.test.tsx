@@ -616,7 +616,8 @@ describe('Safety menu wiring at the other call sites (source locks — the menu 
     const s = src('src/app/reviews/[id]/ReviewDetailView.tsx')
     expect(s).toContain("{viewerId && viewerId !== review.user_id && (")
     expect(s).toContain("report={{ target: 'review', id: reviewId }} user={{ id: review.user_id, name: review.profiles?.full_name }}")
-    expect(src('src/app/reviews/[id]/page.tsx')).toContain('viewerId={viewerId}')
+    // The page now opens every post in the clip stage, which receives the viewer as `me` (its own report/block menu is tested with the stage).
+    expect(src('src/app/reviews/[id]/page.tsx')).toContain('me={viewerId}')
   })
   it('feedShared comment drawer: only another person comment, only when signed in', () => {
     const s = src('src/app/reviews/feedShared.tsx')

@@ -63,9 +63,10 @@ describe('the page renders the real registry, exactly', () => {
     const { container } = renderTools()
     // English dictionary in jsdom. Both lines render, which is the whole point of the redesign:
     // the descriptions existed and were shown nowhere.
-    const scan = within(container.querySelector('[data-tool="scan"]') as HTMLElement)
-    expect(scan.getByText('Scan Documents')).toBeTruthy()
-    expect(scan.getByText('Photograph a document or receipt and extract it')).toBeTruthy()
+    // Scan is hidden since 20/11/2026 (owner); Split the Bill carries the same two-line identity
+    const split = within(container.querySelector('[data-tool="split"]') as HTMLElement)
+    expect(split.getByText('Split the Bill')).toBeTruthy()
+    expect(split.getByText('Split a bill evenly, by person or by item')).toBeTruthy()
   })
 
   it('groups them under the three authored utility headings', () => {
@@ -134,13 +135,21 @@ describe('accessibility basics', () => {
     }
   })
 
-  it('sign-in is communicated in text, never by colour alone', () => {
-    const { container } = renderTools()
+  it('sign-in is communicated in text, never by colour alone (signed-out visitor)', () => {
+    const { container } = render(<ToolsView user={undefined} />)
     const gated = smartTools().filter((t) => t.auth)
     expect(gated.length, 'the fixture assumes at least one auth-gated tool').toBeGreaterThan(0)
     for (const tool of gated) {
       const card = container.querySelector(`[data-tool="${tool.id}"]`) as HTMLElement
       expect(card.textContent, `${tool.id} must SAY it needs sign-in`).toContain('Sign-in required')
+    }
+  })
+
+  it('a signed-in user is not told to sign in (found in a real UAT run)', () => {
+    const { container } = renderTools()
+    for (const tool of smartTools().filter((t) => t.auth)) {
+      const card = container.querySelector(`[data-tool="${tool.id}"]`) as HTMLElement
+      expect(card.textContent, `${tool.id} must not show the sign-in hint to a signed-in user`).not.toContain('Sign-in required')
     }
   })
 

@@ -10,6 +10,7 @@ import { analyzeMessage } from '@/lib/scam-shield/message'
 import { aiQuotaIdentity, consumeAiQuestion, quotaFor, refundAiQuestion, resolveAccountQuota, type AiQuotaSpend } from '@/lib/ai/quota/aiQuestionQuota'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES, isScamShieldAiEnabled } from '@/lib/scam-shield/message/config'
 import { CHECK_RATE_LIMIT_WINDOW_MS } from '@/lib/scam-shield/config'
+import { loadKnowledgeMeta } from '@/lib/scam-shield/knowledge/versionStore'
 
 // POST /api/scam-shield/analyze — Scam Shield · Analyze Message.
 //
@@ -160,8 +161,11 @@ export async function POST(req: Request) {
 
     // `quota` is null when no model was consulted (LEVEL 0) — nothing was spent, nothing to show.
     const q = quota as (AiQuotaSpend & { pro: boolean }) | null
+    // Freshness of the official knowledge (weekly sync, else the static dataset). Fails open and is cached: never blocks or fails the answer.
+    const knowledge = await loadKnowledgeMeta()
     return NextResponse.json({
       ...result,
+      knowledge,
       quota: q
         ? { kind: identity.kind, limit: q.limit, period: q.period, used: q.used, remaining: q.remaining, exhausted: !q.ok, pro: q.pro }
         : null,

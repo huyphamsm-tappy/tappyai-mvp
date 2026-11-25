@@ -44,7 +44,16 @@ export interface TappyPlan {
   share_text?: string
   /** Trip plans only; every tip already passed the server's planLocalTipsGuard (UAT3 P2). */
   local_tips?: Array<{ text: string; basis: 'tool' | 'general'; place?: string }>
+  /** CONSULT_PLAN_V2: who the plan was built for and what it took for granted (the server folds them in, bounded and marker-free). */
+  traveler?: { party?: string; pace?: string; interests?: string[] }
+  assumptions?: string[]
+  /** 20/11: where to stay and what to eat, already reduced by the server to what the turn's lookups support (consultative/planStaysDishes.ts). */
+  stays?: PlanStay[]
+  dishes?: PlanDish[]
 }
+
+export interface PlanStay { name: string; why?: string; price?: string; address?: string; booking_link?: string }
+export interface PlanDish { dish: string; venue?: string; address?: string; price?: string; note?: string }
 
 const CATEGORY_COLORS: Record<string, string> = {
   hotel:         'bg-blue-50   border-blue-200   dark:bg-blue-900/20   dark:border-blue-800',

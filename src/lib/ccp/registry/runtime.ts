@@ -16,6 +16,9 @@
 // logged, and the provider stays DIRECT: a tracked URL is never fabricated.
 
 import type { ProviderRegistryEntry, TrackingConfig } from './types'
+import { vexereDirectAffiliateOn } from '@/lib/config/vexereDirect'
+
+const VEXERE_DIRECT_TRACKING: TrackingConfig = { network: 'vexere_direct', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] }
 
 export type ProviderTier = 1 | 2
 
@@ -112,6 +115,8 @@ const logged = new Set<string>()
  *  - row, deeplink on, no network, code `param` (Agoda's cid) → the code's param config
  */
 export function effectiveTracking(entry: Pick<ProviderRegistryEntry, 'providerId' | 'tracking'>): TrackingConfig | undefined {
+  // Vexere's own programme (flag VEXERE_DIRECT_AFFILIATE): replaces the Accesstrade wrapper whatever the table row says (two programmes never share a link).
+  if (entry.providerId === 'vexere' && vexereDirectAffiliateOn()) return VEXERE_DIRECT_TRACKING
   const o = providerOverride(entry.providerId)
   // A merchant whose campaign does not credit the Deep Link has no usable tracking config at all.
   if (!o) return entry.tracking?.unsafeWrappers.includes('deep_link') ? undefined : entry.tracking

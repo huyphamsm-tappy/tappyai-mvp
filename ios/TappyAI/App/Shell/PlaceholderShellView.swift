@@ -139,7 +139,8 @@ struct PlaceholderShellView: View {
                     case .splitBill:
                         SplitBillView()
                     case .fortune:
-                        FortuneHubView(deps: deps)
+                        // Hidden by ProductFlags.showFortune (owner decision 2026-11-18): nothing to show.
+                        if ProductFlags.showFortune { FortuneHubView(deps: deps) } else { EmptyView() }
                     case .recommendations:
                         RecommendationsView(deps: deps)
                     case .serviceDetail(let service):

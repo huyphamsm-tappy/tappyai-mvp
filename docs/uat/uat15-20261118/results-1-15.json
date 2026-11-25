@@ -1,0 +1,495 @@
+[
+  {
+    "id": 1,
+    "group": "news",
+    "turns": [
+      {
+        "q": "tin tức nóng nhất hôm nay ở Việt Nam là gì",
+        "done": true,
+        "seconds": 33,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 830,
+        "head": "Tính đến khoảng 09:22 ngày 18/11/2026, các tin nổi bật trên báo Việt Nam sáng nay gồm:\nMột chủ tịch xã ở Thanh Hóa bị bãi nhiệm vì liên quan đánh bạc — được VietNamNet đưa vào nhóm tin thời sự nổi bật trong ngày. VietNamNet\nÔng Lê Thanh Thản ra tòa trong vụ án liên quan việc bán căn hộ xây sai phép — phiên xử được báo Thanh Niên nhắc là diễn ra sáng nay; bài viết đề cập tòa nhà có 438 căn hộ. Thanh Niên\nMiền Bắc sắp đón không khí lạnh mạnh — tin thời tiết đáng chú ý; VnExpress cho biết đợt lạnh bắt đầu ảnh hưởng từ khoảng 18/11, kèm mưa giông và giảm nhiệt. VnExpress\nĐội tuyển Việt Nam thua Kyrgyzstan — đang được Dân trí và VietNamNet chú ý ở mảng thể thao. Dân trí · VietNamNet\nĐây là ảnh ch",
+        "tail": "à VietNamNet chú ý ở mảng thể thao. Dân trí · VietNamNet\nĐây là ảnh chụp các tin nổi bật lúc mình tra cứu; thứ tự “nóng nhất” có thể khác nhau tùy báo và diễn biến cập nhật trong ngày.\nV\nT\nV\nNguồn · 4",
+        "links": 9,
+        "hosts": {
+          "vietnamnet.vn": 3,
+          "thanhnien.vn": 2,
+          "vnexpress.net": 2,
+          "dantri.com.vn": 2
+        },
+        "sourcesChip": "V T V Nguồn · 4",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/a7b93772-b41a-4ff5-9e3c-7e758a4f767c",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "group": "news",
+    "turns": [
+      {
+        "q": "tình hình kinh tế thế giới tuần này có gì đáng chú ý",
+        "done": true,
+        "seconds": 46,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 1540,
+        "head": "Tính đến thứ Tư 18/11/2026, điểm đáng chú ý nhất trong các cập nhật kinh tế gần đây là lạm phát đang nóng lại ở châu Âu, còn tín hiệu từ Mỹ khiến thị trường dè chừng việc lãi suất có thể tăng. Các tin đã xác minh rõ nhất chủ yếu được công bố tuần trước; chưa nên xem chúng là diễn biến mới phát sinh trong tuần này.\nChâu Âu — lạm phát tăng mạnh: Lạm phát khu vực đồng euro lên 4% trong tháng 10, từ 1,9% hồi tháng 2, cao hơn nhiều so với mục tiêu 2% của ECB. Điều này làm thị trường tăng kỳ vọng ECB có thể nâng lãi suất vào tháng 12. Deloitte, cập nhật tuần 9/11\nMỹ — việc làm mạnh, kỳ vọng lãi suất đổi chiều: Tăng trưởng việc làm tốt hơn dự kiến khiến thị trường nâng xác suất Fed tăng lãi suất và",
+        "tail": "ers, 11/11\nTóm lại: rủi ro nổi bật là lạm phát dai dẳng có thể giữ lãi suất cao lâu hơn; điểm cần theo dõi là liệu nhu cầu yếu ở Trung Quốc có làm giảm đà tăng trưởng toàn cầu hay không.\nD\nR\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "deloitte.com": 2,
+          "reuters.com": 2
+        },
+        "sourcesChip": "D R Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/834830a3-a7e5-4f23-9a2d-e42e4261bf67",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "news",
+    "turns": [
+      {
+        "q": "kết quả bóng đá hôm qua và lịch thi đấu cuối tuần này của các giải lớn",
+        "done": true,
+        "seconds": 59,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 1083,
+        "head": "Dưới đây là một số kết quả đáng chú ý trong ngày 17/11 và các trận nổi bật cuối tuần 21–22/11/2026. Lịch cuối tuần mình liệt kê theo trận đã tìm thấy, không phải toàn bộ vòng đấu; giờ bóng lăn có thể cần kiểm tra lại trước trận.\nKẾT QUẢ NGÀY 17/11\nKyrgyzstan 2–1 Việt Nam (Casper Cup).\nU19 Việt Nam 2–2 U19 Tajikistan; U19 Trung Quốc 2–1 U19 Hàn Quốc (Panda Cup).\nĐức 5–0 Hà Lan; Hy Lạp 1–0 Serbia.\nThụy Sĩ 4–0 Scotland; Slovenia 3–0 Bắc Macedonia.\nSingapore 0–7 Brazil; Nhật Bản 1–2 Paraguay; Qatar 0–1 Hàn Quốc.\nNguồn kết quả ngày 17/11: VietNamNet.\nTRẬN ĐÁNG CHÚ Ý CUỐI TUẦN\nNgoại hạng Anh: Aston Villa – Arsenal, thứ Bảy 21/11. The Guardian\nLa Liga: Sevilla – Real Betis và Real Madrid – Celta Vi",
+        "tail": "ermain ngày 21/11. Sky Sports\nBundesliga: Union Berlin – RB Leipzig ngày 21/11. ESPN\nTrận tâm điểm dễ chọn nhất là Atalanta – Inter ở Serie A và derby Sevilla – Real Betis tại La Liga.\nV\nT\nS\nNguồn · 4",
+        "links": 10,
+        "hosts": {
+          "vietnamnet.vn": 2,
+          "theguardian.com": 2,
+          "skysports.com": 4,
+          "espn.com": 2
+        },
+        "sourcesChip": "V T S Nguồn · 4",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/d5268881-ce7b-4b5d-8061-8bc0687cb221",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "group": "news",
+    "turns": [
+      {
+        "q": "có tin công nghệ nào đáng chú ý trong tuần này, đặc biệt về AI và điện thoại mới",
+        "done": true,
+        "seconds": 40,
+        "screen": "screens/q04.jpg",
+        "answered": true,
+        "chars": 1226,
+        "head": "Tính đến thứ Tư 18/11, tin đáng chú ý nhất là làn sóng thử nghiệm điện thoại điều khiển bằng AI; còn ở điện thoại mới, sự kiện nên canh là Huawei OSTA vào 20/11. Chưa thấy trong các nguồn mình kiểm tra một đợt ra mắt flagship lớn đã xác nhận trong tuần này.\n16/11 — Startup Blue thử nghiệm điện thoại “AI-first”. Bản beta được mô tả như trợ lý đứng giữa người dùng và các ứng dụng, nhằm lọc thông báo và xử lý việc vặt; nhưng những ứng dụng được hỗ trợ và mức độ AI được phép tự hành động vẫn chưa rõ. Đáng chú ý vì nó thử thay đổi cách dùng điện thoại, nhưng hiện mới là thử nghiệm, chưa phải sản phẩm đã chứng minh được hiệu quả. Skills Bridge\n20/11 — Huawei dự kiến giới thiệu thương hiệu điện tho",
+        "tail": "điện thoại đang được thử theo hướng “làm việc thay người dùng”, còn OSTA là màn ra mắt điện thoại đáng theo dõi nhất vào cuối tuần—nhưng chi tiết sản phẩm vẫn cần chờ công bố chính thức.\nS\nT\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "skillsbridge.vn": 2,
+          "technode.com": 2
+        },
+        "sourcesChip": "S T Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/928fd67c-6900-4acd-8576-99f0356fe90f",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "group": "search",
+    "turns": [
+      {
+        "q": "so sánh bảo hiểm y tế tự nguyện và bảo hiểm sức khỏe tư nhân cho gia đình có hai con nhỏ",
+        "done": true,
+        "seconds": 63,
+        "screen": "screens/q05.jpg",
+        "answered": true,
+        "chars": 3815,
+        "head": "Với gia đình có hai con nhỏ, mình nghiêng về kết hợp: giữ BHYT cho cả nhà làm lớp nền, rồi mua bảo hiểm sức khỏe tư nhân nếu ngân sách cho phép. BHYT rẻ và có tính liên tục theo luật; bảo hiểm tư nhân có thể mở thêm lựa chọn điều trị và hạn mức, nhưng quyền lợi phụ thuộc chặt vào hợp đồng.\nHAI LỚP BẢO VỆ: NỀN TẢNG CÔNG VÀ BỔ SUNG TƯ NHÂN\nBHYT tự đóng / theo hộ gia đình\n\nLưới an sinh nền tảng, quyền lợi theo luật và danh mục quỹ chi trả.\n\nTrẻ dưới 6 tuổi: Thuộc nhóm được ngân sách đóng BHYT; mức hưởng được ghi nhận là 100% trong phạm vi quy định.\n\nNguồn: BHXH Hà Nội, eBH\n\nBảo hiểm sức khỏe tư nhân\n\nHợp đồng thương mại; mức bảo vệ và cách dùng tùy chương trình cụ thể.\n\nQuyền lợi: một sản phẩm ",
+        "tail": "iều kiện hợp đồng.\nChốt lại: giữ BHYT làm nền trước, rồi chọn gói tư nhân theo ngân sách và điều khoản thực tế — đặc biệt kiểm tra tuổi của hai con, quyền lợi ngoại trú và bệnh có sẵn.\nB\nE\nB\nNguồn · 4",
+        "links": 9,
+        "hosts": {
+          "baohiemxahoi.gov.vn": 2,
+          "ebh.vn": 3,
+          "baoviet.com.vn": 2,
+          "hanoi.baohiemxahoi.gov.vn": 2
+        },
+        "sourcesChip": "B E B Nguồn · 4",
+        "tables": 1,
+        "images": 2,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/88fa9d01-06f3-4588-974c-69ed34060cf0",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "group": "search",
+    "turns": [
+      {
+        "q": "gửi tiết kiệm kỳ hạn 12 tháng ngân hàng nào lãi suất cao nhất hiện nay",
+        "done": true,
+        "seconds": 30,
+        "screen": "screens/q06.jpg",
+        "answered": true,
+        "chars": 860,
+        "head": "Tính đến 18/11/2026, lãi suất tiết kiệm kỳ hạn 12 tháng cao nhất trong bảng khảo sát là 7%/năm. Mức này được niêm yết cho gửi online tại VIB, PGBank, CBBank và OceanBank; gửi tại quầy, OceanBank cũng niêm yết 7%/năm. Techcombank — bảng lãi suất cập nhật 18/11/2026\nHình thức gửi\tNgân hàng niêm yết mức cao nhất\tLãi suất 12 tháng\nOnline\tVIB, PGBank, CBBank, OceanBank\t7%/năm\nTại quầy\tOceanBank\t7%/năm\nCác mức trên là lãi suất nhận cuối kỳ trong bảng khảo sát; điều kiện áp dụng và biểu lãi suất thực tế có thể khác theo sản phẩm, số tiền gửi và thời điểm mở sổ. Nếu gửi 100 triệu đồng ở mức 7%/năm đủ 12 tháng, tiền lãi ước tính là 7 triệu đồng trước khi xét điều kiện cụ thể của sản phẩm.\nNếu ưu tiên",
+        "tail": "ều kiện cụ thể của sản phẩm.\nNếu ưu tiên đúng mức lãi cao nhất, hãy kiểm tra biểu lãi suất chính thức của ngân hàng ngay trước khi gửi và xác nhận khoản tiền của bạn được hưởng mức 7%/năm.\nT\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "techcombank.com": 2
+        },
+        "sourcesChip": "T Nguồn · 1",
+        "tables": 1,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/5962bbb4-b90d-4e87-9d5c-ce4269f07142",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "group": "search",
+    "turns": [
+      {
+        "q": "triệu chứng và cách chăm sóc bé 2 tuổi bị sốt xuất huyết, khi nào phải đi viện ngay",
+        "done": true,
+        "seconds": 55,
+        "screen": "screens/q07.jpg",
+        "answered": true,
+        "chars": 2061,
+        "head": "Bé 2 tuổi nghi hoặc đã mắc sốt xuất huyết nên được bác sĩ đánh giá trong ngày. Chăm sóc tại nhà chỉ phù hợp khi bác sĩ xác nhận bé chưa có dấu hiệu cảnh báo và hướng dẫn theo dõi; bệnh có thể nặng lên ngay cả khi sốt bắt đầu hạ.\nTRIỆU CHỨNG THƯỜNG GẶP\nSốt xuất huyết thường gây sốt cao đột ngột; bé có thể mệt, bỏ ăn, đau nhức, buồn nôn hoặc nôn, phát ban. Có thể xuất hiện chấm đỏ/bầm trên da, chảy máu cam hoặc chân răng. Những biểu hiện này không đủ để tự xác định bệnh—cần bác sĩ thăm khám. WHO Việt Nam\nCHĂM SÓC BÉ TẠI NHÀ THEO HƯỚNG DẪN CỦA BÁC SĨ\nCho uống từng ngụm nhỏ, thường xuyên: nước, oresol pha đúng hướng dẫn, sữa hoặc nước canh; không ép uống một lượng lớn cùng lúc. Theo dõi bé có ti",
+        "tail": "ẩn cấp. CDC: dấu hiệu lâm sàng và cảnh báo sốt xuất huyết\nĐừng chờ sốt cao mới đi viện: khi sốt hạ mà bé đột ngột mệt hơn, đau bụng, nôn hoặc lạnh tay chân, hãy đưa bé đi cấp cứu ngay.\nW\nB\nC\nNguồn · 3",
+        "links": 7,
+        "hosts": {
+          "who.int": 3,
+          "benhviennhitrunguong.gov.vn": 2,
+          "cdc.gov": 2
+        },
+        "sourcesChip": "W B C Nguồn · 3",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/a0ec4a22-37f3-4a35-b5a9-27cedb732074",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "group": "search",
+    "turns": [
+      {
+        "q": "thủ tục đổi giấy phép lái xe hết hạn gồm những gì, mất bao lâu và phí bao nhiêu",
+        "done": true,
+        "seconds": 59,
+        "screen": "screens/q08.jpg",
+        "answered": true,
+        "chars": 1231,
+        "head": "Nếu giấy phép lái xe (GPLX) Việt Nam đã hết hạn, thời gian đổi theo thủ tục công bố là 5 ngày làm việc kể từ khi hồ sơ hợp lệ được tiếp nhận; lệ phí hiện trên Cổng Dịch vụ công Quốc gia là 115.000 đồng/lần. Thông tin được kiểm tra ngày 18/11/2026. Cổng Dịch vụ công Quốc gia\nHồ sơ thường gồm:\nĐơn đề nghị đổi GPLX theo mẫu.\nGiấy khám sức khỏe còn phù hợp quy định.\nBản sao hoặc bản sao điện tử hợp lệ của GPLX và giấy tờ định danh theo yêu cầu của thủ tục.\nHộ chiếu còn hạn nếu là người nước ngoài hoặc người Việt Nam định cư ở nước ngoài.\nBạn có thể nộp trực tiếp tại cơ quan tiếp nhận hoặc trực tuyến nếu địa phương hỗ trợ. Nộp trực tiếp thì chụp ảnh tại nơi tiếp nhận; nộp trực tuyến cần khai thôn",
+        "tail": "u GPLX không tra được trong hệ thống hoặc bạn còn vụ việc vi phạm giao thông chưa xử lý xong. Mức 115.000 đồng là lệ phí đổi GPLX; khoản khám sức khỏe và chuyển phát (nếu có) chưa bao gồm.\nV\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "vpcp.dichvucong.gov.vn": 2
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/03479c67-a8c4-473a-bd02-b7f757c3c04d",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "laptop văn phòng mỏng nhẹ dưới 20 triệu nên mua cái nào",
+        "done": true,
+        "seconds": 78,
+        "screen": "screens/q09.jpg",
+        "answered": true,
+        "chars": 1131,
+        "head": "Nếu cần chốt ngay, mình nghiêng về Asus Vivobook X1404VAP Core 5 120U Ram 8Gb Ssd 256Gb 14 inch Fhd Windows 11: listing LaptopVIP.vn đang để 14.900.000đ, cấu hình ghi 8GB RAM và SSD 256GB. Dòng X1404V được GEARVN ghi nặng 1,4 kg, hợp tiêu chí mang đi làm; giá GEARVN ghi ngày 08/11/2026 là 15.990.000đ. GEARVN\nNÊN CHỌN\nAsus Vivobook X1404VAP Core 5 120U Ram 8Gb Ssd 256Gb 14 inch Fhd Windows 11\n14,9 triệu\n4.3 · 51 đánh giá\n8GB RAM\n256GB bộ nhớ\n14 inch\nTìm trên Lazada\nLaptopVIP.vn\n4.3\n14,9 triệu\nTìm trên Google\nTheo dõi giá\nĐiểm cần cân nhắc: 8GB RAM và SSD 256GB ở mức vừa đủ cho Office, họp trực tuyến, lướt web; nếu bạn thường mở nhiều ứng dụng hoặc muốn dùng lâu, nên tìm bản 16GB/512GB. Listin",
+        "tail": "honeS · Laptop Lenovo IdeaPad Slim 3 14IRH10 83K00008VN · CellphoneS · Laptop Acer Aspire Lite 14 AL14-53M-53E8 | Giá rẻ, trả góp 0% · CellphoneS\nG\nG\nNguồn · 2\nNhẹ nhất\nRAM 16GB dùng lâu\nGiá thấp nhất",
+        "links": 8,
+        "hosts": {
+          "gearvn.com": 2,
+          "go.isclix.com": 5,
+          "google.com": 1
+        },
+        "sourcesChip": "G G Nguồn · 2",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/222afd58-74ff-4ab9-b0aa-57450ea181bf",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "group": "places",
+    "turns": [
+      {
+        "q": "quán cà phê yên tĩnh để làm việc ở quận 1 Sài Gòn",
+        "done": true,
+        "seconds": 46,
+        "screen": "screens/q10.jpg",
+        "answered": true,
+        "chars": 1170,
+        "head": "Mình ưu tiên Hoff Coffee Brewers by BeanHop nếu bạn cần góc ngồi tương đối yên; Soo Kafe Bến Thành là phương án thay thế. Mình chọn theo sở thích bạn từng nói là cần quán yên tĩnh, có ổ điện để làm việc.\nQUÁN CÀ PHÊ\n★ 4.8 (369)\nHoff Coffee Brewers by BeanHop\n\n42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam\n\n07:30–21:00\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nKhông gian: Nằm trong chung cư cũ\n\nNguồn: MYPL, Green SM\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nQUÁN CÀ PHÊ\n★ 4.6 (2.1k)\nSoo Kafe Bến Thành\n\n35 Phan Chu Trinh, Bến Thành, Hồ Chí Minh 70000, Việt Nam\n\n08:00–23:00\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nKhông gian: Được mô tả là khá yên, phù hợp ngồi laptop\nLưu ý: Ngu",
+        "tail": "chọn chỗ phù hợp. Thông tin về không gian và làm việc được đối chiếu từ MYPL, Green SM và HiSaigonAirport; giờ mở cửa và địa chỉ hiển thị trên thẻ quán có thể thay đổi.\nH\nG\nH\nNguồn · 3\n🔖 Lưu địa điểm",
+        "links": 13,
+        "hosts": {
+          "food.grab.com": 2,
+          "maps.google.com": 2,
+          "youtube.com": 2,
+          "tiktok.com": 1,
+          "hochiminh-vi.mypl.net": 2,
+          "greensm.com": 2,
+          "hisaigonairport.com": 2
+        },
+        "sourcesChip": "H G H Nguồn · 3",
+        "tables": 0,
+        "images": 2,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 15,
+        "path": "/chat/8bdb0fcd-7685-4c8f-bd5b-2dc6cbf28feb",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "group": "food",
+    "turns": [
+      {
+        "q": "tối nay ăn lẩu ở Hà Nội cho 6 người, tầm 300 nghìn một người",
+        "done": true,
+        "seconds": 64,
+        "screen": "screens/q11.jpg",
+        "answered": true,
+        "chars": 1632,
+        "head": "Mình nghiêng về Bếp Thái Koh Yam – Vũ Phạm Hàm: mức giá tham khảo vừa khít ngân sách 300.000đ/người; mình chọn theo ưu tiên tránh chỗ ồn bạn từng nói, nhưng chưa tìm được thông tin xác nhận quán tối nay yên tĩnh hay còn bàn.\nTất cả (8)\nĐang mở cửa\nĐánh giá cao\nNHÀ HÀNG MÓN LẨU\n★ 4.0 (1.7k)\nLẨU ĐỨC TRỌC 61 NGUYỄN VĂN TUYẾT\n\n61 Nguyễn Văn Tuyết, Đống Đa, Hà Nội, Việt Nam\n\n09:00–13:30, 16:30–23:00\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nNHÀ HÀNG MÓN LẨU\n★ 4.6 (173)\nLẩu nướng Ngon BBQ\n\n1116 Đ. Láng, Láng, Hà Nội, Việt Nam\n\n10:00–14:00, 17:00–02:30\n· Đang đóng\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nNHÀ HÀNG ĂN NHANH\n★ 3.0 (2",
+        "tail": "iữ bàn và nhờ xếp góc yên tĩnh; tình trạng chỗ trống hiện chưa xác nhận được. Chốt Koh Yam nếu nhóm thích lẩu Thái; nếu muốn buffet và nhiều vị nước lẩu, chọn Hotpot Story.\nP\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 13,
+        "hosts": {
+          "google.com": 1,
+          "maps.google.com": 4,
+          "youtube.com": 3,
+          "food.grab.com": 2,
+          "facebook.com": 1,
+          "pasgo.vn": 2
+        },
+        "sourcesChip": "P Nguồn · 1",
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 22,
+        "path": "/chat/1c50fff1-1986-46f5-bb22-2e6c85309700",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "group": "plan",
+    "turns": [
+      {
+        "q": "lên kế hoạch đi Đà Nẵng - Hội An 4 ngày 3 đêm cho gia đình 2 người lớn 1 bé 4 tuổi, ngân sách 20 triệu, đi cuối tháng 12",
+        "done": true,
+        "seconds": 85,
+        "screen": "screens/q12.jpg",
+        "answered": true,
+        "chars": 8054,
+        "head": "Mình tạm xếp lịch 26–29/12/2026, đến buổi sáng ngày đầu và về sau 16:00 ngày cuối. Ngân sách 20 triệu trong kế hoạch là chi phí tại Đà Nẵng–Hội An, chưa gồm vé khứ hồi vì bạn chưa nói điểm khởi hành; lịch trình chi tiết nằm trong thẻ kế hoạch.\n\nHÀNH TRÌNH\n\nĐà Nẵng – Hội An 4 ngày 3 đêm | 26–29/12/2026\n4 ngày\n22 điểm dừng\n3 người\nTối đa 20.000.000đ cho chi phí tại chỗ; chưa gồm vé đến/đi vì chưa biết điểm khởi hành\n2 người lớn và 1 bé 4 tuổi\nNhiều trải nghiệm nhưng có nghỉ trưa và các chặng đi bộ ngắn\nphố cổ và đèn lồng\nđồ ăn địa phương\nđiểm trong nhà phù hợp ngày mưa\nhoạt động thân thiện với trẻ nhỏ\n\nMình giả định: Ngày đi tạm chọn 26–29/12/2026. · Ngân sách 20 triệu là chi phí tại điểm đến,",
+        "tail": " Rồng — 228.000đ/đêm, kiểm tra lúc 09:32 · Agoda · Booking.com · Traveloka trang chủ · Trip.com trang khách sạn · Kiểm tra giá & tình trạng: Khách sạn Sea Front · Agoda\nA\nP\nD\nNguồn · 7\n🔖 Lưu địa điểm",
+        "links": 36,
+        "hosts": {
+          "maps.google.com": 15,
+          "google.com": 2,
+          "agoda.com": 3,
+          "phanvantravel.com": 2,
+          "danangfantasticity.com": 2,
+          "youtube.com": 3,
+          "tappyai.com": 3,
+          "booking.com": 2,
+          "go.isclix.com": 2,
+          "vn.trip.com": 2
+        },
+        "sourcesChip": "A P D Nguồn · 7",
+        "tables": 1,
+        "images": 11,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 15,
+        "path": "/chat/0b7d709c-6156-4de8-aa38-542cd58e998c",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "group": "plan",
+    "turns": [
+      {
+        "q": "cuối tuần này có hai ngày rảnh, cặp đôi muốn đi chơi gần Sài Gòn, lên kế hoạch giúp mình",
+        "done": true,
+        "seconds": 78,
+        "screen": "screens/q13.jpg",
+        "answered": true,
+        "chars": 708,
+        "head": "Tất cả (8)\nĐang mở cửa\nĐánh giá cao\nNHÀ HÀNG HẢI SẢN\n★ 4.4 (3.1k)\nHải Sản Bờ Biển\n\n32 Hạ Long, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam\n\n08:30–03:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nNHÀ HÀNG HẢI SẢN\n★ 4.3 (10k)\nNhà hàng Gành Hào 1\n\n03 Trần Phú, Vũng Tàu, Hồ Chí Minh, Việt Nam\n\n10:00–21:00\n· Đang đóng\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nNHÀ HÀNG HẢI SẢN\n★ 4.5 (3.7k)\nHàu né Tâm Nguyễn\n\n04 Lê Lợi, Vũng Tàu, Hồ Chí Minh 70000, Việt Nam\n\n09:00–22:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nXem thêm 5 chỗ\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\n🔖 Lưu ",
+        "tail": ", Việt Nam\n\n09:00–22:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nXem thêm 5 chỗ\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\n🔖 Lưu địa điểm",
+        "links": 10,
+        "hosts": {
+          "food.grab.com": 3,
+          "maps.google.com": 4,
+          "youtube.com": 3
+        },
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 21,
+        "path": "/chat",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "group": "plan",
+    "turns": [
+      {
+        "q": "tối thứ bảy này đi chơi ở Hà Nội với nhóm bạn 5 người, ăn gì chơi gì, từ 6 giờ tối đến khuya",
+        "done": true,
+        "seconds": 96,
+        "screen": "screens/q14.jpg",
+        "answered": true,
+        "chars": 3022,
+        "head": "Mình hiểu “thứ Bảy này” là 21/11/2026; mình chọn tuyến phố cổ–Hồ Gươm, có chỗ ngồi trò chuyện thay vì club ồn. Lịch gợi ý và dự trù cho 5 người nằm trong kế hoạch; ước tính khoảng 4.000.000–6.500.000đ, chưa gồm đi lại.\n\nHÀNH TRÌNH\n\nTối thứ Bảy ở Hà Nội — ăn ngon, dạo phố, ngồi đến khuya\n1 ngày\n4 điểm dừng\n5 người\nƯớc tính 4.000.000–6.500.000đ cho 5 người, chưa gồm đi lại; phụ thuộc món gọi và đồ uống\n5 người bạn\nSôi nổi vừa đủ, ưu tiên ăn ngon và trò chuyện, tránh ngồi ở chỗ quá ồn\nẨm thực\nDạo phố buổi tối\nNgồi trò chuyện đến khuya\n\nMình giả định: Mình hiểu “tối thứ Bảy này” là 21/11/2026; lịch dành cho 5 người lớn. · Ưu tiên chỗ nói chuyện được, không chọn club/điểm thiên về nhạc lớn. · Tổn",
+        "tail": " Maps để khám phá thêm địa điểm\nNên đặt bàn cho 5 người trước, xin bàn trong nhà và tránh gần loa; riêng giờ mở cửa của các quán tối hôm đó nên kiểm tra lại trước khi đi.\nH\nD\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 19,
+        "hosts": {
+          "google.com": 2,
+          "maps.google.com": 8,
+          "hanoi.cloudninerestaurants.com": 2,
+          "dantri.com.vn": 2,
+          "thanglongwaterpuppet.com": 1,
+          "youtube.com": 3,
+          "ticket-stations.com": 1
+        },
+        "sourcesChip": "H D Nguồn · 2",
+        "tables": 0,
+        "images": 7,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 17,
+        "path": "/chat/79a12194-a572-41f1-ba08-050289d203e3",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "group": "plan",
+    "turns": [
+      {
+        "q": "đi Nhật 7 ngày mùa xuân cho 2 người, lần đầu, từ Hà Nội, ngân sách 60 triệu mỗi người",
+        "done": true,
+        "seconds": 114,
+        "screen": "screens/q15.jpg",
+        "answered": true,
+        "chars": 10124,
+        "head": "Need no mention of too much rates. Plan card tool.\n\nHÀNH TRÌNH\n\nNhật Bản mùa xuân 7 ngày — Tokyo → Kyoto → Osaka\n7 ngày\n34 điểm dừng\n2 người\nTối đa 120.000.000đ cho 2 người (60.000.000đ/người), chưa tính mua sắm; dự kiến thực chi khoảng 82.000.000–113.200.000đ cho cả hai.\n2 người lớn, lần đầu đi Nhật\nKhá đầy đủ, ưu tiên trải nghiệm biểu tượng nhưng gom điểm theo khu để đỡ chạy xe\nhoa mùa xuân\nvăn hóa truyền thống\nẩm thực Nhật\nngắm thành phố về đêm\n\nMình giả định: Giả định đi vào cuối tháng 3–đầu tháng 4/2027 để có cơ hội ngắm hoa; lịch nở và dự báo 2027 chưa chố · Giả định 7 ngày/6 đêm, hai người lớn, bay vào Tokyo và bay về từ Osaka/Kansai, chuyến ngày cuối sau · Chọn khách sạn đôi tiện tàu",
+        "tail": "g nhất.\n🔗 Liên kết đối tác: Xem giá trên Vexere trang vé máy bay · Xem giá trên Trip.com · Xem giá trên Traveloka · Agoda trang chủ · Booking.com · Traveloka trang chủ\nJ\nT\nJ\nNguồn · 8\n🔖 Lưu địa điểm",
+        "links": 58,
+        "hosts": {
+          "maps.google.com": 27,
+          "google.com": 7,
+          "japanrailpass.net": 2,
+          "traveloka.com": 2,
+          "japan.travel": 2,
+          "selfguidejapan.com": 2,
+          "youtube.com": 3,
+          "tabelog.com": 1,
+          "tokyotower.co.jp": 1,
+          "vn.emb-japan.go.jp": 2,
+          "vexere.com": 2,
+          "go.isclix.com": 4,
+          "agoda.com": 2,
+          "booking.com": 1
+        },
+        "sourcesChip": "J T J Nguồn · 8",
+        "tables": 1,
+        "images": 7,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 17,
+        "path": "/chat/909e7484-2121-4040-bbc4-45e78c03d561",
+        "proNote": 0
+      }
+    ]
+  }
+]

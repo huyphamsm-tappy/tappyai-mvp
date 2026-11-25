@@ -48,6 +48,7 @@ export default function PaymentsFlow({ plans, current }: { plans: CatalogPlan[];
   const [error, setError] = useState<string | null>(null)
   const [created, setCreated] = useState<CreatedOrder | null>(null)
   const [paidUntil, setPaidUntil] = useState<string | null>(null)
+  const [bonusDays, setBonusDays] = useState(0)
 
   const plan = plans.find((p) => p.id === (created?.order.plan ?? selected))
 
@@ -74,7 +75,8 @@ export default function PaymentsFlow({ plans, current }: { plans: CatalogPlan[];
     }
   }
 
-  const onPaid = useCallback(async () => {
+  const onPaid = useCallback(async (days: number) => {
+    setBonusDays(days)
     // The authoritative expiry comes from the server, not from the order.
     try {
       const res = await fetch('/api/subscription', { cache: 'no-store' })
@@ -92,6 +94,7 @@ export default function PaymentsFlow({ plans, current }: { plans: CatalogPlan[];
         <TappyMascot pose="success" size={160} className="mx-auto" />
         <h1 className="text-2xl font-black text-gray-900 dark:text-white">{t('pay.success.title', { plan: plan.name })}</h1>
         {paidUntil && <p className="text-content-secondary text-sm">{t('pay.success.until', { date: formatDate(paidUntil, locale) })}</p>}
+        {bonusDays > 0 && <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('pay.qr.bonus', { days: String(bonusDays) })}</p>}
         <Link href="/chat" className="inline-flex w-full justify-center py-3 rounded-xl bg-primary-500 text-white font-semibold hover:bg-primary-600">
           {t('pay.success.start')}
         </Link>
@@ -178,23 +181,29 @@ function useCountdown(expiresAt: string): number {
 }
 
 /** Live order status: Realtime on the row, plus polling every 3 s (the socket may never connect). */
-function useOrderStatus(orderId: string): OrderStatus {
-  const [status, setStatus] = useState<OrderStatus>('pending')
+function useOrderStatus(orderId: string): { status: OrderStatus; receivedVnd: number; bonusSeconds: number } {
+  const [state, setState] = useState<{ status: OrderStatus; receivedVnd: number; bonusSeconds: number }>({ status: 'pending', receivedVnd: 0, bonusSeconds: 0 })
   const supabase = useMemo(() => createClient(), [])
   useEffect(() => {
     let stopped = false
-    const apply = (s: unknown) => {
-      if (!stopped && (s === 'paid' || s === 'mismatch' || s === 'expired' || s === 'pending')) setStatus(s)
+    // `received` / `bonus` are what the database holds on the order: a short transfer stays there until topped up, a surplus becomes extra time.
+    const apply = (s: unknown, received: unknown, bonus: unknown) => {
+      if (stopped || !(s === 'paid' || s === 'mismatch' || s === 'expired' || s === 'pending')) return
+      setState({ status: s, receivedVnd: Number(received) || 0, bonusSeconds: Number(bonus) || 0 })
     }
     const channel = supabase
       .channel(`payment_orders:${orderId}`)
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'payment_orders', filter: `id=eq.${orderId}` },
-        (payload: { new?: { status?: unknown } }) => apply(payload.new?.status))
+        (payload: { new?: { status?: unknown; received_vnd?: unknown; bonus_seconds?: unknown } }) =>
+          apply(payload.new?.status, payload.new?.received_vnd, payload.new?.bonus_seconds))
       .subscribe()
     const poll = setInterval(async () => {
       try {
         const res = await fetch(`/api/payments/orders?id=${encodeURIComponent(orderId)}`, { cache: 'no-store' })
-        if (res.ok) apply((await res.json())?.order?.status)
+        if (res.ok) {
+          const o = (await res.json())?.order
+          apply(o?.status, o?.receivedVnd, o?.bonusSeconds)
+        }
       } catch { /* keep waiting */ }
     }, POLL_MS)
     return () => {
@@ -203,7 +212,7 @@ function useOrderStatus(orderId: string): OrderStatus {
       supabase.removeChannel(channel)
     }
   }, [orderId, supabase])
-  return status
+  return state
 }
 
 /**
@@ -211,12 +220,17 @@ function useOrderStatus(orderId: string): OrderStatus {
  * a short transfer (`mismatch`) or the 15 minutes ran out. Without it nothing changes.
  */
 export function VietQrScreen({ created, planName, onPaid, onBack, onFailed }: {
-  created: CreatedOrder; planName: string; onPaid: () => void; onBack: () => void
+  created: CreatedOrder; planName: string; onPaid: (bonusDays: number) => void; onBack: () => void
   onFailed?: (why: 'mismatch' | 'expired') => void
 }) {
   const { t } = useTranslation()
   const { order, bank, qrUrl } = created
-  const status = useOrderStatus(order.id)
+  const { status: rawStatus, receivedVnd, bonusSeconds } = useOrderStatus(order.id)
+  // Money already received but below the price: the order stays OPEN (nothing is lost, nothing is refunded); say exactly what is missing instead of "expired/mismatch".
+  const shortVnd = rawStatus !== 'paid' && receivedVnd > 0 ? Math.max(0, order.amountVnd - receivedVnd) : 0
+  const topUp = shortVnd > 0
+  const status: OrderStatus = topUp ? 'pending' : rawStatus
+  const bonusDays = Math.floor(bonusSeconds / 86_400)
   const left = useCountdown(order.expiresAt)
   const [claimed, setClaimed] = useState(false)
   const [saveHint, setSaveHint] = useState(false)
@@ -225,17 +239,18 @@ export function VietQrScreen({ created, planName, onPaid, onBack, onFailed }: {
   useEffect(() => {
     if (status === 'paid' && !firedRef.current) {
       firedRef.current = true
-      onPaid()
+      onPaid(bonusDays)
     }
-  }, [status, onPaid])
+  }, [status, onPaid, bonusDays])
 
   useEffect(() => {
     if (!onFailed || firedRef.current) return
+    if (topUp) return
     if (status === 'mismatch' || status === 'expired' || (status === 'pending' && left === 0)) {
       firedRef.current = true
       onFailed(status === 'mismatch' ? 'mismatch' : 'expired')
     }
-  }, [status, left, onFailed])
+  }, [status, left, onFailed, topUp])
 
   const mm = String(Math.floor(left / 60_000)).padStart(2, '0')
   const ss = String(Math.floor((left % 60_000) / 1000)).padStart(2, '0')
@@ -282,9 +297,15 @@ export function VietQrScreen({ created, planName, onPaid, onBack, onFailed }: {
         <Row label={t('pay.qr.content')} value={order.code} copy strong />
       </dl>
       <p className="text-xs text-content-secondary">{t('pay.qr.contentNote')}</p>
+      <p className="text-xs text-content-secondary">{t('pay.qr.exactNote')}</p>
 
       <div aria-live="polite" className="rounded-2xl p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 text-sm text-blue-800 dark:text-blue-300 space-y-1">
-        {status === 'mismatch' ? (
+        {topUp ? (
+          <>
+            <p className="font-semibold">{t('pay.qr.partial', { received: formatVnd(receivedVnd), short: formatVnd(shortVnd) })}</p>
+            <p>{t('pay.qr.partialHow', { short: formatVnd(shortVnd), code: order.code })}</p>
+          </>
+        ) : status === 'mismatch' ? (
           <p>{t('pay.qr.mismatch')}</p>
         ) : left > 0 ? (
           <>

@@ -13,6 +13,8 @@ interface NotificationContextValue {
   loading: boolean
   refetch: () => Promise<void>
   markAllRead: () => Promise<void>
+  /** Marks specific rows read (tapping a row). Same endpoint as mark-all, with `ids`; optimistic like it. */
+  markRead: (ids: string[]) => Promise<void>
   /** The Tappy notifications preference: ON by default, OFF until the person switches it back. */
   notificationsEnabled: boolean
   setNotificationsEnabled: (enabled: boolean) => void
@@ -24,6 +26,7 @@ const NotificationContext = createContext<NotificationContextValue>({
   loading: false,
   refetch: async () => {},
   markAllRead: async () => {},
+  markRead: async () => {},
   notificationsEnabled: true,
   setNotificationsEnabled: () => {},
 })
@@ -121,6 +124,27 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     try { await fetch('/api/notifications/read', { method: 'POST' }) } catch { /* echo/refetch will reconcile */ }
   }, [])
 
+  const markRead = useCallback(async (ids: string[]) => {
+    const wanted = new Set(ids.filter(id => typeof id === 'string' && id))
+    if (wanted.size === 0) return
+    // Optimistic: only rows that were actually unread lower the badge. The server (POST /api/notifications/read
+    // with `ids`) owns the real read_at; the Realtime echo / next refetch reconciles any difference.
+    const nowIso = new Date().toISOString()
+    let cleared = 0
+    setNotifications(prev => prev.map(n => {
+      if (wanted.has(n.id) && !n.read_at) { cleared++; return { ...n, read_at: nowIso } }
+      return n
+    }))
+    if (cleared > 0) setUnreadCount(c => Math.max(0, c - cleared))
+    try {
+      await fetch('/api/notifications/read', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: Array.from(wanted) }),
+      })
+    } catch { /* echo/refetch will reconcile */ }
+  }, [])
+
   const value = useMemo<NotificationContextValue>(
     () => ({
       notifications,
@@ -128,10 +152,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       loading,
       refetch,
       markAllRead,
+      markRead,
       notificationsEnabled,
       setNotificationsEnabled,
     }),
-    [notifications, unreadCount, loading, refetch, markAllRead, notificationsEnabled, setNotificationsEnabled],
+    [notifications, unreadCount, loading, refetch, markAllRead, markRead, notificationsEnabled, setNotificationsEnabled],
   )
 
   return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>

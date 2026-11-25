@@ -91,9 +91,10 @@ final class HomeV3Tests: XCTestCase {
         // owner decision 2026-10-25): the shipped lists omit them. The full web order is still pinned below for
         // the day the flags are flipped, so un-hiding cannot silently reorder the registry.
         XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .scan, .currency, .split])
-        XCTAssertEqual(SmartTool.all.map(\.id), [.safety, .scan, .currency, .split, .together, .fortune])
+        // Fortune (Coi bói) is hidden too (ProductFlags.showFortune = false, owner decision 2026-11-18).
+        XCTAssertEqual(SmartTool.all.map(\.id), [.safety, .scan, .currency, .split, .together])
         XCTAssertEqual(SmartTool.all.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .currency, .split])
-        let unhidden = SmartTool.tools(showTranslate: true, showVietContent: true)
+        let unhidden = SmartTool.tools(showTranslate: true, showVietContent: true, showFortune: true)
         XCTAssertEqual(unhidden.map(\.id), [.safety, .scan, .translate, .currency, .split, .together, .fortune, .captions])
         XCTAssertEqual(unhidden.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .translate, .currency, .split])
         XCTAssertEqual(SmartTool.all.first { $0.id == .together }?.destination, .groupDining)

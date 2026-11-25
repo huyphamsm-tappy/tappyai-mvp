@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Share2, Check } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface Props {
   serviceName: string
@@ -14,26 +15,27 @@ interface Props {
 }
 
 export function BookingShareButton({ serviceName, date, time, customerName, phone, guests, notes }: Props) {
+  const { t } = useTranslation()
   const [shared, setShared] = useState(false)
 
   const handleShare = async () => {
     const lines = [
-      '📋 Xác nhận đặt chỗ — TappyAI',
+      `📋 ${t('bookings.confirmTitle')}`,
       `🏠 ${serviceName}`,
-      `📅 Ngày: ${date}${time ? ` lúc ${time}` : ''}`,
+      `📅 ${t('bookings.dateLabel')}: ${date}${time ? ` ${t('bookings.atTime', { time })}` : ''}`,
       `👤 ${customerName} | 📞 ${phone}`,
-      guests > 1 ? `👥 Số khách: ${guests}` : '',
+      guests > 1 ? `👥 ${t('bookings.guestsLabel')}: ${guests}` : '',
       notes ? `📝 ${notes}` : '',
     ].filter(Boolean).join('\n')
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share({ title: 'Xác nhận đặt chỗ — TappyAI', text: lines })
+        await navigator.share({ title: t('bookings.confirmTitle'), text: lines })
         setShared(true)
         setTimeout(() => setShared(false), 2000)
       } catch { /* user cancelled */ }
     } else {
-      window.location.href = `mailto:?subject=${encodeURIComponent('Xác nhận đặt chỗ — TappyAI')}&body=${encodeURIComponent(lines)}`
+      window.location.href = `mailto:?subject=${encodeURIComponent(t('bookings.confirmTitle'))}&body=${encodeURIComponent(lines)}`
     }
   }
 
@@ -47,7 +49,7 @@ export function BookingShareButton({ serviceName, date, time, customerName, phon
       }`}
     >
       {shared ? <Check size={13} /> : <Share2 size={13} />}
-      {shared ? 'Đã chia sẻ!' : 'Chia sẻ lại'}
+      {shared ? t('bookings.shared') : t('bookings.shareAgain')}
     </button>
   )
 }

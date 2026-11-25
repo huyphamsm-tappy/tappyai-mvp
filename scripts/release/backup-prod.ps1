@@ -152,7 +152,9 @@ $sha = (Get-FileHash $dump -Algorithm SHA256).Hash.ToLower()
 # ---------- section 0.3 (a) finished cleanly ----------
 $last = (Get-Content $log | Select-Object -Last 1)
 if ($last -ne 'exit=0') { Fail "(a) pg_dump did not exit 0 ($last). See $log" }
-$bad = Select-String -Path $log -Pattern 'error|fatal|permission denied' -CaseSensitive:$false
+# Windows PowerShell wraps pg_dump's stderr progress lines in an ErrorRecord whose own text ("NativeCommandError", "FullyQualifiedErrorId") is not a dump error.
+# The exit=0 line above is the authority on success; this scan still catches real error/fatal/permission-denied lines from pg_dump.
+$bad = Select-String -Path $log -Pattern 'error|fatal|permission denied' -CaseSensitive:$false | Where-Object { $_.Line -notmatch 'NativeCommandError|FullyQualifiedErrorId' }
 if ($bad) { $bad | Select-Object -First 10 | ForEach-Object { Write-Host $_.Line -ForegroundColor Red }; Fail "(a) pg_dump.log contains error/fatal/permission denied lines." }
 if ($schemaExit -ne 0) { Fail '(a) schema-only pg_dump failed.' }
 Write-Host '(a) OK - pg_dump exit=0, no error lines' -ForegroundColor Green

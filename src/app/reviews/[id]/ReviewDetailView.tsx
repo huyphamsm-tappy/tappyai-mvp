@@ -12,6 +12,8 @@ import { postCardOf } from '@/lib/share/contentCards'
 import { isShareOnlyPlaceName } from '@/lib/share/reviewShareTitle'
 import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
+import { VideoDownloadButton } from '@/components/video/VideoDownloadButton'
+import { isHlsUrl, videoAssetIdFromManifestUrl } from '@/lib/media/video/hlsUrl'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { SHOW_MUSIC } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -92,6 +94,7 @@ export default function ReviewDetailView({
   const heroPhoto = review.photos?.[0] ?? null
   const extraPhotos = review.photos?.slice(1) ?? []
   const isVideo = review.content_type === 'video' && !!review.media_url
+  const ownedVideoAssetId = isVideo && viewerId && viewerId === review.user_id && isHlsUrl(review.media_url!) ? videoAssetIdFromManifestUrl(review.media_url!) : null
 
   // Same attached-soundtrack engine as the feed: resolve the LIBRARY track (via
   // /api/music, library rows only) and let the hero VideoPlayer play it in place
@@ -229,7 +232,7 @@ export default function ReviewDetailView({
           initialCount={review.like_count}
         />
         {/* 💬 Comment */}
-        <ReviewCommentButton reviewId={reviewId} initialCount={commentCount} />
+        <ReviewCommentButton reviewId={reviewId} initialCount={commentCount} ownerId={review.user_id} />
         {/* 🔖 Save */}
         <ReviewSaveButton reviewId={reviewId} initialSaved={initialSaved} />
         {/* ↗ Share */}
@@ -251,6 +254,11 @@ export default function ReviewDetailView({
         {/* Content column — caps text/photo readability on wide screens; the card's own
             background/padding above stays full-bleed so the "slide over hero" look is unchanged. */}
         <div className="mx-auto w-full max-w-container-content">
+
+        {/* Explore video: the author can download their own processed clip (MP4 with the text and the watermark). */}
+        {ownedVideoAssetId && (
+          <div className="mb-4 text-white"><VideoDownloadButton assetId={ownedVideoAssetId} /></div>
+        )}
 
         {/* Review body — pr-14 leaves room for the fixed action bar */}
         {review.body ? (

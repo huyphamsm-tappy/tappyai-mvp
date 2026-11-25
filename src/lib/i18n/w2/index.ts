@@ -9,8 +9,12 @@ import * as profile from './profile'
 import * as notifications from './notifications'
 import * as music from './music'
 import * as voice from './voice'
+import * as bookings from './bookings'
+import * as chatbar from './chatbar'
+import * as shell from './shell'
+import * as chatui from './chatui'
 
-const modules = [reviews, reviewNew, reviewDetail, profile, notifications, music, voice]
+const modules = [reviews, reviewNew, reviewDetail, profile, notifications, music, voice, bookings, chatbar, shell, chatui]
 
 export const w2vi: Record<string, string> = Object.assign({}, ...modules.map((m) => m.vi))
 export const w2en: Record<string, string> = Object.assign({}, ...modules.map((m) => m.en))

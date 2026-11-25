@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
@@ -8,15 +8,18 @@ import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
 import PublicFooter from '@/components/discovery/PublicFooter'
 import TappyPresence from '@/components/v3/TappyPresence'
-import AiLeftToday from '@/components/subscription/AiLeftToday'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { SHOW_HOME_CATEGORY_ROW } from '@/lib/config/product'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
+import { useAttachmentTray } from '@/components/chat/useAttachmentTray'
+import { ATTACH_ACCEPT, docIcon } from '@/components/chat/composerAttachment'
+import { setHomeHandoff } from '@/lib/chat/homeHandoff'
+import { useDeepResearchOffered } from '@/lib/subscription/modeAccess'
 import {
-  MessageCircle, Mic, ArrowUp, ArrowRight, ChevronRight, Sparkles, Search, Plus,
+  MessageCircle, Mic, ArrowUp, ArrowRight, ChevronRight, Sparkles, Search, Plus, X,
   Coffee, Languages, ShieldCheck,
   UtensilsCrossed, ShoppingBag, Plane, Clapperboard, Flower2,
   Music2, Sparkle, PenLine, Users, Star,
@@ -61,6 +64,7 @@ interface Suggestion {
   text: string
   textEn: string
   category: string
+  topic?: string
   emoji: string
   gradient: string
   imageUrl?: string
@@ -129,6 +133,20 @@ const CATEGORY_ART_VARIANTS: Record<string, readonly string[]> = {
   entertainment: ['/home/inspire/entertainment.webp', '/home/inspire/entertainment-2.webp', '/home/inspire/entertainment-3.webp'],
 }
 const ART_POOL: readonly string[] = Object.values(CATEGORY_ART_VARIANTS).flat()
+/** Owner-supplied photographs (21/11/2026) for the any-topic cards, 840x320, one or two per topic. Topics without a file show the mascot. */
+export const TOPIC_ART: Record<string, readonly string[]> = {
+  work: ['/home/topics/work.webp', '/home/topics/work-2.webp'],
+  study: ['/home/topics/study.webp', '/home/topics/study-2.webp'],
+  money: ['/home/topics/money.webp', '/home/topics/money-2.webp'],
+  health: ['/home/topics/health.webp', '/home/topics/health-2.webp'],
+  family: ['/home/topics/family.webp', '/home/topics/family-2.webp'],
+  news: ['/home/topics/news.webp', '/home/topics/news-2.webp'],
+  tech: ['/home/topics/tech.webp'],
+  writing: ['/home/topics/writing.webp'],
+}
+/** Neutral Tappy poses for cards outside the five photographed categories (see `assignCardArt`). Files in /public/tappy. */
+const NEUTRAL_MASCOT_ART: readonly string[] = ['/tappy/thinking.png', '/tappy/speaking.png', '/tappy/recommendation.png', '/tappy/aitools.png', '/tappy/welcome.png']
+const isMascotArt = (src: string) => src.startsWith('/tappy/')
 
 /** 🚨 A HINT, NOT A MAPPING — and the distinction is the whole point of this file's last defect.
  *
@@ -160,6 +178,8 @@ const CATEGORY_PREFERRED_ART: Record<string, string> = {
  *  the choice must not be able to depend on the prompt text or the emoji. */
 export interface ArtAssignable {
   category: string
+  /** The topic an any-topic prompt is about (authored with the prompt). Used only when the category has no photography of its own. */
+  topic?: string
   /** 🔑 FUTURE-PROOFING, AS CODE RATHER THAN AS A COMMENT. When a real recommendation object
    *  arrives carrying its own photograph, it wins outright — a real picture of a real thing beats
    *  any placeholder, and it does not compete for a slot in the pool. Nothing sets this today. */
@@ -188,6 +208,21 @@ export function assignCardArt(cards: readonly ArtAssignable[]): string[] {
 
   cards.forEach((card, i) => {
     if (card.imageUrl) out[i] = card.imageUrl
+  })
+
+  // 21/11/2026 (owner: "content một nơi, hình một nẻo"): a card whose category has no photography of its own (`general`: money, work, study,
+  // personal decisions…) used to take whatever scene was left in the pool — a grilled chicken over an exchange-rate question, a waterfall over a
+  // reading habit. It now gets the Tappy mascot in a neutral pose, rotated by position (never by the card's words), which fits any question.
+  // 21/11/2026 (owner supplied the photographs): a card whose prompt carries a TOPIC (authored in suggestedPrompts.ts, not read from its words) takes the
+  // first free picture of that topic; a repeated topic takes the topic's next picture; when the topic has none left (or none yet: tech, writing) the mascot.
+  let neutral = 0
+  const topicUsed = new Set<string>()
+  cards.forEach((card, i) => {
+    if (out[i] || CATEGORY_ART_VARIANTS[card.category]) return
+    const pick = card.topic ? (TOPIC_ART[card.topic] ?? []).find(x => !topicUsed.has(x)) : undefined
+    if (pick) { out[i] = pick; topicUsed.add(pick); return }
+    out[i] = NEUTRAL_MASCOT_ART[neutral % NEUTRAL_MASCOT_ART.length]
+    neutral++
   })
 
   cards.forEach((card, i) => {
@@ -248,18 +283,6 @@ const CAPABILITIES: { id: string; icon: typeof Search; descKey: string; tone: st
   { id: 'spa', descKey: 'v3.home.capSpa', icon: Flower2, tone: 'var(--v3-emerald)' },
 ]
 
-/** 🚨 THE PROMPTS ARE ICON + TEXT, AS THE APPROVED MOCKUP SHOWS. They were bare strings.
- *  Each glyph is an existing lucide icon and is chosen for what the prompt ASKS — a cup for the
- *  cafe prompt, a plane for the trip, a shield for the scam check — so the row reads as things a
- *  person could say rather than as a set of filter tags. The keys and the strings are unchanged. */
-const QUICK_CHIPS: { key: string; icon: typeof Search; tone: string }[] = [
-  { key: 'v3.chip.cafe', icon: Coffee, tone: 'var(--v3-amber)' },
-  { key: 'v3.chip.plan', icon: Plane, tone: 'var(--v3-accent)' },
-  { key: 'v3.chip.translate', icon: Languages, tone: 'var(--v3-violet)' },
-  { key: 'v3.chip.split', icon: Users, tone: 'var(--v3-emerald)' },
-  { key: 'v3.chip.scam', icon: ShieldCheck, tone: 'var(--v3-rose)' },
-]
-
 // 🔑 THE FIVE TOOLS HOME CURATES NOW COME FROM THE REGISTRY, NOT FROM A LIST HERE.
 // The same five, in the same order, with the same icons and tones — `homeSmartTools()` is
 // `smartTools()` filtered to `home: true`, which is the Everyday group. Two consequences worth
@@ -274,11 +297,19 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
   const [heroLine1, heroLine2] = heroGreeting(hero, locale === 'en' ? 'en' : 'vi')
   const router = useRouter()
   const [draft, setDraft] = useState('')
+  // 15/11 (owner): the box has the chat's "+" too: attach pictures / PDF / Word / Excel and choose Deep Research (offered by the plan, as in the chat). The choices travel to the chat page in memory (homeHandoff.ts).
+  const [plusOpen, setPlusOpen] = useState(false)
+  const [deep, setDeep] = useState(false)
+  const deepOffered = useDeepResearchOffered()
+  const tray = useAttachmentTray()
+  const fileRef = useRef<HTMLInputElement>(null)
 
   /** Submitting NAVIGATES. Home never answers in place. */
   function ask(text: string) {
     const q = text.trim()
-    if (!q) return
+    const files = tray.items.map(i => i.file)
+    if (!q && !files.length) return
+    setHomeHandoff({ files: tray.release(), mode: deep && deepOffered ? 'deep' : 'auto' })
     router.push(`/chat?q=${encodeURIComponent(q)}`)
   }
 
@@ -444,18 +475,67 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <p className="mt-3.5 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
               {t('v3.home.askSub')}
             </p>
-            {/* SUBSCRIPTIONS: "AI còn lại hôm nay x/y" — renders nothing unless SUBSCRIPTIONS_ENABLED, so Home is unchanged with the flag OFF. */}
-            <AiLeftToday className="mt-3" />
+            {/* 21/11/2026 (owner): the "AI còn lại hôm nay" quota card is removed from Home. */}
           </div>
 
           {/* 🚨 THE COMPOSER STOPS SHORT OF THE CANVAS EDGE, AS IT DOES IN THE MOCKUP.
               It ran the full width here; in the approved composition it ends roughly where
               Tappy's column begins, which is what keeps the hero reading as one scene with the
               character in it rather than as a full-bleed bar with art parked above it. */}
+          {/* what was chosen with the "+": the files (a picture shows itself, a document its name) and Deep Research, each removable; a refused file says why */}
+          {(tray.items.length > 0 || (deep && deepOffered) || tray.error) && (
+            <div className="mt-5 flex flex-wrap items-center gap-2 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]" data-testid="home-tray">
+              {tray.items.map((it, i) => (it.previewUrl ? (
+                <span key={`${it.file.name}-${i}`} className="relative inline-flex">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- a local preview of the picture the person chose */}
+                  <img src={it.previewUrl} alt="" className="h-14 w-14 rounded-xl border object-cover" style={{ borderColor: 'var(--v3-border)' }} />
+                  <button type="button" onClick={() => tray.remove(i)} aria-label={t('attach.remove')} className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gray-800 text-white hover:bg-red-500"><X size={10} aria-hidden="true" /></button>
+                </span>
+              ) : (
+                <span key={`${it.file.name}-${i}`} data-testid="home-file-chip" className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-[13px]" style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-secondary)' }}>
+                  <span aria-hidden="true">{docIcon(it.file.type)}</span>
+                  <span className="max-w-[200px] truncate">{it.file.name}</span>
+                  <button type="button" onClick={() => tray.remove(i)} aria-label={t('attach.remove')} className="rounded-full p-0.5 hover:bg-white/10"><X size={12} aria-hidden="true" /></button>
+                </span>
+              )))}
+              {deep && deepOffered && (
+                <span data-testid="home-deep-chip" className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12.5px] font-medium" style={{ borderColor: 'color-mix(in srgb, var(--v3-accent) 45%, transparent)', color: 'var(--v3-accent)' }}>
+                  <span aria-hidden="true">🔎</span>{t('mode.deep')}
+                  <button type="button" onClick={() => setDeep(false)} aria-label={t('mode.off')} className="rounded-full p-0.5 hover:bg-white/10"><X size={11} aria-hidden="true" /></button>
+                </span>
+              )}
+              {tray.error && <span role="status" className="text-[12px] text-red-400">{tray.error}</span>}
+            </div>
+          )}
           <form
             onSubmit={(e) => { e.preventDefault(); ask(draft) }}
-            className="v3-ai-composer mt-6 flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]"
+            className={cn('v3-ai-composer relative flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]', tray.items.length > 0 || (deep && deepOffered) || tray.error ? 'mt-3' : 'mt-6')}
           >
+            <button type="button" onClick={() => setPlusOpen(v => !v)} aria-expanded={plusOpen} aria-label={t('composer.plus')} data-testid="home-plus"
+              className="-ml-2 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-colors hover:bg-white/5"
+              style={{ color: plusOpen ? 'var(--v3-accent)' : 'var(--v3-fg-secondary)' }}>
+              <Plus size={20} aria-hidden="true" />
+            </button>
+            {plusOpen && (
+              <>
+                <button type="button" aria-hidden="true" tabIndex={-1} className="fixed inset-0 z-30 cursor-default" onClick={() => setPlusOpen(false)} />
+                <div role="menu" data-testid="home-plus-menu" className="absolute left-3 top-full z-40 mt-2 w-72 rounded-2xl border p-1.5 shadow-xl" style={{ background: 'var(--v3-panel)', borderColor: 'var(--v3-border)' }}>
+                  {([
+                    { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileRef.current?.click() },
+                    { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: deep, act: () => setDeep(v => !v) },
+                  ] as const).filter(item => item.key !== 'deep' || deepOffered).map(item => (
+                    <button key={item.key} type="button" role="menuitem" data-testid={`home-${item.key}`} onClick={() => { item.act(); setPlusOpen(false) }}
+                      className="flex w-full items-start gap-3 rounded-xl px-3 py-2 text-left hover:bg-white/5" style={item.on ? { background: 'color-mix(in srgb, var(--v3-accent) 12%, transparent)' } : undefined}>
+                      <span aria-hidden="true" className="text-lg leading-6">{item.icon}</span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium" style={{ color: 'var(--v3-fg)' }}>{item.label}{item.on ? ' ✓' : ''}</span>
+                        <span className="block text-xs" style={{ color: 'var(--v3-fg-muted)' }}>{item.hint}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
             <Search size={19} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }} />
             <input
               value={draft}
@@ -468,6 +548,9 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               className="min-w-0 flex-1 bg-transparent text-[15px] font-light outline-none placeholder:font-light sm:text-[16.5px]"
               style={{ color: 'var(--v3-fg)' }}
             />
+            {/* after the text field on purpose: the first input of this form is the question, as it always was */}
+            <input ref={fileRef} type="file" multiple accept={ATTACH_ACCEPT} className="hidden" data-testid="home-file-input"
+              onChange={(e) => { const picked = Array.from(e.target.files ?? []); e.target.value = ''; if (picked.length) void tray.add(picked) }} />
             <button
               type="button"
               aria-label={t('v3.home.voiceAria')}
@@ -486,29 +569,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </button>
           </form>
 
-          {/* 🚨 THE PROMPTS CARRY ICONS. In the mockup each pill opens with a semantic glyph —
-              a cup, a plane, cutlery, a shield, people — and that iconography is a large part of
-              why the row reads as things you could SAY rather than as filter tags. They were
-              plain text here. Every glyph is an existing lucide icon already used elsewhere in
-              this product, chosen to match what the prompt actually asks for. */}
-          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 lg:pr-[132px]">
-            <p className="text-[11.5px] font-medium" style={{ color: 'var(--v3-fg-muted)' }}>
-              {t('v3.home.tryAsking')}
-            </p>
-            <div className="v3-scroll-x flex gap-2 pb-0.5">
-              {QUICK_CHIPS.map(({ key, icon: ChipIcon, tone }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => ask(t(key))}
-                  className="v3-chip flex flex-shrink-0 items-center gap-1.5"
-                >
-                  <ChipIcon size={13} aria-hidden="true" style={{ color: tone }} />
-                  {t(key)}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* 21/11/2026 (owner): the "Thử hỏi Tappy" row of quick prompts is removed from Home — the chat bar is the way in. */}
         </section>
 
         {/* ── 2. CAPABILITIES — what the agent can actually do ──────────────
@@ -661,7 +722,10 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                   >
                     {/* The art. `aria-hidden` and empty alt: it is decoration behind a link whose
                         text already says where it goes, so a screen reader gains nothing from it. */}
-                    <span className="relative block h-[94px] w-full flex-shrink-0 overflow-hidden">
+                    <span
+                      className="relative block h-[94px] w-full flex-shrink-0 overflow-hidden"
+                      style={art && isMascotArt(art) ? { background: 'linear-gradient(135deg, #1b2a5e 0%, #2b2260 55%, #162447 100%)' } : undefined}
+                    >
                       {art && (
                         <img
                           src={art}
@@ -673,7 +737,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
                              from a recommendation is not a placeholder, so marking it as one would
                              make the marker a lie the moment real data arrives. */
                           data-art-placeholder={s.imageUrl ? undefined : 'authored-vector-scene'}
-                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          className={`absolute inset-0 h-full w-full transition-transform duration-500 group-hover:scale-[1.04] ${isMascotArt(art) ? 'object-contain p-2' : 'object-cover'}`}
                         />
                       )}
                       {/* 🚨 THE CATEGORY IS A BADGE ON THE ART, WHICH IS WHERE THE MOCKUP PUTS
@@ -750,7 +814,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
           <div className="mt-3">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {homeSmartTools().map((tool) => (
-                <SmartToolCard key={tool.id} tool={tool} variant="compact" />
+                <SmartToolCard key={tool.id} tool={tool} variant="compact" signedIn={user} />
               ))}
             </div>
           </div>

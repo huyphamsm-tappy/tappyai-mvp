@@ -133,8 +133,9 @@ describe('route wiring (the tool is defined inline in the route — structure lo
   const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
   const block = route.slice(route.indexOf("search_products: tool({"), route.indexOf('enrichment.setPlacesRecommendations(productRecommendations(result)'))
   it('purchase_links exists only for the agent runtime; the mode comes from productEnrichmentFor; the search is told whether to fetch links', () => {
-    expect(block).toMatch(/\.\.\.\(agentV2 \? \{ purchase_links: z\.boolean\(\)\.optional\(\)/)
-    expect(block).toContain('productEnrichmentFor({ agentRuntime: agentV2, purchaseLinks: purchase_links })')
+    // 19/11 (owner: fix the tool call, not the Serper count): one brain declares purchase intent too
+    expect(block).toMatch(/\.\.\.\(agentV2 \|\| oneBrain \? \{ purchase_links: z\.boolean\(\)\.optional\(\)/)
+    expect(block).toContain('productEnrichmentFor({ agentRuntime: agentV2 || oneBrain, purchaseLinks: purchase_links })')
     expect(block).toContain("searchProducts(query, lang, { merchantLinks: enrichmentMode === 'links' })")
   })
   it('attachCommerceLinks runs ONLY inside the optional-budget branch, which is closed in advice mode and capped after the reserve otherwise', () => {

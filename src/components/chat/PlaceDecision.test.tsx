@@ -276,6 +276,26 @@ describe('item 2 — three cards, picks first, the rest behind "Xem thêm"', () 
     expect(screen.queryByTestId('place-show-more')).toBeNull()
   })
 
+  // 18/11 (layout S5a): the answer shows the places its text names as single cards; the others must not stand beside them as a second, contradicting list
+  it('a collapsed group shows only its "Xem thêm N chỗ" button, opens on tap and closes again', () => {
+    render(<PlaceDecision view={view({ items: many, picked: [ids[4], ids[1]], shown: 3 })} collapsed />)
+    expect(screen.queryAllByTestId('place-card')).toHaveLength(0)
+    expect(screen.queryByTestId('place-filters')).toBeNull()
+    const more = screen.getByTestId('place-show-more')
+    expect(more.textContent).toBe('Xem thêm 8 chỗ')
+    fireEvent.click(more)
+    expect(screen.getAllByTestId('place-card')).toHaveLength(8)
+    expect(screen.getByTestId('place-show-more').textContent).toBe('Thu gọn')
+    fireEvent.click(screen.getByTestId('place-show-more'))
+    expect(screen.queryAllByTestId('place-card')).toHaveLength(0)
+  })
+
+  it('a group that is not collapsed is unchanged: three cards and the button', () => {
+    render(<PlaceDecision view={view({ items: many, picked: [ids[4], ids[1]], shown: 3 })} collapsed={false} />)
+    expect(screen.getAllByTestId('place-card')).toHaveLength(3)
+    expect(screen.getByTestId('place-show-more').textContent).toBe('Xem thêm 5 chỗ')
+  })
+
   it('a filter chip shows every admitted row, folded or not', () => {
     const mixed = many.map((p, i) => ({ ...p, openNow: i % 2 === 0 }))
     render(<PlaceDecision view={view({ items: mixed, shown: 3 })} />)

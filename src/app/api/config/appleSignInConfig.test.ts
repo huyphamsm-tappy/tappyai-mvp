@@ -82,7 +82,7 @@ describe('GET /api/config keeps its Phase 7 shape and adds the two capability fl
       expect(body.flags.appleSignIn).toBe(apple)
       expect(body.flags.accountSelfDelete).toBe(false)
       expect(Object.keys(body).sort()).toEqual(['auth', 'flags', 'freemium', 'onboarding', 'p8', 'scamShield', 'upload', 'video'])
-      expect(Object.keys(body.flags).sort()).toEqual(['accountSelfDelete', 'appleSignIn', 'publicShare', 'showAppConnections', 'showMusic', 'showProUpgrade', 'showScamShield', 'subscriptions'])
+      expect(Object.keys(body.flags).sort()).toEqual(['accountSelfDelete', 'appleSignIn', 'publicShare', 'showAppConnections', 'showFortune', 'showMusic', 'showProUpgrade', 'showScamShield', 'showTranslate', 'subscriptions'])
       for (const k of Object.keys(body.flags)) expect(typeof body.flags[k]).toBe('boolean')
     }
   })

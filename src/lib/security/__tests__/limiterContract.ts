@@ -22,6 +22,8 @@ export interface SharedLimiterContract {
   resetSideEffects: () => void
   /** The caller a test starts as. */
   defaultCaller?: string
+  /** Shared-store calls one ADMITTED request makes (default 1). A route that also checks a daily and a global cap after the tested limit makes 3; a refused request stops at the tested limit (1 call). */
+  storeCallsPerAdmitted?: number
 }
 
 const refused = (r: Response) => r.status === 429
@@ -80,7 +82,7 @@ export function describeSharedLimiterContract(c: SharedLimiterContract): void {
       for (let i = half; i < c.limit; i++) expect(admittedBy(await call(b))).toBe(true)
       expect(refused(await call(b))).toBe(true)
       expect(refused(await call(a))).toBe(true)
-      expect(store.calls()).toBe(c.limit + 2)
+      expect(store.calls()).toBe(c.limit * (c.storeCallsPerAdmitted ?? 1) + 2)
     })
 
     it('the window is the promised length: still refused at half of it, admitted again after it', async () => {

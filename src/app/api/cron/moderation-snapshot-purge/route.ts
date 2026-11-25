@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 
 // GET /api/cron/moderation-snapshot-purge — clears the comment snapshots kept on the strike ledger for appeals, once they are older than
 // 60 days and have no pending appeal (public.moderation_purge_snapshots, the one edit the immutable ledger allows). Behind
-// MODERATION_ADMIN_ENABLED (404 off) and the CRON secret. NOT scheduled in vercel.json yet — the line to add is in Part B.
+// MODERATION_ADMIN_ENABLED (404 off) and the CRON secret. Scheduled daily (18:30 UTC) in vercel.json since 20/11/2026; it does nothing (404) while the flag is off.
 
 export async function GET(req: Request) {
   if (!moderationAdminEnabled()) return new NextResponse(null, { status: 404 })

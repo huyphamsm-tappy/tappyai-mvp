@@ -1,0 +1,10 @@
+{
+  "purpose": "Probe 18/11/2026: lời chào và nói chuyện phiếm phải nhanh và có phong cách (Huy báo 10 giây, giọng robot).",
+  "questions": [
+    { "id": 1, "group": "greeting", "q": "Hi" },
+    { "id": 2, "group": "greeting", "q": "Chào bạn" },
+    { "id": 3, "group": "smalltalk", "q": "hello, hôm nay bạn khỏe không?" },
+    { "id": 4, "group": "smalltalk", "q": "cảm ơn nha" },
+    { "id": 5, "group": "smalltalk", "q": "hôm nay mệt quá trời" }
+  ]
+}

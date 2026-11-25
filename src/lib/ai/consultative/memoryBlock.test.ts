@@ -74,7 +74,9 @@ describe('buildConsultativeMemoryBlock — informs the pick, never the question'
 
   it('renders companions / timing / personality as defaults the message overrides', () => {
     const line = block.split('\n').find(l => l.startsWith('- Mac dinh neu tin nhan khong noi'))!
-    expect(line).toContain('hay di cung: gia đình 4 người')
+    // owner 20/11: the companions are a style hint, never the headcount of the trip: "4 người" is not given to the model
+    expect(line).toContain('hay di cung (chi de chon phong cach, KHONG phai so nguoi cua chuyen nay): gia dinh')
+    expect(line).not.toMatch(/gia dinh 4/)
     expect(line).toContain('thoi gian hay di: 3 ngày 2 đêm')
     expect(block).not.toMatch(/^- Hay di cung/m)
   })

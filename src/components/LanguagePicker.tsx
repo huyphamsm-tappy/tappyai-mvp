@@ -3,18 +3,18 @@
 import { useEffect, useState } from 'react'
 import { getStoredLocale, setLocale } from '@/lib/i18n/useTranslation'
 import type { Locale } from '@/lib/i18n/dictionaries'
-import { TappyMascot } from '@/components/TappyMascot'
+import LanguageChoiceModal from '@/components/LanguageChoiceModal'
 
 // WHERE THIS RENDERS — only inside the app: `src/app/(app)/layout.tsx` mounts it, and nothing
 // else may (src/app/publicBoundary.test.ts). A shared link, a public result, the hubs, the legal
 // pages and the Controller's public home (which asks the language question in its own header) all
 // live outside `(app)`, so a stranger is never stopped by this modal and no path list is needed
 // here. Public pages follow the browser's language instead (lib/i18n/appSurface.ts).
+// The sign-in pages ask the same question BEFORE signing in with their own component (LoginLanguageChooser).
 
 // First-visit language chooser. Shows once — the moment a locale is stored
 // (either here or later in Settings) getStoredLocale() stops returning null and
-// this never renders again. Bilingual on purpose so it reads regardless of the
-// visitor's language. Anonymous users just get localStorage; the PATCH is a
+// this never renders again. Anonymous users just get localStorage; the PATCH is a
 // best-effort sync for logged-in accounts and is ignored (401) otherwise.
 export default function LanguagePicker() {
   const [show, setShow] = useState(false)
@@ -34,34 +34,5 @@ export default function LanguagePicker() {
   }
 
   if (!show) return null
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
-      <div className="w-full max-w-sm rounded-3xl bg-white dark:bg-gray-900 p-6 shadow-2xl">
-        <div className="text-center mb-5">
-          <div className="flex justify-center mb-2">
-            <TappyMascot pose="welcome" size={72} eager animated />
-          </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white">Chọn ngôn ngữ</h2>
-          <p className="text-sm text-content-secondary">Choose your language</p>
-        </div>
-        <div className="space-y-3">
-          <button
-            onClick={() => choose('vi')}
-            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950/30 active:scale-[0.98] transition-all"
-          >
-            <span className="text-2xl">🇻🇳</span>
-            <span className="font-semibold text-gray-900 dark:text-white">Tiếng Việt</span>
-          </button>
-          <button
-            onClick={() => choose('en')}
-            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950/30 active:scale-[0.98] transition-all"
-          >
-            <span className="text-2xl">🇬🇧</span>
-            <span className="font-semibold text-gray-900 dark:text-white">English</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+  return <LanguageChoiceModal onChoose={choose} />
 }

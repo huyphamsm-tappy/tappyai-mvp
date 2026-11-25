@@ -89,13 +89,34 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         if (target.kind !== 'review' || !target.exists) return adminError('VALIDATION_ERROR', 'Only a reported post can be held while it waits', 422)
         const { error } = await admin.from('reviews').update({ publication_state: publicationStateFor('hide') }).eq('id', item.target_id)
         if (error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
-      } else if (item.status === 'in_review' && target.kind === 'review' && target.exists) {
-        // a post held while it waited, and the verdict is "no violation": it comes back — UNLESS another decision on the same post still
-        // stands (a removal, a restriction, a lock) or another report on it is on hold: dismissing THIS report is not a verdict on those.
-        let keptHidden: boolean
-        try { keptHidden = await postStillHeldByOthers(admin, item.target_id, { queueId: item.id }) } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
-        if (!keptHidden) await admin.from('reviews').update({ publication_state: publicationStateFor('restore') }).eq('id', item.target_id)
-        else postKeptHidden = true
+      } else if (target.kind === 'review' && target.exists) {
+        // 21/11/2026 (owner): after several reports the SYSTEM holds a post by itself; that hold is ONE queue row marked metadata.auto_hold. A "no violation" verdict on ANY report of that post
+        // lifts it, so a reviewer who opens a different report of the same post is not left with a post that stays hidden after their verdict.
+        const auto = await admin.from('moderation_queue').select('id').eq('target_type', 'review').eq('target_id', item.target_id).eq('status', 'in_review').contains('metadata', { auto_hold: true }).neq('id', item.id)
+        if (auto.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+        const autoIds = ((auto.data ?? []) as Array<{ id: string }>).map((r) => r.id)
+        if (item.status === 'in_review' || autoIds.length > 0) {
+          if (autoIds.length > 0) {
+            const closeAuto = await admin.from('moderation_queue').update({ status: 'dismissed', resolved_by: user.id, resolved_at: nowIso, resolution: `Covered by the no-violation verdict on queue ${item.id}`, updated_at: nowIso }).in('id', autoIds)
+            if (closeAuto.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+          }
+          // a post held while it waited, and the verdict is "no violation": it comes back — UNLESS another decision on the same post still
+          // stands (a removal, a restriction, a lock) or another report on it is on hold: dismissing THIS report is not a verdict on those.
+          let keptHidden: boolean
+          try { keptHidden = await postStillHeldByOthers(admin, item.target_id, { queueId: item.id }) } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
+          if (!keptHidden) await admin.from('reviews').update({ publication_state: publicationStateFor('restore') }).eq('id', item.target_id)
+          else postKeptHidden = true
+        }
+      } else if (target.kind === 'comment' && target.exists) {
+        // 21/11/2026: a comment the SYSTEM hid after several reports (hidden_by = 'auto') comes back on a "no violation" verdict on any of its reports; the owner's own hide is not touched
+        const cur = await admin.from('review_comments').select('hidden_by').eq('id', item.target_id).maybeSingle()
+        if (cur.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+        if ((cur.data as { hidden_by: string | null } | null)?.hidden_by === 'auto') {
+          const sib = await admin.from('moderation_queue').update({ status: 'dismissed', resolved_by: user.id, resolved_at: nowIso, resolution: `Covered by the no-violation verdict on queue ${item.id}`, updated_at: nowIso }).eq('target_type', 'comment').eq('target_id', item.target_id).eq('status', 'in_review').neq('id', item.id)
+          if (sib.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+          const up = await admin.from('review_comments').update({ hidden_at: null, hidden_by: null }).eq('id', item.target_id).eq('hidden_by', 'auto')
+          if (up.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+        }
       }
     } else {
       // ── a penalty or a warning: a rule group is required ──

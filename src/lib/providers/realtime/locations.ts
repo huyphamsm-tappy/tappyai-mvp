@@ -1,4 +1,5 @@
 import type { BookingContext, RealtimeProviderId } from './types'
+import agodaCitiesJson from './agodaVietnamCities.json'
 
 // ── Destination name → each provider's OWN location id ───────────────────────────────────────────────────────────────────────────
 //
@@ -47,10 +48,56 @@ const VERIFIED_IDS: Readonly<Record<string, Partial<Record<RealtimeProviderId, {
   ninhbinh: agoda('17245'),
 }
 
+/**
+ * Agoda city ids for Vietnam from Agoda's own Hotel Data File (partner portal → Tools → Hotel Data File), read 14/11/2026: city, country code and city_id per hotel. The file is served by a host that closes
+ * the download after about 60 s, so only the first ~29% of it (231,649 hotels, 4,548 of them Vietnamese) could be read: the table is a LOWER BOUND, a city whose hotels all sit later in the file is absent.
+ * Every id of VERIFIED_IDS above (read from the public city pages on 30/10) is in it with the same value (proved in locations.agodaCities.test.ts). Regenerate: scripts/agoda (the builder is documented in the
+ * handoff); the table drops any name that two cities share, unless one holds 80% of the hotels for it.
+ */
+export interface AgodaVietnamCity { id: number; name: string; state: string; hotels: number; aliases: string[] }
+export const AGODA_VIETNAM_CITIES = agodaCitiesJson as { source: string; rowsRead: number; cities: AgodaVietnamCity[] }
+
+/** A whole-word form of a name: accents and punctuation gone, single spaces. */
+const words = (s: string) => ` ${s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9]+/g, ' ').trim()} `
+/** Shortest name that may be found INSIDE a longer text ("quy nhon gan bien"); shorter ones must be the whole text, so "vinh" never matches inside "vịnh Hạ Long". */
+const MIN_INSIDE = 5
+
+const EXACT = new Map<string, string>()
+const INSIDE: Array<{ w: string; id: string }> = []
+for (const c of AGODA_VIETNAM_CITIES.cities) {
+  for (const a of c.aliases) {
+    EXACT.set(fold(a), String(c.id))
+    const w = words(a)
+    if (w.trim().length >= MIN_INSIDE) INSIDE.push({ w, id: String(c.id) })
+  }
+}
+INSIDE.sort((a, b) => b.w.length - a.w.length)
+
+/**
+ * The Agoda city id of a destination as people and the model write it ("Quy Nhơn", "quy nhơn gần biển", "Phú Quốc, gần biển, 4 người lớn", "tp. hồ chí minh"): the hand-verified table first, then the Hotel Data
+ * File table; the whole text, then each comma / bracket separated part, then the longest known name inside it. Null when nothing matches: a name is never guessed.
+ */
+export function agodaCityIdFor(destination: string | undefined, opts: { skipHand?: boolean } = {}): string | null {
+  if (!destination || !destination.trim()) return null
+  const parts = [destination, ...destination.split(/[,;()/|]/).map(s => s.trim()).filter(Boolean)]
+  for (const p of parts) {
+    const f = fold(p)
+    if (f.length < 3) continue
+    if (!opts.skipHand) { const row = VERIFIED_IDS[f]; if (row?.agoda?.cityRef) return row.agoda.cityRef }
+    const hit = EXACT.get(f)
+    if (hit) return hit
+  }
+  for (const p of parts) {
+    const w = words(p)
+    for (const e of INSIDE) if (w.includes(e.w)) return e.id
+  }
+  return null
+}
+
 export function verifiedRefsFor(destination: string | undefined): ProviderRefs | undefined {
   if (!destination) return undefined
-  const row = VERIFIED_IDS[fold(destination)]
-  return row ? { ...row } : undefined
+  const id = agodaCityIdFor(destination)
+  return id ? agoda(id) : undefined
 }
 
 /** Merge the refs the caller already holds with the verified table (the caller's win). Pure. */

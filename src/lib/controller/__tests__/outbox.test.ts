@@ -476,6 +476,21 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //
     // 17 -> 18 on 2026-11-04 (Messenger, owner): `/api/cron/chat-media-retention` removes pictures older than 30 days from the private bucket and unused uploads after 24 h
     //   (like Zalo, the device keeps its own copy). Daily, fixed minute and hour; it notifies nobody.
-    expect(vercelJson.crons.length).toBe(18)
+    //
+    // 18 -> 19 on 2026-11-05 (Explore video part 3, owner): `/api/cron/video-source-cleanup` removes deleted, failed and abandoned original videos from the PRIVATE source
+    //   bucket (never a live video, never one under a legal hold). Daily, fixed minute and hour; it notifies nobody, and does nothing until the source bucket is configured.
+    //
+    // 19 -> 20 on 2026-11-05 (Explore video part 4, owner): `/api/cron/video-reconcile` advances videos stuck in `processing` (a lost request, a job that never reported). Daily, fixed
+    //   minute and hour; it notifies nobody, and does nothing while EXPLORE_VIDEO_PIPELINE_ENABLED is off.
+    //
+    // 20 -> 21 on 2026-11-05 (Explore video publishing, owner): `/api/cron/video-takedown` removes the delivery copy of any video whose post was hidden, held or restricted, and moves
+    //   it out of `published`. Daily, fixed minute and hour; it notifies nobody, and does nothing while EXPLORE_VIDEO_PIPELINE_ENABLED is off.
+    // 21 -> 22 on 2026-11-18 (Scam Shield, owner): `/api/cron/scam-shield-sync` reads the Ministry's scam warnings from the allow-listed official hosts ONCE A WEEK
+    //   (Monday 03:00 UTC = 10:00 VN) and stores them in `scam_knowledge_versions`. At most 7 page reads per run; the model step is off unless SCAM_SHIELD_SYNC_AI=true.
+    // 22 -> 24 on 2026-11-20 (owner approved the cleanup list, A3): `/api/cron/moderation-snapshot-purge` (clears appeal snapshots older than 60 days; 404 while MODERATION_ADMIN_ENABLED is off) and
+    //   `/api/cron/business-order-expiry` (closes Tappy Business orders pending past 72 h; no rows until the Business feature is live). Both daily, fixed minute and hour; neither notifies anybody.
+    // 24 -> 28 on 2026-11-25 (authority takedown register, owner): `/api/cron/takedown-clock` is four entries (?run=1..4 at 00:00, 06:00, 12:00, 18:00 UTC), each DAILY like every other entry (the Hobby plan
+    //   allows one run per day per entry, the way the moderation digest does it). 404 while MODERATION_ADMIN_ENABLED is off; it alerts the moderation team only when a request is at risk or overdue.
+    expect(vercelJson.crons.length).toBe(28)
   })
 })

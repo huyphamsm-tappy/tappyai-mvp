@@ -87,6 +87,7 @@ const CARDS_SHOWN = CARD_FOLD_SHOWN
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks, dropTruncatedTrailingBlock } from '@/lib/recommendation/ctaValidation'
 import { PROVIDER_REGISTRY } from '@/lib/ccp'
+import { presentationAnnotation } from '@/lib/presentation/declare'
 import { searchTemplates } from '@/lib/ccp/adapters'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
@@ -100,7 +101,9 @@ import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
-import { compactSystemLinks } from './consultative/systemLinkRow'
+import { systemLinkLines } from './consultative/systemLinkRow'
+import { withPartnerLinks } from './consultative/planPartnerLinks'
+import { withStaysAndDishes } from './consultative/planStaysDishes'
 import { onlyMatchingCards, cardsConsistentWithAnswer } from './consultative/cardsMatchRequest'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
@@ -1724,6 +1727,24 @@ export function citeSourcesDetailed(
   }
   return { text: out, used: used > 0 }
 }
+/**
+ * 16/11 (owner: real data only): the blocks the model declared, with every card point this turn's lookups do not support removed (collector.verifyPresentation = answerV4/factSense.ts), or as
+ * declared when the turn has no check. A check that fails or runs past its time confirms nothing: the declared blocks go out WITHOUT their cards' points, i.e. the cards are not sent (a missing
+ * card costs less than a wrong fact); blocks that carry no model fact (questions, bookings, the gallery) stay. The comparison table's cells are facts too and are checked the same way.
+ */
+async function verifiedPresentation(collector: EnrichmentCollector): Promise<import('@/lib/presentation/contract').Presentation | null> {
+  const p = collector.presentation
+  if (!p) return null
+  if (!collector.verifyPresentation) return p
+  const withoutCards = (): import('@/lib/presentation/contract').Presentation | null => {
+    const blocks = p.blocks.filter(b => b.type !== 'profiles' && b.type !== 'compare')
+    return blocks.length ? { v: p.v, blocks } : null
+  }
+  const timeout = new Promise<'timeout'>(r => setTimeout(() => r('timeout'), 10_000))
+  const out = await Promise.race([collector.verifyPresentation(p).catch(() => 'failed' as const), timeout])
+  return out === 'timeout' || out === 'failed' ? withoutCards() : out
+}
+
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -1804,6 +1825,7 @@ export function applyPlaceEnrichmentStreamFilter(
   }
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
+  const askByCallId = new Map<string, string>()
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
   // CONSULTATIVE_IN_AGENT trip-plan turn: the destination the plan's tool calls were made for (get_trip_data.destination, else the first place tool's
   // location) — the plan card keeps only retrieved places whose address names it (planItemGuard). Stays null when the flag is off.
@@ -2444,7 +2466,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // CONSULT_ONE_BRAIN: the named items, in the order named, the first crowned; a card nobody named is not shown, and none named leaves the cards as they were.
       if (!planOwnsAnswer && !contract && collector.oneBrain === true && !collector.semanticRanking && candidateNames.length) {
         const fromProse = rankingFromProse(mainText, [
-          ...(collector.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name ?? '' })),
+          ...(collector.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name ?? '', detail: typeof r.entity.location?.address === 'string' ? r.entity.location.address : undefined })),
           ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => ({ name: e.name ?? e.config ?? '', price: typeof e.priceLow === 'number' ? e.priceLow : null })) : []),
         ].filter(c => c.name))
         if (fromProse) { contract = fromProse; rt.block = 'prose'; rt.via = 'prose' }
@@ -2794,7 +2816,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // masked from the prose guards and restored intact after them.
     // TRIP FACTS (owner 2026-09-28, B4): a trip plan never states a date, a departure city or an
     // inter-city leg the user did not give — the reply asks for them instead (planTripFactsGuard).
-    const itemized = planItems ? planItems.text : tipped
+    // 20/11 (owner): the plan's hotel stop carries the Agoda page and nightly price of the hotel it names, its coach / train stop the Vexere page - the partners the platform looked up this turn (planPartnerLinks.ts)
+    const itemized0 = planItems ? planItems.text : tipped
+    const itemized = collector?.oneBrain === true && itemized0.includes('[TAPPY_PLAN]')
+      ? itemized0.replace(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/, (_m, body: string) => `[TAPPY_PLAN]${withStaysAndDishes(withPartnerLinks(body, { stays: collector.stayLinks ?? [], transport: systemLinks.filter(l => /vexere/i.test(l.name) || /vexere\.com/i.test(l.url)), lang }), { stays: collector.stayLinks ?? [], places: latestPlaces.flatMap(p => (typeof p.name === 'string' && p.name ? [{ name: p.name, ...(typeof (p as { address?: unknown }).address === 'string' ? { address: (p as { address: string }).address } : {}) }] : [])), lang })}[/TAPPY_PLAN]`)
+      : itemized0
     const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText], collector?.consultative === true ? { assumeLegs: true } : {}) : null
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
     // A travel turn never states a travel DATE the user did not give (c40 O8: 'giả sử … hôm nay (28/9)'
@@ -4159,8 +4185,14 @@ export function applyPlaceEnrichmentStreamFilter(
     const linksLabel = partnerLinks
       ? (lang === 'vi' ? '🔗 Liên kết đối tác:' : '🔗 Partner links:')
       : (lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:')
-    const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
-      ? `\n\n${linksLabel} ${(collector?.oneBrain === true ? compactSystemLinks(missingSystemLinks) : missingSystemLinks).map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+    // 18/11 (owner: the booking platform first and 2-3 others beside it, for fairness): on one brain the platform links the answer does not carry yet are added even when the model
+    // already linked one of them in its own sentence (a hotel answer that linked Agoda inline lost every other platform's link: the row was all-or-nothing).
+    const linkMd = (l: { name: string; url: string }) => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`
+    const systemLinksSuffix = systemLinks.length > 0 && (missingSystemLinks.length === systemLinks.length || (collector?.oneBrain === true && missingSystemLinks.length > 0))
+      ? `\n\n${collector?.oneBrain === true
+        // 20/11 (owner): Agoda / Vexere / Lazada on their own line, every other platform under "Tham khảo thêm"
+        ? systemLinkLines(missingSystemLinks, { main: linksLabel, more: lang === 'vi' ? '📎 Tham khảo thêm:' : '📎 More options:' }, linkMd)
+        : `${linksLabel} ${missingSystemLinks.map(linkMd).join(' · ')}`}`
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
@@ -4257,6 +4289,15 @@ export function applyPlaceEnrichmentStreamFilter(
       controller.enqueue(encoder.encode('8:' + JSON.stringify([{ kind: 'tappy.places.v1', v: 1, items: [], cleared: true }]) + '\n'))
       console.log(JSON.stringify({ type: 'tappyai_cards_cleared', reason: lunaRanked ? 'luna_none' : 'no_decision_card' }))
     }
+    // CONSULT_PRESENT_BLOCKS (default OFF: the collector never carries a declaration): the blocks the model declared, already checked against the turn, as one live annotation after the
+    // prose. Like the places view it is an `8:` frame: not in the text, not stored, ignored by a client that does not know it.
+    if (collector?.oneBrain === true && collector.presentation && !agentViolation) {
+      const sent = await verifiedPresentation(collector)
+      if (sent) {
+        controller.enqueue(encoder.encode('8:' + JSON.stringify([presentationAnnotation(sent, collector.presentationLinks)]) + '\n'))
+        console.log(JSON.stringify({ type: 'tappyai_present_blocks', blocks: sent.blocks.map(b => b.type) }))
+      }
+    }
   }
 
   const transform = new TransformStream<any, any>({
@@ -4349,6 +4390,12 @@ export function applyPlaceEnrichmentStreamFilter(
           try {
             const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string; destination?: string; location?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
+            // the route and day a dated tool call asked for: a repeat of the same ask must not wipe the link the first call found (systemLinkSupersede.ts)
+            if (call.toolCallId && call.toolName && DATED_LINK_TOOLS.has(call.toolName)) {
+              const a = (call.args ?? {}) as Record<string, unknown>
+              const norm = (v: unknown) => (typeof v === 'string' ? v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim() : '')
+              askByCallId.set(call.toolCallId, [call.toolName, norm(a.origin), norm(a.destination), norm(a.date ?? a.departDate ?? a.depart_date), norm(a.returnDate ?? a.return_date)].join('|'))
+            }
             anyToolCalled = true
             // CONSULT_ONE_BRAIN: a present_plan turn is rebuilt at the end (the plan block is appended before the plan guards).
             if ((call.toolName === 'present_plan' || call.toolName === 'present_options') && collector?.oneBrain) bufferMode = true
@@ -4431,15 +4478,17 @@ export function applyPlaceEnrichmentStreamFilter(
             if (hasCommerce || (toolName && DATED_LINK_TOOLS.has(toolName))) {
               const found: SystemLink[] = []
               if (hasCommerce) {
-                const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+                const r = res.result as { booking_links?: Array<{ url?: string; _partnerSet?: boolean }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+                // 17/11: a coach / train result whose row the platform already assembled (Vexere first, then the other platforms: `_partnerSet`) is shown as assembled — the two single Vexere fields would only re-add what the turn did not ask for.
+                const rowAssembled = (r.booking_links ?? []).some(l => l?._partnerSet === true) && (typeof r.vexere_link === 'string' || typeof r.train_booking_link === 'string')
                 for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? []), ...(r.product_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
                   if (typeof l?.url !== 'string') continue
                   found.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
                 }
-                if (typeof r.vexere_link === 'string') found.push({ name: 'Vexere', url: r.vexere_link })
-                if (typeof r.train_booking_link === 'string') found.push({ name: 'Vexere', url: r.train_booking_link })
+                if (!rowAssembled && typeof r.vexere_link === 'string') found.push({ name: 'Vexere', url: r.vexere_link })
+                if (!rowAssembled && typeof r.train_booking_link === 'string') found.push({ name: 'Vexere', url: r.train_booking_link })
               }
-              systemLinkLedger.record(toolName ?? 'unknown', found)
+              systemLinkLedger.record(toolName ?? 'unknown', found, res.toolCallId ? askByCallId.get(res.toolCallId) : undefined)
               systemLinks.length = 0
               systemLinkUrls.clear()
               for (const l of systemLinkLedger.links()) { systemLinkUrls.add(l.url); systemLinks.push(l) }
@@ -4748,6 +4797,15 @@ export function applyPlaceEnrichmentStreamFilter(
           // P3-F2: release the live tail (a held-back token, sanitised) before anything else.
           flushLive(controller)
           await emitReconstructed(controller)
+          // 16/11: the blocks the model declared (present_blocks) belong to EVERY one-brain turn, not only to a turn that ran a place or product tool. A turn that streamed live (a web lookup
+          // only) never reaches the settle path that sends the frame, so its declaration was checked, accepted and then dropped: send it here, once, before the finish frame.
+          if (!bufferMode && collector?.oneBrain === true && collector.presentation) {
+            const sent = await verifiedPresentation(collector)
+            if (sent) {
+              controller.enqueue(encoder.encode('8:' + JSON.stringify([presentationAnnotation(sent, collector.presentationLinks)]) + '\n'))
+              console.log(JSON.stringify({ type: 'tappyai_present_blocks', blocks: sent.blocks.map(b => b.type), live: true }))
+            }
+          }
           // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = this block never runs). A LIVE turn (nothing buffered, so no guard above ran) whose model stopped in the middle of its tool loop
           // (finishReason "tool-calls": it used every step calling tools) and streamed NOT ONE word used to end with an empty reply. One honest sentence is sent as the reply, as a text
           // frame like the F-043 tail below; no place or shopping vocabulary. A turn that streamed any text, or that ended for another reason, is not touched.

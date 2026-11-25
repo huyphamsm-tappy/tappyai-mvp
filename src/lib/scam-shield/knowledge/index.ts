@@ -6,6 +6,10 @@ import { BOCONGAN_2026 } from './bocongan2026'
 // Static and synchronous on purpose: browsing a scenario costs nothing — no request, no model, no
 // quota. Adding a dataset means adding a file next to `bocongan2026.ts` and listing it here; the
 // dataset test then holds it to the same provenance rules.
+//
+// Weekly sync (owner 18/11/2026): the freshness of this knowledge — its "last updated" date, the source link and the newest official
+// warnings — is read from the table the weekly job fills, with the static dataset as the fail-open fallback. That reader is ASYNC and lives
+// in ./meta.ts (re-exported at the bottom) so this file stays free of async code: the scenario list and the matcher never wait for anything.
 
 /**
  * Hosts an official record may cite. A record whose source is not on one of these domains fails
@@ -54,3 +58,5 @@ export function isOfficialSourceUrl(url: string): boolean {
 
 export type { KnowledgeCategory, KnowledgeDataset, KnowledgeSource, OfficialGroup, ScamScenario } from './types'
 export { KNOWLEDGE_CATEGORIES } from './types'
+export * from './meta'
+export type { KnowledgeVersionRow, KnowledgeVersionStore, KnowledgeVersionStatus } from './versions'

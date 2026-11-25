@@ -38,8 +38,9 @@ const SITES: Site[] = [
     through: { 'src/lib/ai/tools/serperClient.ts': 'the one door to Serper; reserveSpend before fetch (checked below)' }, exceptions: {},
   },
   {
-    id: 'OpenAI http', re: /api\.openai\.com/, through: {},
-    exceptions: { 'src/lib/ai/llm/providers/openaiModeration.ts': 'EXCEPTION: the Messenger picture safety scan (upload route only, not reachable from POST /api/chat). It calls the moderation endpoint, which is free of charge, so there is no spend to reserve; revisit if that endpoint ever becomes paid.', 'src/lib/ai/llm/providers/openai.ts': 'EXCEPTION: the Responses-API prototype (LLM_OPENAI_API=responses; its model is still wrapped by meteredModel) and the hosted web search (TAPPY_ANSWER_V4, a direct fetch). Both default OFF and are outside the legacy benchmark path; the benchmark runner refuses to run with either set.' },
+    id: 'OpenAI http', re: /api\.openai\.com/,
+    through: { 'src/lib/ai/llm/providers/openaiTranscribe.ts': 'the Explore video speech-to-text adapter (paid, not reachable from POST /api/chat); it calls reserveSpend before its fetch (checked below)' },
+    exceptions: { 'src/lib/ai/llm/providers/openaiModeration.ts': 'EXCEPTION: the Messenger picture safety scan and the Explore video moderation (upload and video-moderation steps only, not reachable from POST /api/chat). It calls the moderation endpoint, which is free of charge, so there is no spend to reserve; revisit if that endpoint ever becomes paid.', 'src/lib/ai/llm/providers/openai.ts': 'EXCEPTION: the Responses-API prototype (LLM_OPENAI_API=responses; its model is still wrapped by meteredModel) and the hosted web search (TAPPY_ANSWER_V4, a direct fetch). Both default OFF and are outside the legacy benchmark path; the benchmark runner refuses to run with either set.' },
   },
   {
     id: 'Anthropic http', re: /api\.anthropic\.com/, through: {},
@@ -104,6 +105,12 @@ describe('8 · every paid call point goes through the spend gate or is a documen
     expect(metered).toMatch(/reserveSpend\(/)
     expect(serper).toMatch(/reserveSpend\(/)
     expect(serper.indexOf('reserveSpend(')).toBeLessThan(serper.indexOf('fetch(`https://google.serper.dev'))
+  })
+
+  it('the video speech-to-text adapter asks the gate before it sends', () => {
+    const tr = code(text.get('src/lib/ai/llm/providers/openaiTranscribe.ts')!)
+    expect(tr).toMatch(/reserveSpend\(/)
+    expect(tr.indexOf('reserveSpend(')).toBeLessThan(tr.indexOf('doFetch('))
   })
 
   it('src does not import from scripts', () => {

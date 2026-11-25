@@ -158,6 +158,9 @@ describe('POST /api/payments/sepay — Transaction handling and idempotency', ()
       amountVnd: 179000,
       code: 'TAPPYAB23CD',
       expiresAt: '2026-11-21T00:00:00Z',
+      kind: 'paid',
+      shortVnd: 0,
+      bonusDays: 0,
     })
   })
 

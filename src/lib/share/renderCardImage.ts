@@ -118,7 +118,8 @@ export async function renderArtifactImage(a: ShareArtifact): Promise<Blob | null
   ctx.fill()
 
   // Identity strip — the official mark and the brand name. Nothing invented.
-  const logo = await loadImage('/logo.svg', 800)
+  // 17/11: the app's current mark (header, report PDF), not the old /logo.svg
+  const logo = await loadImage('/branding/otter-logo.png', 800)
   let x = PAD
   if (logo) {
     ctx.save(); roundRect(ctx, x, PAD, 56, 56, 14); ctx.clip()

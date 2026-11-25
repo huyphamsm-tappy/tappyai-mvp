@@ -1,5 +1,6 @@
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseClient, type SupabaseClient, type User } from '@supabase/supabase-js'
+import { isOAuthClientToken } from '@/lib/auth/oauthClientToken'
 
 // Resolves the authenticated user for an API route, supporting two client types:
 //
@@ -20,6 +21,12 @@ export async function getRequestUser(
 ): Promise<{ user: User | null; supabase: SupabaseClient }> {
   const authHeader = req.headers.get('authorization')
   const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7).trim() : null
+
+  // A token an AI Host got through the connector's OAuth flow (it carries a client_id) is for the MCP gateway only: no user, and a client with NO identity header, so RLS sees an anonymous caller.
+  if (bearerToken && isOAuthClientToken(bearerToken)) {
+    const anon = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { auth: { autoRefreshToken: false, persistSession: false } })
+    return { user: null, supabase: anon }
+  }
 
   if (bearerToken) {
     const supabase = createSupabaseClient(

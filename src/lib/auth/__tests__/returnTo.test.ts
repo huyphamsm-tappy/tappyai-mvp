@@ -84,8 +84,9 @@ describe('every Controller producer goes through the shared contract', () => {
     expect(login).toMatch(/\/auth\/callback\?next=\$\{encodeURIComponent\(returnTo\)\}/)
     // and the callback re-validates it independently (defence in depth)
     const cb = read('src/app/auth/callback/route.ts')
-    expect(cb).toMatch(/startsWith\('\/'\)/)
-    expect(cb).toMatch(/startsWith\('\/\/'\)/)
+    // — now through the ONE strict check (safeReturnTo), not a hand-rolled startsWith pair that let "/\evil.com" through.
+    expect(cb).toMatch(/safeReturnTo\(searchParams\.get\('next'\)\)/)
+    expect(cb).not.toMatch(/startsWith\('\/'\)/)
   })
 })
 

@@ -2,6 +2,7 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { withRetrievedAt } from './retrievalClock'
 import { serperPost, type SerperPostState } from './serperClient'
 import { resolveGotoRows, isGoogleGoto, displayedSite } from './googleGoto'
+import { unwrapProxyLink } from './sourceUrl'
 import { serperCacheGetMeta, serperCacheSet } from './serperCache'
 import { noteRetrieval, withRetrievalClock, type Retrieval } from './retrievalClock'
 import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
@@ -209,7 +210,7 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
     return isSafeHttpsUrl(image) ? image : null
   } catch (e) {
     clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'website_image_failed', websiteUri: websiteUri.slice(0, 60), error: String(e).slice(0, 80) }))
+    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'website_image_failed', error: String(e).slice(0, 80) }))
     return null
   }
 }
@@ -609,7 +610,9 @@ async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: s
     const data = await (resp as Response).json()
     const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string; date?: unknown }>
     // 31/10 (measured: 7 of 10 rows were google.com/goto tokens): each token becomes the page it points to before anyone sees the row
-    const gone = await resolveGotoRows(organic.filter(r => r.title && r.link).slice(0, 6).map(r => ({ ...r, link: r.link as string })))
+    // 18/11 (UAT case 39: "[NASA](https://translate.google.com/translate?u=)"): a translate proxy becomes the page it points to; one that names no page is no source
+    const direct = organic.flatMap(r => { const link = typeof r.link === 'string' ? unwrapProxyLink(r.link) : null; return r.title && link ? [{ ...r, link }] : [] })
+    const gone = await resolveGotoRows(direct.slice(0, 6))
     if (gone.resolved || gone.failed) console.log(JSON.stringify({ type: 'tappyai_serper_goto', resolved: gone.resolved, failed: gone.failed }))
     const results: SerperSearchRow[] = gone.rows
       .map(r => {
@@ -881,8 +884,8 @@ async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: bool
       : { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl }
   } else try {
     if (ddgEntry) markTurnWebTicketSent(ddgEntry) // SENT = the next statement calls fetch
-    const resp = await Promise.race([
-      fetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), {
+    const resp = await fetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), {
+        signal: AbortSignal.timeout(6000), // covers the body read too
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -891,10 +894,8 @@ async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: bool
           'Origin': 'https://duckduckgo.com',
           'Sec-Fetch-Mode': 'navigate',
         }
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
-    ])
-    const html = await (resp as Response).text()
+      })
+    const html = (await resp.text()).slice(0, 1_500_000)
 
     const results: Array<{ title: string; link: string; snippet: string }> = []
     const blockRegex = /<a[^>]*class="result__a"[^>]*href="(.*?)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a[^>]*class="result__snippet"[^>]*>([\s\S]*?)<\/a>/g
@@ -910,11 +911,11 @@ async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: bool
     while ((match = blockRegex.exec(html)) && results.length < 6) {
       let link = match[1]
       const uddg = link.match(/uddg=([^&]+)/)
-      if (uddg) link = decodeURIComponent(uddg[1])
+      if (uddg) { try { link = decodeURIComponent(uddg[1]) } catch { continue } } // one malformed link loses itself, not the whole page of results
       else if (link.startsWith('//')) link = 'https:' + link
       const title = stripTags(match[2])
       const snippet = stripTags(match[3])
-      if (title && link) results.push({ title, link, snippet })
+      if (title && /^https:\/\//i.test(link)) results.push({ title, link, snippet })
     }
 
     if (ddgEntry) settleTurnWebTicket(ddgEntry, !(resp as Response).ok ? 'sent_error' : results.length === 0 ? 'sent_empty' : 'sent_success')

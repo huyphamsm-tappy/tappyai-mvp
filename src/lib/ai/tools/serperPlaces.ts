@@ -376,8 +376,11 @@ export function serperPlaceToRow(rec: SerperPlaceRecord, opts: SerperRowOptions)
   // and what the card shows; nothing ranks or compares on it.
   put('price_range_text', rec.priceLevel)
 
-  const types = rec.types ?? (rec.type ? [rec.type] : undefined)
-  if (types && types.length > 0) row.place_types = types
+  // 17/11: the provider's PRIMARY type (`type`) is always the first of `place_types`, whatever order `types` came in. The card's label
+  // is the first type; a historic site whose `types` listed a karaoke bar first was labelled a karaoke bar.
+  const listed = rec.types ?? []
+  const types = rec.type ? [rec.type, ...listed.filter(t => t !== rec.type)] : listed
+  if (types.length > 0) row.place_types = types
 
   // `cid` IS a Google Maps destination — the canonical short form for a place.
   if (rec.cid) row.maps_link = `https://maps.google.com/?cid=${rec.cid}`

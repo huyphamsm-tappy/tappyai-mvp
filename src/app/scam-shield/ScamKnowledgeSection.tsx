@@ -7,9 +7,12 @@ import {
   ShieldAlert, Landmark, Bot, TrendingUp, ShoppingBag, DatabaseZap, type LucideIcon,
 } from 'lucide-react'
 import {
-  KNOWLEDGE_CATEGORIES, datasetOf, scenariosIn,
-  type KnowledgeCategory, type ScamScenario,
+  KNOWLEDGE_CATEGORIES, datasetOf, formatKnowledgeDate, scenariosIn,
+  type KnowledgeCategory, type KnowledgeMeta, type ScamScenario,
 } from '@/lib/scam-shield/knowledge'
+import KnowledgeFreshness from './KnowledgeFreshness'
+
+export type { KnowledgeMeta }
 
 // ── Scam Shield · official anti-fraud knowledge library ─────────────────────
 //
@@ -144,7 +147,7 @@ export function ScenarioDetail({ scenario }: { scenario: ScamScenario }) {
   )
 }
 
-export default function ScamKnowledgeSection() {
+export default function ScamKnowledgeSection({ knowledge }: { knowledge?: KnowledgeMeta | null } = {}) {
   const { t } = useTranslation()
   const [category, setCategory] = useState<KnowledgeCategory | 'all'>('all')
   const [openId, setOpenId] = useState<string | null>(null)
@@ -174,8 +177,24 @@ export default function ScamKnowledgeSection() {
             <BadgeCheck size={13} aria-hidden="true" />
             {t('v3.scam.kb.official')} · {t('v3.scam.kb.source')}: {scenarios[0]?.source.organization}
           </p>
+          <KnowledgeFreshness meta={knowledge} className="mt-1" />
         </div>
       </div>
+
+      {/* The newest approved official warnings the weekly sync stored (empty until it has run): the Ministry's own titles and links. */}
+      {knowledge && knowledge.recent.length > 0 && (
+        <div className="mt-3 rounded-xl p-3" style={{ background: 'var(--v3-panel-elevated)' }} data-scam-knowledge-recent>
+          <p className="text-[12.5px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>{t('v3.scam.kb.recentTitle')}</p>
+          <ul className="mt-1.5 space-y-1.5">
+            {knowledge.recent.map(r => (
+              <li key={r.url} className="text-[12.5px] leading-snug">
+                <a href={r.url} target="_blank" rel="noopener noreferrer" className="font-semibold underline" style={{ color: 'var(--v3-fg)' }}>{r.title}</a>
+                {r.publishedAt && <span style={{ color: 'var(--v3-fg-muted)' }}> · {t('v3.scam.kb.recentPublished', { date: formatKnowledgeDate(r.publishedAt) })}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Category filters — the source's own five groups, plus "all". Wrapping, never scrolling.
           Filters, not tabs: they narrow one list rather than switch panels, so they are toggle

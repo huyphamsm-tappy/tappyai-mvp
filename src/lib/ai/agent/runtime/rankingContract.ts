@@ -26,7 +26,7 @@ export const RANK_CLOSE = '[/TAPPY_RANK]'
 export const MAX_PICKS = 5
 
 /** `said`: what the answer prose itself says about this pick (proseRanking), figures included - it is the guarded prose, not a new claim. */
-export interface RankedPick { name: string; why: string | null; tradeoff: string | null; fits: string | null; refs: string[]; said?: string | null }
+export interface RankedPick { name: string; why: string | null; tradeoff: string | null; fits: string | null; refs: string[]; said?: string | null; /** the position of the exact listing in the candidate list, when two listings share the name (proseRanking) */ at?: number }
 export interface RankingContract { picks: RankedPick[]; none: boolean; confidence: 'high' | 'medium' | 'low' | null }
 
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
@@ -98,7 +98,7 @@ export function applyRankingToRecs(recs: readonly Recommendation[], c: RankingCo
   const out: Recommendation[] = []
   let unmatched = 0
   for (const p of c.picks) {
-    const i = matchPick(p.name, names)
+    const i = p.at !== undefined && names[p.at] === p.name ? p.at : matchPick(p.name, names)
     if (i < 0 || out.includes(recs[i])) { unmatched++; continue }
     // A LOW-confidence ranking orders the cards but crowns none: a label must not claim more than Luna's own confidence (and its prose) does.
     const first = out.length === 0 && c.confidence !== 'low'

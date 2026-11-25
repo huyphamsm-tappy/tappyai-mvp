@@ -34,6 +34,8 @@ interface Rule {
 const NEGATION_WORDS = /(khong|dung|never|not|don't|do not|won't|will not|shouldn't|no one|nobody|不要|切勿|勿|绝不|不会)/g
 const CONDITIONAL_BEFORE = /(\bneu\b|\bif\b|\bunless\b|truong hop|如果|若)\s*[a-z ]{0,10}$/
 
+const THREAT_AFTER = /(\bthi (se )?(bi|phai)\b|\bse bi (khoa|xoa|phat|bat|dinh chi|thu hoi|truy to)\b|\bwill be (locked|closed|suspended|deleted|fined|arrested|blocked|terminated)\b)/
+
 const RULES: Rule[] = [
   {
     type: 'account_suspension_threat', severity: 'high', weight: 25,
@@ -123,9 +125,25 @@ const RULES: Rule[] = [
     explanation: { vi: 'Yêu cầu mã PIN.', en: 'Asks for a PIN.' },
   },
   {
-    type: 'transfer_request', severity: 'high', weight: 20,
+    // UAT 18/11: a request signal needs a DEMAND to act (a lead word such as "hãy / vui lòng / yêu cầu", a sentence-initial
+    // imperative, or "to an account given below"), not a mention of the word — "chuyển khoản" in "mình đã chuyển khoản
+    // rồi" or "bank transfer" in "I paid by bank transfer" is a noun. It is negatable ("we NEVER ask you to transfer").
+    type: 'transfer_request', severity: 'high', weight: 20, negatable: true,
     patterns: [
-      /(chuyen (khoan|tien)|chuyen ngay|thanh toan (ngay|truoc|phi)|nop (tien|phi)|dong (phi|tien)|transfer|wire|pay(ment)? (now|first|a fee|the fee)|send money|deposit|phi (xu ly|bao hiem|van chuyen|mo khoa|giai ngan|kich hoat|hai quan)|(processing|unlock|release|activation|insurance|shipping|customs|handling) fee|转账|汇款|付款|缴费|手续费|保证金)/,
+      // Vietnamese: lead word (+ optional "bạn/quý khách") + the act
+      /\b(hay|vui long|xin|yeu cau|de nghi|buoc phai|tien hanh|nhanh|ngay|moi)\s+(?:(?:ban|quy khach|anh|chi|em|ong|ba)\s+)?(chuyen (khoan|tien|ngay)|thanh toan (ngay|truoc|phi)|nop (tien|phi)|dong (phi|tien))/,
+      // Vietnamese: a sentence that BEGINS with the act (imperative)
+      /(?:^|[.!?\n;:,-]\s*)(chuyen (khoan|tien|ngay)|thanh toan (ngay|truoc|phi)|nop (tien|phi)|dong (phi|tien))/,
+      // Vietnamese: "chuyển tiền vào tài khoản <sau / tạm giữ / số>"
+      /chuyen (khoan|tien) (ngay |truoc )?(vao|den) (so )?(tai khoan|stk)[^.!?\n]{0,20}?(sau|duoi day|tam giu|an toan|\d{6,}|nay\b)/,
+      // English: lead word + the act, or a sentence that begins with it
+      /\b(please|kindly|must|need to|needs to|have to|ask(s|ed)? you to|asking you to|required to|then|immediately|first|now)\s+(?:(?:you|me|us)\s+)?(transfer|wire|deposit|send money|pay (a |the )?fee)\b/,
+      /(?:^|[.!?\n;:,-]\s*)(transfer|wire|deposit|send money)\b/,
+      /pay(ment)? (now|first|a fee|the fee)/,
+      // A conditional threat ("nếu không chuyển tiền ... sẽ bị khóa", "if you do not transfer ...") demands the act too.
+      /\b(neu|if)\s+(?:(?:ban|quy khach|you)\s+)?(khong|do not|don't|fail to|fails to)\s+(chuyen (khoan|tien)|nop|dong (phi|tien)|thanh toan|transfer|pay|send money)/,
+      // A named up-front fee is a demand in itself.
+      /(phi (xu ly|bao hiem|van chuyen|mo khoa|giai ngan|kich hoat|hai quan)|(processing|unlock|release|activation|insurance|shipping|customs|handling) fee|转账|汇款|付款|缴费|手续费|保证金)/,
     ],
     explanation: {
       vi: 'Yêu cầu chuyển tiền hoặc nộp một khoản "phí" trước.',
@@ -134,8 +152,12 @@ const RULES: Rule[] = [
   },
   {
     type: 'payment_request', severity: 'medium', weight: 12,
+    // UAT 18/11: naming an account number ("bạn gửi số tài khoản nhé") is not a scam signal. It counts when an actual number
+    // is given, or when money is told to go to "the account below".
     patterns: [
-      /(so tai khoan|\bstk\b|bank account|account number|account no|银行卡号|收款账户)/,
+      /(so tai khoan|\bstk\b|bank account|account number|account no)\s*(la|is|:|-)?\s*[a-z ]{0,12}?\d[\d .-]{5,}\d/,
+      /(银行卡号|收款账户)/,
+      /(chuyen|gui|nap|thanh toan|transfer|send|pay|deposit)[^.!?\n]{0,30}?(vao|den|toi|to|into) (the )?(so )?(tai khoan|stk|account|bank account) (sau|duoi day|nay|below|following)/,
       /(vietcombank|techcombank|mb ?bank|vietinbank|bidv|agribank|\bacb\b|tpbank|vpbank|sacombank|momo|zalopay|vnpay)\b.{0,30}?\d{6,}/,
     ],
     explanation: {
@@ -317,6 +339,9 @@ function negated(normalized: string, start: number, end: number): boolean {
     window.lastIndexOf('.', rel), window.lastIndexOf('!', rel), window.lastIndexOf('?', rel), window.lastIndexOf('\n', rel),
   ) + 1
   const sentence = window.slice(sentenceStart)
+  // "Bạn không chuyển tiền thì sẽ bị khóa" / "if you don't pay, ... will be closed": a threat that follows the request makes the
+  // negation a condition, not a warning.
+  if (THREAT_AFTER.test(normalized.slice(end, end + 45))) return false
   for (const m of sentence.matchAll(NEGATION_WORDS)) {
     const before = sentence.slice(Math.max(0, (m.index ?? 0) - 16), m.index ?? 0)
     if (!CONDITIONAL_BEFORE.test(before)) return true

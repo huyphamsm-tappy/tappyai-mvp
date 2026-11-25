@@ -6,6 +6,11 @@ import { processAccountDeletionJobs } from '@/lib/account/deletionJobs'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 import { accountDeletionSchemaReady } from '@/lib/account/deletionReady'
 import { createChatMediaDeleter } from '@/lib/messaging/mediaDeletion'
+import { getVideoSourceProvider } from '@/lib/media/video/sourceStorage'
+import { createVideoSourceDeleter } from '@/lib/media/video/sourceDeletion'
+import { getVideoDeliveryProvider } from '@/lib/media/video/deliveryStorage'
+import { createVideoDeliveryDeleter } from '@/lib/media/video/deliveryDeletion'
+import { getCdnInvalidator } from '@/lib/media/video/cdnInvalidate'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -41,6 +46,10 @@ export async function GET(req: Request) {
       media: { listObjects: media.listObjects.bind(media), deleteObject: media.deleteObject.bind(media) },
       // the user's pictures in the private chat-media bucket (Supabase Storage), which the public-bucket listing cannot see
       chatMedia: createChatMediaDeleter(db),
+      // the original videos in the PRIVATE source bucket (Explore video); 0 when that bucket is not configured, which is the case until the feature is switched on
+      videoSource: createVideoSourceDeleter(getVideoSourceProvider(process.env, req)?.provider ?? null),
+      // the approved HLS copies in the DELIVERY bucket (Explore video) and their CDN cache; 0 when that bucket is not configured, the case until the feature is switched on
+      videoDelivery: createVideoDeliveryDeleter(getVideoDeliveryProvider(process.env, req)?.provider ?? null, getCdnInvalidator(process.env, req)),
       revoke: (token) => revokeGoogleToken(token),
     })
     console.log(JSON.stringify({ type: 'tappyai_cron', job: 'account-deletion-jobs', ok: true, ...result }))

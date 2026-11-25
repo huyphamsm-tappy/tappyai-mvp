@@ -59,7 +59,15 @@ describe('guard — every scheduler route uses it', () => {
     // 18 since subscriptions-expire (P7 subscriptions; flagged, not scheduled)
     // 19 since business-order-expiry (Tappy Business e0f48b3, 21/10; not scheduled — owner 30/10: "fix hết", mục D)
     // 20 cron routes since chat-media-retention (Messenger picture retention, 04/11/2026; scheduled in vercel.json). Each one is checked by the it.each below.
-    expect(routes.length).toBe(21)
+    // 21 cron routes since video-source-cleanup (Explore video part 3, 05/11/2026; scheduled in vercel.json).
+    // 23 cron routes since video-reconcile (Explore video part 4, 05/11/2026; scheduled in vercel.json).
+    // 24 cron routes since video-takedown (Explore video publishing, 05/11/2026; scheduled in vercel.json).
+    // 25 with cron/mcp-jobs (MCP Gateway job worker trigger, 12/11/2026): flag-gated, cron-secret guarded, NOT scheduled in vercel.json.
+    // 26 with cron/scam-shield-sync (Scam Shield weekly knowledge sync, 18/11/2026): cron-secret guarded (checked by the it.each below), scheduled weekly in vercel.json.
+    // 27 with cron/tvi-maintain (TVI promotion + coverage report, 20/11/2026): flag-gated (TVI_MAINTAIN), cron-secret guarded, NOT scheduled in vercel.json.
+    // 28 with cron/tvi-ingest (TVI official-content ingestion, 20/11/2026): flag-gated (TVI_INGEST), cron-secret guarded, NOT scheduled in vercel.json, curated list empty.
+    // 29 with cron/takedown-clock (watch on the legal clock of authority takedown requests, 25/11/2026): flag-gated (MODERATION_ADMIN_ENABLED), cron-secret guarded (checked by the it.each below), scheduled four times a day in vercel.json.
+    expect(routes.length).toBe(29)
   })
 
   it.each(routes)('%s', (file) => {

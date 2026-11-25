@@ -1,0 +1,176 @@
+[
+  {
+    "id": 1,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "khách sạn Nha Trang cho 2 người từ 28 đến 30 tháng 11, gần biển, dưới 1,5 triệu một đêm",
+        "done": true,
+        "seconds": 82,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 2981,
+        "head": "Mình hiểu bạn muốn ở 28–30/11/2026, 2 người, 2 đêm. Mình ưu tiên khách sạn có địa chỉ ở khu trung tâm gần biển và giá dưới 1.500.000đ/đêm; Brilliant Bay Nha Trang là lựa chọn cân bằng nhất trong các khách sạn đã kiểm tra.\nKHÁCH SẠN GẦN BIỂN, DƯỚI 1.500.000Đ/ĐÊM (28–30/11/2026)\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nKS\nKhách sạn Brilliant Bay Nha Trang\n\nGiá thấp, địa chỉ trên đường Trần Phú\n\nGiá Agoda: 345.419đ/đêm cho 2 người, chưa gồm thuế và phí; kiểm tra lúc 21:24 ngày 17/11/2026.\nVị trí: Địa chỉ ghi Trần Phú, Nha Trang.\nĐánh giá Google: 4,1/5 từ 302 đánh giá.\n\nNguồn: Agoda (được kiểm tra 21:24, 17/11/2026), Google Maps\n\nSC\nSophia central nha trang hotel\n\nKhu Trần Quang Khải, giá",
+        "tail": "a cứu; trước khi đặt, bạn nên xem vị trí trên bản đồ và kiểm tra tổng tiền sau thuế. Nếu ưu tiên gần biển, chọn Brilliant Bay; nếu muốn tiết kiệm nhất, chọn Sophia Central.\nA\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 19,
+        "hosts": {
+          "go.isclix.com": 4,
+          "maps.google.com": 5,
+          "youtube.com": 4,
+          "vinpearl.com": 1,
+          "tiktok.com": 1,
+          "panamanhatrang.com": 1,
+          "nhaviethotels.com": 1,
+          "agoda.com": 2
+        },
+        "sourcesChip": "A Nguồn · 1",
+        "tables": 1,
+        "images": 4,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 28,
+        "path": "/chat/70dd9022-ad66-40fb-8e20-6d21fdf9ffd3",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "vé máy bay Hà Nội đi Sài Gòn ngày 25 tháng 11 giá khoảng bao nhiêu",
+        "done": true,
+        "seconds": 34,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 476,
+        "head": "Nếu bạn đi một chiều Hà Nội–TP.HCM ngày 25/11/2026, mình sẽ dự trù khoảng 1.300.000–2.800.000đ (ước tính, chưa xác minh)/vé. Đây là mức tham khảo theo giá chặng bay được cập nhật ngày 17/11; giá đúng ngày 25/11 chưa xác nhận được và có thể thay đổi theo giờ bay, hãng và hành lý. BestPrice\nBạn muốn mình lọc theo một chiều hay khứ hồi?\n🔗 Liên kết đối tác: Xem giá trên Vexere trang vé máy bay · Xem giá trên Trip.com · Xem giá trên Traveloka\nB\nV\nG\nNguồn · 3\nMột chiều\nKhứ hồi",
+        "tail": "lý. BestPrice\nBạn muốn mình lọc theo một chiều hay khứ hồi?\n🔗 Liên kết đối tác: Xem giá trên Vexere trang vé máy bay · Xem giá trên Trip.com · Xem giá trên Traveloka\nB\nV\nG\nNguồn · 3\nMột chiều\nKhứ hồi",
+        "links": 7,
+        "hosts": {
+          "bestprice.vn": 2,
+          "vexere.com": 2,
+          "go.isclix.com": 3
+        },
+        "sourcesChip": "B V G Nguồn · 3",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/5e3e111e-d1e5-4693-9d3f-1aa309dc9106",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "vé xe khách Sài Gòn đi Đà Lạt ngày 24 tháng 11",
+        "done": true,
+        "seconds": 47,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 463,
+        "head": "Mình hiểu bạn đi ngày 24/11/2026. Vexere hiện ghi vé Phương Trang từ 320.000đ/người, xe giường nằm limousine 34 chỗ, hành trình khoảng 8 tiếng; giá và ghế trống cần xác nhận lại khi chọn đúng ngày trên trang đặt vé. Vexere\nChọn chuyến, điểm đón và chỗ ngồi trong mục đặt vé nhé.\n🔗 Liên kết chính thức: Vexere · FUTA Bus Lines trang chủ · Baolau trang chủ\nV\nF\nB\nNguồn · 3\n\nVé xe Sài Gòn → Đà Lạt\n\n24/11/2026 · 1 người lớn · Phương Trang qua Vexere\n\nĐặt qua Vexere",
+        "tail": "mục đặt vé nhé.\n🔗 Liên kết chính thức: Vexere · FUTA Bus Lines trang chủ · Baolau trang chủ\nV\nF\nB\nNguồn · 3\n\nVé xe Sài Gòn → Đà Lạt\n\n24/11/2026 · 1 người lớn · Phương Trang qua Vexere\n\nĐặt qua Vexere",
+        "links": 8,
+        "hosts": {
+          "vexere.com": 4,
+          "futabus.vn": 2,
+          "baolau.com": 2
+        },
+        "sourcesChip": "V F B Nguồn · 3",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/c492578a-5721-45c8-89ae-5fbe2002350e",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "tàu Thống Nhất Sài Gòn đi Nha Trang ngày 26 tháng 11 có những chuyến nào, giá vé",
+        "done": true,
+        "seconds": 50,
+        "screen": "screens/q04.jpg",
+        "answered": true,
+        "chars": 1244,
+        "head": "Ngày 26/11/2026, lịch tàu Thống Nhất Sài Gòn → Nha Trang hiện niêm yết 5 chuyến chính; giá vé chính xác theo ngày và chỗ còn lại chưa xác nhận được trực tiếp, nên mức giá dưới đây chỉ là tham khảo. Lịch giờ theo bảng giờ tàu của Đường sắt Việt Nam DSVN.\nTàu\tRời ga Sài Gòn\tĐến ga Nha Trang\nSE8\t06:00\t14:03\nSE6\t08:45\t16:13\nSE10\t13:15\t21:58\nSE4\t19:20\t02:47 ngày 27/11\nSE2\t20:35\t03:51 ngày 27/11\nGiá vé tham khảo một chiều: một bảng giá tuyến cập nhật năm 2026 ghi ghế mềm khoảng 320.000–480.000đ, giường khoang 6 khoảng 550.000–850.000đ, giường khoang 4 khoảng 850.000–1.050.000đ; giá thực tế tùy tàu, vị trí giường và thời điểm mua Vé Tàu 247. Một bảng khác đăng từ tháng 10/2025 đưa mức thấp hơn, kho",
+        "tail": "rang chủ · Vexere vé tàu · Đường sắt Việt Nam trang vé tàu\nG\nV\nV\nNguồn · 7\n\nTra cứu/đặt vé tàu Sài Gòn → Nha Trang\n\n26/11/2026 · 1 hành khách (mặc định để mở trang tra cứu)\n\nĐặt qua Vexere (trang chủ)",
+        "links": 16,
+        "hosts": {
+          "giotaugiave.dsvn.vn": 2,
+          "vetau247.vn": 2,
+          "vetauduongsat.vn": 2,
+          "vexere.com": 4,
+          "futabus.vn": 2,
+          "baolau.com": 2,
+          "dsvn.vn": 2
+        },
+        "sourcesChip": "G V V Nguồn · 7",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/85e89849-04a5-44f9-8e16-7544330b6294",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "group": "food",
+    "turns": [
+      {
+        "q": "Tư vấn cho tôi quán ăn tối cao cấp ở Thảo Điền Quận 2",
+        "done": true,
+        "seconds": 74,
+        "screen": "screens/q05.jpg",
+        "answered": true,
+        "chars": 1608,
+        "head": "Mình chọn CieL Dining nếu bạn muốn một bữa tối thật chỉn chu và đặc biệt ở Thảo Điền. Nhà hàng kết hợp kỹ thuật Pháp với nguyên liệu địa phương; website mô tả không gian như một ngôi nhà giữa khu vườn và ghi nhận CieL nhận một sao Michelin năm 2025. CieL Dining\nTất cả (8)\nĐang mở cửa\nĐánh giá cao\nNHÀ HÀNG VIỆT NAM\n★ 4.6 (1.6k)\nMặn Mòi, Thảo Điền\n\n32 Đ. Số 11, An Khánh, Hồ Chí Minh, Việt Nam\n\n10:00–22:00\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nNHÀ HÀNG LAI Á\n★ 4.9 (718)\nNÚC Kitchen & Bar\n\n08 Nguyễn Đăng Giai, An Khánh, Hồ Chí Minh 700000, Việt Nam\n\n06:30–22:30\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nReview trên TikTok\nNHÀ HÀNG MÓN CHAY\n★",
+        "tail": "á có thể thay đổi, nên xác nhận khi đặt bàn. PasGo\nMình ưu tiên CieL cho dịp đặc biệt; nếu chọn Secret Wines, bạn có thể nhắn trước để hỏi bàn yên tĩnh và thực đơn tối.\nC\nS\nP\nNguồn · 3\n🔖 Lưu địa điểm",
+        "links": 19,
+        "hosts": {
+          "cieldining.com": 2,
+          "google.com": 2,
+          "maps.google.com": 4,
+          "manmoi.vn": 1,
+          "youtube.com": 2,
+          "nucsaigon.vn": 1,
+          "tiktok.com": 1,
+          "duyenvegetarian.com": 2,
+          "secretwines.vn": 2,
+          "pasgo.vn": 2
+        },
+        "sourcesChip": "C S P Nguồn · 3",
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Review trên TikTok",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 24,
+        "path": "/chat/cdefbeda-33ee-4b86-8f3b-7fddb21b3af8",
+        "proNote": 0
+      }
+    ]
+  }
+]

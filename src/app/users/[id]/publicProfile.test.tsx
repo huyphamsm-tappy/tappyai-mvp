@@ -203,6 +203,27 @@ describe('VISITOR — public identity and public content only', () => {
     render(<PublicProfileView userId={AUTHOR} viewer={null} onBack={() => {}} />)
     await waitFor(() => expect(screen.getByText('reviews.profileLoadError')).toBeTruthy())
   })
+
+  it('a profile the viewer blocked says so and offers Unblock, which undoes the block and reloads (found in a real UAT run)', async () => {
+    const { __resetSafetyClient } = await import('@/lib/safety/safetyClient')
+    __resetSafetyClient()
+    let unblocked = false
+    const fetchMock = vi.fn(async (url: any, opts?: any) => {
+      const u = String(url)
+      if (u.includes('/api/users/blocks')) return { ok: true, status: 200, json: async () => ({ blocks: unblocked ? [] : [{ blocked_id: AUTHOR }] }) } as any
+      if (u.includes(`/api/users/${AUTHOR}/block`) && opts?.method === 'DELETE') { unblocked = true; return { ok: true, status: 200, json: async () => ({}) } as any }
+      if (u.includes(`/api/users/${AUTHOR}`)) return unblocked
+        ? ({ ok: true, status: 200, json: async () => ({ full_name: 'Huy Phạm', avatar_url: null, follower_count: 0, following_count: 0, review_count: 0 }) } as any)
+        : ({ ok: false, status: 404, json: async () => ({}) } as any)
+      return { ok: true, status: 200, json: async () => ({ reviews: [] }) } as any
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await waitFor(() => expect(screen.getByText('v3.publicProfile.youBlocked')).toBeTruthy())
+    fireEvent.click(screen.getByTestId('profile-unblock'))
+    await waitFor(() => expect(screen.queryByText('v3.publicProfile.youBlocked')).toBeNull())
+    expect(fetchMock.mock.calls.some(([u, o]: any) => String(u).includes(`/api/users/${AUTHOR}/block`) && o?.method === 'DELETE')).toBe(true)
+  })
 })
 
 // ═════════════════════════════════════════════════════════════════════════════

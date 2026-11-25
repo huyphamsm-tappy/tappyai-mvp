@@ -15,10 +15,12 @@
 //   web (SePay bank transfer)        ONE payment per period. Never auto-renews, no reminder. When it
 //                                    ends it is EXPIRED and the user buys again (same flow).
 //   manual (staff grant)             no renewal
-// While a plan is ACTIVE nothing can be bought (one plan at a time); any plan — Pip included — can
-// be bought again once it has ended.
+// While a WEB plan is ACTIVE the same kind of plan can be bought again and its days are ADDED to the end date (owner 20/11: 10 days left + one more month = 40 days; the database does the
+// adding). A store plan is never topped up from the web (it would be billed twice), nor is the one-time trial, nor another kind of plan (the account would be switched to it for the whole
+// period). Any plan — Pip included — can be bought once the plan has ended.
 
 import { PLAN_CONFIG, isSubscriptionPlanId } from '@/lib/plans/planConfig'
+import { tierOf } from '@/lib/plans/tiers'
 
 export type SubscriptionState = 'ACTIVE' | 'CANCELLED' | 'EXPIRED' | 'PENDING' | 'NONE'
 export type SubscriptionChannel = 'web' | 'google_play' | 'app_store' | 'manual' | 'legacy'
@@ -39,7 +41,7 @@ export interface MySubscription {
   channel: SubscriptionChannel | null
   /** True only when a STORE will charge again at `periodEnd`. Web is always false. */
   autoRenew: boolean
-  /** The buy button may be shown (no active plan). */
+  /** The buy button may be shown: no active plan, or a running WEB plan that can be topped up (canBuyPlan says with which plans). */
   canBuy: boolean
   /** Which store page "Quản lý gói" opens. Null = nothing to manage outside Tappy. */
   manage: 'google_play' | 'app_store' | null
@@ -59,6 +61,18 @@ function channelOf(source: string | null | undefined): SubscriptionChannel | nul
 function planInfo(plan: string | null): { id: string; name: string } | null {
   if (!plan || !isSubscriptionPlanId(plan)) return null
   return { id: plan, name: PLAN_CONFIG[plan].label }
+}
+
+const TIER_RANK = { free: 0, pro: 1, promax: 2 } as const
+
+/**
+ * May this plan be bought now? Anything on sale when no plan runs. While a web plan runs: the same kind (Coco: momo/coco, Tappy: promax1m/promax3m) or a HIGHER one (owner 20/11: Coco -> Tappy
+ * moves the account to Tappy and the Coco days left are added to the end date), never a lower one, never the one-time trial. Pure.
+ */
+export function canBuyPlan(mine: MySubscription, planId: string): boolean {
+  if (mine.state !== 'ACTIVE') return true
+  if (!mine.canBuy || !mine.plan || planId === 'pip') return false
+  return TIER_RANK[tierOf(planId)] >= TIER_RANK[tierOf(mine.plan.id)]
 }
 
 export function mySubscription(
@@ -84,7 +98,8 @@ export function mySubscription(
     periodEnd: state === 'NONE' || state === 'PENDING' ? null : row?.current_period_end ?? null,
     channel: state === 'NONE' ? null : channel,
     autoRenew: live && store && row?.cancel_at_period_end !== true,
-    canBuy: !live,
+    // a running web plan can be topped up; a store plan or a staff grant cannot
+    canBuy: !live || channel === 'web',
     manage: live && store ? (channel === 'google_play' ? 'google_play' : 'app_store') : null,
   }
 }

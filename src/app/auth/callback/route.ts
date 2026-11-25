@@ -1,13 +1,18 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { getAgeEligibility } from '@/lib/account/ageEligibility'
+import { safeReturnTo } from '@/lib/auth/returnTo'
+import { clientIpKey } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
+  // Public, unauthenticated and it talks to Supabase Auth: capped per IP (20/min).
+  const flood = await publicRateLimit(`auth-callback:${clientIpKey(request)}`, 20, 60_000)
+  if (!flood.ok) return NextResponse.redirect(`${origin}/login?error=rate_limited`)
   const code = searchParams.get('code')
-  const rawNext = searchParams.get('next') ?? '/'
-  // Restrict to relative paths only to prevent open-redirect attacks
-  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/'
+  // Same-origin paths only (`safeReturnTo`): "/\evil.com", "//evil.com" and encoded forms fall back to "/".
+  const next = safeReturnTo(searchParams.get('next'))
 
   if (!code) {
     return NextResponse.redirect(`${origin}/login?error=no_code`)

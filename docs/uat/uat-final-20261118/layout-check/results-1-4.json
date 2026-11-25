@@ -1,0 +1,148 @@
+[
+  {
+    "id": 1,
+    "group": "food",
+    "turns": [
+      {
+        "q": "Tư vấn cho tôi quán ăn tối cao cấp ở Thảo Điền Quận 2",
+        "done": true,
+        "seconds": 80,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 1571,
+        "head": "Mình chọn NÚC Kitchen & Bar: hợp nhất nếu bạn muốn một bữa tối cao cấp nhưng không quá ồn. Website giới thiệu phong cách neo-bistro với nguyên liệu bản địa và thực đơn theo mùa; đánh giá của khách trên Tripadvisor nhắc đến ánh đèn dịu, nhạc nhẹ và không gian yên tĩnh. NÚC · Tripadvisor\nNếu muốn đổi phong cách, Madame Lam hợp với món Việt đương đại; The Gate Restaurant phù hợp nếu bạn thích món Âu, steak và rượu vang. Thông tin món ăn và so sánh nằm trong các gợi ý phía trên.\nNHÀ HÀNG VIỆT NAM\n★ 4.8 (2k)\nMadame Lam - Nhà hàng món Việt\n\n10 Trần Ngọc Diện, An Khánh, Hồ Chí Minh 700000, Việt Nam\n\n07:00–22:00\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nMón gợi ý: Cua lột Cà Mau chiên giòn, xốt xí muội là món đ",
+        "tail": " giá hiện tại; khi đặt bàn, bạn nên dặn trước muốn chỗ yên tĩnh và hỏi menu tối hôm đó. Tripadvisor\nNếu ưu tiên không gian yên và trải nghiệm món sáng tạo, đặt NÚC trước.\nN\nT\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 12,
+        "hosts": {
+          "nucsaigon.vn": 2,
+          "tripadvisor.com.vn": 3,
+          "food.grab.com": 1,
+          "maps.google.com": 2,
+          "madamelam.com": 1,
+          "youtube.com": 2,
+          "google.com": 1
+        },
+        "sourcesChip": "N T Nguồn · 2",
+        "tables": 0,
+        "images": 2,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 15,
+        "path": "/chat/2b77a40b-0499-4b51-bc55-e60b1054004c",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "so sánh tai nghe chống ồn Sony WH-1000XM5 và Bose QuietComfort Ultra",
+        "done": true,
+        "seconds": 74,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 2404,
+        "head": "Mình nghiêng về Sony WH-1000XM5 nếu chọn giữa đúng hai mẫu này: pin công bố lâu hơn và có LDAC; Bose QC Ultra đáng cân nhắc nếu bạn thích âm thanh Immersive Audio. Giá Sony mình tìm được từ 6.490.000đ; giá Bose hiện chưa xác minh được cho đúng phiên bản.\nNhững lựa chọn sát nhất mình tìm được\nChưa có phương án nào vượt hẳn, nên mình xếp theo mức độ phù hợp.\nTai nghe Sony WH-1000XM5\n6,5 triệu\nPhong Vũ\n4.8 · 853 đánh giá\nTìm trên Lazada\nTìm trên Google\nTai nghe Sony WF-1000XM5\n5,4 triệu\nPhong Vũ\n4.4 · 416 đánh giá\nTìm trên Lazada\nTìm trên Google\nSony Tai nghe không dây có công nghệ chống ồn WH-1000XM5\n3,7 triệu\nTainghetot.com\nTìm trên Lazada\nTìm trên Google\nSony Tai nghe không dây chống ồn WH-1",
+        "tail": "ọn mình nghiêng về trong cặp so sánh này; nhớ xác nhận Bose là thế hệ nào nếu cân nhắc Bose.\n🔗 Liên kết đối tác: Tai nghe Sony WH-1000XM5 | Giá rẻ, có trả góp, ưu đãi tốt · CellphoneS\nA\nS\nB\nNguồn · 4",
+        "links": 19,
+        "hosts": {
+          "go.isclix.com": 7,
+          "google.com": 5,
+          "cellphones.com.vn": 1,
+          "anhducdigital.vn": 2,
+          "sony.com.vn": 2,
+          "bose.com": 2
+        },
+        "sourcesChip": "A S B Nguồn · 4",
+        "tables": 0,
+        "images": 6,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9265716e-7198-432c-a34c-6725b55ce227",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "khách sạn Đà Lạt gần chợ đêm cho 2 người cuối tuần này, dưới 1 triệu một đêm",
+        "done": true,
+        "seconds": 97,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 1930,
+        "head": "Mình hiểu “cuối tuần này” là 21–23/11/2026, 2 người. Có hai lựa chọn hiển thị giá tham khảo dưới 1 triệu/đêm, nhưng mức giá chưa được xác nhận cho đúng cuối tuần này và mình chưa xác minh được khoảng cách đi bộ của hai nơi tới chợ đêm.\nTất cả (7)\nĐánh giá cao\nKHÁCH SẠN\n★ 3.8 (1.5k)\nKings Hotel Dalat\n\nSố 10 Đường Bùi Thị Xuân, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam\n\nĐặt phòng trên Trip.com\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nKHÁCH SẠN\n★ 4.5 (3.1k)\nColline Dalat\n\n10 Phan Bội Châu, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam\n\nĐặt phòng trên Trip.com\nXem hồ sơ\nBản đồ\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\nKHÁCH SẠN\n★ 4.3 (132)\nBình An Hotel - Khách sạn Đà Lạt",
+        "tail": "Hotline\nLưu\nTìm review trên YouTube\nB\nM\nA\nNguồn · 5\n\nTìm phòng Đà Lạt đúng cuối tuần 21–23/11\n\n2 người lớn · nhận phòng 21/11/2026 · trả phòng 23/11/2026 · 1 phòng\n\nĐặt qua Booking.com\n🔖 Lưu địa điểm",
+        "links": 28,
+        "hosts": {
+          "go.isclix.com": 4,
+          "maps.google.com": 8,
+          "youtube.com": 4,
+          "tiktok.com": 1,
+          "booking.com": 6,
+          "agoda.com": 2,
+          "vn.trip.com": 2,
+          "holidaydalat.muongthanh.com": 1
+        },
+        "sourcesChip": "B M A Nguồn · 5",
+        "tables": 0,
+        "images": 4,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "booking:Tìm phòng trên Booki",
+          "review:Tìm review trên YouT",
+          "booking:Tìm phòng trên Booki",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 28,
+        "path": "/chat/dece8076-fa67-429f-99ef-12de9062fcec",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "group": "food",
+    "turns": [
+      {
+        "q": "so sánh quán cà phê Cộng Cà Phê và The Coffee House ở quận 1",
+        "done": true,
+        "seconds": 71,
+        "screen": "screens/q04.jpg",
+        "answered": true,
+        "chars": 2045,
+        "head": "Nếu ưu tiên không gian thoáng để ngồi lâu, mình nghiêng về The Coffee House – 141 Nguyễn Thái Bình; nếu muốn buổi hẹn có chất hoài cổ, chọn Cộng – 26/15 Lý Tự Trọng. Mình chọn theo sở thích bạn từng nói là không thích chỗ ồn, nhưng độ yên tĩnh và ổ cắm của từng chi nhánh chưa được xác minh.\nCC\nCộng Cà Phê\n\nchuỗi quán cà phê Việt Nam\n\nXem hồ sơ Tappy\nCộng Cà phê là một quán cà phê được thành lập vào năm 2007 tại Hà Nội, có địa chỉ tại 152D phố Triệu Việt Vương thuộc quận Hai Bà Trưng.\nHiện tại Cộng Cà phê đã có mặt ở khắp mọi nơi trên đất nước Việt Nam và đã mở chi nhánh của quán tại Hàn Quốc và Malaysia.\n\nNguồn: Wikipedia\n\nThe Coffee House\n\nchuỗi cửa hàng cà phê Việt Nam\n\nXem hồ sơ Tappy\nThe",
+        "tail": "hái Bình - Bến Thành\n\n141 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam\n\n07:00–22:00\n· Đang đóng\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nV\nM\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 7,
+        "hosts": {
+          "vietnammm.com": 2,
+          "mia.vn": 2,
+          "google.com": 1,
+          "maps.google.com": 1,
+          "youtube.com": 1
+        },
+        "sourcesChip": "V M Nguồn · 2",
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 7,
+        "path": "/chat/35c94066-fa0f-4eba-b501-efaff7406e18",
+        "proNote": 0
+      }
+    ]
+  }
+]

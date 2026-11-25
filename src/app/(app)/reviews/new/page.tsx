@@ -47,6 +47,13 @@ import {
   SHOW_MUSIC,
 } from '@/lib/config/product'
 import { apiFetch, isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
+// Explore video: the NEW upload flow (private source bucket, processing, moderation, overlay). Every route answers 404 while the server flag is off, and then
+// the existing upload path below runs exactly as before.
+import { useVideoComposerFlow } from '@/components/video/useVideoComposerFlow'
+import { VideoFlowPanel } from '@/components/video/VideoFlowPanel'
+import { VideoOverlayPanel, type OverlaySaveHandle } from '@/components/video/VideoOverlayPanel'
+import { VideoDownloadButton } from '@/components/video/VideoDownloadButton'
+import { mapPublishError } from '@/lib/media/video/composerState'
 
 const MAX_VIDEO_SIZE = MAX_VIDEO_SIZE_MB * 1024 * 1024
 
@@ -111,20 +118,22 @@ const URL_RESOLVE_DEBOUNCE_MS = 600
 /* Structured pipeline instrumentation. Every video stage emits START, then
    SUCCESS or FAIL with elapsed TIME (ms) and, on failure, the ERROR. Prefixed
    so prod logs can be filtered with `[video-pipeline]`. */
+// Hardening 21/11/2026: these stage logs are diagnostics for developers; in production the browser console stays quiet (no stage names, timings or error text for a curious user to read).
+const vdbg = process.env.NODE_ENV === 'production' ? { info: (..._a: unknown[]) => {}, warn: (..._a: unknown[]) => {}, error: (..._a: unknown[]) => {} } : console
 type VStage =
   | 'select' | 'validate-format' | 'validate-size' | 'validate-duration'
   | 'thumbnail-generate' | 'thumbnail-upload' | 'video-upload' | 'ai-process' | 'submit-review'
 function vstart(stage: VStage, extra?: Record<string, unknown>): number {
-  console.info(`[video-pipeline] ${stage} START`, extra ?? {})
+  vdbg.info(`[video-pipeline] ${stage} START`, extra ?? {})
   return (typeof performance !== 'undefined' ? performance.now() : Date.now())
 }
 function vok(stage: VStage, t0: number, extra?: Record<string, unknown>) {
   const ms = Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
-  console.info(`[video-pipeline] ${stage} SUCCESS`, { ms, ...(extra ?? {}) })
+  vdbg.info(`[video-pipeline] ${stage} SUCCESS`, { ms, ...(extra ?? {}) })
 }
 function vfail(stage: VStage, t0: number, error: unknown, extra?: Record<string, unknown>) {
   const ms = Math.round((typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0)
-  console.error(`[video-pipeline] ${stage} FAIL`, { ms, error: (error as Error)?.message ?? String(error), ...(extra ?? {}) })
+  vdbg.error(`[video-pipeline] ${stage} FAIL`, { ms, error: (error as Error)?.message ?? String(error), ...(extra ?? {}) })
 }
 
 function getVideoDuration(file: File): Promise<number> {
@@ -160,20 +169,20 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
       settled = true
       clearTimeout(timer)
       URL.revokeObjectURL(url)
-      console.info(`[video-pipeline:thumb] settle(${tag}) @${ms()}ms`)
+      vdbg.info(`[video-pipeline:thumb] settle(${tag}) @${ms()}ms`)
       fn()
     }
     // Hard cap: guarantees the promise ALWAYS settles, so the UI can never
     // freeze at "Đang tạo thumbnail…" regardless of codec/format quirks.
     const timer = setTimeout(() => {
-      console.warn(`[video-pipeline:thumb] TIMEOUT @${ms()}ms readyState=${video.readyState} dims=${video.videoWidth}x${video.videoHeight}`)
+      vdbg.warn(`[video-pipeline:thumb] TIMEOUT @${ms()}ms readyState=${video.readyState} dims=${video.videoWidth}x${video.videoHeight}`)
       finish(() => reject(new Error('thumbnail timeout')), 'timeout')
     }, THUMB_TIMEOUT_MS)
 
     const draw = (via: string) => {
       if (drawn || settled) return
       drawn = true
-      console.info(`[video-pipeline:thumb] draw(${via}) @${ms()}ms dims=${video.videoWidth}x${video.videoHeight} rs=${video.readyState}`)
+      vdbg.info(`[video-pipeline:thumb] draw(${via}) @${ms()}ms dims=${video.videoWidth}x${video.videoHeight} rs=${video.readyState}`)
       try {
         // No renderable video track (audio-only, or an undecodable codec) —
         // fail gracefully so the caller continues WITHOUT a thumbnail.
@@ -188,17 +197,17 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
         const ctx = canvas.getContext('2d')
         if (!ctx) { finish(() => reject(new Error('no 2d context')), 'no-ctx'); return }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-        console.info(`[video-pipeline:thumb] drawImage ok @${ms()}ms → toBlob`)
+        vdbg.info(`[video-pipeline:thumb] drawImage ok @${ms()}ms → toBlob`)
         canvas.toBlob(
           blob => {
-            console.info(`[video-pipeline:thumb] toBlob cb @${ms()}ms bytes=${blob?.size ?? 0}`)
+            vdbg.info(`[video-pipeline:thumb] toBlob cb @${ms()}ms bytes=${blob?.size ?? 0}`)
             finish(() => (blob ? resolve(blob) : reject(new Error('toBlob null'))), 'toblob')
           },
           'image/jpeg',
           0.82,
         )
       } catch (e) {
-        console.error(`[video-pipeline:thumb] draw threw @${ms()}ms`, e)
+        vdbg.error(`[video-pipeline:thumb] draw threw @${ms()}ms`, e)
         finish(() => reject(e), 'draw-throw')
       }
     }
@@ -207,26 +216,26 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
     video.playsInline = true
     video.preload = 'metadata'
     video.onloadedmetadata = () => {
-      console.info(`[video-pipeline:thumb] loadedmetadata @${ms()}ms dur=${video.duration} dims=${video.videoWidth}x${video.videoHeight}`)
+      vdbg.info(`[video-pipeline:thumb] loadedmetadata @${ms()}ms dur=${video.duration} dims=${video.videoWidth}x${video.videoHeight}`)
       // Seek to a small, guaranteed-in-range time to force one decoded frame.
       // Seeking to 0.5 would be out of range for sub-0.5s clips (→ 'seeked'
       // never fires) and invalid when duration is Infinity/NaN.
       const dur = isFinite(video.duration) && video.duration > 0 ? video.duration : 0
       const target = dur ? Math.min(0.1, dur / 2) : 0.1
       try {
-        console.info(`[video-pipeline:thumb] set currentTime=${target} @${ms()}ms`)
+        vdbg.info(`[video-pipeline:thumb] set currentTime=${target} @${ms()}ms`)
         video.currentTime = target
       } catch (e) {
-        console.warn(`[video-pipeline:thumb] currentTime threw @${ms()}ms — drawing current frame`, e)
+        vdbg.warn(`[video-pipeline:thumb] currentTime threw @${ms()}ms — drawing current frame`, e)
         draw('metadata-fallback')
       }
     }
-    video.onseeked = () => { console.info(`[video-pipeline:thumb] seeked @${ms()}ms`); draw('seeked') }
+    video.onseeked = () => { vdbg.info(`[video-pipeline:thumb] seeked @${ms()}ms`); draw('seeked') }
     video.onerror = () => {
-      console.error(`[video-pipeline:thumb] video error @${ms()}ms`, video.error)
+      vdbg.error(`[video-pipeline:thumb] video error @${ms()}ms`, video.error)
       finish(() => reject(new Error('video decode error')), 'error')
     }
-    console.info(`[video-pipeline:thumb] start @${ms()}ms size=${file.size} type=${file.type}`)
+    vdbg.info(`[video-pipeline:thumb] start @${ms()}ms size=${file.size} type=${file.type}`)
     video.src = url
   })
 }
@@ -388,6 +397,16 @@ export default function NewReviewPage() {
   const [hasOpenedMusicPicker, setHasOpenedMusicPicker] = useState(false)
   const openMusicPicker = () => { setHasOpenedMusicPicker(true); setMusicPickerOpen(true) }
 
+  // New flow (Explore video pipeline). `newFlow` is true once the server accepted this clip into it; the old path never sets it.
+  const videoFlow = useVideoComposerFlow({ onAgeGate: redirectToAgeCheck })
+  const [newFlow, setNewFlow] = useState(false)
+  const [localVideoUrl, setLocalVideoUrl] = useState('')
+  const overlayHandleRef = useRef<OverlaySaveHandle | null>(null)
+  const flowPhase = videoFlow.state.phase
+  const flowBusy = newFlow && ['preparing', 'uploading', 'finishing', 'processing', 'review'].includes(flowPhase)
+  useEffect(() => () => { if (localVideoUrl) URL.revokeObjectURL(localVideoUrl) }, [localVideoUrl])
+  const clearNewFlow = () => { videoFlow.reset(); setNewFlow(false); setLocalVideoUrl('') }
+
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview(''); setVideoDuration(0)
     setUploadStep(''); setUploadProgress(0); setAiHashtags([])
@@ -495,7 +514,15 @@ export default function NewReviewPage() {
     // Pre-upload: an expired or anonymous session goes to login rather than 401ing mid-upload.
     if (!(await ensureSession())) return
     resetVideoState()
+    clearNewFlow()
     setVideoDuration(duration) // keep the measured length for the original-sound track
+
+    // Explore video pipeline first: 404 means the feature is off and the old path below runs untouched.
+    if ((await videoFlow.start(file)) === 'new') {
+      setLocalVideoUrl(URL.createObjectURL(file))
+      setNewFlow(true)
+      return
+    }
 
     /* 1. Generate + upload thumbnail — best-effort. A poster frame is nice-to-have;
        if the browser can't decode one, the video must still upload and play. */
@@ -703,7 +730,7 @@ export default function NewReviewPage() {
 
   /* ─── Submit ─── */
   const allTags = mergeHashtags(typedTags, aiHashtags)
-  const isUploading = uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai'
+  const isUploading = uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai' || flowBusy
 
   /** A drop is the same action as picking from the file dialog, routed by the ACTIVE mode. */
   const acceptDrop = (files: File[]) => {
@@ -722,7 +749,7 @@ export default function NewReviewPage() {
 
   const canPost = (() => {
     if (mediaMode === 'photo') return body.trim().length > 0 || photos.length > 0
-    if (mediaMode === 'video') return uploadStep === 'done'
+    if (mediaMode === 'video') return newFlow ? flowPhase === 'ready' : uploadStep === 'done'
     if (mediaMode === 'url') return !!source_url.trim() && !!detectSource(source_url)
     return false
   })()
@@ -735,7 +762,15 @@ export default function NewReviewPage() {
       // A visitor (no session, or the anonymous chat session) signs in here; what they wrote waits in the draft.
       if (!user || isAnonymousUser(user)) { saveDraft(); router.push(loginHref()); return }
 
-      const placeId = mediaMode === 'photo' && placeName.trim()
+      // A new-flow clip keeps ONE place id per clip, so a retry after a network error resends the same post (the server is idempotent) instead of creating another.
+      const flowAssetId = mediaMode === 'video' && newFlow ? videoFlow.state.assetId : null
+      if (flowAssetId && overlayHandleRef.current && !(await overlayHandleRef.current.save())) {
+        // The text on the video could not be saved: posting now would publish a clip without it.
+        setError(t('video.overlay.unsavedBlocksPost')); return
+      }
+      const placeId = flowAssetId
+        ? `video_${flowAssetId}`
+        : mediaMode === 'photo' && placeName.trim()
         ? 'community_' + placeName.trim().toLowerCase().replace(/\s+/g, '_')
         : `${mediaMode}_${Date.now()}`
 
@@ -759,6 +794,13 @@ export default function NewReviewPage() {
       if (mediaMode === 'photo') {
         payload.photos = photos
         payload.content_type = 'photo'
+      } else if (mediaMode === 'video' && flowAssetId) {
+        // The server replaces media_url / type / length with its own facts for a processed video.
+        payload.content_type = 'video'
+        payload.videoAssetId = flowAssetId
+        payload.source_type = 'upload'
+        payload.duration = videoDuration
+        if (allTags.length > 0) payload.hashtags = allTags
       } else if (mediaMode === 'video') {
         payload.content_type = 'video'
         payload.media_url = media_url
@@ -790,6 +832,10 @@ export default function NewReviewPage() {
         body: JSON.stringify(payload),
       })
       const data = await res.json()
+      if (!res.ok) {
+        const videoError = flowAssetId ? mapPublishError(data.error) : null
+        if (videoError) { vfail('submit-review', tSubmit, new Error(data.error)); throw new Error(t(`video.post.${videoError}`)) }
+      }
       if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.message || data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
       try { localStorage.removeItem(REVIEW_DRAFT_KEY) } catch { /* nothing kept */ }
@@ -1006,7 +1052,31 @@ export default function NewReviewPage() {
           {/* -- Video -- */}
           {mediaMode === 'video' && (
             <div>
-              {uploadStep === '' && (
+              {/* New flow (Explore video pipeline): progress, server state, errors, consent, then the text editor and the download. */}
+              {newFlow && (
+                <div className="space-y-4">
+                  <VideoFlowPanel
+                    state={videoFlow.state}
+                    onCancel={() => { videoFlow.cancel(); setNewFlow(false); setLocalVideoUrl(''); setError(t('video.flow.cancelled')) }}
+                    onRetry={videoFlow.retry}
+                    onRemove={clearNewFlow}
+                    consentBusy={videoFlow.consentBusy}
+                    consentError={videoFlow.consentError}
+                    onAcceptConsent={() => void videoFlow.acceptConsent()}
+                    onDeclineConsent={videoFlow.declineConsent}
+                  />
+                  {(flowPhase === 'processing' || flowPhase === 'review' || flowPhase === 'ready') && videoFlow.state.assetId && localVideoUrl && (
+                    <VideoOverlayPanel
+                      assetId={videoFlow.state.assetId}
+                      previewUrl={localVideoUrl}
+                      durationMs={Math.round(videoDuration * 1000)}
+                      handleRef={overlayHandleRef}
+                    />
+                  )}
+                  {flowPhase === 'ready' && videoFlow.state.assetId && <VideoDownloadButton assetId={videoFlow.state.assetId} />}
+                </div>
+              )}
+              {uploadStep === '' && !(newFlow && flowPhase !== 'idle') && (
                 <div
                   onDragOver={e => { e.preventDefault(); setDragging(true) }}
                   onDragLeave={() => setDragging(false)}

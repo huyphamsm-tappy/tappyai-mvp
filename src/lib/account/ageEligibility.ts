@@ -70,10 +70,20 @@ export interface AgeStatusRow {
   age_years: number | null
   age_band: string | null
   corrections_used: number | null
+  /**
+   * The button answer, derived in SQL (20261202_age_adult_declaration.sql): 'minor' when the account
+   * declared itself under 18, 'adult' when it confirmed 18+, null otherwise. Absent on a database that
+   * has not applied that migration, which reads exactly like null (fail closed).
+   */
+  declaration?: string | null
 }
+
+export type AgeDeclaration = 'adult' | 'minor'
 
 export interface AgeEligibility {
   status: AgeEligibilityStatus
+  /** The one-button answer on file, if any. A refusal screen reads it to say the right sentence. */
+  declaration?: AgeDeclaration | null
   /** Derived band, or null when unknown. A demographic signal, not an identifier. */
   ageBand: AgeBand | null
   /** Whole years. Server-side only — see `userDataClassification.ts` for where it may go. */
@@ -96,7 +106,23 @@ export const MAX_SELF_CORRECTIONS = 1
 export function evaluateAgeEligibility(
   row: AgeStatusRow | null | undefined
 ): AgeEligibility {
-  if (!row || row.has_dob !== true) return UNKNOWN
+  if (!row) return UNKNOWN
+
+  // ── The one-button declaration (owner decision 18/11/2026) ───────────────
+  //   minor  → ineligible, whatever else is on file: it is the refusal the person chose and it
+  //            cannot be flipped by pressing the other button or by typing a date.
+  //   a date of birth on file → the date decides, exactly as before (below). An adult declaration
+  //            never overrides an under-18 date.
+  //   no date, adult → eligible.
+  //   otherwise → unknown (fail closed).
+  if (row.declaration === 'minor') {
+    return { status: 'ineligible', declaration: 'minor', ageBand: null, age: null, canSelfCorrect: false }
+  }
+  if (row.has_dob !== true) {
+    return row.declaration === 'adult'
+      ? { status: 'eligible', declaration: 'adult', ageBand: null, age: null, canSelfCorrect: true }
+      : UNKNOWN
+  }
 
   const age = typeof row.age_years === 'number' && Number.isFinite(row.age_years)
     ? row.age_years
@@ -199,6 +225,56 @@ export async function setDateOfBirth(
   } catch (e) {
     console.error('[ageEligibility] dob write threw:', e instanceof Error ? e.message : e)
     return { ok: false, result: 'invalid_date' }
+  }
+}
+
+/**
+ * The Terms version stored with an adult confirmation. It is the effective date of the Terms the
+ * person saw (`legal.terms.effective`, src/lib/i18n/legal.ts): bump it together with that line.
+ */
+export const AGE_TERMS_VERSION = '2026-10-10'
+
+/** Status codes returned by `public.record_age_declaration()`. */
+export type AgeDeclarationResult =
+  | 'recorded' | 'unchanged'
+  | 'dob_under_18' | 'minor_declared'
+  | 'anonymous_not_eligible' | 'unauthenticated' | 'invalid_terms_version'
+
+const AGE_DECLARATION_RESULTS: ReadonlySet<string> = new Set<AgeDeclarationResult>([
+  'recorded', 'unchanged', 'dob_under_18', 'minor_declared',
+  'anonymous_not_eligible', 'unauthenticated', 'invalid_terms_version',
+])
+
+/**
+ * Records the caller's own one-button answer ("I confirm I am 18 or older" / "I am under 18").
+ *
+ * The rules (idempotent, a date of birth under 18 and a minor declaration are never overridden)
+ * live in the database function, because every signed-in user holds their own token. `failed` means
+ * the call did not complete (error, throw, or a database that has not applied the migration): the
+ * caller must answer 503 and admit nobody. An unrecognised status is also `failed`.
+ */
+export async function recordAgeDeclaration(
+  supabase: SupabaseClient,
+  adult: boolean,
+): Promise<{ ok: boolean; result: AgeDeclarationResult | 'failed' }> {
+  try {
+    const { data, error } = await supabase.rpc('record_age_declaration', {
+      p_adult: adult,
+      p_terms_version: AGE_TERMS_VERSION,
+    })
+    if (error) {
+      console.error('[ageEligibility] declaration write failed:', error.code ?? error.message)
+      return { ok: false, result: 'failed' }
+    }
+    if (typeof data !== 'string' || !AGE_DECLARATION_RESULTS.has(data)) {
+      console.error('[ageEligibility] declaration write returned an unrecognised status')
+      return { ok: false, result: 'failed' }
+    }
+    const result = data as AgeDeclarationResult
+    return { ok: result === 'recorded' || result === 'unchanged', result }
+  } catch (e) {
+    console.error('[ageEligibility] declaration write threw:', e instanceof Error ? e.message : e)
+    return { ok: false, result: 'failed' }
   }
 }
 

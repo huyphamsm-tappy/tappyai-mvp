@@ -74,7 +74,7 @@ const RSS_URL = 'https://vnexpress.net/rss/du-lich.rss'
 const SEARCH_URL = 'https://timkiem.vnexpress.net/'
 const HOST = 'vnexpress.net'
 /** The identity the app already uses for the publisher's RSS (see getNews in food.ts). */
-const USER_AGENT = 'TappyAI/1.0 (huypham.sm@gmail.com)'
+const USER_AGENT = 'TappyAI/1.0 https://www.tappyai.com'
 /** Article URLs are `<slug>-<7-digit id>.html` on the apex host — the one shape we fetch. */
 const ARTICLE_URL_RE = /^https:\/\/vnexpress\.net\/[a-z0-9-]+-(\d{7})\.html$/
 

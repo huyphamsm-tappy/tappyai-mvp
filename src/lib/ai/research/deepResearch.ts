@@ -17,9 +17,23 @@
 // a pricing report was cut at 105 s.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import { leanValue } from './deepResearchLean'
-import { deepResearchV2On, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { canonicalSourceUrl } from '@/lib/ai/tools/sourceUrl'
+import { questionKind, withNewsLane } from './researchLanes'
+import { dedupePackages } from './researchPackages'
+import { consolidate, freshnessHints } from './consolidate'
+import { sectionTextOf, seriesRelevant } from './chartRelevance'
+import { failureKind } from './failureKind'
+import { buildCards, cardSummary, factSupport, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
+import { outlineWriterInput, releaseText, wordCiteStream, type Outline, type WriterInput } from './thesisReport'
+import { createSectionRelease, sectionEventOf, type ReleasedSection, type SectionRelease } from './sectionRelease'
+import { createContractsRun, type ContractsSummary } from './contractsRun'
+import { FIGURE_CONFLICT_GAP } from './figureGap'
+import { groundForecast, runForecast, wantsForecastModel, forecastNotes, type ForecastSpec, type ForecastResult } from './forecastModel'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, researchThesisOn, researchContractsOn, researchStreamVerifyOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
+/** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
+export interface RunBounds { maxSteps: number; queriesPerStep: number; gapRounds: number; followUpSteps: number; /** the semantic check of the report against the parts of the question, and the repair of what it misses (the V2 repair), without needing DEEP_RESEARCH_V2 */ repairParts?: boolean }
 export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 3, findingsPerStep: 90, researchDeadlineMs: 120_000, runDeadlineMs: 270_000 } as const
 
 /**
@@ -28,7 +42,9 @@ export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 
  * A follow-up step's `completes`: the plan step (1-based) whose section its findings complete (measured 31/10: follow-ups written as their own
  * sections repeated two earlier ones); absent = a section of its own.
  */
-export interface ResearchPlan { title: string; sources_label?: string; /** the parts of the report the question asks for, in its own words and order */ parts?: string[]; /** the parts the plan call says no step researches */ uncovered?: string[]; steps: Array<{ title: string; queries: string[]; image_query?: string; completes?: number }> }
+/** RESEARCH_PACKAGES: what a step (a work package) is held to - its one question, what it hands back, where such facts are published, and what another step covers instead. */
+export interface StepBrief { objective: string; output: string; sources: string; boundary: string }
+export interface ResearchPlan { title: string; sources_label?: string; /** the parts of the report the question asks for, in its own words and order */ parts?: string[]; /** the parts the plan call says no step researches */ uncovered?: string[]; steps: Array<{ title: string; queries: string[]; image_query?: string; completes?: number; brief?: StepBrief }> }
 
 /** The report's sections: the steps that are not follow-ups of another, in order. Pure. */
 export const sectionSteps = (plan: ResearchPlan) => plan.steps.filter(s => !s.completes)
@@ -41,8 +57,8 @@ export function writerNotes(plan: ResearchPlan, findings: readonly Finding[]): s
   return conflicts.length ? `${body}\n\n## Conflicting figures (same series and label, different values — report both with their sources, never pick one silently)\n${conflicts.join('\n')}` : body
 }
 
-/** Relative gap above which two values of one series and label count as a conflict, not as rounding. */
-export const FIGURE_CONFLICT_GAP = 0.02
+/** Relative gap above which two values of one series and label count as a conflict, not as rounding (defined in figureGap.ts, a leaf, so consolidate.ts can share it without a cycle). */
+export { FIGURE_CONFLICT_GAP }
 
 /**
  * Same series and label read from different sources with different values. Pure and deterministic: the writer is told, in the notes, which
@@ -133,8 +149,12 @@ export interface Evidence { id: number; title: string; url: string; snippet: str
  * what is measured (`series`), for what (`label`: an item or a year), the value and its unit - checked by code against its source's own
  * text (numberInText) before it may draw a chart.
  */
-export interface Figure { series: string; label: string; value: number; unit: string }
-export interface Finding { step: number; text: string; source: number; figure?: Figure }
+/** `subject` / `scope` / `period` (RESEARCH_CONSOLIDATION): who or what the number is about, the area or population it covers, and the year or half-year or quarter it is for. Absent = the older shape. */
+export interface Figure { series: string; label: string; value: number; unit: string; subject?: string; scope?: string; period?: string
+  /** 15/11: when the SOURCE stated this figure (a release's date, a forecast's edition) as "YYYY", "YYYY-MM" or "YYYY-MM-DD"; not the period the number is for. Absent when the source does not say. */
+  stated?: string }
+/** `quote` / `quoteStatus` (RESEARCH_EVIDENCE_CARDS): the source's own words for this finding, and whether the code found them in the page (VERIFIED) or not (UNVERIFIED). Absent = no quote asked or given. */
+export interface Finding { step: number; text: string; source: number; figure?: Figure; quote?: string; quoteStatus?: 'VERIFIED' | 'UNVERIFIED' }
 /** A chart the code draws from the figures of one section; every point names its source. */
 export interface ResearchChart { section: string; title: string; unit: string; kind: 'bar' | 'line'; points: Array<{ label: string; value: number; source: number }> }
 export const MAX_CHARTS = 4
@@ -148,7 +168,10 @@ const MAX_CHART_POINTS = 12
 export type StepStatus = 'pending' | 'running' | 'done' | 'failed'
 /** A cited source as the card links it (https only); the report text names it without a link. */
 export interface ResearchLink { id: number; title: string; url: string }
-export interface ResearchStatus { type: 'tappy.research.v1'; title: string; phase: 'planning' | 'researching' | 'writing' | 'done' | 'failed'; steps: Array<{ title: string; status: StepStatus }>; sources: number; links?: ResearchLink[] }
+/** Which kind of report this is, so the person and the logs can tell them apart (owner 11/11: "hệ thống phải phân biệt standard report và advanced report"). Absent = the existing engine's report. */
+export type ReportTier = 'standard' | 'advanced'
+const REPORT_TIERS = new Set<string>(['standard', 'advanced'])
+export interface ResearchStatus { type: 'tappy.research.v1'; title: string; phase: 'planning' | 'researching' | 'writing' | 'done' | 'failed'; steps: Array<{ title: string; status: StepStatus }>; sources: number; links?: ResearchLink[]; tier?: ReportTier }
 
 const PHASES = new Set(['planning', 'researching', 'writing', 'done', 'failed'])
 const STEP_STATUSES = new Set(['pending', 'running', 'done', 'failed'])
@@ -162,7 +185,7 @@ export function readResearchStatus(annotations: unknown[] | undefined | null): R
     if (!c || typeof c !== 'object' || c.type !== 'tappy.research.v1' || typeof c.phase !== 'string' || !PHASES.has(c.phase)) continue
     const steps = (Array.isArray(c.steps) ? c.steps : []).filter(s => s && typeof s.title === 'string' && STEP_STATUSES.has(s.status)).slice(0, DEEP_RESEARCH_LIMITS.steps)
     const links = (Array.isArray(c.links) ? c.links : []).filter(l => l && typeof l.id === 'number' && typeof l.title === 'string' && httpsUrl(l.url)).slice(0, 40)
-    out = { type: 'tappy.research.v1', title: typeof c.title === 'string' ? c.title.slice(0, 160) : '', phase: c.phase, steps: steps.map(s => ({ title: s.title.slice(0, 160), status: s.status })), sources: typeof c.sources === 'number' && c.sources >= 0 ? Math.floor(c.sources) : 0, ...(links.length ? { links: links.map(l => ({ id: l.id, title: l.title.slice(0, 200), url: l.url })) } : {}) }
+    out = { type: 'tappy.research.v1', title: typeof c.title === 'string' ? c.title.slice(0, 160) : '', phase: c.phase, steps: steps.map(s => ({ title: s.title.slice(0, 160), status: s.status })), sources: typeof c.sources === 'number' && c.sources >= 0 ? Math.floor(c.sources) : 0, ...(links.length ? { links: links.map(l => ({ id: l.id, title: l.title.slice(0, 200), url: l.url })) } : {}), ...(typeof c.tier === 'string' && REPORT_TIERS.has(c.tier) ? { tier: c.tier as ReportTier } : {}) }
   }
   return out
 }
@@ -176,10 +199,20 @@ export function httpsUrl(u: unknown): u is string {
 export interface DeepResearchDeps {
   plan(question: string, context: string): Promise<ResearchPlan>
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
-  gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
+  gather(query: string, focus: string, /** hosts that already gave this run many sources: the search leaves them out, to find other publishers */ avoid?: readonly string[]): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
-  notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
-  write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
+  notes(step: string, question: string, evidence: readonly Evidence[], /** RESEARCH_PACKAGES: the step's brief, given only when the flag is on and the step has one */ brief?: StepBrief): Promise<Array<{ text: string; source: number; figure?: Figure | null; quote?: string }>>
+  /**
+   * RESEARCH_FORECAST_MODEL (Advanced): the INPUTS of a scenario model for a forecast question (base level, years, low / base / high assumptions, each labelled source or assumption); the engine
+   * grounds them in the findings and computes the model itself. Absent = no model. Never computes the forecast.
+   */
+  forecast?(input: { question: string; plan: ResearchPlan; findings: readonly Finding[] }): Promise<ForecastSpec | null>
+  /**
+   * RESEARCH_THESIS_REPORT (M3): reads the evidence cards (never the pages) and returns the report's thesis with its sections and the cards behind each point, or null (the engine then writes from the findings as before).
+   * The deps validate the answer against the cards (outlineFrom) with the bounds of their tier.
+   */
+  analyze?(input: { question: string; plan: ResearchPlan; cards: readonly EvidenceCard[]; support: ReadonlyMap<string, string> }): Promise<Outline | null>
+  write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[]; /** the computed model, given only when the flag is on and the spec was grounded */ forecast?: ForecastResult; /** RESEARCH_THESIS_REPORT (M4): the outline as notes (the thesis, its points with their facts), written instead of the findings by step */ thesisNotes?: string }): AsyncIterable<string>
   /**
    * DEEP_RESEARCH_V2 only (03/11): writes sections for the parts of the question no heading of the written report names, from the findings that
    * speak to each; appended to the report. Absent = no repair.
@@ -196,7 +229,7 @@ export interface DeepResearchDeps {
    * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
    * Absent = one research round only.
    */
-  gaps?(question: string, plan: ResearchPlan, findings: readonly string[], coverage?: ReadonlyArray<{ title: string; findings: number; figures: number }>): Promise<Array<{ title: string; queries: string[]; completes?: number | null }>>
+  gaps?(question: string, plan: ResearchPlan, findings: readonly string[], coverage?: ReadonlyArray<{ title: string; findings: number; figures: number }>, /** RESEARCH_FRESHNESS: measures whose newest reading is before this year, given only when the flag is on and there are some */ freshness?: readonly string[]): Promise<Array<{ title: string; queries: string[]; completes?: number | null }>>
   /** Picture URLs for one image query (server-chosen, never the model's); absent = a report without pictures. */
   images?(query: string): Promise<string[]>
   /** Diagnostics only (CONSULT_TRACE_DIAGNOSTICS, never in production): what each step searched, read and kept. Absent = nothing is traced. */
@@ -268,7 +301,9 @@ export function checkedFigure(f: unknown, sourceText: string): Figure | undefine
   const series = clean(x.series, 80), label = clean(x.label, 40), unit = clean(x.unit, 24)
   const value = typeof x.value === 'number' ? x.value : NaN
   if (!series || !label || !Number.isFinite(value) || !numberInText(value, sourceText)) return undefined
-  return { series, label, value, unit }
+  const subject = clean(x.subject, 60), scope = clean(x.scope, 60), period = clean(x.period, 24)
+  const stated = clean(x.stated, 12)
+  return { series, label, value, unit, ...(subject ? { subject } : {}), ...(scope ? { scope } : {}), ...(period ? { period } : {}), ...(/^\d{4}(-\d{2}(-\d{2})?)?$/.test(stated) ? { stated } : {}) }
 }
 
 /**
@@ -276,7 +311,25 @@ export function checkedFigure(f: unknown, sourceText: string): Figure | undefine
  * the same thing in the same unit, when it has at least 3 different labels - a line over the years when every label is a year, else bars
  * (in the order the sources gave them). The chart goes under the heading that is its step's title (like the section pictures). Pure.
  */
-export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[]): ResearchChart[] {
+/** A host that already gave a run this many sources is left out of the run's later searches. */
+export const HOST_SHARE_AVOID_AT = 8
+const hostOfUrl = (u: string): string => { try { return new URL(u).hostname.toLowerCase().replace(/^www\./, '') } catch { return '' } }
+/** The hosts with at least `at` sources among the evidence so far (the site named by a Google redirect row counts, not google.com). Pure. */
+export function heavyHosts(evidence: ReadonlyArray<{ url: string; site?: string }>, at = HOST_SHARE_AVOID_AT): string[] {
+  const n = new Map<string, number>()
+  for (const e of evidence) { const h = e.site ?? hostOfUrl(e.url); if (h && !/(^|\.)google\./.test(h)) n.set(h, (n.get(h) ?? 0) + 1) }
+  return [...n].filter(([, c]) => c >= at).map(([h]) => h).sort()
+}
+
+/** Months after which a dated source is too old to draw a chart from (undated sources are not judged). */
+export const CHART_MAX_SOURCE_AGE_MONTHS = 24
+/** The ids of the sources whose own publication date is older than `months` before `nowMs`. Pure. */
+export function staleSourceIds(evidence: ReadonlyArray<{ id: number; published?: string }>, nowMs: number, months = CHART_MAX_SOURCE_AGE_MONTHS): Set<number> {
+  const cutoff = nowMs - months * 30.4375 * 86_400_000
+  return new Set(evidence.filter(e => { const t = e.published ? Date.parse(e.published) : NaN; return Number.isFinite(t) && t < cutoff }).map(e => e.id))
+}
+
+export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[], stale?: ReadonlySet<number>, /** RESEARCH_CHART_RELEVANCE: draw only a series the written section talks about */ relevant = false): ResearchChart[] {
   const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
   const key = (s: string) => titleKey(s)
   const out: ResearchChart[] = []
@@ -285,9 +338,14 @@ export function sectionCharts(report: string, plan: ResearchPlan, findings: read
     const own = headingTitle(s.title)
     const head = own ? heads.find(h => !!h && key(h) === key(own)) : undefined
     if (!head) return
+    const body = relevant ? sectionTextOf(report, t => { const x = headingTitle(t); return !!x && key(x) === key(head) }) : ''
     const groups = new Map<string, Finding[]>()
     for (const f of findings) {
       if (!f.figure || !(f.step === k + 1 || plan.steps[f.step - 1]?.completes === k + 1)) continue
+      // RESEARCH_CHART_RELEVANCE: a chart is drawn from a series the section itself talks about, not from the largest group of figures that happened to be found for it
+      if (relevant && !seriesRelevant(f.figure.series, body)) continue
+      // a chart is not drawn from a dated source that is too old (owner 11/11: a 2017 survey drew a trend chart in a 2026 report)
+      if (stale?.has(f.source)) continue
       const g = `${key(f.figure.series)}|${key(f.figure.unit)}`
       groups.set(g, [...(groups.get(g) ?? []), f])
     }
@@ -336,10 +394,11 @@ export function normalisePlan(p: unknown, question: string): ResearchPlan | null
   const parts = (Array.isArray(r.parts) ? r.parts : []).map(x => clean(x, 120)).filter(Boolean).slice(0, 12)
   const uncovered = (Array.isArray(r.uncovered) ? r.uncovered : []).map(x => clean(x, 120)).filter(Boolean).slice(0, PART_STEPS)
   const steps = (Array.isArray(r.steps) ? r.steps : []).map(s => {
-    const x = (s ?? {}) as { title?: unknown; queries?: unknown; image_query?: unknown }
+    const x = (s ?? {}) as { title?: unknown; queries?: unknown; image_query?: unknown; objective?: unknown; output?: unknown; sources?: unknown; boundary?: unknown }
     const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, leanValue('queries', DEEP_RESEARCH_LIMITS.queriesPerStep, 2))
     const image = clean(x.image_query, 80)
-    return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}) }
+    const objective = clean(x.objective, 240)
+    return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}), ...(objective ? { brief: { objective, output: clean(x.output, 200), sources: clean(x.sources, 200), boundary: clean(x.boundary, 240) } } : {}) }
   }).filter(s => s.title && s.queries.length).slice(0, leanValue('planSteps', DEEP_RESEARCH_LIMITS.planSteps, 8))
   if (!steps.length) return null
   // the label is one short heading word or two: markup characters are blanked like a source title's
@@ -391,30 +450,8 @@ export function linkStripper(): { push(delta: string): string; end(): string } {
   }
 }
 
-/**
- * A search result's page, not Google's wrapper around it (measured 31/10: sources shown as "google.com" / "translate.google.com"): a redirect
- * (`google.com/url?q=` / `url=`), a translate proxy (`translate.google.com/translate?u=`, `<host-with-dashes>.translate.goog`) becomes the page
- * it points to; any other Google page (a search page) is not a source (null). Only https results are sources. Pure.
- */
-export function canonicalSourceUrl(raw: string): string | null {
-  let u: URL
-  try { u = new URL(raw) } catch { return null }
-  const host = u.hostname.toLowerCase()
-  if (host.endsWith('.translate.goog')) {
-    // Google's scheme: "-" stands for "." and "--" for "-" in the original host; the _x_tr_* parameters are the proxy's own
-    const original = host.slice(0, -'.translate.goog'.length).split('--').map(p => p.replace(/-/g, '.')).join('-')
-    for (const k of [...u.searchParams.keys()]) if (k.startsWith('_x_tr_')) u.searchParams.delete(k)
-    return canonicalSourceUrl(`https://${original}${u.pathname}${u.search}${u.hash}`)
-  }
-  if (/(^|\.)google\.[a-z.]+$/.test(host)) {
-    // 31/10: a google.com/goto token the search layer could not resolve (Google's bot check) - kept: it opens the page in a browser, and its
-    // snippet is evidence; the site it names comes with the row (Evidence.site)
-    if (u.protocol === 'https:' && u.pathname === '/goto' && u.searchParams.has('url')) return u.toString()
-    const inner = u.pathname === '/url' ? u.searchParams.get('q') ?? u.searchParams.get('url') : host.startsWith('translate.') ? u.searchParams.get('u') : null
-    return inner && inner !== raw ? canonicalSourceUrl(inner) : null
-  }
-  return u.protocol === 'https:' ? u.toString() : null
-}
+// The search result's page, not Google's wrapper around it: the function lives in tools/sourceUrl.ts since 18/11 (the one-brain web_search uses it too); re-exported here.
+export { canonicalSourceUrl }
 
 /**
  * Measured 31/10: the writer numbered its own sections "1. Summary, 2. Scope" and then the research sections from 1 again. The numbers are
@@ -426,9 +463,17 @@ export function headingNumberer(): { push(delta: string): string; end(): string 
   let mid = false
   let section = 0
   let sub = 0
+  let vietnamese = false // the report so far (its title) is in Vietnamese
   const fix = (line: string) => {
+    if (!vietnamese && /[ăđơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(line)) vietnamese = true
     const h2 = /^##\s+\d{1,2}[.)]?\s+/.exec(line)
-    if (h2 && !line.startsWith('###')) { section++; sub = 0; return `## ${section}. ${line.slice(h2[0].length)}` }
+    if (h2 && !line.startsWith('###')) {
+      section++; sub = 0
+      let title = line.slice(h2[0].length)
+      // 18/11 (UAT case 58): the writer copied the English name of the doubts section into a Vietnamese report; the section is named in the report's language by the code
+      if (vietnamese && /^what is doubtful\s*$/i.test(title)) title = 'Những điểm chưa chắc chắn'
+      return `## ${section}. ${title}`
+    }
     const h3 = /^###\s+\d{1,2}\.\d{1,2}[.)]?\s+/.exec(line)
     if (h3 && section > 0) { sub++; return `### ${section}.${sub}. ${line.slice(h3[0].length)}` }
     return line
@@ -468,9 +513,32 @@ export function sourcesBlock(evidence: readonly Evidence[], findings: readonly F
   const used = citedEvidence(evidence, findings)
   if (!used.length) return ''
   const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
-  const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)
+  // the em dash is the list's own separator between the title and the site: one inside a title would split the line wrongly (the reader's list parse), so it becomes a plain hyphen
+  const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/—/g, '-').replace(/\s+/g, ' ').trim().slice(0, 140)
   const head = heading || (lang === 'en' ? 'Sources' : 'Nguồn')
-  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || e.site || host(e.url)} — ${e.site ?? host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
+  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(weakSourceTitle(e.title, host(e.url)) ? titleFromUrl(e.url) ?? e.title : e.title) || e.site || host(e.url)} — ${e.site ?? host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
+}
+
+/** A page title that says nothing about the page: the host itself, a one- or two-word heading ("MỤC LỤC", "NĂM 2025"), or all capitals. Pure. */
+export function weakSourceTitle(title: string, host: string): boolean {
+  const t = title.replace(/\s+/g, ' ').trim()
+  if (!t) return true
+  if (host && t.toLowerCase() === host.toLowerCase()) return true
+  if (/^[\w.-]+\.[a-z]{2,}$/i.test(t)) return true // a bare domain name
+  const words = t.split(' ').filter(Boolean)
+  return words.length <= 2 || (t === t.toUpperCase() && t.length < 40)
+}
+
+/** What the address of a page says about it: its last path segment as words ("gia-xang-dau-hom-nay.html" → "gia xang dau hom nay"); null when there is nothing readable. Pure. */
+export function titleFromUrl(url: string): string | null {
+  let u: URL
+  try { u = new URL(url) } catch { return null }
+  const seg = u.pathname.split('/').filter(Boolean).pop()
+  if (!seg) return null
+  let s = seg
+  try { s = decodeURIComponent(seg) } catch { /* keep the raw segment */ }
+  const words = s.replace(/\.[a-z0-9]{2,5}$/i, '').replace(/[-_+]+/g, ' ').replace(/\b[a-z]?\d{5,}\b/gi, '').replace(/\s+/g, ' ').trim()
+  return words.split(' ').length >= 3 && words.length >= 12 ? words : null
 }
 
 /** A source's date as the reader's locale writes it: 22/10/2025 (vi), 2025-10-22 otherwise. Pure. */
@@ -507,7 +575,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] }; /** RESEARCH_EVIDENCE_CARDS: the cards of the run and their counts */ cards?: { summary: CardSummary; cards: EvidenceCard[] }; /** RESEARCH_THESIS_REPORT: the report was written from a thesis outline; the sentences the verifier dropped, and the length before */ thesis?: { dropped: number; charsBefore: number }; /** RESEARCH_CONTRACTS (Advanced): the R13 4.3 assignments, step checks and gap decisions of the run (counts and codes) */ contracts?: ContractsSummary }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
@@ -522,10 +590,22 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const fail = (title: string, steps: ResearchStatus['steps'], why: string) => { emit.status({ type: 'tappy.research.v1', title, phase: 'failed', steps, sources: evidence.length }); return why }
   emit.status({ type: 'tappy.research.v1', title: clean(question, 120), phase: 'planning', steps: [], sources: 0 })
   let plan: ResearchPlan | null = null
-  try { const first = normalisePlan(await deps.plan(question, context), question); plan = first ? withPartSteps(first) : null } catch { plan = null }
+  try { const first = normalisePlan(await deps.plan(question, context), question); plan = first ? withPartSteps(first) : null
+    // RESEARCH_PACKAGES: a package that asks what an earlier one asks is merged into it (its new queries folded in), so the same fact is not searched and read twice
+    if (plan && researchPackagesOn()) { const d = dedupePackages(plan); plan = d.plan; if (d.merged.length) deps.trace?.({ ev: 'packages_merged', merged: d.merged }) }
+    // RESEARCH_SOURCE_DIVERSITY: a TREND question (by code) also gets a press step about what changed lately; other kinds are untouched
+    if (plan && researchSourceDiversityOn()) plan = withNewsLane(plan, questionKind(question), lang, new Date(now()).getFullYear(), bounds?.maxSteps ?? DEEP_RESEARCH_LIMITS.planSteps + PART_STEPS) } catch (e) { plan = null; deps.trace?.({ ev: 'plan_error', ...failureKind(e) }) }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
+  if (!plan && !left?.aborted) deps.trace?.({ ev: 'no_plan' })
   if (!plan) return { plan: null, evidence, findings, failed: fail(clean(question, 120), [], 'no_plan') }
+  // R13 Standard tier: a plan that needs more steps than the tier allows is an Advanced request (hard trigger: four or more work packages). Nothing is dropped to make it fit and
+  // nothing is searched: the caller promotes the request or clarifies it, so no part of the question is silently left out.
+  if (bounds && plan.steps.length > bounds.maxSteps) return { plan, evidence, findings, failed: 'exceeds_standard' }
   deps.trace?.({ ev: 'plan', title: plan.title, steps: plan.steps.map(s => ({ title: s.title, queries: s.queries })) })
+  // RESEARCH_CONTRACTS (R13 4.3), Advanced runs only: observational, never allowed to cost the report
+  const safe = <T,>(f: () => T): T | undefined => { try { return f() } catch { return undefined } }
+  const cx = researchContractsOn() && bounds?.repairParts ? safe(() => createContractsRun(plan!, { question, context, lang, nowMs: now(), deadlineMs: researchDeadline })) : undefined
+  if (cx) safe(() => deps.trace?.({ ev: 'contracts', assignments: cx.issued.assignments.length, issues: cx.summary().assignmentIssues, ...(cx.issued.refused ? { refused: cx.issued.refused } : {}) }))
   const steps: ResearchStatus['steps'] = plan.steps.map(s => ({ title: s.title, status: 'pending' }))
   const show = (phase: ResearchStatus['phase']) => emit.status({ type: 'tappy.research.v1', title: plan!.title, phase, steps: steps.map(s => ({ ...s })), sources: evidence.length })
   show('researching')
@@ -540,14 +620,20 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const runStep = async (k: number): Promise<void> => {
     const step = plan!.steps[k]
     steps[k].status = 'running'; show('researching')
-    const gathered = (await Promise.all(step.queries.map(q => deps.gather(q, `${step.title} - ${question}`).catch(() => [])))).flat()
+    // a publisher that already gave this run HOST_SHARE_AVOID_AT sources is left out of the next searches (-site:), so a later round finds OTHER sources instead of more of the same
+    const avoid = researchSourceDiversityOn() ? heavyHosts(evidence) : undefined
+    // RESEARCH_PACKAGES: a step with a brief searches and reads for its OBJECTIVE (not just its section title), and its reader is told its boundary
+    const briefed = researchPackagesOn() && step.brief ? step.brief : undefined
+    const focus = `${briefed ? briefed.objective : step.title} - ${question}`
+    const gathered = (await Promise.all(step.queries.slice(0, bounds?.queriesPerStep ?? step.queries.length).map(q => deps.gather(q, focus, avoid).catch(() => [])))).flat()
     const mine: Evidence[] = []
     for (const g of gathered) {
       const url = g.url ? canonicalSourceUrl(g.url) : null
       if (!url || isLowValueSource(url)) continue
       let e = byUrl.get(url)
       if (!e) {
-        const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) ? g.published.slice(0, 10) : undefined
+        // a date before 2005 or after next year is a page's default or broken metadata (final UAT 19/11: a 2025 article dated 01/01/2002): no date is better than a false one
+        const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) && Number(g.published.slice(0, 4)) >= 2005 && Number(g.published.slice(0, 4)) <= new Date(now()).getUTCFullYear() + 1 ? g.published.slice(0, 10) : undefined
         const site = typeof g.site === 'string' && /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(g.site) ? g.site.toLowerCase() : undefined
         e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, pageTextLimit()), ...(published ? { published } : {}), ...(site ? { site } : {}) }
         evidence.push(e); byUrl.set(url, e)
@@ -557,7 +643,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
     // 02/11 (owner: "tại sao thiếu thông tin"): counts per step - where the information is lost (not found / not read / cut at the page limit / not kept)
     const stat = stepStats[k] = { rows: gathered.length, evidence: mine.length, with_text: gathered.filter(g => g.text.trim()).length, cut_pages: gathered.filter(g => g.text.length > pageTextLimit()).length, notes: 0, kept: 0 }
     if (!mine.length) { steps[k].status = 'failed'; show('researching'); return }
-    const got = await deps.notes(step.title, question, mine).catch(() => [])
+    const got = await (briefed ? deps.notes(step.title, question, mine, briefed) : deps.notes(step.title, question, mine)).catch(() => [])
     stat.notes = got.length
     deps.trace?.({ ev: 'dump', step: k + 1, evidence: mine.map(e => ({ id: e.id, url: e.url, title: e.title, snippet: e.snippet, text: e.text })), findings: got.map(f => ({ source: f.source, text: f.text, figure: f.figure ?? null })) })
     deps.trace?.({ ev: 'step', step: k + 1, title: step.title, queries: step.queries, evidence: mine.map(e => ({ id: e.id, url: e.url.slice(0, 110), title: e.title.slice(0, 90), chars: e.text.length })), findings: got.map(f => ({ source: f.source, text: clean(f.text, 200), figure: !!f.figure })) })
@@ -577,10 +663,13 @@ export async function runDeepResearch(question: string, context: string, lang: s
       const figure = checkedFigure(f.figure, `${src.title}\n${src.snippet}\n${src.text}`)
       if (f.figure) figureCount.proposed++
       if (figure) figureCount.kept++
-      findings.push({ step: k + 1, text, source: f.source, ...(figure ? { figure } : {}) })
+      // RESEARCH_EVIDENCE_CARDS: the source's own words for the finding, checked here against the page the finding was read from
+      const quote = researchEvidenceCardsOn() && typeof f.quote === 'string' ? clean(f.quote, 400) : ''
+      findings.push({ step: k + 1, text, source: f.source, ...(figure ? { figure } : {}), ...(quote ? { quote, quoteStatus: quoteInText(quote, `${src.title}\n${src.snippet}\n${src.text}`) ? 'VERIFIED' as const : 'UNVERIFIED' as const } : {}) })
       stat.kept = kept + 1
       if (++kept >= DEEP_RESEARCH_LIMITS.findingsPerStep) break
     }
+    if (cx) safe(() => { const c = cx.checkStep(k, { evidenceIds: mine.map(e => e.id), allEvidenceIds: evidence.map(e => e.id), findings: findings.filter(f => f.step === k + 1) }); deps.trace?.({ ev: 'contract_step', ...c }) })
     steps[k].status = 'done'; show('researching')
   }
   // every step at once; a step still running at the deadline is dropped (marked failed), the report is written from what came back
@@ -593,7 +682,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // One-pass: one round. DEEP_RESEARCH_V2: up to V2_LIMITS.maxGapRounds, each further one decided by decideNext (time, rounds, diminishing returns, coverage)
   let followUps = 0
   let lastNew = 0
-  for (let r = 0; r < (v2 ? V2_LIMITS.maxGapRounds : 1); r++) {
+  for (let r = 0; r < (bounds ? bounds.gapRounds : v2 ? V2_LIMITS.maxGapRounds : 1); r++) {
     if (timedOut || !deps.gaps || !findings.length || researchDeadline - (now() - t0) < GAP_MIN_LEFT_MS) break
     if (r > 0) {
       const d = decideNext({ round: r, newFindings: lastNew, msLeft: researchDeadline - (now() - t0), coverage: stepCoverage(plan, findings), ...(deps.spent ? { llmUsd: deps.spent() } : {}) })
@@ -602,7 +691,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
     }
     // how much each plan step brought (02/11): the check sees a thin step, not only the pooled findings
     const coverage: Array<{ title: string; findings: number; figures: number }> = plan.steps.map((s, k) => ({ title: s.title, findings: findings.filter(f => f.step === k + 1).length, figures: findings.filter(f => f.step === k + 1 && f.figure).length }))
-    const asked: Awaited<ReturnType<NonNullable<DeepResearchDeps['gaps']>>> = await deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage).catch(() => [])
+    // RESEARCH_FRESHNESS: the measures this run reads from old periods only (newest reading before this year) go to the gap check, which looks up their latest period first
+    const fresh = researchFreshnessOn() ? freshnessHints(consolidate(findings, now()), new Date(now()).getUTCFullYear()) : []
+    const asked: Awaited<ReturnType<NonNullable<DeepResearchDeps['gaps']>>> = await (fresh.length ? deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage, fresh) : deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage)).catch(() => [])
+    if (fresh.length) deps.trace?.({ ev: 'freshness_hints', n: fresh.length })
     const planned = plan.steps.length
     const more: ResearchPlan['steps'] = (Array.isArray(asked) ? asked : [])
       .map(g => {
@@ -611,9 +703,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
         // 02/11: a follow-up the check did not tie to a step still joins the section whose title it shares the most words with (when that is unique)
         const c = Number.isInteger(given) && given >= 1 && given <= planned ? given : stepForGap(s?.title ?? '', plan!.steps.slice(0, planned))
         return s ? { title: s.title, queries: s.queries, ...(c ? { completes: c } : {}) } : null
-      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, leanValue('gaps', GAP_STEPS, 2))
+      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, bounds ? bounds.followUpSteps : leanValue('gaps', GAP_STEPS, 2))
     deps.trace?.({ ev: 'gaps', steps: more.map(s => ({ title: s.title, queries: s.queries })) })
     if (!more.length) break
+    if (cx) safe(() => { const g = cx.checkGap({ round: r, plan: plan!, more }); deps.trace?.({ ev: 'contract_gap', ...g }) })
     const from = plan.steps.length
     plan = { ...plan, steps: [...plan.steps, ...more] }
     for (const s of more) steps.push({ title: s.title, status: 'pending' })
@@ -628,27 +721,72 @@ export async function runDeepResearch(question: string, context: string, lang: s
   for (const s of steps) if (s.status !== 'done') s.status = 'failed'
   if (!findings.length) return { plan, evidence, findings, failed: fail(plan.title, steps, 'no_findings') }
 
+  // RESEARCH_EVIDENCE_CARDS: every finding becomes a card (its exact words checked against the page, the kind of source, the independence group, the authority per kind of fact); only counts are logged
+  const cards = researchEvidenceCardsOn() ? buildCards(findings, evidence, numberInText) : undefined
+  if (cards) deps.trace?.({ ev: 'cards', ...cardSummary(cards) })
   show('writing')
   // the report numbers its sources 1..n: only the cited ones, renumbered in the order they were found (the person reads [1]..[n], not [3][14][24])
   const renumber = new Map(citedEvidence(evidence, findings).map((e, i) => [e.id, i + 1]))
   const cited = citedEvidence(evidence, findings).map(e => ({ ...e, id: renumber.get(e.id)! }))
   const notes = findings.map(f => ({ ...f, source: renumber.get(f.source)! }))
-  const stripper = linkStripper()
-  const numberer = headingNumberer()
+  // RESEARCH_FORECAST_MODEL: for a question about the future, a model call gives the INPUTS (never the forecast); the code refuses a base level no finding states and computes every number
+  let forecastResult: ForecastResult | null = null
+  if (researchForecastModelOn() && deps.forecast && wantsForecastModel(question, now()) && now() - t0 < DEEP_RESEARCH_LIMITS.runDeadlineMs - 60_000) {
+    // 15/11 (the chip report: the model's base level, 1,655, was a note about a page of which only 670 characters were read; and it read older findings the analyst never saw): with cards, the model reads
+    // the same RESOLVED set as the analyst (a figure a newer one replaces is left out), and its base level must be on the source's own page (a card whose verified quote holds the number). When the base
+    // is refused for that, it is asked once more without that source.
+    let pool = cards ? notes.filter((_, i) => !cards[i]?.supersededBy) : notes
+    const onPage = cards ? (source: number, value: number) => cards.some((c, i) => notes[i]?.source === source && !!c.figure && c.figureInQuote && Math.abs(c.figure.value - value) <= Math.abs(value) * 1e-9) : undefined
+    for (let attempt = 0; attempt < 2 && !forecastResult && pool.length; attempt++) {
+      if (attempt > 0 && now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs - 60_000) break
+      const spec = await deps.forecast({ question, plan, findings: pool }).catch(() => null)
+      const g = spec ? groundForecast(spec, pool, numberInText, onPage) : { ok: false as const, reason: 'no_spec' as const }
+      if (g.ok) forecastResult = runForecast(g.spec)
+      deps.trace?.({ ev: 'forecast', ok: g.ok, reason: g.ok ? null : g.reason, downgrades: g.ok ? g.downgrades : [], attempt: attempt + 1 })
+      if (g.ok || g.reason !== 'base_not_on_page' || !spec?.base) break
+      const refused = spec.base.source
+      pool = pool.filter(f => f.source !== refused)
+    }
+  }
+  // RESEARCH_THESIS_REPORT (M3): an analyst reads the cards and returns the thesis, its sections and the cards behind each point; null (any failure) = the report is written from the findings as before
+  let thesisIn: WriterInput | null = null
+  if (researchThesisOn() && deps.analyze && cards && now() - t0 < DEEP_RESEARCH_LIMITS.runDeadlineMs - 100_000) {
+    const support = new Map<string, string>()
+    for (const f of factSupport(cards)) for (const v of f.values) for (const id of v.cards) support.set(id, f.status)
+    const t1 = now()
+    const outline = await deps.analyze({ question, plan, cards, support }).catch(() => null)
+    deps.trace?.({ ev: 'thesis', ok: !!outline, sections: outline?.sections.length ?? 0, points: outline?.sections.reduce((n, s) => n + s.points.length, 0) ?? 0, doubts: outline?.doubts.length ?? 0, ms: now() - t1 })
+    if (outline) thesisIn = outlineWriterInput(outline, cards, cited, renumber, forecastResult ? [forecastResult.spec.base.source] : [])
+  }
+  // M4: with a thesis the text is HELD until the code has read it (releaseText): nothing is shown that the verifier could refute
+  let hold = !!thesisIn
+  let stripper = linkStripper()
+  let numberer = headingNumberer()
   let cut = false
   let repaired = 0
   let written = ''
-  const say = (t: string) => { if (t) { written += t; emit.text(t) } }
-  const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
+  let shown: { cited: Evidence[]; findings: Finding[]; plan: ResearchPlan } = { cited, findings: notes, plan }
+  let released: { dropped: number; before: number } | null = null
+  // RESEARCH_STREAM_VERIFY (R13 9.5): with a thesis, each finished section is read by the verifier and shown at once (sectionRelease.ts); same text in the end as releaseText of the whole
+  let sv: SectionRelease | null = hold && researchStreamVerifyOn() ? createSectionRelease(thesisIn!.sources, forecastResult ? forecastNotes(forecastResult) : '') : null
+  const showSection = (s: ReleasedSection) => { const ev = sectionEventOf('report', s); deps.trace?.({ ev: 'section', id: s.sectionId, type: ev.type, status: s.status, dropped: s.dropped, chars: s.text.length }); if (s.text) emit.text(s.text) }
+  const put = (t: string) => { if (t) { written += t; if (!hold) emit.text(t); else if (sv) for (const s of sv.push(t)) showSection(s) } }
+  // 17/11: a source named by its number in words ("nguồn 96") becomes the mark on EVERY write path (thesisReport.wordCitationsToMarks). The
+  // release of the thesis path does it too; a report written without a thesis (the outline failed) had no release and showed the words.
+  let marker = wordCiteStream()
+  const say = (t: string) => put(marker.push(t))
+  const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()); put(marker.end()) }
+  // pass 0 writes from the outline when there is one; if that write fails (nothing was shown: the text is held) pass 1 writes from the findings as before
+  for (let pass = 0; ; pass++) {
   try {
-    for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes })) {
+    for await (const delta of deps.write({ question, plan: thesisIn ? thesisIn.plan : plan, evidence: thesisIn ? thesisIn.sources : cited, findings: thesisIn ? thesisIn.findings : notes, ...(thesisIn ? { thesisNotes: thesisIn.notes } : {}), ...(forecastResult ? { forecast: forecastResult } : {}) })) {
       say(numberer.push(stripper.push(delta)))
       if (left?.aborted) break
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
     // DEEP_RESEARCH_V2 (03/11): the parts of the question that no heading of the report names are answered in one appended section (once; a structural check only)
-    if (v2 && deps.repair && !left?.aborted && !cut && plan.parts?.length) {
+    if ((v2 || bounds?.repairParts) && deps.repair && !left?.aborted && !cut && plan.parts?.length && !thesisIn) {
       const heads = parseDoc(written).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading').map(b => headingTitle(b.text) ?? '').filter(Boolean)
       const parts = plan.parts
       const named = missingParts(parts, heads)
@@ -678,23 +816,51 @@ export async function runDeepResearch(question: string, context: string, lang: s
     finish()
     // review 02/11: a writer that wrote nothing is a failed write (refunded), not a report of sources alone
     if (!written.trim()) throw new Error('empty_report')
-  } catch {
+    if (thesisIn && !left?.aborted) {
+      const before = written.length
+      const sr = sv ? sv.end() : null
+      const r = sr ?? releaseText(written, thesisIn.sources, forecastResult ? forecastNotes(forecastResult) : '')
+      if (!r.text.trim()) throw new Error('empty_report')
+      written = r.text
+      if (sr) { if (sr.last) showSection(sr.last) } else emit.text(r.text)
+      released = { dropped: r.dropped, before }
+      const sourceOf = (n: number) => r.renumbered.get(n)
+      shown = { cited: r.used as Evidence[], plan: thesisIn.plan, findings: [...thesisIn.findings.flatMap(f => { const s = sourceOf(f.source); return s ? [{ ...f, source: s }] : [] }), ...r.used.map(s => ({ step: 1, text: '', source: s.id }))] }
+      deps.trace?.({ ev: 'released', dropped: r.dropped, chars: written.length, cited: r.used.length })
+    }
+    break
+  } catch (e) {
     finish()
+    // RESEARCH_STREAM_VERIFY: sections already shown stay (R13: an interrupted stream keeps its verified sections); the unfinished one is dropped unread, and the report is not written a second time
+    const ab = thesisIn && sv && !left?.aborted ? sv.abandon() : null
+    if (thesisIn && ab && ab.shown > 0) {
+      deps.trace?.({ ev: 'stream_interrupted', message: String((e as Error)?.message ?? e).slice(0, 120), sections: ab.shown })
+      written = ab.text; cut = true
+      released = { dropped: ab.dropped, before: written.length }
+      shown = { cited: ab.used as Evidence[], plan: thesisIn.plan, findings: [...thesisIn.findings.flatMap(f => { const s = ab.renumbered.get(f.source); return s ? [{ ...f, source: s }] : [] }), ...ab.used.map(s => ({ step: 1, text: '', source: s.id }))] }
+      break
+    }
+    if (thesisIn && pass === 0 && !left?.aborted) {
+      deps.trace?.({ ev: 'thesis_write_failed', message: String((e as Error)?.message ?? e).slice(0, 120), chars: written.length })
+      thesisIn = null; hold = false; sv = null; written = ''; cut = false; stripper = linkStripper(); numberer = headingNumberer(); marker = wordCiteStream()
+      continue
+    }
     return { plan, evidence, findings, failed: left?.aborted ? 'client_gone' : fail(plan.title, steps, 'write_failed'), cut }
   }
+  }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone', cut }
-  emit.text(sourcesBlock(cited, notes, lang, plan.sources_label))
+  emit.text(sourcesBlock(shown.cited, shown.findings, lang, plan.sources_label))
   // the pictures go under their sections (an annotation the article layout places; never in the text). A lookup still running is not waited for.
   let pictureTimer: ReturnType<typeof setTimeout> | undefined
   const pictures = await Promise.race([picturesP, new Promise<null>(r => { pictureTimer = setTimeout(() => r(null), 1500) })])
   clearTimeout(pictureTimer)
   // owner 31/10: the figures matter more than a picture - a section with a chart gets the chart, not a (small) picture
-  const charts = sectionCharts(written, plan, notes)
+  const charts = sectionCharts(written, shown.plan, shown.findings, researchSourceDiversityOn() ? staleSourceIds(shown.cited, now()) : undefined, researchChartRelevanceOn())
   if (charts.length && emit.charts) emit.charts(charts)
   const charted = new Set(charts.map(c => titleKey(c.section)))
-  const placed = (pictures ? sectionImages(written, plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))
+  const placed = (pictures ? sectionImages(written, shown.plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))
   if (placed.length && emit.images) emit.images(placed)
-  const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
+  const links = shown.cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}) }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, shown.findings), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: shown.cited } } : {}), ...(cards ? { cards: { summary: cardSummary(cards), cards } } : {}), ...(released ? { thesis: { dropped: released.dropped, charsBefore: released.before } } : {}), ...(cx ? { contracts: cx.summary() } : {}) }
 }

@@ -17,7 +17,7 @@ import TappyLockup, { TappyWordmark } from '@/components/brand/TappyLockup'
 //
 // Branding: the plan mini-brochure carries the shipped lockup (`TappyLockup` —
 // the app icon plus "Tappy" white / "AI" blue, as the sidebar renders it); the
-// recommendation strip keeps its `/logo.svg` + `BRAND.name` identity row. No new
+// recommendation strip keeps its mark + `BRAND.name` identity row (17/11: the mark is `/branding/otter-logo.png`, as everywhere else). No new
 // wordmark, no mascot pose picked here (art is the owner's domain).
 
 const PREVIEW_PLACES = 3
@@ -61,8 +61,8 @@ export default function SharePreview({ artifact }: { artifact: ShareArtifact }) 
     >
       {/* Identity strip */}
       <div className="flex items-center gap-2 px-3 py-2 border-b" style={{ borderColor: 'var(--v3-border, #e5e7eb)' }}>
-        {/* Plain <img>: a local SVG needs no next/image pipeline. */}
-        <img src="/logo.svg" alt="" aria-hidden="true" width={22} height={22} className="rounded-md" />
+        {/* 17/11: the app's current mark (the one the header and the report PDF carry), not the old /logo.svg. Plain <img>: a local picture needs no next/image pipeline. */}
+        <img src="/branding/otter-logo.png" alt="" aria-hidden="true" width={22} height={22} className="rounded-md object-cover" />
         <span className="text-sm font-semibold" style={{ color: 'var(--v3-fg, #111827)' }}>{BRAND.name}</span>
         <span className="text-xs" style={{ color: 'var(--v3-fg-muted, #6b7280)' }}>· {t('share.previewFrom')}</span>
       </div>
@@ -102,6 +102,15 @@ export default function SharePreview({ artifact }: { artifact: ShareArtifact }) 
         )}
         {more > 0 && (
           <p className="text-xs" style={{ color: 'var(--v3-fg-muted, #6b7280)' }}>{t('share.morePlaces', { n: String(more) })}</p>
+        )}
+        {/* 17/11: a report previews as what leaves: its key points and how many sources it rests on */}
+        {artifact.report && (
+          <div data-testid="share-preview-report" className="space-y-1">
+            <p className="max-h-40 overflow-hidden whitespace-pre-wrap break-words text-xs leading-snug" style={{ color: 'var(--v3-fg, #111827)' }}>{artifact.report.points}</p>
+            {artifact.report.sources > 0 && (
+              <p className="text-xs" style={{ color: 'var(--v3-fg-muted, #6b7280)' }}>{t('pres.rep.sources', { n: String(artifact.report.sources) })}</p>
+            )}
+          </div>
         )}
 
         <button

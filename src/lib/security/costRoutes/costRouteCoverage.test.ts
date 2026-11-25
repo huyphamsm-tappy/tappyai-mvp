@@ -17,7 +17,7 @@ describe('the real route tree matches the declarations', () => {
   it('sanity: the scan sees the routes and the cost signals it is supposed to see', () => {
     expect(scan.length).toBeGreaterThan(150)
     expect(scan.find((s) => s.route === 'chat')!.signals).toEqual(expect.arrayContaining(['llm', 'serper']))
-    expect(scan.find((s) => s.route === 'messaging/threads/[id]/messages')!.limiters).toEqual(['inprocess']) // the send limiter: deliberately NOT changed (owner decision pending)
+    expect(scan.find((s) => s.route === 'messaging/threads/[id]/messages')!.limiters).toEqual(['public']) // the send limiter: moved to the shared store (SEC4 slice 5, 20/11/2026; same limit and key)
     expect(scan.find((s) => s.route === 'reviews/[id]/comments')!.limiters).toEqual(['public']) // slice 5b
     expect(scan.find((s) => s.route === 'voice/tts')!.limiters).toEqual(['public']) // migrated in slice 2d
     expect(scan.find((s) => s.route === 'memory')!.limiters).toEqual([])
@@ -31,7 +31,8 @@ describe('the real route tree matches the declarations', () => {
   })
   it('every known gap names a closing slice and the matrix document describes each slice', () => {
     const slices = new Set(COST_ROUTES.filter((e) => e.status === 'known-gap').map((e) => e.slice))
-    expect([...slices].sort()).toEqual([4, 5]) // slices 2, 3, 5a-c are complete: left are translate/scan (4) and the Stripe routes + the message-send limiter (5)
+    expect([...slices].sort()).toEqual([]) // 20/11/2026: every slice is closed (the last ten gaps: translate/scan burst caps, Stripe, message send, the report routes, block)
+    expect(KNOWN_GAP_BUDGET).toBe(0)
   })
 })
 

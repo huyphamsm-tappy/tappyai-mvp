@@ -200,8 +200,16 @@ export interface EnrichmentCollector {
   oneBrain?: boolean
   /** CONSULT_ONE_BRAIN: the plan the model passed to present_plan (TappyPlan JSON); appended as [TAPPY_PLAN] before the plan guards run. */
   planBlock?: string
+  /** 20/11: the Agoda page (and price per night) of each hotel the turn's get_hotel_prices looked up; the plan's hotel stop takes the page of the hotel it names (planPartnerLinks.ts). */
+  stayLinks?: Array<{ name: string; url: string; perNight?: number }>
   /** CONSULT_ONE_BRAIN (31/10): the options the model passed to present_options (MediaBlock 'options' JSON); emitted as [TAPPY_MEDIA] after the link guards, with only this turn's tool links. */
   optionsBlock?: string
+  /** CONSULT_PRESENT_BLOCKS (14/11): the blocks the model declared through present_blocks, already checked against the turn (presentation/declare.ts); sent as one live `8:` annotation after the prose. */
+  presentation?: import('@/lib/presentation/contract').Presentation
+  /** CONSULT_PRESENT_BLOCKS: the partner link of each booking block (by block id), taken from the partner layer's rows on the tool result the booking points at. */
+  presentationLinks?: Record<string, import('@/lib/presentation/declare').BookingLink>
+  /** 16/11 (owner: real data only): called with the declared blocks just before they are sent; returns them with every card point this turn's lookups do not support removed (answerV4/factSense.ts), or null. Absent = sent as declared. */
+  verifyPresentation?: (p: import('@/lib/presentation/contract').Presentation) => Promise<import('@/lib/presentation/contract').Presentation | null>
   /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
   guardTrace?: (stage: string, before: string, after: string) => void
   /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */

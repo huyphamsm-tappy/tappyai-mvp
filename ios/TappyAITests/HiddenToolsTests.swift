@@ -10,6 +10,12 @@ final class HiddenToolsTests: XCTestCase {
     func testFlagsDefaultToHidden() {
         XCTAssertFalse(ProductFlags.showTranslate)
         XCTAssertFalse(ProductFlags.showVietContent)
+        XCTAssertFalse(ProductFlags.showFortune)
+    }
+
+    func testRegistryOmitsFortuneWhileHidden() {
+        XCTAssertFalse(SmartTool.all.map(\.id).contains(.fortune))
+        XCTAssertTrue(SmartTool.tools(showTranslate: false, showVietContent: false, showFortune: true).map(\.id).contains(.fortune))
     }
 
     func testRegistryOmitsTranslateAndCaptionsWhileHidden() {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useRouter } from 'next/navigation'
 import { CalendarDays, Clock, Users, MessageSquare, Loader2, CheckCircle2, Share2 } from 'lucide-react'
 
@@ -26,6 +27,7 @@ function getTodayVN() {
 }
 
 export default function BookingForm({ serviceId, serviceName, serviceType, placeId }: Props) {
+  const { t } = useTranslation()
   const router = useRouter()
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
@@ -45,7 +47,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!date || !name || !phone) { setError('Vui lòng điền đầy đủ thông tin bắt buộc.'); return }
+    if (!date || !name || !phone) { setError(t('bookings.fillRequired')); return }
     setError('')
     setLoading(true)
     try {
@@ -60,10 +62,10 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         autoBackTimer.current = setTimeout(() => router.back(), 8000)
       } else {
         const d = await res.json()
-        setError(d.message || d.error || 'Có lỗi xảy ra. Vui lòng thử lại.')
+        setError(d.message || d.error || t('bookings.genericError'))
       }
     } catch {
-      setError('Không thể kết nối. Vui lòng thử lại.')
+      setError(t('bookings.connError'))
     }
     setLoading(false)
   }
@@ -73,24 +75,24 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
     if (autoBackTimer.current) { clearTimeout(autoBackTimer.current); autoBackTimer.current = null }
 
     const lines = [
-      `📋 Xác nhận đặt chỗ — TappyAI`,
+      `📋 ${t('bookings.confirmTitle')}`,
       `🏠 ${serviceName}`,
-      `📅 Ngày: ${date}${time ? ` lúc ${time}` : ''}`,
+      `📅 ${t('bookings.dateLabel')}: ${date}${time ? ` ${t('bookings.atTime', { time })}` : ''}`,
       `👤 ${name} | 📞 ${phone}`,
-      guests > 1 ? `👥 Số khách: ${guests}` : '',
+      guests > 1 ? `👥 ${t('bookings.guestsLabel')}: ${guests}` : '',
       notes ? `📝 ${notes}` : '',
     ].filter(Boolean).join('\n')
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share({ title: 'Xác nhận đặt chỗ — TappyAI', text: lines })
+        await navigator.share({ title: t('bookings.confirmTitle'), text: lines })
       } catch {
         // User huỷ share — không làm gì
         return
       }
     } else {
       // Fallback: mở mailto
-      window.location.href = `mailto:?subject=${encodeURIComponent('Xác nhận đặt chỗ — TappyAI')}&body=${encodeURIComponent(lines)}`
+      window.location.href = `mailto:?subject=${encodeURIComponent(t('bookings.confirmTitle'))}&body=${encodeURIComponent(lines)}`
     }
 
     setShared(true)
@@ -104,22 +106,22 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         <div className="w-16 h-16 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 size={32} className="text-green-500" />
         </div>
-        <h3 className="font-bold text-gray-900 dark:text-white mb-1">Đặt chỗ thành công! 🎉</h3>
+        <h3 className="font-bold text-gray-900 dark:text-white mb-1">{t('bookings.success')} 🎉</h3>
         <p className="text-sm text-content-secondary">
-          Chúng tôi sẽ liên hệ xác nhận với bạn sớm nhất.
+          {t('bookings.willContact')}
         </p>
 
         {/* Tóm tắt booking */}
         <div className="mt-4 mb-4 text-left bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-3 text-sm space-y-1">
           <p className="font-semibold text-gray-900 dark:text-white truncate">{serviceName}</p>
-          <p className="text-content-secondary">📅 {date}{time ? ` lúc ${time}` : ''}</p>
+          <p className="text-content-secondary">📅 {date}{time ? ` ${t('bookings.atTime', { time })}` : ''}</p>
           <p className="text-content-secondary">👤 {name} · 📞 {phone}</p>
-          {guests > 1 && <p className="text-content-secondary">👥 {guests} khách</p>}
+          {guests > 1 && <p className="text-content-secondary">👥 {t('bookings.guestsCount', { n: String(guests) })}</p>}
           {notes && <p className="text-content-secondary line-clamp-2">📝 {notes}</p>}
         </div>
 
         {shared ? (
-          <p className="text-sm text-green-600 dark:text-green-400 font-medium">Đã chia sẻ! Đang quay lại...</p>
+          <p className="text-sm text-green-600 dark:text-green-400 font-medium">{t('bookings.sharedBack')}</p>
         ) : (
           <>
             <button
@@ -127,9 +129,9 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
               className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover active:scale-95 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
             >
               <Share2 size={16} />
-              Chia sẻ xác nhận
+              {t('bookings.shareConfirm')}
             </button>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">Tự động quay lại sau vài giây...</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('bookings.autoBack')}</p>
           </>
         )}
       </div>
@@ -137,30 +139,30 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
   }
 
   const showGuests = ['food', 'hotel', 'entertainment', 'travel'].includes(serviceType)
-  const guestLabel = serviceType === 'hotel' ? 'Số phòng' : serviceType === 'spa' ? 'Số người' : 'Số khách'
+  const guestLabel = serviceType === 'hotel' ? t('bookings.rooms') : serviceType === 'spa' ? t('bookings.people') : t('bookings.guestsLabel')
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
       <h2 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
         <CalendarDays size={18} className="text-link" />
-        Đặt chỗ ngay
+        {t('bookings.bookNow')}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Tên + SĐT */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-content-secondary mb-1 block">Họ tên *</label>
+            <label className="text-xs text-content-secondary mb-1 block">{t('bookings.nameLabel')} *</label>
             <input
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
-              placeholder="Nguyễn Văn A"
+              placeholder={t('bookings.namePlaceholder')}
               className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40"
             />
           </div>
           <div>
-            <label className="text-xs text-content-secondary mb-1 block">Số điện thoại *</label>
+            <label className="text-xs text-content-secondary mb-1 block">{t('bookings.phoneLabel')} *</label>
             <input
               type="tel"
               value={phone}
@@ -174,7 +176,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         {/* Ngày */}
         <div>
           <label className="text-xs text-content-secondary mb-1 flex items-center gap-1">
-            <CalendarDays size={12} /> Ngày *
+            <CalendarDays size={12} /> {t('bookings.dateField')} *
           </label>
           <input
             type="date"
@@ -188,7 +190,7 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         {/* Giờ */}
         <div>
           <label className="text-xs text-content-secondary mb-2 flex items-center gap-1">
-            <Clock size={12} /> Giờ (tùy chọn)
+            <Clock size={12} /> {t('bookings.timeOptional')}
           </label>
           <div className="flex flex-wrap gap-2">
             {TIME_SLOTS.map(slot => (
@@ -233,12 +235,12 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         {/* Ghi chú */}
         <div>
           <label className="text-xs text-content-secondary mb-1 flex items-center gap-1">
-            <MessageSquare size={12} /> Ghi chú thêm
+            <MessageSquare size={12} /> {t('bookings.notes')}
           </label>
           <textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
-            placeholder="Yêu cầu đặc biệt, dị ứng thực phẩm, dịp kỷ niệm..."
+            placeholder={t('bookings.notesPlaceholder')}
             rows={2}
             className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40 resize-none"
           />
@@ -251,11 +253,11 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
           disabled={loading}
           className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover active:scale-95 text-white font-bold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2"
         >
-          {loading ? <Loader2 size={18} className="animate-spin" /> : '✅ Xác nhận đặt chỗ'}
+          {loading ? <Loader2 size={18} className="animate-spin" /> : t('bookings.confirmButton')}
         </button>
 
         <p className="text-center text-xs text-gray-400 dark:text-gray-500">
-          Sau khi đặt, cơ sở sẽ liên hệ xác nhận với bạn
+          {t('bookings.afterBook')}
         </p>
       </form>
     </div>

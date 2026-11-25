@@ -301,17 +301,49 @@ export function detectLang(text: string): string {
  * Deliberately no new inputs: no profile fields, no history, no account data. Only this message.
  */
 export function detectLangConfident(text: string): string | null {
+  // 17/11: the WHOLE message is read before a script decides. The loop used to return at the first non-ASCII character, so a Japanese
+  // sentence that opens with kanji was 'zh' (the kana after it was never seen), and a Han word quoted inside a Vietnamese or English
+  // sentence made the sentence Chinese. Kana anywhere is Japanese; Han alone is Chinese; and a script decides only when the Latin words
+  // around it do not themselves settle a language with more letters than the script has.
+  let kana = 0, hangul = 0, han = 0, arabic = 0, thai = 0, latin = 0
   for (const ch of text) {
     const cp = ch.codePointAt(0) ?? 0
-    if (cp <= 0x7F) continue
-    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'
-    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'
-    if (cp >= 0x4E00 && cp <= 0x9FFF) return 'zh'
-    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'
-    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'
+    if (cp >= 0x3040 && cp <= 0x30FF) kana++
+    else if (cp >= 0xAC00 && cp <= 0xD7AF) hangul++
+    else if (cp >= 0x4E00 && cp <= 0x9FFF) han++
+    else if (cp >= 0x0600 && cp <= 0x06FF) arabic++
+    else if (cp >= 0x0E00 && cp <= 0x0E7F) thai++
+    else if (LATIN_LETTER.test(ch)) latin++
   }
+  const scriptLetters = kana + hangul + han + arabic + thai
+  const script = scriptLetters === 0 ? null
+    : kana > 0 ? 'ja'
+      : hangul >= han && hangul >= arabic && hangul >= thai ? 'ko'
+        : han >= arabic && han >= thai ? 'zh'
+          : arabic >= thai ? 'ar' : 'th'
+  const latinVerdict = latinLangConfident(text)
+  if (script && !(latinVerdict && latin > scriptLetters)) return script
+  return latinVerdict
+}
 
-  const words = text.split(/\s+/).filter(w => HAS_LETTER.test(w))
+const LATIN_LETTER = /\p{Script=Latin}/u
+
+/**
+ * Letters only Vietnamese writes: the stacked and hooked vowels of Latin Extended Additional (U+1EA0-U+1EF9) and the horned o / u.
+ * A lowercase word carrying one is Vietnamese by its script, the way kana is Japanese. (a-grave, e-acute, a-tilde and d-stroke are
+ * shared with other languages and are not in this set.)
+ */
+function hasVietnameseOnlyLetter(word: string): boolean {
+  for (const ch of word) {
+    const cp = ch.codePointAt(0) ?? 0
+    if ((cp >= 0x1EA0 && cp <= 0x1EF9) || cp === 0x01A0 || cp === 0x01A1 || cp === 0x01AF || cp === 0x01B0) return true
+  }
+  return false
+}
+
+/** The Latin-script part of detectLangConfident: Vietnamese or English when the words settle it, else null. */
+function latinLangConfident(text: string): string | null {
+  const words = text.split(/\s+/).filter(w => LATIN_LETTER.test(w))
   if (words.length === 0) return null
 
   let accentedWords = 0
@@ -335,6 +367,11 @@ export function detectLangConfident(text: string): string | null {
   // Vietnamese, on the same evidence detectLang already trusts most.
   if (accentedWords > 0 && accentedWords === words.length) return 'vi'
   if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
+  // 17/11: lowercase words written with letters only Vietnamese has. Two of them, or one in a message with no English function word,
+  // settle it: "ủa nghe nói obama ra tranh cử tổng thống lại với donal trump à" was 'unknown' (few function words, three bare names)
+  // and the turn took the language of the turn before it. One such word inside an English sentence ("the best phở in town") decides nothing.
+  const viOnlyWords = words.filter(w => !STARTS_UPPERCASE.test(w) && hasVietnameseOnlyLetter(w)).length
+  if (viOnlyWords >= 2 || (viOnlyWords === 1 && enFunctionWords === 0)) return 'vi'
   // Undiacriticked Vietnamese, confidently: three or more content words and more of them than
   // English function words — "cho toi 3 quan bun bo ngon o q1" is not a doubt.
   if (isUndiacriticizedVi(words, enFunctionWords, 3)) return 'vi'

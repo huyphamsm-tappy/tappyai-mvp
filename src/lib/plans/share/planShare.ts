@@ -100,6 +100,12 @@ export interface PlanShareSnapshot {
   title: string
   people?: number
   budget_total?: string
+  /** 20/11 (owner: the shared page like a proper brochure): the plan's own cost lines (label, amount as written) and its tips, link-free and short. */
+  costs?: Array<{ label: string; value: string }>
+  tips?: string[]
+  /** 20/11: where to stay (at most 3; the booking page only when https) and what to eat (at most 6), short and link-free in their text. */
+  stays?: Array<{ name: string; why?: string; price?: string; address?: string; booking_link?: string }>
+  dishes?: Array<{ dish: string; venue?: string; address?: string; price?: string; note?: string }>
   /** One short, link-free line of the model's own summary — same rule as the text brochure. */
   summary?: string
   days: PlanShareDay[]
@@ -211,6 +217,38 @@ export function toPlanShareSnapshot(plan: TappyPlan | null | undefined): PlanSha
   const summary = clip(plan.share_text, MAX_SUMMARY + 1)
   if (summary && summary.length <= MAX_SUMMARY && !/https?:\/\//i.test(summary)) snap.summary = summary
   pickV2(plan as unknown as Record<string, unknown>, snap)
+  // the cost lines and the tips of the plan: a few short, link-free lines
+  // (a snapshot passed back in, as the share menu does with a stored one, carries them as `costs` / `tips`)
+  const asPlan = plan as unknown as { costs?: Array<{ label?: unknown; value?: unknown }>; tips?: unknown[] }
+  const costRows: Array<[string, unknown]> = plan.cost_breakdown && typeof plan.cost_breakdown === 'object' ? Object.entries(plan.cost_breakdown as Record<string, unknown>)
+    : Array.isArray(asPlan.costs) ? asPlan.costs.flatMap((c): Array<[string, unknown]> => (c && typeof c.label === 'string' ? [[c.label, c.value]] : [])) : []
+  const costs = costRows.slice(0, 8).flatMap(([k, v]) => { const label = noLink(clip(k, 60)), value = noLink(clip(v, 160)); return label && value ? [{ label, value }] : [] })
+  if (costs.length) snap.costs = costs
+  const tipSrc: unknown[] = Array.isArray(plan.local_tips) ? plan.local_tips : Array.isArray(asPlan.tips) ? asPlan.tips.map(text => ({ text })) : []
+  const tips = tipSrc.slice(0, 6).flatMap(t => { const x = noLink(clip((t as { text?: unknown } | null)?.text, 220)); return x ? [x] : [] })
+  if (tips.length) snap.tips = tips
+  const stays = (Array.isArray(plan.stays) ? plan.stays : []).flatMap((s): NonNullable<PlanShareSnapshot['stays']> => {
+    const r = s as unknown as Record<string, unknown> | null
+    const name = noLink(clip(r?.name, 80)); if (!name) return []
+    const row: NonNullable<PlanShareSnapshot['stays']>[number] = { name }
+    const why = noLink(clip(r?.why, 160)); if (why) row.why = why
+    const price = planAmount(clip(r?.price, MAX_SHORT)); if (price) row.price = price
+    const address = noLink(clip(r?.address, MAX_ADDRESS)); if (address) row.address = address
+    const link = safeLink(r?.booking_link); if (link) row.booking_link = link
+    return [row]
+  }).slice(0, 3)
+  if (stays.length) snap.stays = stays
+  const dishes = (Array.isArray(plan.dishes) ? plan.dishes : []).flatMap((d): NonNullable<PlanShareSnapshot['dishes']> => {
+    const r = d as unknown as Record<string, unknown> | null
+    const dish = noLink(clip(r?.dish, 60)); if (!dish) return []
+    const row: NonNullable<PlanShareSnapshot['dishes']>[number] = { dish }
+    const venue = noLink(clip(r?.venue, 80)); if (venue) row.venue = venue
+    const address = noLink(clip(r?.address, MAX_ADDRESS)); if (address) row.address = address
+    const price = planAmount(clip(r?.price, MAX_SHORT)); if (price) row.price = price
+    const note = noLink(clip(r?.note, 120)); if (note) row.note = note
+    return [row]
+  }).slice(0, 6)
+  if (dishes.length) snap.dishes = dishes
   return fitBudget(snap)
 }
 
@@ -232,6 +270,10 @@ export function readPlanShareSnapshot(raw: unknown): PlanShareSnapshot | null {
     // R22 v2 fields, re-validated on read like everything else.
     domain: r.domain, destination: r.destination, duration: r.duration, tagline: r.tagline,
     hero_image: r.hero_image, budget_per_person: r.budget_per_person, highlights: r.highlights,
+    // the cost lines and the tips come back through the same validation
+    cost_breakdown: Array.isArray(r.costs) ? Object.fromEntries((r.costs as Array<{ label?: unknown; value?: unknown }>).filter(c => c && typeof c.label === 'string').map(c => [c.label as string, c.value])) : undefined,
+    local_tips: Array.isArray(r.tips) ? (r.tips as unknown[]).map(text => ({ text, basis: 'general' })) : undefined,
+    stays: r.stays, dishes: r.dishes,
   } as unknown as TappyPlan)
 }
 

@@ -10,7 +10,9 @@
 //        - only incoming transfers to OUR account count;
 //        - full amount → order paid → plan granted (stacked on the current expiry),
 //          even when the 15-minute window has passed;
-//        - short amount → order `mismatch`, nothing granted (resolved in admin).
+//        - short amount → the money stays ON the order (`mismatch`); a later top-up with the same code completes it;
+//        - amount above the price → plan granted + the surplus as extra time at the plan's rate;
+//        - a transfer on an already paid order → converted to extra time. NEVER a refund (owner 18/11/2026).
 //   3. Any transaction we recorded answers 200 {"success": true}; a database failure
 //      answers 500 so SePay retries (their retries are idempotent here).
 //   4. The confirmation mail is best-effort, capped at 5 s, and cannot fail the webhook.
@@ -21,6 +23,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { sepayProvider } from '@/lib/payments/providers'
 import { sendPaymentMail } from '@/lib/payments/mail'
+import { readCappedBody } from '@/lib/http/readCappedBody'
+import { reportsLeftBeforePurchase, carryOverAfterPurchase } from '@/lib/plans/deepCarryover'
 import type { PaidPlanId } from '@/lib/plans/planConfig'
 
 export const dynamic = 'force-dynamic'
@@ -28,11 +32,14 @@ export const dynamic = 'force-dynamic'
 const OK = () => NextResponse.json({ success: true })
 
 interface ApplyResult {
-  result: 'duplicate' | 'ignored_out' | 'no_order' | 'paid' | 'late_paid' | 'mismatch' | 'already_settled'
+  result: 'duplicate' | 'ignored_out' | 'no_order' | 'paid' | 'late_paid' | 'extra_paid' | 'pip_used' | 'mismatch' | 'already_settled'
   user_id?: string | null
   plan?: PaidPlanId | null
   code?: string | null
   received_vnd?: number | null
+  total_received_vnd?: number | null
+  short_vnd?: number | null
+  bonus_seconds?: number | null
   expires_at?: string | null
 }
 
@@ -41,7 +48,9 @@ export async function POST(req: Request) {
   // The adapter verifies (secret + shape + our account, fail closed); the database matches the
   // amount against the server-created order. No client input can reach this decision.
   // The RAW body: the HMAC signature is over these exact bytes (never re-serialise parsed JSON).
-  const rawBody = await req.text().catch(() => '')
+  const capped = await readCappedBody(req, 256 * 1024)
+  if (!capped.ok) return NextResponse.json({ success: false, error: 'invalid_payload', message: 'Too large' }, { status: 413 })
+  const rawBody = capped.text
   const verified = sepayProvider.verify({ headers: req.headers, rawBody })
   if (!verified.ok) {
     return verified.status === 401
@@ -51,6 +60,14 @@ export async function POST(req: Request) {
   const tx = verified.event
 
   const db = createAdminClient()
+  // Carry-over (owner 21/11/2026): what the person has LEFT of the Deep Research allowance under the plan they are on NOW, read before the payment changes it.
+  let carryUser: string | null = null
+  let carryLeft = 0
+  try {
+    const o = await db.from('payment_orders').select('user_id').eq('code', tx.orderCode).maybeSingle()
+    carryUser = (o.data as { user_id?: string | null } | null)?.user_id ?? null
+    if (carryUser) carryLeft = await reportsLeftBeforePurchase(db, carryUser)
+  } catch { /* best effort */ }
   const { data, error } = await db.rpc('p8_payments_apply_sepay', {
     p_tx_id: tx.providerTxId,
     p_code: tx.orderCode,
@@ -63,12 +80,19 @@ export async function POST(req: Request) {
   }
 
   const r = data as ApplyResult
-  if ((r.result === 'paid' || r.result === 'late_paid') && r.user_id && r.plan && r.code) {
+  if (carryUser && r.user_id === carryUser) await carryOverAfterPurchase(carryUser, carryLeft, r.result)
+  if ((r.result === 'paid' || r.result === 'late_paid' || r.result === 'mismatch' || r.result === 'extra_paid' || r.result === 'pip_used') && r.user_id && r.plan && r.code) {
     try {
       const { data: u } = await db.auth.admin.getUserById(r.user_id)
       const email = u?.user?.email
       if (email) {
-        await sendPaymentMail({ to: email, plan: r.plan, amountVnd: r.received_vnd ?? tx.amountVnd, code: r.code, expiresAt: r.expires_at ?? null })
+        const kind = r.result === 'mismatch' ? 'partial' : (r.result === 'extra_paid' || r.result === 'pip_used') ? 'extra' : 'paid'
+        await sendPaymentMail({
+          to: email, plan: r.plan, code: r.code, expiresAt: r.expires_at ?? null, kind,
+          amountVnd: (kind === 'extra' ? r.received_vnd : r.total_received_vnd) ?? r.received_vnd ?? tx.amountVnd,
+          shortVnd: r.short_vnd ?? 0,
+          bonusDays: Math.floor(Math.max(0, r.bonus_seconds ?? 0) / 86_400),
+        })
       }
     } catch {
       // best-effort: the plan is already granted

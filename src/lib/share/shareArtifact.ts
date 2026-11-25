@@ -4,6 +4,7 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { BRAND, absoluteUrl } from './openGraph'
 import { buildShareMessage, summaryFromPlaces, summaryFromProse } from './shareMessage'
 import { toPlanShareSnapshot, type PlanShareSnapshot } from '@/lib/plans/share/planShare'
+import { reportDigest } from '@/lib/chat/reportDigest'
 
 // ── THE ONE CANONICAL TAPPYAI SHARE ARTIFACT ─────────────────────────────────
 //
@@ -70,6 +71,8 @@ export interface ShareArtifact {
    * longer what leaves. Same flag as Android `isPlanLink` / iOS `isPlanLink`.
    */
   planLink?: true
+  /** 17/11: set when the shared thing is a research report: its key points (plain text) and its number of sources, for the preview. */
+  report?: { points: string; sources: number }
 }
 
 /**
@@ -404,6 +407,40 @@ export function buildProseArtifact(subject: string, text: string, env?: NodeJS.P
     kind: 'places', title: subject, subject: `TappyAI: ${subject}`,
     text: buildShareMessage({ title: `TappyAI: ${subject}`, summary, url }),
     url, places: [],
+  }
+}
+
+/** The most characters of key points a shared report carries (cut at a line end). */
+export const SHARE_REPORT_POINTS_MAX = 1200
+
+/** A report's own title: its "# " line, else its first non-empty line, without markdown marks. */
+export function reportTitleOf(text: string): string {
+  const lines = String(text ?? '').split('\n')
+  const line = lines.find(l => /^#\s/.test(l)) ?? lines.find(l => l.trim()) ?? ''
+  return line.replace(/^#{1,6}\s+/, '').replace(/[*_`]/g, '').trim()
+}
+
+/**
+ * 17/11: a deep research report shared as a REPORT. Before, it went through buildProseArtifact and left as its title plus one clipped
+ * line. What leaves now is what the chat card shows of it: the title, the key points (the report's own first section, reportDigest.ts:
+ * no citation marks, no links), how many sources it rests on, and the brand link. The full report stays where it is (the opened view,
+ * the PDF): a message body is not the place for 15 000 characters.
+ */
+export function buildReportArtifact(text: string, lang: ShareLang = 'vi', env?: NodeJS.ProcessEnv): ShareArtifact {
+  const url = brandUrl(env)
+  const digest = reportDigest(text)
+  const title = reportTitleOf(text) || 'TappyAI'
+  const whole = proseForShare(digest.bullets)
+  // over the cap: cut at the last line end inside it, so no point leaves half written
+  const cut = whole.slice(0, SHARE_REPORT_POINTS_MAX)
+  const points = (whole.length <= SHARE_REPORT_POINTS_MAX ? whole : cut.lastIndexOf('\n') > 0 ? cut.slice(0, cut.lastIndexOf('\n')) : cut).trim()
+  const sources = digest.sources > 0 ? (lang === 'en' ? `Sources: ${digest.sources}` : `Nguồn: ${digest.sources}`) : ''
+  const head = lang === 'en' ? `TappyAI report: ${title}` : `Báo cáo TappyAI: ${title}`
+  return {
+    kind: 'places', title, subject: head,
+    text: [head, points, sources, url].filter(Boolean).join('\n\n'),
+    url, places: [], lang,
+    report: { points, sources: digest.sources },
   }
 }
 

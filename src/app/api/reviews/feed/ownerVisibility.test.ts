@@ -74,6 +74,9 @@ vi.mock('@/lib/auth/getRequestUser', () => ({
 vi.mock('@/lib/policy/explore/reviewFeedObservation', () => ({
   observePrivacyForFeed: () => undefined,
 }))
+// the route's per-caller limit (hardening 21/11/2026) is tested in limiter.test.ts; here the requests are bare objects with no headers
+vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: async () => ({ ok: true }) }))
+vi.mock('@/lib/security/rateLimit', () => ({ clientIpKey: () => 'test' }))
 
 import { GET } from './route'
 

@@ -1,0 +1,31 @@
+[
+  {
+    "id": 34,
+    "group": "health",
+    "turns": [
+      {
+        "q": "ngồi văn phòng cả ngày bị đau lưng thì nên làm gì",
+        "done": true,
+        "seconds": 50,
+        "screen": "screens/q34.jpg",
+        "answered": true,
+        "chars": 1180,
+        "head": "Nếu đau lưng xuất hiện sau khi ngồi lâu, trước mắt hãy đứng dậy đi lại nhẹ, đổi tư thế thường xuyên và chỉnh lại chỗ ngồi. Ngồi lâu có thể làm lưng mỏi, nhưng không thể xác định nguyên nhân chỉ từ triệu chứng này.\nTrong giờ làm: cứ khoảng 30–60 phút đứng dậy đi lại hoặc vận động nhẹ; đừng cố ngồi lì hoặc nằm bất động cả ngày. Nhà thuốc Long Châu, NHS\nChỉnh tư thế: tựa lưng vào ghế, thả lỏng vai, đặt bàn chân phẳng trên sàn; điều chỉnh ghế và màn hình để không phải cúi gập hoặc rướn người. Vietlife Clinic\nGiảm khó chịu: thử chườm ấm hoặc lạnh, nhớ bọc khăn để tránh bỏng hay kích ứng da. Có thể đi bộ hoặc kéo giãn nhẹ nếu dễ chịu; dừng động tác làm đau tăng rõ. NHS\nThuốc giảm đau: nếu định dùn",
+        "tail": "t kiểm soát tiểu tiện hay đại tiện, yếu/tê cả hai chân, hoặc đau sau tai nạn nghiêm trọng. Việc nên thử ngay là đứng dậy đi vài phút, rồi chỉnh lại ghế và màn hình trước khi ngồi tiếp.\nN\nN\nV\nNguồn · 3",
+        "links": 7,
+        "hosts": {
+          "nhathuoclongchau.com.vn": 2,
+          "nhs.uk": 3,
+          "vietlifeclinic.vn": 2
+        },
+        "sourcesChip": "N N V Nguồn · 3",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/0efe8622-634c-4c1d-bd9d-af476e2a3e02",
+        "proNote": 0
+      }
+    ]
+  }
+]

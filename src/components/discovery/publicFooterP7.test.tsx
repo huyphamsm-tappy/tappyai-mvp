@@ -16,14 +16,45 @@ describe('public footer', () => {
     expect(other.getAttribute('href')).toBe('/chat')
     for (const h of ['/food', '/shopping', '/entertainment', '/travel', '/spa']) expect(container.querySelector(`a[href="${h}"]`)).toBeTruthy()
   })
-  it('Tải TappyAI: no public listing → "Sắp có" for Android and iOS, and no store link at all', () => {
+  it('Tải ứng dụng: both listings are public (21/11/2026) → a QR code to each real store listing (owner: QR instead of a tag), and the banner badges link to them', () => {
     const { container } = render(<PublicFooter />)
     const dl = container.querySelector('[data-footer-download]') as HTMLElement
-    expect(dl.textContent).toContain('Tải TappyAI')
-    expect(container.querySelector('[data-store="android"]')!.textContent).toBe('Android · Sắp có')
-    expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOS · Sắp có')
-    expect(dl.querySelector('a')).toBeNull()
-    expect(container.innerHTML).not.toMatch(/apps\.apple\.com|itunes\.apple\.com/)
+    expect(dl.textContent).toContain('Tải ứng dụng')
+    for (const [key, host] of [['android', 'play.google.com'], ['ios', 'apps.apple.com']] as const) {
+      const row = container.querySelector(`[data-store="${key}"]`)!
+      const qr = row.querySelector('a[data-qr]') as HTMLAnchorElement
+      expect(qr.getAttribute('href')).toContain(host)
+      expect(qr.querySelector('svg')).toBeTruthy()
+      expect(row.textContent).not.toContain('Sẵn có')
+    }
+    const links = [...container.querySelectorAll('a[data-badge]')].map((a) => a.getAttribute('href'))
+    expect(links).toEqual(['https://play.google.com/store/apps/details?id=com.tappyai.app', expect.stringMatching(/^https:\/\/apps\.apple\.com\/vn\/app\/tappyai\/id\d+$/)])
+    expect(container.querySelector('a[data-badge]')!.getAttribute('rel')).toContain('noopener')
+  })
+  it('switched off (listing taken down): "Sắp có", no store link and no "available" claim anywhere', async () => {
+    vi.stubEnv('NEXT_PUBLIC_PLAY_LISTING_LIVE', '0')
+    vi.stubEnv('NEXT_PUBLIC_APP_STORE_URL', 'off')
+    vi.resetModules()
+    const { default: OffFooter } = await import('./PublicFooter')
+    const { container } = render(<OffFooter />)
+    expect(container.querySelector('[data-store="android"]')!.textContent).toBe('AndroidSắp có')
+    expect(container.querySelector('[data-store="ios"]')!.textContent).toBe('iOSSắp có')
+    expect(container.querySelector('a[data-badge]')).toBeNull()
+    expect(container.querySelector('[data-qr]')).toBeNull()
+    expect(container.textContent).not.toContain('Sẵn có')
+    expect(container.innerHTML).not.toMatch(/apps\.apple\.com|play\.google\.com/)
+  })
+  it('social icons: the four official accounts link out; LinkedIn draws nothing until its link exists', () => {
+    const { container } = render(<PublicFooter />)
+    const hrefs = Object.fromEntries([...container.querySelectorAll('a[data-social]')].map((a) => [a.getAttribute('data-social'), a.getAttribute('href')]))
+    expect(hrefs).toEqual({
+      facebook: 'https://www.facebook.com/profile.php?id=61591106270254',
+      tiktok: 'https://www.tiktok.com/@tappyaivietnam',
+      instagram: 'https://www.instagram.com/tappyaivietnam/',
+      threads: 'https://www.threads.com/@tappyaivietnam',
+    })
+    expect(container.querySelector('[data-social="linkedin"]')).toBeNull()
+    expect(container.querySelector('a[data-social]')!.getAttribute('rel')).toContain('noopener')
   })
   it('links the Community Guidelines, Terms and Privacy', () => {
     const { container } = render(<PublicFooter />)

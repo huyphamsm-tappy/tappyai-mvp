@@ -150,10 +150,12 @@ internal val SMART_TOOL_CATALOGUE: List<SmartTool> = listOf(
 internal fun smartTools(
     showTranslate: Boolean = ProductFlags.SHOW_TRANSLATE,
     showVietContent: Boolean = ProductFlags.SHOW_VIET_CONTENT,
+    showFortune: Boolean = ProductFlags.SHOW_FORTUNE,
 ): List<SmartTool> = SMART_TOOL_CATALOGUE.filter {
     when (it.id) {
         SmartToolId.Translate -> showTranslate
         SmartToolId.Captions -> showVietContent
+        SmartToolId.Fortune -> showFortune
         else -> true
     }
 }

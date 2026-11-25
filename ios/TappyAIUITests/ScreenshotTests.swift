@@ -309,8 +309,10 @@ final class ScreenshotTests: XCTestCase {
         app.terminate()
 
         app = launch(route: "fortune", signedIn: true, extra: ["-uitest-theme", "dark"])
-        XCTAssertTrue(scrollTo(app, "fortune-disclaimer"), "fortune disclaimer")
-        shot("96-fortune-web-layout")
+        // Fortune is hidden (ProductFlags.showFortune = false, owner decision 2026-11-18): the deep link
+        // is ignored, so the fortune hub never opens.
+        XCTAssertFalse(any(app, "fortune-disclaimer").waitForExistence(timeout: 10), "a hidden tool must not open from a deep link")
+        shot("96-fortune-hidden")
     }
 
     func testGuestProfileHasSignInCardAndNoSignOut() {

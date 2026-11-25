@@ -4,7 +4,7 @@ import AiDisclaimer from '@/components/AiDisclaimer'
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   Home, PlayCircle, Search, Upload, Users,
@@ -14,13 +14,15 @@ import {
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC } from '@/lib/config/product'
+import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC, SHOW_FORTUNE, SHOW_RECOMMENDATIONS, SHOW_VIET_CONTENT } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
 import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
 import { useAuthStatus } from '@/hooks/useAuthStatus'
+import { createClient } from '@/lib/supabase/client'
+import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import { performSignOut } from '@/lib/auth/signOut'
 import { smartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
@@ -89,7 +91,7 @@ const GROUPS: NavGroup[] = [
       // class of bug as the two below. Phase 7: it now carries the destination's own name,
       // the one the Smart Tools tile and Home's "see all" use (`v3.tool.suggest`), so one
       // page has one name wherever it is reached from.
-      { href: '/recommendations', labelKey: 'v3.tool.suggest', icon: Sparkles },
+      ...(SHOW_RECOMMENDATIONS ? [{ href: '/recommendations', labelKey: 'v3.tool.suggest', icon: Sparkles }] : []), // hidden 20/11/2026 (owner)
       // 🚨 THIS WAS `/#smart-tools`, AN ANCHOR NOTHING CARRIED. No element in the codebase
       // had `id="smart-tools"`, so the row scrolled to the top of Home and read as working.
       // `/tools` is the real page — the "Page 7 (Tools)" the debt note below names.
@@ -130,8 +132,8 @@ const GROUPS: NavGroup[] = [
       // Music hidden by default — one boolean drops the row (owner decision 2026-09-24).
       // Same shape as SHOW_MARKETPLACE/SHOW_WALLET below; route + module left intact.
       ...(SHOW_MUSIC ? [{ href: '/music', labelKey: 'v3.tool.music', icon: Music2 }] : []),
-      { href: '/boi', labelKey: 'v3.tool.fortune', icon: Sparkle },
-      { href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine },
+      ...(SHOW_FORTUNE ? [{ href: '/boi', labelKey: 'v3.tool.fortune', icon: Sparkle }] : []), // hidden 18/11/2026 (owner)
+      ...(SHOW_VIET_CONTENT ? [{ href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine }] : []), // hidden 20/11/2026 (owner)
     ],
   },
   {
@@ -325,6 +327,29 @@ export interface V3ShellProps {
   children: ReactNode
 }
 
+let chipProfile: { at: number; p: Promise<{ name: string; avatarUrl: string | null } | null> } | null = null
+/** Test seam. */
+export function __resetChipProfile(): void { chipProfile = null }
+/** The signed-in member's own display name and picture, once per minute per tab; null for a visitor or any failure. */
+function ownChipProfile(): Promise<{ name: string; avatarUrl: string | null } | null> {
+  const now = Date.now()
+  if (chipProfile && now - chipProfile.at < 60_000) return chipProfile.p
+  // The session is read locally first (no network): a visitor, or a browser with no session, asks the server nothing.
+  const member = (async () => {
+    try {
+      const { data: { session } } = await createClient().auth.getSession()
+      return !!session?.user && !isAnonymousUser(session.user)
+    } catch { return false }
+  })()
+  const p = member
+    .then(ok => (ok ? fetch('/api/profile') : null))
+    .then(r => (r && r.ok ? r.json() : null))
+    .then(j => (j && typeof j.full_name === 'string' && j.full_name.trim() ? { name: j.full_name.trim(), avatarUrl: typeof j.avatar_url === 'string' && j.avatar_url ? j.avatar_url : null } : null))
+    .catch(() => null)
+  chipProfile = { at: now, p }
+  return p
+}
+
 export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, header, flush = false, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
@@ -342,6 +367,17 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
   // user actually is; `usePathname` cannot.
   const onHome = pathname === '/'
   const { isDark, mounted: themeMounted, toggle: toggleTheme } = useThemeMode()
+  // 21/11/2026 (UAT): a public, cached page (Scam Shield) passes no `user`, so a signed-in member saw "Khách" in the corner. When no user was handed in
+  // and this browser belongs to a member, the name and picture are read from the member's own profile instead. Display only; the server decides everything else.
+  // (No second auth subscription: a visitor's profile answers 401 or an empty name, so the chip then stays "Khách".)
+  const [self, setSelf] = useState<{ name?: string | null; avatarUrl?: string | null } | null>(null)
+  useEffect(() => {
+    if (user || typeof fetch !== 'function') return
+    let alive = true
+    ownChipProfile().then(j => { if (alive && j) setSelf(j) })
+    return () => { alive = false }
+  }, [user])
+  const chipUser = user ?? self
 
   return (
     // 🚨 This used to be `v3-theme dark` — the surface pinned itself to dark and ignored the
@@ -533,7 +569,9 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   subtitle — the loudest thing in the bar, on every page, saying what the user
                   had just clicked. The bar's job is to hold the global controls; the page says
                   what it is in its own content. */}
-              <div className="min-w-0 flex-shrink-0 lg:w-[150px] xl:w-[176px]">
+              {/* 21/11/2026 (owner): on Home the title ("Trang chủ / Hỏi Tappy bất cứ điều gì") and the "Hỏi Tappy" pill are gone — the hero is the way in.
+                  The <h1> stays for screen readers (sr-only). */}
+              <div className={onHome ? 'sr-only' : 'min-w-0 flex-shrink-0 lg:w-[150px] xl:w-[176px]'}>
                 <h1 className="truncate text-[15px] font-medium tracking-[-0.01em] lg:text-[16px]" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
                 {subtitle && (
                   <p className="truncate text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>{subtitle}</p>
@@ -554,14 +592,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   carries a `min-w` so it can never degrade into a stub again — the tab strip,
                   which already scrolls, gives up the space instead. */}
               {onHome ? (
-                <Link
-                  href="/chat"
-                  className="ml-auto hidden items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/5 lg:inline-flex"
-                  style={{ border: '1px solid var(--v3-border)', color: 'var(--v3-fg-secondary)' }}
-                >
-                  <Sparkles size={13} aria-hidden="true" style={{ color: 'var(--v3-accent)' }} />
-                  {t('v3.top.askAction')}
-                </Link>
+                <span className="ml-auto hidden lg:block" aria-hidden="true" />
               ) : (
               <form
                 onSubmit={(e) => {
@@ -670,12 +701,12 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   className="flex items-center gap-2 rounded-lg px-2 py-1.5"
                   style={{ background: 'var(--v3-panel-elevated)' }}
                 >
-                  {user?.avatarUrl
-                    ? <Image src={user.avatarUrl} alt="" width={26} height={26} className="h-[26px] w-[26px] rounded-full object-cover" />
+                  {chipUser?.avatarUrl
+                    ? <Image src={chipUser.avatarUrl} alt="" width={26} height={26} className="h-[26px] w-[26px] rounded-full object-cover" />
                     : <UserCircle size={24} style={{ color: 'var(--v3-fg-secondary)' }} aria-hidden="true" />}
                   <span className="hidden flex-col leading-tight sm:flex">
                     <span className="max-w-[104px] truncate whitespace-nowrap text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>
-                      {user?.name || t('v3.top.guest')}
+                      {chipUser?.name || t('v3.top.guest')}
                     </span>
                     {user?.plan && (
                       <span className="text-[10px]" style={{ color: 'var(--v3-amber)' }}>{user.plan}</span>
@@ -721,48 +752,23 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
   )
 }
 
-/** The capability strip along the bottom of the V3 surface. */
+/**
+ * The bottom line of the app pages.
+ *
+ * 21/11/2026 (owner): the "TappyAI V3 · AI Core · Community · Commerce · Utilities · Security · Multi-Platform" capability strip is gone from
+ * every page — it was redundant. What stays is the one thing the store rules and the UI contract require on every screen: the legal links
+ * and the global AI disclaimer, as a single quiet line without a box.
+ */
 export function V3Footer() {
   const { t } = useTranslation()
-  const items = [
-    { icon: Sparkles, labelKey: 'v3.footer.aiCore', descKey: 'v3.footer.aiCoreDesc', tone: 'var(--v3-accent)' },
-    { icon: Users, labelKey: 'v3.footer.community', descKey: 'v3.footer.communityDesc', tone: 'var(--v3-violet)' },
-    { icon: Tag, labelKey: 'v3.footer.commerce', descKey: 'v3.footer.commerceDesc', tone: 'var(--v3-amber)' },
-    { icon: Wrench, labelKey: 'v3.footer.utilities', descKey: 'v3.footer.utilitiesDesc', tone: 'var(--v3-emerald)' },
-    { icon: ShieldCheck, labelKey: 'v3.footer.security', descKey: 'v3.footer.securityDesc', tone: 'var(--v3-rose)' },
-  ]
   return (
-    <footer
-      className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-4 rounded-2xl px-4 py-4"
-      style={{ background: 'var(--v3-panel)', border: '1px solid var(--v3-border)' }}
-    >
-      <div className="min-w-[160px]">
-        <p className="text-[13px] font-bold" style={{ color: 'var(--v3-fg)' }}>TappyAI V3</p>
-        <p className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.page.subtitle')}</p>
-      </div>
-      {items.map(({ icon: Icon, labelKey, descKey, tone }) => (
-        <div key={labelKey} className="flex items-center gap-2">
-          <span className="v3-panel-icon" style={{ background: 'rgba(255,255,255,0.05)', color: tone }} aria-hidden="true">
-            <Icon size={13} />
-          </span>
-          <span className="flex flex-col leading-tight">
-            <span className="text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{t(labelKey)}</span>
-            <span className="text-[10px]" style={{ color: 'var(--v3-fg-muted)' }}>{t(descKey)}</span>
-          </span>
-        </div>
-      ))}
-      <Link href="/reviews" className="ml-auto flex items-center gap-1 text-[11px]" style={{ color: 'var(--v3-accent)' }}>
-        {t('v3.footer.platforms')} <ChevronRight size={12} aria-hidden="true" />
-      </Link>
-      {/* Phase 7 CP7: legal links + the global AI disclaimer (UI contract) */}
-      <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t pt-3 text-[11px]" style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-muted)' }}>
-        <nav className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t('footer.about')}>
-          <Link href="/community-guidelines" className="hover:underline">{t('footer.guidelines')}</Link>
-          <Link href="/terms" className="hover:underline">{t('footer.terms')}</Link>
-          <Link href="/privacy" className="hover:underline">{t('footer.privacy')}</Link>
-        </nav>
-        <AiDisclaimer className="!text-left" />
-      </div>
+    <footer className="mt-6 flex flex-wrap items-center justify-between gap-2 px-1 py-3 text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>
+      <nav className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t('footer.about')}>
+        <Link href="/community-guidelines" className="hover:underline">{t('footer.guidelines')}</Link>
+        <Link href="/terms" className="hover:underline">{t('footer.terms')}</Link>
+        <Link href="/privacy" className="hover:underline">{t('footer.privacy')}</Link>
+      </nav>
+      <AiDisclaimer className="!text-left" />
     </footer>
   )
 }

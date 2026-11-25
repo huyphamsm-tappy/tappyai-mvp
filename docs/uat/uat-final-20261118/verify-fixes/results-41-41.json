@@ -1,0 +1,31 @@
+[
+  {
+    "id": 41,
+    "group": "knowledge",
+    "turns": [
+      {
+        "q": "so sánh văn hóa làm việc của Nhật Bản và Hàn Quốc",
+        "done": true,
+        "seconds": 52,
+        "screen": "screens/q41.jpg",
+        "answered": true,
+        "chars": 1640,
+        "head": "Điểm khác nổi bật: cả Nhật Bản lẫn Hàn Quốc đều coi trọng cấp bậc, tập thể và phép lịch sự; nhưng công sở Nhật thường thiên về xây đồng thuận qua quy trình, còn ở Hàn Quốc thâm niên và vị trí trong hệ thống cấp bậc có thể thể hiện rõ hơn trong trao đổi và ra quyết định. Đây là xu hướng chung, không phải quy tắc áp dụng cho mọi công ty. Shinka Management Source of Asia\nHAI KIỂU VĂN HÓA CÔNG SỞ — XU HƯỚNG, KHÔNG PHẢI KHUÔN MẪU\nNhật Bản\n\nƯu tiên hài hòa nhóm, đồng thuận và chuẩn bị kỹ\n\nXem hồ sơ Tappy\nRa quyết định: Thường xây đồng thuận trước qua trao đổi nội bộ\n\nNguồn: Shinka Management\n\nHàn Quốc\n\nTôn trọng cấp bậc, thâm niên và quan hệ trong tập thể\n\nXem hồ sơ Tappy\nCấp bậc: Thứ bậc và thâm ",
+        "tail": " nổi bật ở cách chuẩn bị đồng thuận theo quy trình; Hàn Quốc ở vai trò dễ thấy của thứ bậc và thâm niên — nhưng muốn hiểu một nơi làm việc cụ thể thì vẫn cần nhìn vào chính công ty đó.\nS\nS\nP\nNguồn · 3",
+        "links": 6,
+        "hosts": {
+          "shinkamanagement.com": 2,
+          "sourceofasia.com": 2,
+          "pmc.ncbi.nlm.nih.gov": 2
+        },
+        "sourcesChip": "S S P Nguồn · 3",
+        "tables": 0,
+        "images": 2,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/6fd9abc6-2efa-45c1-a794-f20de997e639",
+        "proNote": 0
+      }
+    ]
+  }
+]

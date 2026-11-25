@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "group": "greeting",
+    "turns": [
+      {
+        "q": "Hi",
+        "done": true,
+        "seconds": 9,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 110,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nHi\nChào bạn 👋 Mình có thể giúp gì cho bạn hôm nay?",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nHi\nChào bạn 👋 Mình có thể giúp gì cho bạn hôm nay?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/697c6226-c166-4a33-8c71-1ef9ab006e26",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "group": "greeting",
+    "turns": [
+      {
+        "q": "Chào bạn",
+        "done": true,
+        "seconds": 8,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 114,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nChào bạn\nChào bạn! Mình có thể giúp gì cho bạn hôm nay?",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nChào bạn\nChào bạn! Mình có thể giúp gì cho bạn hôm nay?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/0cb0d289-e296-407b-af70-e91750f28c38",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "greeting",
+    "turns": [
+      {
+        "q": "hello, hôm nay bạn khỏe không?",
+        "done": true,
+        "seconds": 7,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 87,
+        "head": "hello, hôm nay bạn khỏe không?\nHello! Mình khỏe, cảm ơn bạn 😊 Còn bạn hôm nay thế nào?",
+        "tail": "hello, hôm nay bạn khỏe không?\nHello! Mình khỏe, cảm ơn bạn 😊 Còn bạn hôm nay thế nào?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/1c670668-30c3-4a79-9714-09f1c3878c01",
+        "proNote": 0
+      }
+    ]
+  }
+]

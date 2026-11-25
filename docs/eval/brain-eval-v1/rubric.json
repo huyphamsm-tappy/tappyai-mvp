@@ -1,0 +1,35 @@
+{
+  "rubric": "brain-eval-v1/rubric",
+  "locked": "18/11/2026",
+  "judge": {
+    "model": "claude-opus-5-5 (KHÔNG phải model nào đang tạo câu trả lời trong bộ đo; nếu sau này một model tạo trả lời là Opus thì đổi người chấm sang model khác và ghi vào báo cáo)",
+    "blind": "Người chấm chỉ nhận: câu hỏi, rubric của câu đó, văn bản trả lời đã chuẩn hóa và danh sách link nguồn. Không nhận tên model, tên hệ thống, thẻ giao diện, nhãn nguồn, thời gian, chi phí. Thứ tự các câu trả lời được xáo ngẫu nhiên bằng hạt giống ghi trong báo cáo.",
+    "settings": "thinking bật, đầu ra là JSON đúng lược đồ dưới đây, nhiệt độ mặc định, mỗi câu chấm 1 lần; 10% câu chấm lại lần hai để đo độ lệch của người chấm"
+  },
+  "dimensions_1to5": {
+    "completeness": "đủ mọi ý được hỏi và mọi mục must_have; 5 = đủ và không thừa, 1 = thiếu phần chính",
+    "accuracy_sources": "mỗi dữ kiện về thế giới có nguồn chính thống bấm được; không có dữ kiện không nguồn hoặc sai; 5 = mọi dữ kiện có nguồn đúng, 1 = nhiều dữ kiện sai hoặc không nguồn",
+    "understanding_vi": "hiểu đúng ý người Việt: vị trí, đơn vị, thuật ngữ, ngữ cảnh ngầm; 5 = hiểu đúng và dùng đúng, 1 = hiểu sai câu hỏi",
+    "usefulness": "giúp người hỏi quyết định hoặc làm được việc: có khuyến nghị rõ, có lý do, có số cụ thể; 5 = có thể hành động ngay, 1 = chung chung",
+    "clarity": "văn bản rõ, không lặp, không câu cụt, không chữ nháp nội bộ, đúng ngôn ngữ người hỏi; 5 = rõ và gọn, 1 = khó đọc hoặc lộ chữ nháp"
+  },
+  "flags_boolean": {
+    "answered": "có câu trả lời nội dung (không chỉ thẻ trần, không khung lỗi)",
+    "hard_fail": "vi phạm bất kỳ mục hard_fail nào của câu đó",
+    "leak": "lộ chữ nội bộ của mô hình hoặc nhãn kỹ thuật",
+    "unsourced_fact_count": "số dữ kiện cụ thể (số, ngày, tên, giá) không có nguồn đi kèm (số nguyên)"
+  },
+  "schema": {
+    "scores": { "completeness": "1-5", "accuracy_sources": "1-5", "understanding_vi": "1-5", "usefulness": "1-5", "clarity": "1-5" },
+    "answered": "boolean",
+    "hard_fail": "boolean",
+    "hard_fail_reason": "string",
+    "leak": "boolean",
+    "unsourced_fact_count": "integer",
+    "one_sentence_reason": "string"
+  },
+  "pass_rule": "Một câu ĐẠT khi answered = true, hard_fail = false, leak = false và trung bình năm trục từ 3,5; điểm chất lượng của một lần chạy = trung bình năm trục (câu không đạt answered tính 0).",
+  "aggregation": "Mỗi câu chạy 3 lần: lấy trung vị điểm của 3 lần; báo cáo thêm độ lệch giữa 3 lần (nhiễu). So sánh hai bản: so trung vị theo từng câu và theo loại, không chỉ trung bình toàn bộ.",
+  "layout_contract_check": "KHÔNG do người chấm; do kiểm tra bằng mã trên dữ liệu thô của lượt: có các khung annotation đúng hợp đồng (present_blocks, present_plan, thẻ quán, nguồn) khi loại câu hỏi yêu cầu; không lỗi. Kết quả ghi riêng.",
+  "cost_time_metrics": "ghi từ log từng lượt: giây đến chữ đầu, giây tổng, số bước, số lần gọi model, số công cụ và độ song song, token vào, token ra, đọc cache, USD model, USD Serper và Parallel."
+}

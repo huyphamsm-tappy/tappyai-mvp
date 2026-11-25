@@ -91,6 +91,22 @@ export function repairArgs(tool: string, args: Record<string, unknown>, schema: 
   return { args: out, changed }
 }
 
+/** The no-op tool a refused presentation call is turned into (registered by the chat route on a one-brain turn). */
+export const PRESENT_FALLBACK_TOOL = 'present_failed'
+
+/**
+ * 19/11 (UI eval + UAT log: 4 present_blocks calls with no/empty `blocks`, 3 present_plan calls with malformed JSON, each refused by the SDK and each ending the WHOLE turn with no text and a red banner).
+ * A presentation call (`present_*`: a card, a plan, blocks) is decoration of the answer, never the answer. When it cannot be repaired it is turned into a call of the no-op tool `present_failed`, whose
+ * result tells the model the card could not be built and to write the answer in text: the turn goes on. Only when that tool is registered; never for another tool; never for the fallback itself.
+ */
+export function presentationFallback(
+  toolCall: { toolCallType: 'function'; toolCallId: string; toolName: string; args: string },
+  tools: Record<string, unknown>,
+) {
+  if (!toolCall.toolName.startsWith('present_') || toolCall.toolName === PRESENT_FALLBACK_TOOL || !(PRESENT_FALLBACK_TOOL in tools)) return null
+  return { ...toolCall, toolName: PRESENT_FALLBACK_TOOL, args: '{}' }
+}
+
 /** The `experimental_repairToolCall` hook for streamText / generateText. */
 export async function repairToolCall(options: {
   toolCall: { toolCallType: 'function'; toolCallId: string; toolName: string; args: string }
@@ -106,18 +122,27 @@ export async function repairToolCall(options: {
   }
   let parsed: unknown
   try { parsed = JSON.parse(toolCall.args) } catch {
-    console.warn(JSON.stringify({ ...base, outcome: 'args_not_json', args: toolCall.args.slice(0, 200) }))
-    return null
+    const fb = presentationFallback(toolCall, options.tools)
+    console.warn(JSON.stringify({ ...base, outcome: fb ? 'presentation_fallback' : 'args_not_json', why: 'args_not_json', args: toolCall.args.slice(0, 200) }))
+    return fb
   }
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-    console.warn(JSON.stringify({ ...base, outcome: 'args_not_object' }))
-    return null
+    const fb = presentationFallback(toolCall, options.tools)
+    console.warn(JSON.stringify({ ...base, outcome: fb ? 'presentation_fallback' : 'args_not_object', why: 'args_not_object' }))
+    return fb
   }
   const schema = options.parameterSchema({ toolName: toolCall.toolName })
   const { args, changed } = repairArgs(toolCall.toolName, parsed as Record<string, unknown>, schema)
   if (changed.length === 0) {
-    console.warn(JSON.stringify({ ...base, outcome: 'unrepairable', message: String(options.error?.message ?? '').slice(0, 200) }))
-    return null
+    const fb = presentationFallback(toolCall, options.tools)
+    console.warn(JSON.stringify({ ...base, outcome: fb ? 'presentation_fallback' : 'unrepairable', why: 'unrepairable', message: String(options.error?.message ?? '').slice(0, 200) }))
+    return fb
+  }
+  // 19/11 (review): the SDK repairs a call once. A presentation call that is still missing a required field after the shape repair would be refused again and end the turn, so it falls back the same way
+  const stillMissing = (schema.required ?? []).filter(k => args[k] === undefined || args[k] === null)
+  if (stillMissing.length > 0) {
+    const fb = presentationFallback(toolCall, options.tools)
+    if (fb) { console.warn(JSON.stringify({ ...base, outcome: 'presentation_fallback', why: 'required_missing_after_repair', fields: stillMissing.slice(0, 5) })); return fb }
   }
   console.warn(JSON.stringify({ ...base, outcome: 'repaired', changes: changed }))
   return { ...toolCall, args: JSON.stringify(args) }

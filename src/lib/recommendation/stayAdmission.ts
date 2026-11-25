@@ -166,6 +166,9 @@ export function admitsStay(row: StayCandidate, destination?: VietnamCity | null)
 
   if (hasCoords) return true
 
+  // a row the Agoda provider itself returned (realtimeBooking: an offer that matched no list row): a named hotel with its own priced page, not a search snippet
+  if ((row as { source?: unknown }).source === 'agoda_offer') return true
+
   if (isAggregateTitle(rawName)) return false
 
   /**

@@ -7,6 +7,13 @@ import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
+import { attachmentOnlyPolicyOn, canonicalContextOn, hotlineClaimGuardOn, marketGateOn, safetyEmergencyOn } from '@/lib/config/r13Flags'
+import { canonicalTurn } from '@/lib/context/routeBridge'
+import { hotlineClaimGuardStream } from '@/lib/safety/hotlineClaimStream'
+import { classifyEmergency } from '@/lib/safety/emergencyClassifier'
+import { buildEmergencyTurn, emergencyDataStreamResponse } from '@/lib/safety/emergencyResponse'
+import { attachmentOnlyTask, attachmentTaskSystemLine } from '@/lib/attachments/routeTask'
+import { resolveRequestMarket, wrapToolsWithMarketGate } from '@/lib/market/routeGate'
 import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
@@ -15,6 +22,7 @@ import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/a
 import { buildMemoryBlock, extractMemoryFromConversation, lastMemoryExtractionUsage, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
+import { getMarketRate } from '@/lib/ai/tools/marketRates'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
@@ -31,6 +39,10 @@ import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
+import { reportQuestionLang } from '@/lib/ai/research/reportLang'
+import { tierTurnFor, researchAdvancedOn } from '@/lib/ai/research/researchTurn'
+import { ADVANCED_RUN_BOUNDS } from '@/lib/ai/research/researchController'
+import { claudeWriterAvailable } from '@/lib/ai/llm/registry'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -38,7 +50,7 @@ import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } f
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { buildBrief, briefForModel, consultBriefEnabled } from '@/lib/ai/consultative/consultativeBrief'
 import { shortlistShopping, shortlistCandidates, restrictRankedTo } from '@/lib/ai/consultative/shortlist'
-import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
+import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, gapWithRealtimePrice, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
 import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
@@ -75,7 +87,8 @@ import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks as attachCommerceLinksBase } from '@/lib/ai/tools/commerce'
 import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
-import { commerceActorHash } from '@/lib/ccp'
+import { commerceActorHash, PROVIDER_REGISTRY } from '@/lib/ccp'
+import { ResultLedger, withResultIds, validateDeclared, resolveBookingLinks, mergePresentations, makeProviderOfUrl, PRESENT_BLOCKS_DESCRIPTION, presentBlocksParameters } from '@/lib/presentation/declare'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
@@ -97,9 +110,12 @@ import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CA
 import { guardShareFollowUp } from '@/lib/share/followUpGuard'
 import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
-import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
-import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT, vnToday } from '@/lib/config/product'
+import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, peekDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { nextMonthStartVn, DEEP_RESET_HEADER } from '@/lib/plans/deepResearchNotice'
+import { fileExportNoteFor } from '@/lib/chat/fileRequest'
+import { tierOf, modeForTier, TIER_HAS_TOOLS, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
 import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
@@ -110,11 +126,19 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_ONE_BRAIN, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, lookupTimeUp, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
+import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
+import { daysWithoutNight, NIGHT_RETRY_NOTE } from '@/lib/ai/consultative/planNight'
+import { PLAN_COSTS_RETRY_NOTE } from '@/lib/ai/consultative/planCosts'
+import { sumCosts, type CostLine } from '@/lib/ai/consultative/planCosts'
+import { tierOf as turnTierOf, budgetOf, spendLookup, newBudgetState, type TurnTier } from '@/lib/ai/consultative/turnBudget'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { explainFeature } from '@/lib/features/explainFeature'
+import { toolsForFreePlan } from '@/lib/features/freeTools'
+import { ONE_BRAIN_CORE, EXPLAIN_FEATURE_DESCRIPTION, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
+import { verifyDeclaredFacts } from '@/lib/ai/answerV4/factSense'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
 import { getWeatherForecast } from '@/lib/ai/tools/weatherForecast'
@@ -369,6 +393,18 @@ export async function POST(req: Request) {
     (c: { type?: string }) => c.type === 'image' || c.type === 'image_url'
   )
 
+  // R13 §10.5 (SAFETY_EMERGENCY, default OFF, locked in production): a clear emergency statement is answered here, before consent, intent, quota, memory, any model or any tool: verified hotline
+  // cards only for a device position inside Viet Nam, else immediate guidance and at most one location question per thread (lib/safety/emergencyResponse.ts). Nothing leaves for a provider.
+  if (safetyEmergencyOn()) {
+    const emergency = classifyEmergency(lastText)
+    if (emergency.emergency && emergency.category) {
+      console.log(JSON.stringify({ type: 'tappyai_safety_emergency', category: emergency.category, lang: emergency.lang, elapsedMs: Date.now() - startTime }))
+      return emergencyDataStreamResponse(buildEmergencyTurn({ category: emergency.category, lang: emergency.lang ?? 'vi', userLocation, priorMessages: messages as Array<{ role: string; content: unknown }>, now: new Date() }))
+    }
+  }
+  // R13 §3.2.3 (ATTACHMENT_ONLY_POLICY, default OFF, locked in production): the last user turn is only an attachment -> the server-owned task, no tool this turn (used where the stream is built).
+  const attachmentOnly = attachmentOnlyPolicyOn() ? attachmentOnlyTask(typedMessages as Array<{ role: string; content: unknown }>) : null
+
   // Item 1: after a clarify turn the deterministic readers (intent, need profile, decision frame,
   // situation, search-now) see the original request and the answer as ONE user turn
   // (actionability.ts) — "2 người" alone would classify as chitchat and drop the tools. The model
@@ -398,15 +434,37 @@ export async function POST(req: Request) {
     .filter((t: string) => t.length > 0)
   const replyLanguage = resolveReplyLanguage({ lastText, priorUserTexts: earlierUserTexts, clientLocale })
   const lang = replyLanguage.lang
+  // CANONICAL_CONTEXT (R13 §3.3-3.5, §7.1; default OFF): ONE contract per turn, right after the location / language reading. A counts-only trace and at most one fact line for the
+  // model; the market the gate judges (resolveRequestMarket, below) is NOT touched by it: a Bangkok target never makes the gate deny a tool. OFF = this block does not run.
+  const canonicalCtx = canonicalContextOn()
+    ? canonicalTurn({
+      text: lastText, priorUserTexts: earlierUserTexts, userMarketId: resolveRequestMarket(req.headers).marketId, uiLocale: clientLocale,
+      locations: userLocation ? [{ source: 'GPS', latitude: userLocation.lat, longitude: userLocation.lng, consentGranted: true }] : [],
+    })
+    : null
+  if (canonicalCtx) console.log(JSON.stringify(canonicalCtx.trace))
   const forcedTool = detectForcedTool(lastText)
   // CONSULT_UNWIND_S4A: the keyword reading no longer DECIDES (domain, pre-search, decision frame, actionability); it reaches the model as a hint
   // only (unwindToolHint, below). Memory scoping and the logs keep reading `forcedTool`. Measured 28/10: "tiệm vàng" forced search_places, "mua" forced
   // search_products, "trời mưa" was read as "mua". OFF: `forcedToolDecides` is `forcedTool`, as at HEAD.
   // CONSULT_ONE_BRAIN (oneBrain.ts): the answer model is the only reader of the question - no rules router, intent call, code question, pre-search, plan frame
-  // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. An image / clip turn and the agent keep their own path.
+  // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. The agent keeps its own path.
   // 31/10: a turn with a picture runs on one brain too (gpt-6-luna reads images with tools defined - probe 31/10); before, it fell back to the
   // old 3-step, 1 024-token path with the old rulebook.
-  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !clipRef
+  // 17/11: a turn that comes from an Explore clip runs on one brain too. The clip is one more kind of context (the fenced block of
+  // exploreClipContext.ts among the dynamic blocks, below) and the place search narrows its rows to the clip's venue as before; before, the
+  // clip turn fell back to the old rulebook path.
+  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled()
+  // CONSULT_PRESENT_BLOCKS (default OFF): the turn's tool results get ids and the model may declare blocks (presentation/declare.ts).
+  const presentBlocksOn = oneBrain && consultPresentBlocksOn()
+  // CONSULT_PERSON_MODEL (default OFF): an INPUT fix, no prompt text: the memory of WHO the person is (style, company) is extracted on ordinary turns and kept (memoryGate.ts, memoryTransientFilter.ts).
+  const personModelOn = oneBrain && consultPersonModelOn()
+  // CONSULT_PLAN_V2 (default OFF): present_plan carries who it is for, every cost line, the total and its assumptions as required fields (consultative/planV2.ts)
+  const planV2On = oneBrain && consultPlanV2On()
+  const resultLedger = new ResultLedger()
+  const RESULT_ID_SKIP: ReadonlySet<string> = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'think_deeper', 'save_price_watch', 'explain_feature'])
+  const presentBlockProviders: ReadonlySet<string> = new Set(PROVIDER_REGISTRY.map(p => p.providerId))
+  const presentBlockProviderOf = makeProviderOfUrl(PROVIDER_REGISTRY)
   const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
@@ -417,7 +475,7 @@ export async function POST(req: Request) {
   // (12 chars) — a hard dietary constraint. See memoryGate.ts. Consultative V1 flips the
   // default to NO (measured: ordinary requests yield nothing the transient filter keeps) and the
   // topic of a plain request is written to `history` below without a model call.
-  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool, consultative: consultativeV1Enabled() })
+  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool, consultative: consultativeV1Enabled(), ...(personModelOn ? { personModel: true } : {}) })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
   // CCP Phase 8 (P1-2): the commerce seam reads the capability and the reservation party/time/date
@@ -766,6 +824,9 @@ export async function POST(req: Request) {
   // null for an exempt turn (canned / clarify) and for Pro (metered by the daily cap, not here).
   let quotaRefund: AiQuotaRefund | null = null
   let quotaRefunded = false
+  // R13 cost gate (lib/ai/cost, AI_COST_GATE=1, off by default): the day's money this account may still spend, reserved before the model runs,
+  // settled to the turn's real cost in usageSink, given back when the turn produced nothing. Null when the gate is off or the turn is exempt.
+  let costTurn: CostTurn | null = null
   // ── CONSULT_V3 turn contract (clarifyCredit.ts) and Q-03 pending actions ────────────────────────────────────────────
   // Every rule below is inert with CONSULT_V3 off: no credit is taken, issued or kept, and no "ok" is free. The stored chat state is read
   // once here for both the pending-action rules and the carried facts (P0-2).
@@ -1234,7 +1295,7 @@ export async function POST(req: Request) {
         if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
-      // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
+      // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 1000 model turns since owner 01/11/2026; the value lives in lib/security/chatCaps.ts) bounds the
       // worst day of one account; canned turns ($0) are not counted.
       if (isPro && !quotaExempt) {
         const proDay = await publicDailyRateLimit(`chat:pro:${user.id}`, PRO_DAILY_CHAT_CAP)
@@ -1245,6 +1306,24 @@ export async function POST(req: Request) {
             { status: 429, headers: { 'Content-Type': 'application/json' } },
           )
         }
+      }
+      // R13 cost gate: a signed-in account's DAY of money, reserved by the mode that will really run (a Free account asking for Deep Research
+      // runs Chat, so it reserves Chat). Refused here, before any model or search work. Canned/deterministic turns cost nothing and skip it.
+      if (costGateOn() && !quotaExempt) {
+        const gate = await reserveTurnCost({ userId: user.id, tier: tierOf(quotaPlan), mode: modeForTier(chatMode, tierOf(quotaPlan)) })
+        if (!gate.ok) {
+          // The person is told only to come back tomorrow, never a figure. A metering outage gets its own code so it is not mistaken for the ceiling.
+          const outage = gate.reason === 'store_unavailable'
+          await refundAiQuestion(quotaRefund)
+          quotaRefund = null
+          return new Response(
+            JSON.stringify(outage
+              ? { error: 'cost_gate_unavailable', message: serverMessage('chat.costGateUnavailable', requestLocale(req)) }
+              : { error: 'daily_cost_limit_reached', message: serverMessage('chat.dailyCostLimit', requestLocale(req)) }),
+            { status: outage ? 503 : 429, headers: { 'Content-Type': 'application/json', ...(outage ? { 'Retry-After': '30' } : {}) } },
+          )
+        }
+        costTurn = gate.turn
       }
     }
   } catch (e) {
@@ -2380,6 +2459,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Owner 01/11/2026 (plan tiers, lib/plans/tiers.ts): with the plans on sale (SUBSCRIPTIONS_ENABLED) a mode the account's tier does not
   // have runs as Chat - Pip (Free) and visitors chat with Luna 6.0; Coco / MoMo / Tappy have every mode. Off: every mode, as before.
   const planTier = tierOf(quotaPlan)
+  // Owner 14/11/2026: with the plans on sale a Free turn has NO tools (the model's own ability only); Pro / Trial / Promax have them all. Plans off: as before.
+  const planHasTools = !subscriptionsEnabled() || TIER_HAS_TOOLS[planTier]
   if (subscriptionsEnabled()) {
     const asked = chatMode
     chatMode = modeForTier(chatMode, planTier)
@@ -2389,18 +2470,36 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     chatMode = 'chat'
     console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'visitor' }))
   }
+  // Owner 20/11/2026: a report asked for when none is left this month is not refused: the question runs as Thinking (a full, careful answer) and the model gets one plan fact so the person is told, once and
+  // briefly, when the reports come back. `peek` does not spend; the atomic spend still happens at the start of a real report (below), and a race there falls back to the old refusal.
+  // The PERSON is told by a fixed note the page draws from the `x-tappy-deep-reset` header (the model is told nothing: it named the limit on one turn and forgot it on the next).
+  let deepResetOn: string | null = null
+  if (chatMode === 'deep' && authedUserId) {
+    const deepLimit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
+    if (deepLimit > 0 && (await peekDeepResearch(authedUserId, deepLimit)).remaining === 0) {
+      chatMode = 'think'
+      deepResetOn = nextMonthStartVn(vnToday())
+      console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'deep_research_month_used' }))
+    }
+  }
   // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
-  const autoThink: { on: boolean; effort: 'medium' } = { on: false, effort: 'medium' }
+  // 18/11 (Phase 1): CONSULT_AUTOTHINK_EFFORT = none | low | medium (default medium = unchanged). Measured on the real UI: think_deeper was called in 100% of the baseline turns, so every later step reasoned at
+  // medium (500-3,500 reasoning tokens per step at about 100 tokens/s = 5-35 s per step); the plan turns that ended in the red banner spent 100+ s in reasoning and the plan card's own arguments.
+  const autoThinkEffortEnv = (process.env.CONSULT_AUTOTHINK_EFFORT ?? '').trim().toLowerCase()
+  const autoThink: { on: boolean; effort: 'none' | 'low' | 'medium' } = { on: false, effort: autoThinkEffortEnv === 'none' || autoThinkEffortEnv === 'low' ? autoThinkEffortEnv : 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock, fileExportNoteFor(lastText)], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
-  const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
+  // The Free plan (no tools) gets no picture lookups either: the model's own ability only
+  const oneBrainUnderstanding = oneBrain && planHasTools && consultOneBrainMediaOn()
     ? understandTurn({ userText: lastText, previousUser: (() => { const u = userMessages[userMessages.length - 2] as { content?: unknown } | undefined; return typeof u?.content === 'string' ? u.content : null })(), previousReply: priorAssistantText ?? null })
     : null
   const systemShared = oneBrainPrompt ? oneBrainPrompt.shared : lean ? lean.shared : legacyShared
-  const systemPrompt = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
+  const systemPromptBase = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
+  // CANONICAL_CONTEXT: one fact line, only when it exists (OFF or nothing to say = the very same string as before)
+  const systemPrompt = canonicalCtx?.systemLine ? `${systemPromptBase}\n\n${canonicalCtx.systemLine}` : systemPromptBase
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //
@@ -2451,6 +2550,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * ungated in silence. Only Consultative V1 turns (`situation` set) are judged.
    */
   const gateTools = <T extends Record<string, unknown>>(tools: T): T => {
+    if (!planHasTools) return toolsForFreePlan(tools) as T // Free plan (plans on sale): the model's own ability only, no paid tool; only explain_feature (Tappy's own guide, free of cost) stays (lib/features/freeTools.ts)
     for (const [name, t] of Object.entries(tools)) {
       const def = t as { execute?: (...a: unknown[]) => Promise<unknown> }
       const orig = def.execute
@@ -2617,6 +2717,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let placesOverride: { results: unknown[]; location?: string } | null = null
   let lastPlaceRowsForState: { args: { query: string; type?: string; location?: string }; rows: unknown[] } | null = null
   let lastStayForState: NonNullable<ChatSessionState['stay']> | null = null
+  let planNightRetries = 0 // present_plan: a trip day with no stop after 20:30 is sent back once (planNight.ts)
   let lastProductsForState: NonNullable<ChatSessionState['products']> | null = null
   // A place "xem thêm" / "bác" with ≥ 2 stored candidates nobody has been shown: the stored set, not a new
   // search. Fewer left → search again (the candidates ran out).
@@ -2700,6 +2801,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
   const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
     logSessionCost(i) // 02/11: outside production, one readable line with the running total of the testing session (never in production)
+    if (costTurn) { const t = costTurn; costTurn = null; void t.settle(i.usd) } // R13 cost gate: the reservation becomes the turn's real cost, once
     void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: ledgerMode(chatMode, autoThink.on, responsesConfigured()), searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...usageSplit(i), ...extra })
   }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
@@ -2707,7 +2809,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
       ...(!oneBrain && ((movieRecommend && !agentOn) || filmAsk) ? {} : { search_places: tool({
-        description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
+        // 19/11 (owner: the model must pass the person's need down to the tool precisely, and know what a call costs): what the call is, what to put in each field, the cap of the turn, what it returns
+        description: oneBrain
+          ? 'Find real places in Vietnam: restaurants, cafes, spas, hotels, attractions, hospitals, entertainment (cinema, karaoke, gym, bar). One call is ONE search for ONE kind of place in ONE area; a turn allows at most 6 calls, so decide what you need first and make those calls together in one step. Put what the person wants in `query` (the dish, the style, a must-have: "bun bo Hue", "quiet cafe with power outlets"), the city or district in `location`, a street, ward or landmark in `near` ("Phan Xich Long", "near Ben Thanh market"), the kind in `type`. It returns rows with address, rating, opening hours, price level and photos, which the person sees as cards; it does not return reviews text or booking availability. Do not repeat a search for the same need with other words.'
+          : 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
@@ -2717,9 +2822,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // that told the user its own results were wrong.
           // A free string, coerced in execute (placeType.ts): an off-enum value from the model
           // ("entertainment") used to fail SDK validation and end the whole turn with an error.
-          type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall')
+          type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall'),
+          // 19/11: the person's own narrowing (a street, "near the market") had no field; it was squeezed into `query` or lost
+          ...(oneBrain ? { near: z.string().optional().describe('A street, ward or landmark inside the area, as the person said it (e.g. Phan Xich Long, near Ben Thanh market). Leave out when only a city or district was given') } : {}),
         }),
-        execute: async ({ query, location: modelLocation, type: rawType }) => {
+        execute: async ({ query: queryArg, location: modelLocationArg, type: rawType, near }: { query: string; location?: string; type?: string; near?: unknown }) => {
+          const nearText = typeof near === 'string' ? near.replace(/\s+/g, ' ').trim().slice(0, 80) : ''
+          // `near` narrows an area: with an area it joins it ("street, area"); alone it goes into the query, so the city the query or the question names still decides where the search is centred
+          const modelLocation = nearText && modelLocationArg?.trim() ? `${nearText}, ${modelLocationArg.trim()}` : modelLocationArg
+          const query = nearText && !modelLocationArg?.trim() ? `${queryArg} ${nearText}` : queryArg
           const type = coercePlaceType(rawType)
           lastPlaceSearch = { args: { query, ...(type ? { type } : {}), ...(modelLocation ? { location: modelLocation } : {}) }, shown: [], at: new Date().toISOString() }
           if (rawType !== undefined && type !== rawType) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'type_coerced', from: String(rawType).slice(0, 40), to: type ?? null }))
@@ -2934,10 +3045,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }),
       ...(locationIntent !== 'offline' || oneBrain ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
-        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
+        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 || oneBrain ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
         execute: async ({ query, purchase_links }: { query: string; purchase_links?: unknown }) => {
           // Enrichment policy (enrichmentPolicy.ts): the Agent Runtime fetches purchase links only when Luna declared purchase intent.
-          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2, purchaseLinks: purchase_links })
+          // 19/11 (owner: fix the tool call, not the Serper count): one brain declares what it needs too. A call that only compares or advises gets the rows (price, spec, the listing's own link);
+          // the vendor-link searches that put buy buttons on cards (~9 of the ~12 credits of a call) run only when the model declares purchase intent (`purchase_links`), as the Agent Runtime does since 09/10.
+          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2 || oneBrain, purchaseLinks: purchase_links })
           const enrichmentBefore = serperSnapshot()
           const stored = productsOverride
           productsOverride = null
@@ -2961,7 +3074,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             if (Number.isFinite(optionalBudget)) await withSerperToolBudget(optionalBudget, async () => { await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts }) })
             else await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           }
-          if (agentV2) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
+          if (agentV2 || oneBrain) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -3081,15 +3194,37 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // CONSULT_ONE_BRAIN: the plan card / brochure (TripPlanCard, the shared plan page). Before, code decided a "trip turn" and wrote the
       // [TAPPY_PLAN] spec into the prompt; with one brain the model decides to present a day-by-day plan and passes it here (TappyPlan shape,
       // components/TripPlanCard.tsx). The block is appended in streamEnrichment, where the photo, link and price guards still run on it.
+      // 19/11: never called by the model. A refused presentation call (a card with no/empty fields, a plan whose JSON was cut) is turned into a call of this no-op by the repair hook
+      // (llm/toolCallRepair.ts presentationFallback) instead of ending the turn with no text; its result tells the model to write the answer in text.
+      ...(oneBrain ? { present_failed: tool({
+        description: 'Internal. The system uses this when a card or plan call could not be built. Never call it yourself.',
+        parameters: z.object({}),
+        execute: async () => ({ error: 'presentation_failed', note: 'The card could not be built. Write the answer in plain text now, in the language of the person, with the key facts, figures and sources you already have.' }),
+      }) } : {}),
+      // 20/11 (owner: Tappy explains its own features to people who do not know how to use it): reads Tappy's own guide (lib/features/explainFeature.ts), calls no provider, costs nothing, is not a
+      // lookup (consultFlags NOT_A_LOOKUP) and is the one tool a Free turn keeps (lib/features/freeTools.ts).
+      ...(oneBrain ? { explain_feature: tool({
+        description: EXPLAIN_FEATURE_DESCRIPTION,
+        parameters: z.object({ topic: z.string().describe('what the person asks about, in a few words (e.g. "deep research", "share a trip plan", "upgrade my plan", "save a place")') }),
+        execute: async ({ topic }) => explainFeature(String(topic ?? '').slice(0, 200), lang === 'en' ? 'en' : 'vi'),
+      }) } : {}),
       ...(oneBrain ? { present_plan: tool({
         description: PRESENT_PLAN_DESCRIPTION,
         parameters: z.object({
           type: z.enum(['trip', 'evening']),
           title: z.string().describe('e.g. "Quy Nhơn 3 ngày 2 đêm"'),
           people: z.number().optional(),
-          budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
+          gentle: z.boolean().optional().describe('true ONLY when the person asked for a slow, light or relaxed plan, or travels with elderly people or small children: the plan then needs no stop after 20:30'),
+          budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices; leave it out when you give costs_vnd (the app writes the total)'),
+          costs_vnd: z.array(z.object({
+            item: z.string().describe('what the money is for: transport, stay, food, activities, local travel...'),
+            low: z.number().describe('the amount in VND (a whole number); the low end when it is a range'),
+            high: z.number().optional().describe('the high end in VND when it is a range'),
+            per_person: z.boolean().optional().describe('true when the figure is for ONE person (the app multiplies by people); false or omitted when it is for the whole group'),
+            note: z.string().optional().describe('where the figure comes from, a few words'),
+          })).optional().describe('the cost lines as NUMBERS. The app adds them up and writes cost_breakdown and the total itself, so the total always equals its lines. Give one line per kind of cost, covering the whole trip.'),
           days: z.array(z.object({
-            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 3-6 items (morning, lunch, afternoon, dinner, evening)'),
+            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 4-7 items (morning, lunch, afternoon, dinner, and the evening or late night where the place has one)'),
             items: z.array(z.object({
               time: z.string().describe('e.g. "07:00" or "Sáng"'),
               emoji: z.string(),
@@ -3102,9 +3237,28 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           })).min(1),
           cost_breakdown: z.record(z.string()).optional(),
           local_tips: z.array(z.object({ text: z.string(), basis: z.enum(['tool', 'general']) })).optional(),
+          // 20/11: where to stay and what to eat, as their own sections. All optional and lenient on purpose (a refused argument ends the whole turn); the app keeps only what the turn's lookups support (consultative/planStaysDishes.ts)
+          stays: z.array(z.object({ name: z.string().describe('the hotel, named exactly as get_hotel_prices returned it'), why: z.string().optional().describe('one short reason it suits this person') })).optional().describe('2-3 recommended hotels; the app adds the price per night and the booking page from the lookup'),
+          dishes: z.array(z.object({ dish: z.string().describe('the dish or specialty'), venue: z.string().optional().describe('the place to eat it, named exactly as search_places returned it'), price: z.string().optional().describe('only from the tool results'), note: z.string().optional().describe('what makes it worth trying, a few words') })).optional().describe('up to 6 dishes worth trying, each at a venue from the lookups'),
+          // CONSULT_PLAN_V2 (default OFF): who the plan is for, every cost line, the total and the assumptions are REQUIRED fields (they replace the optional budget_total above)
+          ...(planV2On ? planV2Shape : {}),
         }),
         execute: async (plan) => {
-          enrichment.planBlock = JSON.stringify(plan)
+          // owner 19/11: a plan whose day closes at dinner goes back to the model once (the night is part of the first plan); the second call is shown as it is
+          const noNight = plan.type === 'trip' ? daysWithoutNight(plan.days as Array<{ items?: Array<{ time?: unknown }> }>, { gentle: (plan as { gentle?: boolean }).gentle === true }) : []
+          // 20/11: a trip plan sent with its own written total and breakdown instead of the numeric cost lines (costs_vnd) is sent back too, in the SAME retry as the night (one extra plan call at most): the lines and the total must be the code's sum
+          const own = plan as { costs_vnd?: unknown[]; budget_total?: unknown; cost_breakdown?: Record<string, unknown> }
+          const noCosts = plan.type === 'trip' && !planV2On && !(own.costs_vnd ?? []).length && (!!own.budget_total || Object.keys(own.cost_breakdown ?? {}).length > 0)
+          if ((noNight.length > 0 || noCosts) && planNightRetries < 1) {
+            planNightRetries++
+            console.log(JSON.stringify({ type: 'tappyai_plan_night_retry', days: noNight, missing_costs: noCosts }))
+            return { ok: false, note: [noNight.length > 0 ? NIGHT_RETRY_NOTE(noNight) : '', noCosts ? PLAN_COSTS_RETRY_NOTE : ''].filter(Boolean).join(' ') }
+          }
+          // the total is added up here, from the numbers the model gave: lines and total can never disagree (planCosts.ts)
+          const summed = sumCosts((plan as { costs_vnd?: CostLine[] }).costs_vnd, plan.people, lang === 'en' ? 'en' : 'vi')
+          if (summed) { (plan as Record<string, unknown>).cost_breakdown = summed.cost_breakdown; (plan as Record<string, unknown>).budget_total = summed.budget_total }
+          delete (plan as Record<string, unknown>).costs_vnd
+          enrichment.planBlock = JSON.stringify(planV2On ? foldPlanV2(plan as Parameters<typeof foldPlanV2>[0]) : plan)
           return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
         },
       }) } : {}),
@@ -3132,11 +3286,37 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           return { ok: true, note: 'The app shows these options as cards BELOW your text. Write the lead (what you chose by), your pick and why, and a short table mapping each need to an option; do not repeat each card, and do not say the cards are above.' }
         },
       }) } : {}),
+      // CONSULT_PRESENT_BLOCKS (14/11, layout slice 2; default OFF): the model declares the blocks its answer needs (compare table, ask chips, booking handoff) and points at this turn's tool
+      // results by id (`result_id`, added by withResultIds). The declaration is checked against the turn (presentation/declare.ts) and sent after the prose as a live annotation; no link is
+      // written here, and nothing is stored.
+      ...(presentBlocksOn ? { present_blocks: tool({
+        description: PRESENT_BLOCKS_DESCRIPTION,
+        parameters: presentBlocksParameters,
+        execute: async ({ blocks }) => {
+          const declared = validateDeclared({ v: 1, blocks }, resultLedger, presentBlockProviders)
+          // a booking takes the partner link of its own tool result (written by the partner layer, never by the model); one without a link is dropped
+          const resolved = declared ? resolveBookingLinks(declared, resultLedger) : null
+          if (!resolved) return { ok: false, note: 'None of the blocks could be used (check kind, result_id and the sizes; a booking needs a result that carries a booking link). Write the answer as text.' }
+          // a second call adds to the first (blocks of a type declared again replace that type only): see mergePresentations
+          const merged = mergePresentations(enrichment.presentation ? { presentation: enrichment.presentation, links: enrichment.presentationLinks ?? {} } : null, resolved)
+          enrichment.presentation = merged.presentation
+          enrichment.presentationLinks = merged.links
+          // 16/11 (owner: real data only): before the cards are sent, each of their points is checked against what this turn's lookups returned (answerV4/factSense.ts)
+          enrichment.verifyPresentation = p => verifyDeclaredFacts(p, resultLedger.evidence())
+          return { ok: true, note: 'The app shows these blocks with your answer. Write the answer around them; do not repeat what a block already shows, do not say where it appears, and do not write a block name, placeholder or marker in the text.' }
+        },
+      }) } : {}),
       get_gold_price: tool({
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
         execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
+      // 17/11 (owner: "the official, frequently updated page for each, as the default"): exchange rates from Vietcombank's own feed, crypto from Coinbase, oil futures from the exchange quote
+      ...(oneBrain ? { get_market_rate: tool({
+        description: 'Current market rate from the page that publishes it: kind "fx" = the Vietcombank rate of a currency in dong (symbol: USD, EUR, JPY, KRW, GBP, AUD, CNY, THB, SGD...), kind "crypto" = the Coinbase price of a coin in USD with its change against a week ago, computed (symbol: BTC, ETH, SOL...), kind "oil" = the futures price of Brent or WTI with its change against the previous close, computed (symbol: BRENT or WTI). Gold has its own tool; weather too. The result names its source, its page and its time: say them, and use its numbers exactly.',
+        parameters: z.object({ kind: z.enum(['fx', 'crypto', 'oil']), symbol: z.string().describe('Currency code, coin symbol, or BRENT / WTI') }),
+        execute: async ({ kind, symbol }) => getMarketRate(kind, symbol),
+      }) } : {}),
       get_flight_prices: tool({
         description: oneBrain
           ? 'Flight booking pages between two cities or airports for the route and date (Trip.com, Traveloka, airlines), shown as buttons. It has NO fare, time or status data: for a reference price, web_search current fares instead.'
@@ -3169,8 +3349,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           location: z.string().describe('Dia diem/thanh pho can tim khach san (vd: Da Nang, Phu Quoc, Ha Noi)'),
           checkIn: z.string().optional().describe('Ngay check-in dang YYYY-MM-DD (khong bat buoc)'),
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
+          guests: z.number().optional().describe('So nguoi lon o neu user noi ro (khong bat buoc; bo trong neu user chua noi — khong tu doan)'),
         }),
-        execute: async ({ location, checkIn, checkOut }) => {
+        execute: async ({ location, checkIn, checkOut, guests: rawGuests }) => {
+          const { passengers: guests } = clampPassengers(rawGuests, lang)
           const stored = stayOverride
           stayOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_hotel_prices', step: 'from_chat_state', rows: stored.length }))
@@ -3196,8 +3378,31 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
-          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, ...(guests ? { passengers: guests } : {}), platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // 15/11: the live offers are attached just above, after the place rows' evidence gap was read; when price was the only thing missing and the offers carry fresh prices, they ARE the evidence (decisionFrame.gapWithRealtimePrice)
+          {
+            const rec = result as Record<string, unknown>
+            const before = rec._tappy_evidence_gap as { qualified: number; total: number; needed: Array<'price'>; action: 'recommend' | 'search_again' | 'insufficient' } | undefined
+            const after = before ? gapWithRealtimePrice(before as never, rec.realtime_results) : null
+            if (after) {
+              rec._tappy_evidence_gap = after
+              enrichment.setClarificationPolicy('no_reflex')
+              console.log(JSON.stringify({ type: 'tappyai_evidence_gap', tool: 'get_hotel_prices', ...after, source: 'realtime' }))
+            }
+          }
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
+          // 20/11: the Agoda page and nightly price of every hotel this lookup priced, kept for the plan's hotel stop (planPartnerLinks.ts)
+          {
+            const rows = (result as { hotel_list?: unknown })?.hotel_list
+            if (Array.isArray(rows)) {
+              enrichment.stayLinks = [...(enrichment.stayLinks ?? []), ...rows.flatMap((h: unknown) => {
+                const x = h as { name?: unknown; agoda_offer_url?: unknown; agoda_offer_price?: { amount?: unknown; unit?: unknown } }
+                return typeof x?.name === 'string' && typeof x.agoda_offer_url === 'string'
+                  ? [{ name: x.name, url: x.agoda_offer_url, ...(x.agoda_offer_price?.unit === 'per_night' && typeof x.agoda_offer_price.amount === 'number' ? { perNight: x.agoda_offer_price.amount } : {}) }]
+                  : []
+              })]
+            }
+          }
           // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
@@ -3213,7 +3418,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // A free string, coerced in execute (transportMode.ts): same class as search_places.type —
           // an off-enum value ("bus", "grab") used to fail SDK validation and end the whole turn.
           mode: z.string().optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
-          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
+          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc). The REAL travel date: the month the person named (late December -> YYYY-12-2x of the coming one), never the current month by default; leave it out when no date can be worked out. Tau hoa only where a railway line joins the two places.'),
           // 29 Oct 2026: the dated train list takes the adult count (Vexere passenger[adt]); same field and clamp as get_flight_prices.
           passengers: z.number().optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc; toi da 9 tren mot ve le)'),
         }),
@@ -3293,6 +3498,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (tools) wrapToolsWithoutAiSources(tools as unknown as Record<string, unknown>)
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
   if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
+  // R13 §5.5/§6 (MARKET_GATE, default OFF, locked in production): every market-bound tool is judged by evaluateGate before it runs; a refusal is a readable tool result. Default registry + Viet Nam = no change.
+  if (tools && marketGateOn()) wrapToolsWithMarketGate(tools as unknown as Record<string, unknown>, resolveRequestMarket(req.headers), undefined, d => console.log(JSON.stringify({ type: 'tappyai_market_gate_denied', tool: d.tool, reason: d.reason })))
   // CONSULT_UNWIND_S6A / S6B (searchReads.ts): the model's web_search also reads its top pages - through the turn's OWN read_page tool (after the request-cap / trace
   // wrappers above, so robots.txt, the safe fetch, the page budget and the bench wall all apply), and once per turn one follow-up search through the same web_search.
   // The links are registered with the reader first (the outer collectUrls wrapper adds them only after this returns). No read_page tool on the turn: nothing changes.
@@ -3588,6 +3795,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
   // `onError` here means the turn produced no usable answer.
   const refundQuotaOnFailure = async (reason: string): Promise<void> => {
+    // R13 cost gate: a turn that produced nothing gives its reserved money back too (independent of the question refund below: Pro has none).
+    if (costTurn) { const t = costTurn; costTurn = null; await t.release() }
     if (quotaRefunded || !quotaRefund) return
     quotaRefunded = true
     console.warn(JSON.stringify({ type: 'tappyai_quota_refund', reason, scope: quotaRefund.scope }))
@@ -3596,7 +3805,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // 31/10 (mode "Nghiên cứu sâu", owner): plan → parallel research branches → one report (lib/ai/research). Here, after the identity, consent,
   // age and quota checks every turn passes, and in place of the single answer call. A run that produces nothing gives the question back.
   if (oneBrain && chatMode === 'deep') {
-    // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
+    // Owner 01/11/2026, changed 11/11/2026: Deep Research reports per VN month by tier and kind (Pro 5 Standard + 5 Advanced, Promax 10 + 15) on the quota store, with the plans on sale; a run that
     // produces nothing gives the run back with the question.
     let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
     // Security audit 04/11 (D-09): the day's ceiling across every account - a breaker for many accounts used together.
@@ -3604,6 +3813,19 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       await refundQuotaOnFailure('deep_research_global_ceiling')
       return new Response(JSON.stringify({ error: 'deep_research_unavailable', message: serverMessage('rate.retryTomorrow', requestLocale(req)) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
     }
+    // Owner 11/11/2026: two separate monthly allowances (Standard and Advanced, tiers.ts). The Advanced one is tried first when the request is an Advanced report (below); every other run, and an Advanced
+    // request past its allowance, spends from the Standard one, which is taken right after the tier is known.
+    const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
+    const cost = { usd: 0, calls: 0 }
+    // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
+    const par = consultParallelOn() ? deepResearchParallel() : null
+    // review 02/11: the person closed the page - the run stops (the model call in flight too) and is given back
+    const deepStop = new AbortController()
+    if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
+    // R13 Standard tier (RESEARCH_ADMISSION, off by default, locked in production): a simple report runs the bounded Haiku path; everything else, and a plan the tier cannot hold, runs as before
+    // R13 Advanced (RESEARCH_ADVANCED, dearer: Sonnet leads). Owner 20/11/2026: there is ONE monthly allowance (tiers.ts DEEP_RESEARCH_MONTHLY); people ask by behaviour and never see a "standard" or "advanced" kind.
+    const tierPlan = tierTurnFor(lastText, { claudeAvailable: claudeWriterAvailable() })
+    // the one allowance: every signed-in report spends one unit, whatever depth it runs at. (The chat already turned a turn with none left into Thinking; this is the atomic spend, and the race fallback.)
     if (authedUserId) {
       const limit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
       const spent = await consumeDeepResearch(authedUserId, limit)
@@ -3613,23 +3835,27 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }
       deepRefund = spent.refund
     }
-    const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
-    const cost = { usd: 0, calls: 0 }
-    // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
-    const par = consultParallelOn() ? deepResearchParallel() : null
-    // review 02/11: the person closed the page - the run stops (the model call in flight too) and is given back
-    const deepStop = new AbortController()
-    if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
+    if (tierPlan) console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.decision.tier, score: tierPlan.decision.score.total, cues: tierPlan.cues, policy: tierPlan.decision.policyVersion }))
+    const deepDeps = { lang, userTexts: recentUserTexts, cost, questionLang: reportQuestionLang(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost, stop: deepStop,
-      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }),
+      deps: createDeepResearchDeps(deepDeps),
+      ...(tierPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, ...(tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? { advanced: true } : { standard: true }) }), bounds: tierPlan.bounds, label: tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? 'advanced' as const : 'standard' as const } } : {}),
+      // R13 §4.2.3: a Standard plan that needs more than 3 steps is an Advanced request; promoted once, taking the account's Advanced allowance at that moment (none left = the existing engine, as before)
+      ...(tierPlan?.tier === 'STANDARD_REPORT' && researchAdvancedOn() ? {
+        promote: async () => {
+          // one allowance: the unit taken at the start already covers the report, whatever depth it runs at
+          console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', from: 'STANDARD_REPORT', reason: 'PLAN_OVER_STANDARD_STEPS' }))
+          return { deps: createDeepResearchDeps({ ...deepDeps, advanced: true }), bounds: { ...ADVANCED_RUN_BOUNDS } }
+        },
+      } : {}),
       // the searches' price: Serper's credits plus the Parallel searches sent
       serperUsd: () => {
         const d = serperDelta(serperAtStart)
         return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
       },
       onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund) },
-      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
+      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: u.model, tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }
   // ── TAPPY_AGENT: the bounded agent turn (src/lib/ai/agent) ──────────────────────────────────────────────────────────────
@@ -3867,13 +4093,49 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const withResearchUrls = <T,>(set: T): T => (research ? research.collectUrls(set) : set)
   const finalSynthesisGuard = <T,>(set: T): T => {
     // Wave 3 (W1): a research turn keeps its own writing step reserved (the flag does not depend on CONSULT_FINAL_SYNTHESIS).
-    if (!(consultFinalSynthesisOn() || research) || !set || streamMaxSteps < 3) return set
+    // 18/11 (Phase 1, S6b): the one-brain "auto" turn also climbs an EFFORT LADDER (heavyTurnReached): the steps after think_deeper reason at medium (a light turn keeps that), but once the turn has run
+    // HEAVY_TURN_LOOKUPS lookups the evidence is gathered and the steps that remain compose it, so they drop to effort none. Independent of CONSULT_FINAL_SYNTHESIS (that flag is locked in production unless allowed).
+    const stepReserve = (consultFinalSynthesisOn() || research) && streamMaxSteps >= 3
+    const effortLadder = oneBrain && chatMode === 'auto'
+    // 19/11 (orchestration layer): the kind of turn (read beside the answer) sets how many lookups it may spend; see consultative/turnBudget.ts
+    const budgeting = oneBrain && oneBrainUnderstanding !== null
+    if (!set || (!stepReserve && !effortLadder && !budgeting)) return set
+    let lookupCallsN = 0
+    let firstLookupAt: number | null = null
+    const budgetState = newBudgetState()
+    // the reading runs beside the model's first step, so it is normally ready; never wait for it longer than a moment
+    const tierP: Promise<TurnTier | null> = budgeting
+      ? Promise.race([oneBrainUnderstanding!.then(r => turnTierOf(r.u)).catch(() => null), new Promise<null>(res => setTimeout(() => res(null), 4000))])
+      : Promise.resolve(null)
     // Wave 5 · W5-1 (CONSULT_READ_PAGE_LATE, OFF = the two-step reserve for every tool): a page read may still run in the step before the last.
     const readPageLate = consultReadPageLateOn()
     return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
       ...t,
-      execute: (args: Record<string, unknown>, ctx: unknown) => {
-        if (reserveHoldsToolCall(name, stepsFinishedN, streamMaxSteps, readPageLate)) {
+      execute: async (args: Record<string, unknown>, ctx: unknown) => {
+        if (budgeting && isLookupTool(name)) {
+          const tier = await tierP
+          if (tier) {
+            const verdict = spendLookup(budgetOf(tier), budgetState, name, Date.now() - startTime, stepsFinishedN)
+            if (!verdict.ok) {
+              console.log(JSON.stringify({ type: 'tappyai_turn_budget_refused', tier, tool: name, reason: verdict.reason, lookups: budgetState.lookups, elapsedMs: Date.now() - startTime }))
+              return { error: 'search_budget_used', note: verdict.note }
+            }
+          }
+        }
+        if (effortLadder && isLookupTool(name)) {
+          lookupCallsN++
+          if (firstLookupAt === null) firstLookupAt = Date.now()
+          if (heavyTurnReached(lookupCallsN) && autoThink.effort !== 'none') {
+            autoThink.effort = 'none'
+            console.log(JSON.stringify({ type: 'tappyai_turn_effort', to: 'none', lookups: lookupCallsN, tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
+          }
+        }
+        // the lookup time counts from the first lookup (a turn that was slow to begin, 64 s measured under load, still gets its lookups)
+        if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - (firstLookupAt ?? Date.now()))) {
+          console.log(JSON.stringify({ type: 'tappyai_lookup_time_up', tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
+          return Promise.resolve({ error: 'search_budget_used', note: 'No more lookups in this turn (the time for them is used). Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' })
+        }
+        if (stepReserve && reserveHoldsToolCall(name, stepsFinishedN, streamMaxSteps, readPageLate)) {
           console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))
           // A Promise like every tool result (the wrapped tool chains .then on execute()).
           return Promise.resolve({ error: 'search_budget_used', note: lang === 'en' ? 'No more tool calls this turn. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' : 'Hết lượt tìm của lượt này. Viết ngay câu trả lời từ dữ liệu đã có; phần nào chưa xác nhận được thì nói rõ là chưa có, không bịa.' })
@@ -3896,6 +4158,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     w3Structured = structured
     if (structured) enrichment.setStructuredSynthesis(true) // the prose-shape sentence cap is stepped aside only for an answer that is really sectioned (streamEnrichment checks the text)
     w3Prompt = buildLean(wave3PromptLines({ offeredToolNames, structured, toolByNeed: toolByNeed || pickTools, math: deterministicMath || pickTools, research: !!research })).dynamic
+      + (canonicalCtx?.systemLine ? `\n\n${canonicalCtx.systemLine}` : '') // CANONICAL_CONTEXT: this branch replaces the prompt, so the fact line is carried over (OFF: '')
   } else if (knowledgeTurn) {
     // Wave 4 · C2: the knowledge path gets the same lines from the same function, appended to its own (legacy) prompt - each line only when its tool is in the turn's real tool set, the shape block
     // only with W3 on, tools offered and a request with several parts (the A3 rule of the lean path).
@@ -3933,7 +4196,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // tokens for a response nobody is receiving. Review 02/11: also at the turn's deadline (maxDuration is 300 s for Deep Research only).
     abortSignal: turnSignal(req.signal, startTime, TURN_DEADLINE_MS),
     systemShared,
-    system: eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt),
+    system: (eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt)) + (attachmentOnly ? `\n\n${attachmentTaskSystemLine(lang)}` : ''),
     messages: (lunaData ? (() => { const at = modelMessagesForStream.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesForStream : [...modelMessagesForStream.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesForStream.slice(at)] })() : modelMessagesForStream) as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
@@ -3995,7 +4258,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: turnHasNoTools ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
+    tools: turnHasNoTools || attachmentOnly ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(presentBlocksOn && leanToolSet ? withResultIds(leanToolSet, resultLedger, RESULT_ID_SKIP, presentBlockProviderOf) : leanToolSet))), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // P2-8: one line per one-brain turn - model, effort, steps run vs the cap, tools by name, how it ended (counts and names only; never text or arguments).
       if (oneBrain) { try { console.log(JSON.stringify(oneBrainTurnTrace({ serving: AI.serving(role), finishReason, maxSteps: streamMaxSteps, maxTokens: ONE_BRAIN_MAX_TOKENS, text, usage, steps: steps as never }))) } catch { /* trace only */ } }
@@ -4069,7 +4332,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ]
           // Consultative V1 reads the LATEST user turn only (earlier turns were extracted on
           // their own turn); the habit markers the filter needs are read from the same text.
-          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory, { lastUserOnly: !!situation })
+          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory, { lastUserOnly: !!situation, ...(personModelOn ? { person: true } : {}) })
           const auditFile = process.env.AUDIT_USAGE_LOG_FILE
           if (auditFile) {
             try { appendFileSync(auditFile, JSON.stringify({ turn: auditTurn, type: 'tappyai_usage_memory', ...(lastMemoryExtractionUsage() ?? {}) }) + '\n') } catch { /* audit only */ }
@@ -4080,7 +4343,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const extracted = situation
             ? (() => {
               const userTexts = convMessages.filter(m => m.role === 'user').map(m => m.content)
-              const { memory, stats } = filterTransientMemory(extractedRaw, userTexts.slice(-1))
+              const { memory, stats } = filterTransientMemory(extractedRaw, userTexts.slice(-1), personModelOn ? { keepPerson: true } : {})
               console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'memory_filter', ...stats }))
               return memory
             })()
@@ -4348,6 +4611,8 @@ ${finalWriteInstruction(lang)}` },
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
   finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
+  // owner 20/11/2026: a report asked for with none left this month ran as Thinking; the page tells the person when the reports come back
+  if (deepResetOn) finalResponse.headers.set(DEEP_RESET_HEADER, deepResetOn)
   // CONSULTATIVE_IN_AGENT: ask the web client to reveal the (already settled) reply progressively — display only. Emergency off: CONSULT_REVEAL=off
   // on the server (read per request); a user can also opt out on the client (localStorage tappy_reveal=off, or reduced motion).
   if (consultativeAgent && !/^(?:off|0|false|no)$/i.test((process.env.CONSULT_REVEAL ?? '').trim())) finalResponse.headers.set('x-tappy-reveal', '1')
@@ -4508,8 +4773,16 @@ ${finalWriteInstruction(lang)}` },
       }, usageSink).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
   // CONSULT_ONE_BRAIN_MEDIA: the pictures go out last, before the finish frame, once every guard and frame above has run on the answer.
-  const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker), log: l => console.log(JSON.stringify(l)) }) : timedBody
-  return new Response(pictured, { status: finalResponse.status, headers: finalResponse.headers })
+  const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker),
+    // 16/11: the subject cards the model declared get a web picture when Wikipedia has none (answerV4/subjectImages.ts); the declared kinds are traced
+    subjects: () => (enrichment.presentation?.blocks ?? []).flatMap(b => (b.type === 'profiles' ? b.items.map(i => ({ name: i.name, hint: b.title })) : [])),
+    gallery: () => (enrichment.presentation?.blocks ?? []).flatMap(b => (b.type === 'gallery' ? b.items : [])),
+    declared: () => (enrichment.presentation?.blocks ?? []).map(b => b.type),
+    log: l => console.log(JSON.stringify(l)) }) : timedBody
+  // HOTLINE_CLAIM_GUARD (R13, off by default): the FINAL text (after every guard above) loses an hours/cost claim about 113/114/115 - the owner's list does not establish them; 111 and 112 are verified and stay.
+  // Flag off: the stream is returned exactly as it was.
+  const guardedBody = hotlineClaimGuardOn() && pictured ? pictured.pipeThrough(hotlineClaimGuardStream(r => console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hotline_claim', removedSentences: r.removedSentences, editedSentences: r.editedSentences })))) : pictured
+  return new Response(guardedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }
   if (willPresearch) {
     return new Response(deferredBody(hasValidCurrentLocation(userLocation) ? searchingFrame(lang) : '', finishTurn), {

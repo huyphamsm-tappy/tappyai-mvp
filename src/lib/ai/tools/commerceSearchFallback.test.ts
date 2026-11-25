@@ -225,18 +225,16 @@ describe('events', () => {
 })
 
 describe('hotel card rows without a page of their own (live UAT 2026-09-28: 2 of 8 had a booking button)', () => {
-  it('every hotel row gets ONE "Tìm trên Booking.com" results page for THAT hotel, not the city', async () => {
+  // 19/11/2026 (owner): Booking.com is NOT an affiliate partner (Agoda is), and its search fallback led the card as "Tìm phòng trên Booking.com".
+  // The test used to pin that button; it now pins its ABSENCE. A hotel's lead action is its own Agoda page (see actions.test / realtimeChat.test).
+  it('a hotel row without a page of its own gets NO Booking.com search button (Booking.com is never a hotel CTA)', async () => {
     const rows = ['Khách Sạn Green Eco Đà Lạt', 'Tulip Dalat Hotel', 'Ana Villa'].map((n, i) => ({ name: n, maps_link: `https://maps.google.com/?cid=${i}`, place_types: ['hotel'] }))
     const result = { results: rows, _tappy_place_domain: 'place', query: 'khách sạn Đà Lạt' }
     await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: none, location: 'Đà Lạt', userTexts: ['khách sạn Đà Lạt dưới 1 triệu'] })
     for (const r of rows) {
-      const ls = links(r)
-      expect(ls).toHaveLength(1)
-      expect(ls[0]).toMatchObject({ providerId: 'booking', kind: 'SEARCH_HANDOFF', fallback: 'search', primary: false })
-      const ss = new URL(ls[0].url).searchParams.get('ss')!
-      expect(ss.startsWith(r.name)).toBe(true)
+      expect(links(r).filter(l => l.providerId === 'booking')).toHaveLength(0)
     }
     const actions = placeRecommendations(result, 'Đà Lạt')[0].entity.actions
-    expect(resolveActionLabel(actions.find(a => a.commerce)!)).toEqual({ key: 'v3.action.bookingSearch', params: { platform: 'Booking.com' } })
+    expect(actions.some(a => /booking\.com/i.test(a.url) || a.platform === 'Booking.com')).toBe(false)
   })
 })

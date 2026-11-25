@@ -43,6 +43,8 @@ export interface SmartToolCardProps {
   tool: SmartTool
   /** `full` = the /tools catalogue tile. `compact` = Home's five-up preview rail. */
   variant?: 'full' | 'compact'
+  /** True when the visitor is signed in: the "sign in needed" hint is then hidden (found in a real UAT run: it showed on a signed-in account). */
+  signedIn?: boolean
 }
 
 /**
@@ -68,7 +70,7 @@ export interface SmartToolCardProps {
  *   compact · mascot 72, inset 6, pad 14, text gap 12, and the mascot only from `sm` —
  *             a two-up 160px phone tile has no room for it → row min-h 56 from `sm`.
  */
-export default function SmartToolCard({ tool, variant = 'full' }: SmartToolCardProps) {
+export default function SmartToolCard({ tool, variant = 'full', signedIn = false }: SmartToolCardProps) {
   const { t } = useTranslation()
   const Icon = tool.icon
   const skin = SMART_TOOL_SKINS[tool.id]
@@ -119,7 +121,7 @@ export default function SmartToolCard({ tool, variant = 'full' }: SmartToolCardP
         >
           {t(tool.descKey)}
         </span>
-        {tool.auth && (
+        {tool.auth && !signedIn && (
           <span className={`v3-toolcard-desc inline-flex items-center gap-1 font-medium ${compact ? 'mt-1.5 text-[10.5px]' : 'mt-2 text-[11px]'}`}>
             <Lock size={compact ? 10 : 11} aria-hidden="true" />
             {t('v3.tools.authHint')}

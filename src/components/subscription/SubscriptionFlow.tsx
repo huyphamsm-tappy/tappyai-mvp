@@ -29,7 +29,8 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { VietQrScreen, formatVnd, type CreatedOrder } from '@/components/payments/PaymentsFlow'
 import { TappyMascot } from '@/components/TappyMascot'
 import type { SubscriptionCatalog, SubscriptionPlanCard } from '@/lib/payments/subscriptionCatalog'
-import type { MySubscription } from '@/lib/payments/subscriptionState'
+import { canBuyPlan, type MySubscription } from '@/lib/payments/subscriptionState'
+import { tierOf } from '@/lib/plans/tiers'
 import { PlanAvatar } from './PlanAvatar'
 import { planStyle } from './planStyle'
 
@@ -68,9 +69,11 @@ export function periodText(days: number, t: T): string {
   return t('sub.period.days', { count: String(days) })
 }
 
-/** When a purchase made now would end (nothing can be bought while a plan is active). */
-export function endIfBoughtNow(plan: SubscriptionPlanCard, now = Date.now()): string {
-  return new Date(now + plan.durationDays * 86_400_000).toISOString()
+/** When a purchase made now would end. While a plan still runs (`currentEnd`) the days are ADDED to its end date (owner 20/11); otherwise they start now. */
+export function endIfBoughtNow(plan: SubscriptionPlanCard, now = Date.now(), currentEnd?: string | null): string {
+  const running = currentEnd ? new Date(currentEnd).getTime() : NaN
+  const from = Number.isFinite(running) && running > now ? running : now
+  return new Date(from + plan.durationDays * 86_400_000).toISOString()
 }
 
 const card = 'bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm'
@@ -145,6 +148,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
   const [planId, setPlanId] = useState<string | null>(initial?.planId ?? null)
   const [order, setOrder] = useState<CreatedOrder | null>(initial?.order ?? null)
   const [failure, setFailure] = useState<'mismatch' | 'expired' | 'error'>(initial?.failure ?? 'error')
+  const [bonusDays, setBonusDays] = useState(0)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const plan = catalog.plans.find((p) => p.id === planId) ?? null
@@ -201,8 +205,9 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
     }
   }
 
-  const onPaid = useCallback(async () => {
+  const onPaid = useCallback(async (days: number) => {
     // The order row says "paid"; the plan is only shown as active once the SERVER says so.
+    setBonusDays(days)
     setScreen('processing')
     const fresh = await refresh()
     if (fresh?.subscription.state === 'ACTIVE') setScreen('success')
@@ -250,6 +255,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
         <h1 className="text-2xl font-black text-gray-900 dark:text-white">{t('sub.success.title', { plan: plan.name })}</h1>
         <p className="text-content-secondary">{t('sub.success.welcome', { plan: plan.name })}</p>
         {sub.periodEnd && <p className="text-sm text-content-secondary">{t('sub.success.until', { date: formatDay(sub.periodEnd, locale) })}</p>}
+        {bonusDays > 0 && <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('pay.qr.bonus', { days: String(bonusDays) })}</p>}
         <Link href="/chat" className="inline-flex w-full justify-center py-3.5 rounded-2xl bg-[#FF9500] hover:bg-orange-600 text-white font-semibold">
           {t('sub.success.start')}
         </Link>
@@ -342,7 +348,9 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
         <div className="rounded-2xl bg-gray-100 p-4 text-sm text-gray-700 space-y-1.5 dark:bg-gray-800/60 dark:text-gray-300" data-testid="sub-disclosure">
           <p className="font-semibold text-gray-900 dark:text-white">{t('sub.disclose.price', { plan: plan.name, price, period: periodText(plan.durationDays, t) })}</p>
           <p>{t('sub.disclose.noAutoDebit')}</p>
-          <p>{t('sub.disclose.until', { date: formatDay(endIfBoughtNow(plan), locale) })}</p>
+          <p>{t('sub.disclose.until', { date: formatDay(endIfBoughtNow(plan, Date.now(), me.subscription.state === 'ACTIVE' ? me.subscription.periodEnd : null), locale) })}</p>
+          {me.subscription.state === 'ACTIVE' && <p>{t('sub.disclose.stack')}</p>}
+          {me.subscription.state === 'ACTIVE' && me.subscription.plan && tierOf(plan.id) !== tierOf(me.subscription.plan.id) && <p>{t('sub.disclose.upgrade', { plan: plan.name })}</p>}
           <p className="text-xs text-content-secondary">
             {t('sub.disclose.agree')} <Link href="/terms" className="underline">{t('sub.disclose.terms')}</Link> {t('sub.disclose.and')}{' '}
             <Link href="/privacy" className="underline">{t('sub.disclose.privacy')}</Link>.
@@ -441,10 +449,10 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
               <li key={p.id}>
                 <button
                   type="button"
-                  disabled={!sub.canBuy}
+                  disabled={!canBuyPlan(sub, p.id)}
                   onClick={() => onChoose(p.id)}
                   data-plan={p.id}
-                  className={`relative flex w-full items-center gap-3 overflow-hidden rounded-3xl p-3 pr-4 text-left shadow-sm ${st.listCard} ${!sub.canBuy && !current ? 'opacity-60' : ''}`}
+                  className={`relative flex w-full items-center gap-3 overflow-hidden rounded-3xl p-3 pr-4 text-left shadow-sm ${st.listCard} ${!canBuyPlan(sub, p.id) && !current ? 'opacity-60' : ''}`}
                 >
                   {p.badge === 'popular' && <PopularBadge className="absolute right-0 top-0 rounded-none rounded-bl-2xl" />}
                   <PlanAvatar plan={p} size={84} />
@@ -496,12 +504,15 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
                   <li key={line} className="flex items-start gap-2"><Check size={15} strokeWidth={3} className={`mt-0.5 shrink-0 ${st.check}`} aria-hidden="true" />{line}</li>
                 ))}
               </ul>
-              {current ? (
+              {current && !canBuyPlan(sub, p.id) ? (
                 <span className="mt-4 block rounded-2xl bg-gray-100 py-2.5 text-center text-sm font-semibold text-content-secondary dark:bg-gray-800">{t('sub.card.current')}</span>
               ) : (
-                <button type="button" disabled={!sub.canBuy} onClick={() => onChoose(p.id)} className={`mt-4 rounded-2xl py-2.5 text-sm font-semibold disabled:opacity-50 ${st.button}`}>
-                  {t('sub.plan.choose', { plan: p.name })}
-                </button>
+                <>
+                  {current && <span className="mt-4 block rounded-2xl bg-gray-100 py-2 text-center text-xs font-semibold text-content-secondary dark:bg-gray-800">{t('sub.card.current')}</span>}
+                  <button type="button" disabled={!canBuyPlan(sub, p.id)} onClick={() => onChoose(p.id)} className={`${current ? 'mt-2' : 'mt-4'} rounded-2xl py-2.5 text-sm font-semibold disabled:opacity-50 ${st.button}`}>
+                    {active ? t('sub.manage.buyMore') : t('sub.plan.choose', { plan: p.name })}
+                  </button>
+                </>
               )}
             </div>
           )
@@ -527,7 +538,7 @@ function AccessColumn({ image, name, tagline, lines, action }: {
   return (
     <div className="flex flex-col rounded-3xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       {/* eslint-disable-next-line @next/next/no-img-element -- owner-supplied art in /public/subscription */}
-      <img src={image} alt="" width={96} height={96} className="mx-auto h-24 w-24 rounded-2xl object-cover" />
+      <img src={image} alt="" width={96} height={96} className="mx-auto h-24 w-24 rounded-2xl object-contain" />
       <p className="mt-2 text-center text-2xl font-black text-gray-900 dark:text-white">{name}</p>
       <p className="min-h-[2.5rem] text-center text-xs text-content-secondary">{tagline}</p>
       <p className="mt-3 text-center text-xl font-black text-gray-900 dark:text-white">{t('sub.price.free')}</p>
@@ -611,7 +622,7 @@ function ManageScreen({ me, catalog, onChoose, initialHistory }: {
           )}
 
           {sub.state === 'ACTIVE' && sub.channel === 'manual' && <p className="text-sm text-gray-700 dark:text-gray-300">{t('sub.manage.manual')}</p>}
-          {sub.canBuy && <button type="button" className={btnBlue} onClick={onChoose}>{t('sub.manage.buyAgain')}</button>}
+          {sub.canBuy && <button type="button" className={btnBlue} onClick={onChoose}>{sub.state === 'ACTIVE' ? t('sub.manage.buyMore') : t('sub.manage.buyAgain')}</button>}
         </div>
       )}
 

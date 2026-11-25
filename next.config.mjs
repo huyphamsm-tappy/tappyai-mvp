@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process'
 import { assertNotProduction } from './scripts/prodEnvGuard.mjs'
+import { addVideoCdnHost } from './scripts/videoCdnCsp.mjs'
 
 // ── Environment identity + production-DB startup guard (consolidation 2026-09-24) ──
 // Prevents the "UAT'd the wrong worktree on the production database" class of bug.
@@ -34,6 +35,11 @@ const nextConfig = {
     // taken before the user chatted, so savedMessages is outdated.
     // Setting dynamic to 0 forces every navigation (including Back) to re-fetch.
     staleTimes: { dynamic: 0 },
+    // Explore video download: the watermark/overlay renderer reads its bundled font and logo with fs, which the file tracer cannot see, so the files are listed for the routes
+    // that render text (Next 14.2 keeps this option under `experimental`). Without it the font is missing in the serverless bundle and the render fails closed.
+    outputFileTracingIncludes: {
+      '/api/video/uploads/[id]/download': ['./src/lib/media/video/overlay/fonts/**', './src/lib/media/video/overlay/assets/**'],
+    },
   },
   // Bake the deploy's commit SHA into the client bundle so a running tab can
   // tell when a newer version has shipped and reload itself (see VersionWatcher).
@@ -116,8 +122,10 @@ const nextConfig = {
       "script-src-attr 'none'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https:",
-      "media-src 'self' data: blob: https:",
+      // Explore video: the CDN host (VIDEO_CDN_HOST, no default) is added to img/media/connect ONLY when that variable is set; unset, these three are exactly as they were.
+      // hls.js fetches the playlists and segments with XHR (the connect directive below) and plays them through a blob: MediaSource.
+      addVideoCdnHost("img-src 'self' data: blob: https:", process.env),
+      addVideoCdnHost("media-src 'self' data: blob: https:", process.env),
       // Blob hosts: *.public.blob.vercel-storage.com / blob.vercel-storage.com are
       // the STORAGE hosts — they serve blobs for playback/display. They are NOT
       // where uploads go. @vercel/blob/client PUTs the file to its API host,
@@ -128,7 +136,7 @@ const nextConfig = {
       // network error and retries 10x with backoff, so the UI hung on "Đang tải
       // clip lên" instead of showing an error. Playback kept working (storage
       // hosts were allowed), which is what hid the breakage.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com",
+      addVideoCdnHost("connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com", process.env),
       "frame-src 'self' https://www.youtube.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",

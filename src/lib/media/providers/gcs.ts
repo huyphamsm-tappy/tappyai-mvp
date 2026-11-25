@@ -26,6 +26,8 @@ import { assertOwnerScopedPrefix, assertSafeMediaKey } from '../key'
 
 /** A listing larger than this many pages is not one user's uploads — stop rather than loop. */
 const MAX_LIST_PAGES = 50
+/** A server-side copy that needs more calls than this (one per rewrite step) is not a delivery file. */
+const MAX_REWRITE_CALLS = 10
 
 export interface GcsProviderDeps {
   bucket: string
@@ -313,6 +315,47 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
       if (res.status === 404) return false
       if (!res.ok) throw new MediaStorageError('gcs', 'delete', res.status)
       return true
+    },
+
+    /**
+     * Explore video · server-side copy (Rewrite API) of `src.bucket/src.key` to THIS bucket's `destKey`. Both names go through the key validator. A big object can need
+     * several calls (the answer carries `done` and a `rewriteToken`); the loop is bounded. When `opts` is given it is sent as the destination's metadata, which REPLACES the
+     * source's (that is how the delivery copy gets its own content type and cache lifetime).
+     */
+    async copyObject(src: { bucket: string; key: string }, destKey: string, opts?: { contentType?: string; cacheControl?: string }): Promise<void> {
+      const safeSrc = assertSafeMediaKey(src.key)
+      const safeDest = assertSafeMediaKey(destKey)
+      if (typeof src.bucket !== 'string' || !/^[a-z0-9][a-z0-9._-]{2,62}$/.test(src.bucket)) throw new MediaStorageError('gcs', 'copy')
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+      const token = await deps.getAccessToken()
+      const metadata: Record<string, string> = {}
+      if (opts?.contentType) metadata.contentType = opts.contentType
+      if (opts?.cacheControl) metadata.cacheControl = opts.cacheControl
+      const base =
+        `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(src.bucket)}/o/${encodeURIComponent(safeSrc)}` +
+        `/rewriteTo/b/${encodeURIComponent(deps.bucket)}/o/${encodeURIComponent(safeDest)}`
+      let rewriteToken: string | undefined
+      for (let call = 0; call < MAX_REWRITE_CALLS; call++) {
+        let res: Response
+        try {
+          res = await doFetch(base + (rewriteToken ? `?rewriteToken=${encodeURIComponent(rewriteToken)}` : ''), {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json; charset=UTF-8' },
+            body: JSON.stringify(metadata),
+            signal: makeSignal(timeoutMs),
+          })
+        } catch (e) {
+          const name = (e as { name?: string } | undefined)?.name
+          if (name === 'TimeoutError' || name === 'AbortError') throw new MediaTimeoutError('object copy', timeoutMs)
+          throw new MediaStorageError('gcs', 'copy')
+        }
+        if (!res.ok) throw new MediaStorageError('gcs', 'copy', res.status)
+        const body = (await res.json().catch(() => ({}))) as { done?: boolean; rewriteToken?: string }
+        if (body.done === true) return
+        if (typeof body.rewriteToken !== 'string' || body.rewriteToken === '') throw new MediaStorageError('gcs', 'copy')
+        rewriteToken = body.rewriteToken
+      }
+      throw new MediaStorageError('gcs', 'copy')
     },
   }
 }

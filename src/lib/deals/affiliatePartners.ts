@@ -15,17 +15,21 @@ import { resolveCommerce } from '@/lib/ccp'
 import type { IntentType } from '@/lib/ccp'
 
 export interface AffiliatePartnerCard {
-  providerId: 'traveloka' | 'vexere'
+  providerId: 'traveloka' | 'vexere' | 'agoda' | 'lazada'
   partnerName: string
   /** i18n key of the one-line description (no price / discount claim). */
-  descriptionKey: 'deals.partner.traveloka' | 'deals.partner.vexere'
+  descriptionKey: 'deals.partner.traveloka' | 'deals.partner.vexere' | 'deals.partner.agoda' | 'deals.partner.lazada'
   /** Already the tracked link (/go/at when the visitor is identified, else the ACCESSTRADE deep link). */
   url: string
 }
 
-const PARTNERS: ReadonlyArray<{ providerId: AffiliatePartnerCard['providerId']; partnerName: string; intentType: IntentType; descriptionKey: AffiliatePartnerCard['descriptionKey'] }> = [
-  { providerId: 'traveloka', partnerName: 'Traveloka', intentType: 'book_hotel', descriptionKey: 'deals.partner.traveloka' },
-  { providerId: 'vexere', partnerName: 'Vexere', intentType: 'book_transport', descriptionKey: 'deals.partner.vexere' },
+// 20/11/2026 (owner): the web Deals page shows only Accesstrade, Lazada, Agoda and Vexere (partnerAllowlist.ts), so Agoda and Lazada join the list of candidates. A card appears ONLY when the resolver returns
+// a link WITH affiliate tracking (the rule below is unchanged): a provider without a tracked link is simply not listed.
+const PARTNERS: ReadonlyArray<{ providerId: AffiliatePartnerCard['providerId']; partnerName: string; domain: 'travel' | 'shopping'; intentType: IntentType; descriptionKey: AffiliatePartnerCard['descriptionKey'] }> = [
+  { providerId: 'traveloka', partnerName: 'Traveloka', domain: 'travel', intentType: 'book_hotel', descriptionKey: 'deals.partner.traveloka' },
+  { providerId: 'vexere', partnerName: 'Vexere', domain: 'travel', intentType: 'book_transport', descriptionKey: 'deals.partner.vexere' },
+  { providerId: 'agoda', partnerName: 'Agoda', domain: 'travel', intentType: 'book_hotel', descriptionKey: 'deals.partner.agoda' },
+  { providerId: 'lazada', partnerName: 'Lazada', domain: 'shopping', intentType: 'buy_product', descriptionKey: 'deals.partner.lazada' },
 ]
 
 export interface PartnerContext {
@@ -40,7 +44,7 @@ export function affiliatePartnerCards(ctx: PartnerContext = {}, resolve: typeof 
   for (const p of PARTNERS) {
     try {
       const res = resolve({
-        domain: 'travel',
+        domain: p.domain,
         intentType: p.intentType,
         subject: p.partnerName,
         constraints: { merchantAllowList: [p.providerId] },

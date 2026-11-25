@@ -301,12 +301,12 @@ describe('the AI-first chrome', () => {
   it('offers NO second input on Home — the hero owns the one composer', () => {
     // 🚨 THE DUPLICATE THIS REMOVES. Home has a 46px headline over a lit composer; a second
     // "ask Tappy" field in the chrome 250px above it made the page argue with itself about
-    // where to type. Home gets a compact action instead, and it still reaches the assistant.
+    // where to type. (21/11/2026, owner: the compact "Hỏi Tappy" pill and the page title are removed from Home too — the hero is the way in.)
     pathname = '/'
     const { container } = renderShell()
     expect(container.querySelector('form[role="search"]'), 'no header search on Home').toBeNull()
-    const action = [...container.querySelectorAll('header a[href="/chat"]')]
-    expect(action.length, 'but a way into the assistant survives').toBe(1)
+    expect(container.querySelectorAll('header a[href="/chat"]').length, 'no header pill on Home').toBe(0)
+    expect(container.querySelector('header h1')!.parentElement!.className, 'the title stays for screen readers only').toContain('sr-only')
   })
 
   it('the search field can never collapse into a stub', () => {
@@ -338,7 +338,7 @@ describe('the AI-first chrome', () => {
     const { container } = renderShell()
     const hrefs = [...container.querySelectorAll('aside a[href]')].map(a => a.getAttribute('href'))
     for (const route of ['/', '/reviews', '/deals', '/profile/notifications', '/tools', '/planner',
-                         '/recommendations', '/social', '/profile', '/subscription']) {
+                         '/social', '/profile', '/subscription']) {
       expect(hrefs, `${route} must stay in the sidebar`).toContain(route)
     }
     // ...and must not have duplicated one.

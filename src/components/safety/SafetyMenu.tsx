@@ -7,6 +7,7 @@
 // Feedback is inline: this app has no toast host outside the admin area.
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { MoreHorizontal } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
@@ -37,8 +38,11 @@ export function SafetyMenu({ report, user, onBlockedChange, className, tone = 'd
   const [busy, setBusy] = useState(false)
   const [blockFailed, setBlockFailed] = useState(false)
   const [notice, setNotice] = useState<string | null>(null)
+  const [up, setUp] = useState(false)
+  const [pos, setPos] = useState<{ top?: number; bottom?: number; left: number } | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   const canReport = !!report && (report.target === 'review' || flags.reports)
   const canBlock = flags.userBlocks && !!user
@@ -53,7 +57,7 @@ export function SafetyMenu({ report, user, onBlockedChange, className, tone = 'd
 
   useEffect(() => {
     if (!open) return
-    const close = (e: MouseEvent) => { if (!menuRef.current?.contains(e.target as Node)) setOpen(false) }
+    const close = (e: MouseEvent) => { const t = e.target as Node; if (!menuRef.current?.contains(t) && !panelRef.current?.contains(t)) setOpen(false) }
     // Escape closes the menu and puts the focus back on its button (keyboard users would otherwise lose their place).
     const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); buttonRef.current?.focus() } }
     document.addEventListener('mousedown', close)
@@ -87,16 +91,27 @@ export function SafetyMenu({ report, user, onBlockedChange, className, tone = 'd
     onBlockedChange?.(next)
   }
 
+  // The open menu is drawn in document.body: inside the comment panel an ancestor scrolls (it clipped the menu) and another is animated with a transform (it moved a fixed menu away from its button).
+  const portal = (node: React.ReactElement) => (pos && typeof document !== 'undefined' ? createPortal(node, document.body) : node)
+
   const iconClass = tone === 'onMedia' ? 'text-white drop-shadow' : 'text-gray-500 dark:text-gray-400'
 
   return (
     <div ref={menuRef} className={`relative ${className ?? ''}`} data-testid="safety-menu">
-      <button ref={buttonRef} type="button" aria-label={t('safety.more')} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`rounded-full p-1.5 ${iconClass}`}>
+      <button ref={buttonRef} type="button" aria-label={t('safety.more')} aria-haspopup="menu" aria-expanded={open} onClick={() => {
+        // 21/11/2026: a menu opened near the bottom of the screen (the clip rail, a short laptop screen) ran off the page and its items could not be reached: open it UPWARD when there is no room below
+        // It is also drawn with FIXED coordinates read from the button: the comment list is a scrolling box that clipped an absolutely placed menu (found on the owner's screen 21/11).
+        const r = buttonRef.current?.getBoundingClientRect()
+        const upward = !!r && typeof window !== 'undefined' && window.innerHeight - r.bottom < 140
+        setUp(upward)
+        if (r && typeof window !== 'undefined') { const left = Math.min(Math.max(8, r.right - 168), Math.max(8, window.innerWidth - 168 - 8)); setPos(upward ? { bottom: window.innerHeight - r.top + 4, left } : { top: r.bottom + 4, left }) }
+        setOpen((v) => !v)
+      }} className={`rounded-full p-1.5 ${iconClass}`}>
         <MoreHorizontal size={18} />
       </button>
       {notice && <span role="status" className="absolute right-0 top-full z-30 mt-1 whitespace-nowrap rounded-lg bg-gray-900 px-2.5 py-1 text-xs text-white">{notice}</span>}
-      {open && (
-        <div role="menu" className="absolute right-0 z-30 mt-1 min-w-[160px] overflow-hidden rounded-xl border border-gray-200 bg-white py-1 text-gray-900 shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
+      {open && portal(
+        <div ref={panelRef} role="menu" data-open-up={up ? 'true' : undefined} style={pos ?? undefined} className={`${pos ? 'fixed' : 'absolute right-0'} z-50 ${pos ? '' : up ? 'bottom-full mb-1' : 'mt-1'} min-w-[160px] overflow-hidden rounded-xl border border-gray-200 bg-white py-1 text-gray-900 shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100`}>
           {canReport && (
             <button role="menuitem" type="button" className="block w-full px-3 py-2 text-left text-sm" onClick={() => { setOpen(false); setReporting(true) }}>
               {t('safety.report')}

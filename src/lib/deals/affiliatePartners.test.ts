@@ -25,12 +25,26 @@ describe('affiliatePartnerCards', () => {
 
   it('without the publisher id nothing is tracked, so no partner card is listed (never an untracked outbound link)', () => {
     vi.stubEnv('ACCESSTRADE_PUBLISHER_ID', '')
-    expect(affiliatePartnerCards()).toEqual([])
+    // Agoda is tracked by its own partner id (cid), so it may still be listed; nothing that needs ACCESSTRADE may be
+    const ids = affiliatePartnerCards().map((c) => c.providerId)
+    expect(ids).not.toContain('vexere')
+    expect(ids).not.toContain('traveloka')
   })
 
-  it('never lists a provider outside the two implemented ones (no Agoda / Shopee / Booking.com / pending partners)', () => {
+  it('never lists a provider outside the implemented ones (no Shopee / Booking.com / pending partners)', () => {
     vi.stubEnv('ACCESSTRADE_PUBLISHER_ID', '6277265300509373567')
-    for (const c of affiliatePartnerCards()) expect(['traveloka', 'vexere']).toContain(c.providerId)
+    for (const c of affiliatePartnerCards()) expect(['traveloka', 'vexere', 'agoda', 'lazada']).toContain(c.providerId)
+  })
+
+  it('Agoda and Lazada are candidates too (owner 20/11: the page shows Accesstrade, Lazada, Agoda, Vexere) and every listed card carries a tracked link', () => {
+    vi.stubEnv('ACCESSTRADE_PUBLISHER_ID', '6277265300509373567')
+    const cards = affiliatePartnerCards({ locale: 'vi' })
+    const agoda = cards.find((c) => c.providerId === 'agoda')
+    const lazada = cards.find((c) => c.providerId === 'lazada')
+    expect(agoda).toBeTruthy()
+    expect(lazada).toBeTruthy()
+    expect(agoda!.url).toContain('cid=')
+    expect(lazada!.url).toMatch(/^https:\/\//)
   })
 
   it('a resolver that throws or returns nothing yields no cards', () => {

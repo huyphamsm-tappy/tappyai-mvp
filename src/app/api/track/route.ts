@@ -7,6 +7,7 @@ import { randomUUID } from 'crypto'
 import { ANALYTICS_FORBIDDEN_KEYS, stripForbiddenKeys } from '@/lib/account/userDataClassification'
 import { G1_KNOWN_EVENT_TYPES } from '@/lib/analytics/analytics-contract'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { readCappedBody } from '@/lib/http/readCappedBody'
 
 // Unified analytics ingestion (Analytics v1.1 §8A). Accepts authenticated AND
 // anonymous events, dedups on the client-generated event_id, and is
@@ -94,6 +95,9 @@ interface IncomingEvent {
   device_context?: Record<string, unknown>
 }
 
+// Hardening 21/11/2026: a request that hangs (a slow upstream, a trickled upload) is cut at 30 s instead of the platform default, so it cannot hold a function open.
+export const maxDuration = 30
+
 export async function POST(req: NextRequest) {
   // Authenticated OR anonymous — no 401. user_id is set from the session
   // (authoritative, un-spoofable); anonymous events carry anon_id instead.
@@ -106,7 +110,9 @@ export async function POST(req: NextRequest) {
 
   let events: IncomingEvent[]
   try {
-    const body = await req.json()
+    const capped = await readCappedBody(req, 256 * 1024)
+    if (!capped.ok) return NextResponse.json({ ok: false }, { status: 413 })
+    const body = JSON.parse(capped.text)
     events = Array.isArray(body.events) ? body.events : []
     if (!events.length) return NextResponse.json({ ok: true })
   } catch {

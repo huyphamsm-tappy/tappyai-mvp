@@ -1,0 +1,56 @@
+# Supply-chain and build gates (A4, 20/11/2026). The audit of 18/11 found CI had no production build, no secret scan and no dependency-vulnerability scan.
+#   secrets  - a small in-repo scan of tracked files for credential-shaped text (scripts/scanSecrets.mjs). Blocking. No third-party service.
+#   build    - a real `next build` with placeholder public settings, so a build break shows up on the pull request and not at deploy time. Blocking.
+#   audit    - `npm audit` on the production dependencies. REPORT ONLY (continue-on-error): on 20/11/2026 it lists 1 critical (next) and 10 high (ai / @ai-sdk / zod and their children), all needing
+#              a MAJOR upgrade the owner has deferred (docs: Phase 9 backlog). Turn `continue-on-error` off when those upgrades are done.
+# Android CI is not here: the owner kept mobile for a later round.
+name: Supply chain and build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      # Zero-dependency script: no npm install.
+      - run: node scripts/scanSecrets.mjs
+
+  build:
+    name: Production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # `next build` only (not `npm run build`): the deploy-time environment gate (scripts/check-env.mjs) is for real deployments. Placeholder public values, no secret.
+      - run: npx next build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+          SUPABASE_SERVICE_ROLE_KEY: placeholder
+          NEXT_TELEMETRY_DISABLED: "1"
+
+  audit:
+    name: Dependency vulnerabilities (report only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm audit --omit=dev

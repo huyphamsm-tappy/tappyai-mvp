@@ -148,6 +148,24 @@ export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSte
   return finalSynthesisReserveReached(stepsFinished, maxSteps)
 }
 /**
+ * 18/11 (Phase 1, causes R1 + R3 of docs/eval/brain-eval-v1/PHASE1-DESIGN.md; measured on the real chat UI). think_deeper was called in 100% of the baseline turns, so every later step reasoned at effort
+ * medium: 500-3,500 reasoning tokens per step at about 100 tokens/s, 5-35 s per step. On the heavy turns (trip plans, shopping: 9-24 lookups) that is 100+ s, past the 110 s turn deadline: the stream was
+ * aborted with no text and the page showed the red "Mình gặp trục trặc" (stress set of 11 plan turns: medium 4 of 11 ended badly, median 116 s; none 1 of 11, median 62 s, 11 of 11 answered).
+ * Dropping the effort for EVERY turn lost quality on places and advice (30-question gate), so the effort steps down only on a HEAVY turn: after HEAVY_TURN_LOOKUPS lookups the evidence is gathered and what is
+ * left is composing it. Pure. A lookup is any tool that fetches (search, places, products, hotels, flights, weather, read_page ...); what composes the answer or switches a mode is not one.
+ */
+export const HEAVY_TURN_LOOKUPS = 9
+// explain_feature (20/11) reads Tappy's own guide: no provider, no cost, so it never uses up the lookups, rounds or time of a turn
+const NOT_A_LOOKUP = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'calculate', 'think_deeper', 'save_price_watch', 'explain_feature'])
+export function isLookupTool(tool: string): boolean { return !NOT_A_LOOKUP.has(tool) }
+export function heavyTurnReached(lookupCalls: number, heavy: number = HEAVY_TURN_LOOKUPS): boolean { return lookupCalls >= heavy }
+/**
+ * 19/11 (UAT: a trip plan spent 80 s of the 110 s turn on 13 lookups, then was cut off while it wrote the plan): the lookups of a one-brain auto turn have a TIME budget the code holds. Once the turn is this old,
+ * a further lookup is answered "no more lookups, write now" (no provider call, no cost) so the writing step keeps the rest of the turn (TURN_DEADLINE_MS 110 s: about 55 s are left to write a plan).
+ */
+export const LOOKUP_TIME_BUDGET_MS = 55_000
+export function lookupTimeUp(elapsedMs: number, budgetMs: number = LOOKUP_TIME_BUDGET_MS): boolean { return elapsedMs >= budgetMs }
+/**
  * Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ). ON only for the exact value "1" and outside a production runtime: NOT tied to the level. It acts only on a pre-searched pick (R2) that carries the page reader,
  * i.e. with CONSULT_PICK_TURN_TOOLS on (Wave 4 · C3); without that there is no R2 reader and the flag changes nothing.
  * Measured (W4-R2, 28/10, bench json): on R2 the model called no tool in 4 of 5 questions (one read three cinema pages) and all five lost the blind grading - the venue pages were mostly never
@@ -257,6 +275,21 @@ export function consultOneBrainOn(env: Env = process.env): boolean { return unwi
 //                       the V4 picture layer). One extra intent-role call reads what the pictures should show; up to 6 image searches. Needs CONSULT_ONE_BRAIN. Localhost UAT only.
 export const CONSULT_ONE_BRAIN_MEDIA_FLAG = 'CONSULT_ONE_BRAIN_MEDIA'
 export function consultOneBrainMediaOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_ONE_BRAIN_MEDIA_FLAG) && consultOneBrainOn(env) }
+//   CONSULT_PRESENT_BLOCKS  (14/11, layout slice 2) a one-brain answer may DECLARE the blocks it needs (compare table, ask chips, booking handoff) through the present_blocks tool, pointing at this
+//                       turn's tool results by id; the server checks the declaration and sends it as a live annotation (tappy.presentation.v1), nothing stored. Needs CONSULT_ONE_BRAIN.
+//                       Default OFF; locked in production unless named in CONSULT_PRODUCTION_ALLOW.
+export const CONSULT_PRESENT_BLOCKS_FLAG = 'CONSULT_PRESENT_BLOCKS'
+export function consultPresentBlocksOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PRESENT_BLOCKS_FLAG]) && !lockedInProduction(env, CONSULT_PRESENT_BLOCKS_FLAG) && consultOneBrainOn(env) }
+//   CONSULT_PERSON_MODEL  (14/11) an INPUT fix, no prompt text: the memory extraction runs on ordinary turns and the WHO traits (style, company) are kept while the transient things stay dropped (the prompt
+//                       texts first added here were removed after the 14/11 investigation). Needs CONSULT_ONE_BRAIN. Default OFF; locked in production unless named in CONSULT_PRODUCTION_ALLOW
+//                       (it stores more about the person: the owner decides with the privacy page).
+//   CONSULT_PLAN_V2  (14/11, owner UAT: "a plan with no cost and no way to book is a challenge to the person") present_plan carries, as required typed fields, who the plan is for, every cost line (found or
+//                       estimate), the total for the party and what it assumed (planV2.ts; a typed contract, no prompt text). Needs
+//                       CONSULT_ONE_BRAIN. Default OFF; locked in production unless named in CONSULT_PRODUCTION_ALLOW.
+export const CONSULT_PLAN_V2_FLAG = 'CONSULT_PLAN_V2'
+export function consultPlanV2On(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PLAN_V2_FLAG]) && !lockedInProduction(env, CONSULT_PLAN_V2_FLAG) && consultOneBrainOn(env) }
+export const CONSULT_PERSON_MODEL_FLAG = 'CONSULT_PERSON_MODEL'
+export function consultPersonModelOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PERSON_MODEL_FLAG]) && !lockedInProduction(env, CONSULT_PERSON_MODEL_FLAG) && consultOneBrainOn(env) }
 //   CONSULT_PARALLEL    LOCALHOST ONLY: Parallel (parallelClient.ts) reads a page the consult reader could not (blocked / timed out / JavaScript / thin), and
 //                       searches when Serper gives no rows. Needs PARALLEL_API_KEY; at most 1 search + 3 reads a turn, 5 USD a day. A new data processor:
 //                       never in production until the Owner decides on the privacy page and the AI-data consent.

@@ -14,6 +14,50 @@ export const DEEP_RESEARCH_V2_FLAG = 'DEEP_RESEARCH_V2'
 /** Pure. ON only for the exact value "1", and never in a production runtime unless the owner lists the name in CONSULT_PRODUCTION_ALLOW. */
 export const deepResearchV2On = (env: Env = process.env): boolean => env[DEEP_RESEARCH_V2_FLAG] === '1' && !lockedInProduction(env, DEEP_RESEARCH_V2_FLAG)
 
+export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
+/** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
+export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
+
+export const RESEARCH_EVIDENCE_CARDS_FLAG = 'RESEARCH_EVIDENCE_CARDS'
+/** Pure. Evidence cards (evidenceCards.ts): the notes step also returns the source's exact words for each finding, the code checks them against the page, and the run reports the cards: OFF unless exactly "1", locked in production. */
+export const researchEvidenceCardsOn = (env: Env = process.env): boolean => (env[RESEARCH_EVIDENCE_CARDS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_EVIDENCE_CARDS_FLAG)) || researchThesisOn(env)
+
+export const RESEARCH_THESIS_REPORT_FLAG = 'RESEARCH_THESIS_REPORT'
+/** Pure. Report Engine V2.1 (M3-M5): an analyst reads the evidence cards and returns a thesis with the points that support it, the writer writes from that outline, and only text the code could check is shown. Needs the cards, so it switches them on. OFF unless exactly "1", locked in production. */
+export function researchThesisOn(env: Env = process.env): boolean { return env[RESEARCH_THESIS_REPORT_FLAG] === '1' && !lockedInProduction(env, RESEARCH_THESIS_REPORT_FLAG) }
+
+export const RESEARCH_CHART_RELEVANCE_FLAG = 'RESEARCH_CHART_RELEVANCE'
+/** Pure. A section's chart is drawn only from a series that the written section talks about (chartRelevance.ts): OFF unless exactly "1", locked in production. */
+export const researchChartRelevanceOn = (env: Env = process.env): boolean => env[RESEARCH_CHART_RELEVANCE_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CHART_RELEVANCE_FLAG)
+
+export const RESEARCH_TIGHT_WRITE_FLAG = 'RESEARCH_TIGHT_WRITE'
+/** Pure. The writer is given a rule to state each figure once and keep the summary and the caveats from restating it (reportRepeats.ts): OFF unless exactly "1", locked in production. */
+export const researchTightWriteOn = (env: Env = process.env): boolean => env[RESEARCH_TIGHT_WRITE_FLAG] === '1' && !lockedInProduction(env, RESEARCH_TIGHT_WRITE_FLAG)
+
+export const RESEARCH_FRESHNESS_FLAG = 'RESEARCH_FRESHNESS'
+/** Pure. The gap check is told which measures run on old readings (newest reading before this year) so it looks up their latest period first: OFF unless exactly "1", locked in production. */
+export const researchFreshnessOn = (env: Env = process.env): boolean => env[RESEARCH_FRESHNESS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_FRESHNESS_FLAG)
+
+export const RESEARCH_FORECAST_MODEL_FLAG = 'RESEARCH_FORECAST_MODEL'
+/** Pure. A scenario model computed by code (forecastModel.ts) for a forecast question in an Advanced run: a model call supplies the inputs, the code refuses a base level no finding states and does every calculation: OFF unless exactly "1", locked in production. */
+export const researchForecastModelOn = (env: Env = process.env): boolean => env[RESEARCH_FORECAST_MODEL_FLAG] === '1' && !lockedInProduction(env, RESEARCH_FORECAST_MODEL_FLAG)
+
+export const RESEARCH_PACKAGES_FLAG = 'RESEARCH_PACKAGES'
+/** Pure. Work packages with a four-part brief (objective, output, sources, boundary) for the Advanced plan, repeated packages merged by code, the brief handed to the reader of each step: OFF unless exactly "1", locked in production. */
+export const researchPackagesOn = (env: Env = process.env): boolean => env[RESEARCH_PACKAGES_FLAG] === '1' && !lockedInProduction(env, RESEARCH_PACKAGES_FLAG)
+
+export const RESEARCH_CONTRACTS_FLAG = 'RESEARCH_CONTRACTS'
+/** Pure. Orchestration contract objects (R13 4.3, researchContracts.ts): the Advanced engine issues a WorkPackageAssignment per plan step (bound to a Context Version, with its budget reservation), checks the package's result against it and every gap round against the Controller's rules, and records the outcome in the run's log: OFF unless exactly "1", locked in production. */
+export const researchContractsOn = (env: Env = process.env): boolean => env[RESEARCH_CONTRACTS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CONTRACTS_FLAG)
+
+export const RESEARCH_STREAM_VERIFY_FLAG = 'RESEARCH_STREAM_VERIFY'
+/** Pure. Section-level verification while the report is written (R13 9.5, sectionRelease.ts): each finished section of a thesis report is read by the verifier and shown at once, instead of the whole text after the last section: OFF unless exactly "1", locked in production. */
+export const researchStreamVerifyOn = (env: Env = process.env): boolean => env[RESEARCH_STREAM_VERIFY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_STREAM_VERIFY_FLAG)
+
+export const RESEARCH_CONSOLIDATION_FLAG ='RESEARCH_CONSOLIDATION'
+/** Pure. Consolidation before the writer (a fact read in several steps is kept once; a disagreement is a conflict only for the same subject, measure, scope and period; readings at different dates are a trend; the newest period found is reported): OFF unless exactly "1", locked in production. */
+export const researchConsolidationOn = (env: Env = process.env): boolean => env[RESEARCH_CONSOLIDATION_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CONSOLIDATION_FLAG)
+
 /** The V2 budgets of one request (the request's own ceiling stays DEEP_RESEARCH_LIMITS.runDeadlineMs). */
 export const V2_LIMITS = {
   /** the research phase may run longer than the one-pass 120 s: the writer still has what is left of the 270 s */

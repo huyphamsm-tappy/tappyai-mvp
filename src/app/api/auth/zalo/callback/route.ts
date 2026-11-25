@@ -4,9 +4,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createZaloProfileVerifier } from '@/lib/zalo/identity'
 import { safeNext, zaloConfirmUrl } from '@/lib/zalo/session'
 import { APP_STATE_COOKIE, appStateFromCookie } from '@/lib/auth/appState'
-
-const ZALO_APP_ID = process.env.ZALO_APP_ID!
-const ZALO_APP_SECRET = process.env.ZALO_APP_SECRET!
+import { clientIpKey } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // Same host the init route used (e.g. www.tappyai.com) so redirect_uri matches
 // exactly at token exchange.
@@ -60,6 +59,18 @@ export async function GET(req: NextRequest) {
     const res = clearFlow(NextResponse.redirect(new URL(`/login?error=${reason}`, origin)))
     res.cookies.delete(APP_STATE_COOKIE)
     return res
+  }
+
+  // Public and unauthenticated: 20 per minute per IP.
+  const flood = await publicRateLimit(`auth-zalo-callback:${clientIpKey(req)}`, 20, 60_000)
+  if (!flood.ok) return fail('rate_limited')
+
+  // Read at REQUEST time, no "!": a missing variable is a named log line and ?error=zalo_unavailable.
+  const ZALO_APP_ID = process.env.ZALO_APP_ID
+  const ZALO_APP_SECRET = process.env.ZALO_APP_SECRET
+  if (!ZALO_APP_ID || !ZALO_APP_SECRET) {
+    console.error('[auth/zalo/callback] missing configuration:', [!ZALO_APP_ID && 'ZALO_APP_ID', !ZALO_APP_SECRET && 'ZALO_APP_SECRET'].filter(Boolean).join(', '))
+    return fail('zalo_unavailable')
   }
 
   if (!code || !codeVerifier || state !== savedState) return fail('zalo_denied')

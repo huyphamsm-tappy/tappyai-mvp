@@ -38,7 +38,10 @@ export async function middleware(request: NextRequest) {
   // without a guaranteed refresh, so once the ~1h access token expired the
   // server started rendering the user as logged-out (the reported "desktop
   // session logs out periodically" symptom).
-  const { data: { user } } = await supabase.auth.getUser()
+  // Hardening 21/11/2026: a request with NO Supabase session cookie has nothing to refresh, so it makes no network call to the auth server. Without this every anonymous request (a page, /api/health,
+  // a flood of cheap calls) was amplified into one Supabase Auth call, which could exhaust the project's auth rate limit and break real people's sign-in.
+  const hasSessionCookie = request.cookies.getAll().some(c => c.name.startsWith('sb-') && c.name.includes('-auth-token'))
+  const user = hasSessionCookie ? (await supabase.auth.getUser()).data.user : null
 
   // Back Office route protection (Architecture v1.1, owner decision Phase 0):
   // middleware enforces AUTHENTICATION only — never a DB-backed role check. The

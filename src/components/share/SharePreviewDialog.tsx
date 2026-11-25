@@ -133,9 +133,12 @@ export default function SharePreviewDialog({
               )}
               <p className="mt-2 text-xs text-gray-500">{t('share.previewAnswer')}</p>
               <p className="text-sm text-gray-700 dark:text-gray-200">{excerpt}{payload.body.length > 420 ? '…' : ''}</p>
-              <p className="mt-2 text-xs text-gray-500">
-                {t('share.previewCounts').replace('{buttons}', String(payload.buttons.length)).replace('{images}', String(payload.images.length))}
-              </p>
+              {/* 17/11: a count line says something only when there is something to count (a report has no button and no picture: "0 · 0" read as a fault) */}
+              {(payload.buttons.length > 0 || payload.images.length > 0) && (
+                <p className="mt-2 text-xs text-gray-500" data-testid="share-preview-counts">
+                  {t('share.previewCounts').replace('{buttons}', String(payload.buttons.length)).replace('{images}', String(payload.images.length))}
+                </p>
+              )}
             </div>
             <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">{t('share.previewPrivacy')}</p>
             {!listed && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('share.unlistedNotice')}</p>}

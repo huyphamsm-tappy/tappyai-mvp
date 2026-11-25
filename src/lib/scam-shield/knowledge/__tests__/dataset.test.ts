@@ -125,4 +125,13 @@ describe('🚨 browsing knowledge costs nothing', () => {
       expect(src, f).not.toMatch(/\basync\b|\bawait\b/)
     }
   })
+
+  it('the weekly-sync reader (meta.ts, versions.ts) is also free of models, limiters, quota, the network and the database client — a store is injected', () => {
+    // 18/11/2026: index.ts stays synchronous (asserted above); the async freshness reader sits in meta.ts and takes its store as a parameter.
+    for (const f of ['src/lib/scam-shield/knowledge/meta.ts', 'src/lib/scam-shield/knowledge/versions.ts']) {
+      const src = readFileSync(f, 'utf8').replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '')
+      expect(src, f).not.toMatch(/@\/lib\/ai\/llm|AI\.(generate|vision|stream)|fetch\(|publicRateLimit|consumeAiAnalysis|quota\b/)
+      expect(src, f).not.toMatch(/supabase|server-only|createAdminClient/)
+    }
+  })
 })

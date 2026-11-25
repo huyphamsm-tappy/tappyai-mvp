@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { moderateImageWithOpenAI } from './openaiModeration'
+import { moderateImageWithOpenAI, moderateTextWithOpenAI } from './openaiModeration'
 
 /** The moderation adapter: request shape, and every non-answer is `unavailable` (never a made-up "clear"). */
 
@@ -38,5 +38,49 @@ describe('moderateImageWithOpenAI', () => {
     const f = answer({})
     expect(await moderateImageWithOpenAI(bytes, 'image/png', { env: {}, fetchImpl: f as never })).toEqual({ status: 'unavailable', reason: 'no_key' })
     expect(f).not.toHaveBeenCalled()
+  })
+
+  it('returns the category scores when the provider sends them (and none when it does not)', async () => {
+    const f = vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ results: [{ categories: { sexual: false }, category_scores: { sexual: 0.012 } }] }) }) as unknown as Response)
+    expect(await moderateImageWithOpenAI(bytes, 'image/jpeg', { env: ENV, fetchImpl: f as never })).toEqual({ status: 'ok', categories: { sexual: false }, scores: { sexual: 0.012 } })
+  })
+})
+
+describe('moderateTextWithOpenAI', () => {
+  const many = (results: Array<Record<string, unknown>>) => vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ results }) }) as unknown as Response)
+
+  it('sends the pieces as text inputs in ONE request, to the same model', async () => {
+    const f = many([{ categories: { hate: false }, category_scores: { hate: 0.01 } }, { categories: { hate: false }, category_scores: { hate: 0.02 } }])
+    await moderateTextWithOpenAI(['one', '  ', 'two'], { env: ENV, fetchImpl: f as never })
+    expect(f).toHaveBeenCalledTimes(1)
+    const sent = JSON.parse((f.mock.calls[0] as unknown as [string, RequestInit])[1].body as string)
+    expect(sent).toEqual({ model: 'omni-moderation-latest', input: ['one', 'two'] })
+  })
+
+  it('merges the pieces: a category is flagged when any piece flagged it, and its score is the highest', async () => {
+    const f = many([
+      { categories: { hate: false, violence: false }, category_scores: { hate: 0.01, violence: 0.4 } },
+      { categories: { hate: true, violence: false }, category_scores: { hate: 0.8, violence: 0.1 } },
+    ])
+    expect(await moderateTextWithOpenAI(['a', 'b'], { env: ENV, fetchImpl: f as never })).toEqual({
+      status: 'ok', categories: { hate: true, violence: false }, scores: { hate: 0.8, violence: 0.4 },
+    })
+  })
+
+  it('fewer answers than pieces is NOT a clean answer', async () => {
+    const f = many([{ categories: { hate: false } }])
+    expect(await moderateTextWithOpenAI(['a', 'b'], { env: ENV, fetchImpl: f as never })).toEqual({ status: 'unavailable', reason: 'bad_answer' })
+  })
+
+  it('no text at all is refused without calling the provider (nothing is not "clean")', async () => {
+    const f = many([])
+    expect(await moderateTextWithOpenAI(['', '   '], { env: ENV, fetchImpl: f as never })).toEqual({ status: 'unavailable', reason: 'bad_answer' })
+    expect(f).not.toHaveBeenCalled()
+  })
+
+  it('no key, HTTP error and network failure are unavailable', async () => {
+    expect(await moderateTextWithOpenAI(['a'], { env: {}, fetchImpl: many([]) as never })).toEqual({ status: 'unavailable', reason: 'no_key' })
+    expect(await moderateTextWithOpenAI(['a'], { env: ENV, fetchImpl: answer({}, false, 503) as never })).toEqual({ status: 'unavailable', reason: 'http_error' })
+    expect(await moderateTextWithOpenAI(['a'], { env: ENV, fetchImpl: vi.fn(async () => { throw new Error('x') }) as never })).toEqual({ status: 'unavailable', reason: 'failed' })
   })
 })

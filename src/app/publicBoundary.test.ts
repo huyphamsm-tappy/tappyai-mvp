@@ -45,7 +45,9 @@ const LOGIN_TARGET = /(['"`])\/(login|register)\b|loginPathFor|loginPath\b/
 // failed Zalo callback back to /login IS the flow. These routes are still checked for location,
 // the language modal and the age gate. This is an exemption, not a registry: a route missing from
 // it is checked MORE strictly, never less, so forgetting to update it can only fail the build.
-const SIGN_IN_FLOW = new Set(['login', 'register', 'auth'])
+// `oauth` (22/11/2026): the consent screen of the connector (MCP) OAuth flow. It is part of signing a person in for an AI app, so it must send a signed-out visitor to /login and back;
+// it still mounts no location gate, language modal or age gate.
+const SIGN_IN_FLOW = new Set(['login', 'register', 'auth', 'oauth'])
 const EFFECT_HOOKS = new Set(['useEffect', 'useLayoutEffect', 'useInsertionEffect'])
 
 function walk(dir: string, out: string[] = []): string[] {

@@ -34,6 +34,8 @@ const h = vi.hoisted(() => ({
   standing: [] as Array<{ id: string }>,           // other decisions on the same post (removal / restriction / lock)
   reversedAppeals: [] as Array<{ decision_id: string }>,
   otherHolds: [] as Array<{ id: string }>,         // other reports on the same post that are on hold
+  autoHolds: [] as Array<{ id: string }>,          // other reports of the same post carrying the system auto-hold mark (metadata.auto_hold)
+  commentHiddenBy: undefined as string | null | undefined, // review_comments.hidden_by of the reported comment
   heldReadError: null as null | { message: string },
   neqs: [] as Array<[string, string, unknown]>,     // .neq(col, value) filters seen, per table
 }))
@@ -55,6 +57,8 @@ vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: () => ({
     from: (table: string) => {
       const b: Record<string, unknown> = {}
+      let autoLookup = false
+      b.contains = () => { autoLookup = true; return b }
       const chain = () => b
       b.select = chain; b.eq = chain; b.in = chain; b.neq = chain; b.filter = chain; b.order = chain; b.limit = chain
       b.neq = (col: string, v: unknown) => { h.neqs.push([table, col, v]); return b }
@@ -63,10 +67,11 @@ vi.mock('@/lib/supabase/admin', () => ({
         if (table === 'moderation_decisions') return { data: h.ledgerInserted ? { id: 'dec-new' } : h.decision ?? h.prevDecision, error: null }
         if (table === 'moderation_appeals') return { data: h.appeal, error: null }
         if (table === 'reviews') return { data: { publication_state: h.reviewState }, error: null }
+        if (table === 'review_comments') return { data: h.commentHiddenBy === undefined ? null : { hidden_by: h.commentHiddenBy }, error: null }
         return { data: null, error: null }
       }
       b.then = (res: (v: unknown) => unknown) => Promise.resolve({
-        data: table === 'moderation_actions' ? h.actionRows : table === 'moderation_decisions' ? h.standing : table === 'moderation_appeals' ? h.reversedAppeals : table === 'moderation_queue' ? h.otherHolds : null,
+        data: table === 'moderation_actions' ? h.actionRows : table === 'moderation_decisions' ? h.standing : table === 'moderation_appeals' ? h.reversedAppeals : table === 'moderation_queue' ? (autoLookup ? h.autoHolds : h.otherHolds) : null,
         error: (table === 'moderation_decisions' || table === 'moderation_queue') ? h.heldReadError : null,
       }).then(res)
       b.insert = (value: unknown) => {
@@ -127,7 +132,7 @@ describe('moderation desk routes', () => {
     h.emit.mockResolvedValue({ id: 'n1' })
     h.target = target(); h.strikes = []; h.ledgerError = null; h.ops = []; h.decision = null; h.appeal = null; hh.ledgerInserted = false; h.siblings = []; h.siblingError = null
     h.queueItem = { id: QID, status: 'pending', target_type: 'comment', target_id: TARGET }
-    h.reviewState = 'PUBLISHED'; h.reviewMatches = [1]; h.reviewsError = null; h.provError = null; h.actionRows = []; h.standing = []; h.reversedAppeals = []; h.otherHolds = []; h.heldReadError = null; h.neqs = []
+    h.reviewState = 'PUBLISHED'; h.reviewMatches = [1]; h.reviewsError = null; h.provError = null; h.actionRows = []; h.standing = []; h.reversedAppeals = []; h.otherHolds = []; h.autoHolds = []; h.commentHiddenBy = undefined; h.heldReadError = null; h.neqs = []
   })
   afterEach(() => { if (prev === undefined) delete process.env.MODERATION_ADMIN_ENABLED; else process.env.MODERATION_ADMIN_ENABLED = prev })
 
@@ -206,6 +211,36 @@ describe('moderation desk routes', () => {
       heldPost(); h.heldReadError = { message: 'boom' }
       expect((await decide({ outcome: 'no_violation', reason: REASON })).status).toBe(500)
       expect(restores()).toEqual([]); expect(queueUpdate()).toBeUndefined()
+    })
+
+    it('21/11/2026 auto-hold: the system held the post on ANOTHER report; a "no violation" verdict on this pending report lifts it and closes that hold', async () => {
+      h.target = target({ kind: 'review', feature: 'post' }); h.queueItem = { id: QID, status: 'pending', target_type: 'review', target_id: TARGET }; h.autoHolds = [{ id: 'auto-held-report' }]
+      const r = await decide({ outcome: 'no_violation', reason: REASON })
+      expect(r.status).toBe(200)
+      expect(restores()).toEqual([{ publication_state: 'PUBLISHED' }])
+      const closed = h.ops.filter((o) => o.table === 'moderation_queue' && o.op === 'update').map((o) => o.value as Record<string, unknown>)
+      expect(closed.some((v) => v.status === 'dismissed' && String(v.resolution).includes(QID))).toBe(true)
+    })
+
+    it('21/11/2026 auto-hold, but another decision on the post still stands: the hold row is closed, the post STAYS hidden', async () => {
+      h.target = target({ kind: 'review', feature: 'post' }); h.queueItem = { id: QID, status: 'pending', target_type: 'review', target_id: TARGET }; h.autoHolds = [{ id: 'auto-held-report' }]; h.standing = [{ id: 'dec-ban' }]
+      const r = await decide({ outcome: 'no_violation', reason: REASON })
+      expect(restores()).toEqual([])
+      expect((await r.json()).data.post_kept_hidden).toBe(true)
+    })
+
+    it('21/11/2026: a COMMENT the system hid after several reports comes back on a "no violation" verdict; the owner\'s own hide, or a visible comment, is not touched', async () => {
+      const commentUpdates = () => h.ops.filter((o) => o.table === 'review_comments' && o.op === 'update').map((o) => o.value)
+      h.queueItem = { id: QID, status: 'in_review', target_type: 'comment', target_id: TARGET }
+      h.commentHiddenBy = 'auto'
+      expect((await decide({ outcome: 'no_violation', reason: REASON })).status).toBe(200)
+      expect(commentUpdates()).toEqual([{ hidden_at: null, hidden_by: null }])
+      h.ops = []; h.commentHiddenBy = 'owner'
+      await decide({ outcome: 'no_violation', reason: REASON })
+      expect(commentUpdates()).toEqual([])
+      h.ops = []; h.commentHiddenBy = null
+      await decide({ outcome: 'no_violation', reason: REASON })
+      expect(commentUpdates()).toEqual([])
     })
 
     it('a report that was NOT on hold never touches the post', async () => {

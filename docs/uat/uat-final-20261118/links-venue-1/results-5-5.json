@@ -1,0 +1,50 @@
+[
+  {
+    "id": 5,
+    "group": "food",
+    "turns": [
+      {
+        "q": "Tư vấn cho tôi quán ăn tối cao cấp ở Thảo Điền Quận 2",
+        "done": true,
+        "seconds": 53,
+        "screen": "screens/q05.jpg",
+        "answered": true,
+        "chars": 2363,
+        "head": "Nếu ưu tiên sang trọng và yên tĩnh, mình chọn La Villa French Restaurant by Thierry Mounon cho bữa tối ở Thảo Điền. Bài giới thiệu về nhà hàng mô tả không gian biệt thự có vườn yên tĩnh; Google Maps hiện ghi giờ tối 18:00–23:30. Bách hóa XANH\nBA LỰA CHỌN ĂN TỐI CHỈN CHU Ở THẢO ĐIỀN\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nLa Villa French Restaurant by Thierry Mounon\nƯu tiên cho bữa tối sang trọng, không gian yên hơn\n\tPhong cách: Nhà hàng Pháp; giờ tối đang được Google Maps ghi nhận là 18:00–23:30.\nNguồn: Bách hóa XANH, Google Maps\n\nP'ti Saigon\nẨm thực Pháp đương đại, phù hợp dịp đặc biệt\n\tBếp trưởng: Bài Ẩm Thực Hiện Đại giới thiệu đây là nhà hàng thứ hai tại TP.HCM của bếp trưởng Sak",
+        "tail": "Mở Google Maps để khám phá thêm địa điểm\nVì bạn không thích chỗ ồn, hãy đặt bàn trước và xin bàn ở khu yên tĩnh; với La Villa, mình sẽ ưu tiên bàn trong vườn nếu còn chỗ.\nB\nM\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 22,
+        "hosts": {
+          "bachhoaxanh.com": 2,
+          "duyenvegetarian.com": 2,
+          "maps.google.com": 5,
+          "tiktok.com": 2,
+          "youtube.com": 3,
+          "madamelam.com": 2,
+          "google.com": 1,
+          "nucsaigon.vn": 1,
+          "food.grab.com": 1,
+          "casagrande.vn": 1,
+          "d1-concepts.com": 1,
+          "nhahangdimai.com": 1
+        },
+        "sourcesChip": "B M Nguồn · 2",
+        "tables": 1,
+        "images": 4,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Review trên TikTok",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 33,
+        "path": "/chat/3de4954e-82a6-441f-8b82-1bf1a11a4af9",
+        "proNote": 0
+      }
+    ]
+  }
+]

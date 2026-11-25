@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { searchParam } from '@/lib/http/searchParams'
 import { APP_STATE_COOKIE, appStateCookieOptions, appStateCookieValue, validAppState } from '@/lib/auth/appState'
-
-const ZALO_APP_ID = process.env.ZALO_APP_ID!
+import { clientIpKey } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // Build the callback URL from the ACTUAL request host (e.g. www.tappyai.com),
 // not NEXT_PUBLIC_APP_URL (which was the bare apex "tappyai.com"). Zalo requires
@@ -16,6 +16,16 @@ function originOf(req: NextRequest): string {
 }
 
 export async function GET(req: NextRequest) {
+  // Public and unauthenticated: 20 starts per minute per IP.
+  const flood = await publicRateLimit(`auth-zalo:${clientIpKey(req)}`, 20, 60_000)
+  if (!flood.ok) return NextResponse.redirect(new URL('/login?error=rate_limited', originOf(req)))
+  // Read at REQUEST time (not module load, and no "!"): a missing variable is a clear, named log line and
+  // a friendly error on the login page, never a crash or an `app_id=undefined` redirect to Zalo.
+  const ZALO_APP_ID = process.env.ZALO_APP_ID
+  if (!ZALO_APP_ID) {
+    console.error('[auth/zalo] ZALO_APP_ID is not set; Zalo sign-in is unavailable')
+    return NextResponse.redirect(new URL('/login?error=zalo_unavailable', originOf(req)))
+  }
   const returnTo = searchParam(req, 'returnTo') || '/'
   // platform=ios|android → the flow ends at the app's custom scheme instead of a
   // web redirect (see /auth/confirm). Strict allowlist — never a free-form value.

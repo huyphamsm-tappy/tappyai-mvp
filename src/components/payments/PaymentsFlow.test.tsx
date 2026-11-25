@@ -17,18 +17,22 @@ vi.mock('@/lib/i18n/useTranslation', async () => {
 import PaymentsFlow from './PaymentsFlow'
 
 const ORDER = {
-  // Owner 01/11/2026: new plan catalog (plan momo = Coco 1 month, 175.000đ)
-  order: { id: '0b3c0f7e-0000-4000-8000-000000000001', code: 'TAPPYAB23CD', plan: 'momo', amountVnd: 175000, status: 'pending', expiresAt: new Date(Date.now() + 15 * 60_000).toISOString() },
+  // Owner 01/11/2026: new plan catalog (plan momo = Coco 1 month); prices raised 18/11/2026 (225.000đ)
+  order: { id: '0b3c0f7e-0000-4000-8000-000000000001', code: 'TAPPYAB23CD', plan: 'momo', amountVnd: 225000, status: 'pending', expiresAt: new Date(Date.now() + 15 * 60_000).toISOString() },
   bank: { accountNumber: '0011223344', accountName: 'PHAM HUY', bankCode: 'MBBank' },
-  qrUrl: 'https://qr.sepay.vn/img?acc=0011223344&bank=MBBank&amount=175000&des=TAPPYAB23CD',
+  qrUrl: 'https://qr.sepay.vn/img?acc=0011223344&bank=MBBank&amount=225000&des=TAPPYAB23CD',
 }
 
 let orderStatus = 'pending'
+let orderReceived = 0
+let orderBonus = 0
 beforeEach(() => {
   orderStatus = 'pending'
+  orderReceived = 0
+  orderBonus = 0
   vi.stubGlobal('fetch', vi.fn(async (url: string, init?: RequestInit) => {
     if (url === '/api/payments/orders' && init?.method === 'POST') return new Response(JSON.stringify(ORDER), { status: 201 })
-    if (url.startsWith('/api/payments/orders?id=')) return new Response(JSON.stringify({ order: { ...ORDER.order, status: orderStatus } }))
+    if (url.startsWith('/api/payments/orders?id=')) return new Response(JSON.stringify({ order: { ...ORDER.order, status: orderStatus, receivedVnd: orderReceived, bonusSeconds: orderBonus } }))
     if (url === '/api/subscription') return new Response(JSON.stringify({ isPro: true, currentPeriodEnd: '2026-10-27T10:00:00Z' }))
     return new Response('{}', { status: 404 })
   }))
@@ -43,17 +47,18 @@ describe('plan picker', () => {
     // Owner 01/11/2026: new plan catalog (MoMo trial, Coco 1/3 months, Tappy 1/3 months; Milo/Sunny not sold)
     expect(radios.map((r) => r.textContent)).toEqual([
       'MoMo7 ngày · Không giới hạn câu hỏi AI25.000đ',
-      'CocoPhổ biến1 tháng · Không giới hạn câu hỏi AI175.000đ',
-      'Coco3 tháng · Không giới hạn câu hỏi AI472.500đ≈ 5.250đ/ngày',
-      'Tappy1 tháng · Không giới hạn câu hỏi AI225.000đ',
-      'Tappy3 tháng · Không giới hạn câu hỏi AI607.500đ≈ 6.750đ/ngày',
+      'CocoPhổ biến1 tháng · Không giới hạn câu hỏi AI225.000đ',
+      'Coco3 tháng · Không giới hạn câu hỏi AI607.500đ≈ 6.750đ/ngày',
+      'Tappy1 tháng · Không giới hạn câu hỏi AI300.000đ',
+      'Tappy3 tháng · Không giới hạn câu hỏi AI810.000đ≈ 9.000đ/ngày',
     ])
-    expect(screen.getByText('Phổ biến').closest('[role=radio]')!.textContent).toBe('CocoPhổ biến1 tháng · Không giới hạn câu hỏi AI175.000đ') // Owner 01/11/2026: new plan catalog
-    expect(screen.getByRole('radio', { checked: true }).textContent).toContain('175.000đ')
+    // prices raised 18/11/2026 (owner): Pro 9 USD, Promax 12 USD a month; 3 months 10% off
+    expect(screen.getByText('Phổ biến').closest('[role=radio]')!.textContent).toBe('CocoPhổ biến1 tháng · Không giới hạn câu hỏi AI225.000đ')
+    expect(screen.getByRole('radio', { checked: true }).textContent).toContain('225.000đ')
     // owner 01/11/2026: "30 câu hỏi AI mỗi ngày" -> "Không giới hạn câu hỏi AI" (accounts have no visible limit; hidden anti-abuse ceiling)
     expect(screen.getAllByText(/Không giới hạn câu hỏi AI/)).toHaveLength(5)
     expect(document.body.textContent).not.toMatch(/câu hỏi AI mỗi ngày|1000|1\.000/) // the hidden ceiling is never shown
-    expect(screen.getByText('175.000đ')).toBeTruthy() // Owner 01/11/2026: new plan catalog
+    expect(screen.getByText('225.000đ')).toBeTruthy() // the Coco 1 month price (18/11/2026)
     expect(screen.getAllByRole('button', { name: 'Tiếp tục' })).toHaveLength(1)
   })
 
@@ -94,6 +99,32 @@ describe('VietQR → success', () => {
     orderStatus = 'mismatch'
     await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
     await waitFor(() => expect(screen.getByText(/số tiền chưa khớp/)).toBeTruthy())
+  })
+
+  it('NO REFUND: a short transfer tells the payer exactly what is missing and keeps the order open', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const onePart = Math.floor(ORDER.order.amountVnd / 2)
+    render(<PaymentsFlow plans={paymentsCatalog()} current={null} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục' }))
+    await waitFor(() => expect(screen.getByTestId('pay-qr')).toBeTruthy())
+    orderStatus = 'mismatch'
+    orderReceived = onePart
+    await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
+    await waitFor(() => expect(screen.getByText(/nhưng còn thiếu/)).toBeTruthy())
+    expect(screen.getByText(/đúng nội dung/).textContent).toContain(ORDER.order.code)
+    expect(screen.queryByText(/số tiền chưa khớp/)).toBeNull()
+  })
+
+  it('NO REFUND: a surplus is shown as extra days on the success screen', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    render(<PaymentsFlow plans={paymentsCatalog()} current={null} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục' }))
+    await waitFor(() => expect(screen.getByTestId('pay-qr')).toBeTruthy())
+    orderStatus = 'paid'
+    orderBonus = 7 * 86_400
+    await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
+    await waitFor(() => expect(screen.getByTestId('pay-success')).toBeTruthy())
+    expect(screen.getByText(/cộng thêm 7 ngày/)).toBeTruthy()
   })
 
   it('a refused order shows the server’s plain message, never a code', async () => {

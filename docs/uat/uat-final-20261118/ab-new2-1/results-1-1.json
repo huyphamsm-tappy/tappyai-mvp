@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "group": "food",
+    "turns": [
+      {
+        "q": "Tư vấn cho tôi quán ăn tối cao cấp ở Thảo Điền Quận 2",
+        "done": true,
+        "seconds": 62,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 2194,
+        "head": "Mình ưu tiên Madame Lam: trong ba lựa chọn, đây là gợi ý hợp nhất nếu bạn muốn một bữa tối cao cấp với món Việt; bài giới thiệu nhà hàng nêu mức tham khảo 150.000–1.500.000 đồng/người (Madame Lam). Mình chọn theo sở thích bạn từng nói là không thích chỗ ồn, nhưng độ yên tĩnh của quán chưa được xác nhận—nên gọi trước và xin bàn ở khu yên tĩnh.\nSO NHANH THEO THÔNG TIN HIỆN CÓ\n\tMadame Lam\nTappy chọn\n\tThe Gate\tNÚC\nPhong cách món\tViệt\tÂu / Ý / steak\tViệt / lai Á\nGiá tham khảo tìm được\t150.000–1.500.000 đồng/người theo bài viết 22/7/2026\t—\t—\nĐánh giá Google Maps\t4,8/5 (2.033 đánh giá)\t4,7/5 (466 đánh giá)\t4,9/5 (718 đánh giá)\nNếu muốn ăn kiểu Âu, cân nhắc The Gate; còn muốn món Việt pha Á, thử NÚC",
+        "tail": " theo bài viết cập nhật ngày 22/7/2026.\n\nNguồn: Madame Lam, Google Maps\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\nM\nM\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 19,
+        "hosts": {
+          "madamelam.com": 3,
+          "maps.google.com": 8,
+          "google.com": 2,
+          "nucsaigon.vn": 1,
+          "tiktok.com": 2,
+          "youtube.com": 2,
+          "food.grab.com": 1
+        },
+        "sourcesChip": "M M Nguồn · 2",
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Review trên TikTok",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 24,
+        "path": "/chat/7011e111-a47e-4898-886f-de7a3b503fbc",
+        "proNote": 0
+      }
+    ]
+  }
+]

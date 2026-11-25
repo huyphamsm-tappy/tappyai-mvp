@@ -25,6 +25,9 @@
 //         enforcement. This module does NOT solve prompt injection; it removes
 //         the client's ability to forge STRUCTURE and AUTHORITY.
 
+import { lockedInProduction } from '@/lib/config/consultFlags'
+import { dataUrlMatchesDeclared, dataUrlImageSize, imagePreflight } from '@/lib/attachments/policy'
+
 /** Every bound on client-controlled input, in one auditable place. */
 export const CLIENT_INPUT_LIMITS = {
   /** Turns per request. The route separately trims to the last 10 for cost. */
@@ -40,11 +43,11 @@ export const CLIENT_INPUT_LIMITS = {
   maxTotalClientTextChars: 28_000,
   /** Image payloads are bounded separately: they are base64 blobs, and folding
    *  them into the text budget would make that budget meaningless. */
-  maxImagePartsPerMessage: 4,
+  maxImagePartsPerMessage: 5,
   maxImageDataUrlChars: 8_000_000,
   /** 31/10: PDFs attached on a user turn (web `experimental_attachments`). The bytes never reach a model: the server reads their text layer
    *  (pdfAttachments.ts) with the page reader's own caps. 3 MB of PDF ≈ 4 000 000 base64 characters plus the data-URL header. */
-  maxPdfPartsPerMessage: 2,
+  maxPdfPartsPerMessage: 3,
   maxPdfDataUrlChars: 4_100_000,
 } as const
 
@@ -61,7 +64,8 @@ const FORBIDDEN_MESSAGE_KEYS = ['providerOptions', 'experimental_providerMetadat
 export type TextPart = { type: 'text'; text: string }
 export type ImagePart = { type: 'image'; image: string }
 /** A PDF the person attached: a data URL the server turns into fenced text before any model call (pdfAttachments.ts); never forwarded as is. */
-export type FilePart = { type: 'file'; data: string; mimeType: 'application/pdf'; name: string }
+export type DocumentMime = 'application/pdf' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+export type FilePart = { type: 'file'; data: string; mimeType: DocumentMime; name: string }
 export type ValidatedPart = TextPart | ImagePart | FilePart
 
 /**
@@ -152,7 +156,10 @@ function validatePart(part: unknown): ValidatedPart | RejectCode {
 }
 
 /** The image types an attachment may declare; the data URL must carry the SAME type (a renamed file cannot pass as another kind). */
-const IMAGE_ATTACHMENT_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'] as const
+const DOCX_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+const XLSX_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+const DOCUMENT_ATTACHMENT_NAMES = [DOCX_TYPE, XLSX_TYPE] as const
+const IMAGE_ATTACHMENT_TYPES =['image/png', 'image/jpeg', 'image/webp', 'image/gif'] as const
 
 /**
  * 31/10: the web client's attachments. useChat sends a file the person picked as `experimental_attachments: [{ url: <data URL>, contentType,
@@ -160,12 +167,19 @@ const IMAGE_ATTACHMENT_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/
  * the model (measured 31/10: "ảnh này là gì" reached the model with no image). An attachment becomes a part here, under the same rules as a
  * part a client sends directly: data URLs only, the declared type must match the data URL's own, bounded size; images and PDFs only.
  */
+/** R13 §17.7 (ATTACHMENT_BYTE_CHECK, off by default, locked in production): the bytes must be the type the attachment declares. */
+export const ATTACHMENT_BYTE_CHECK_FLAG = 'ATTACHMENT_BYTE_CHECK'
+export const attachmentByteCheckOn = (env: Record<string, string | undefined> = process.env): boolean => env[ATTACHMENT_BYTE_CHECK_FLAG] === '1' && !lockedInProduction(env, ATTACHMENT_BYTE_CHECK_FLAG)
+
 function validateAttachment(raw: unknown): ImagePart | FilePart | RejectCode {
   if (!isRecord(raw)) return 'invalid_content'
   const { url, contentType, name } = raw
   if (typeof url !== 'string' || typeof contentType !== 'string') return 'invalid_content'
+  if (attachmentByteCheckOn() && (contentType in { 'image/png': 1, 'image/jpeg': 1, 'image/webp': 1, 'image/gif': 1, 'application/pdf': 1 } || (DOCUMENT_ATTACHMENT_NAMES as readonly string[]).includes(contentType)) && !dataUrlMatchesDeclared(url, contentType)) return 'invalid_content'
   if ((IMAGE_ATTACHMENT_TYPES as readonly string[]).includes(contentType)) {
     if (!url.startsWith(`data:${contentType};base64,`)) return 'invalid_content'
+    // R13 §17.7 image preflight (same flag): the header's own dimensions must pass the versioned policy before the image can reach a Vision call
+    if (attachmentByteCheckOn()) { const d = dataUrlImageSize(url); if (d && imagePreflight(d.width, d.height).decision === 'reject') return 'image_too_large' }
     if (url.length > CLIENT_INPUT_LIMITS.maxImageDataUrlChars) return 'image_too_large'
     return { type: 'image', image: url }
   }
@@ -173,6 +187,13 @@ function validateAttachment(raw: unknown): ImagePart | FilePart | RejectCode {
     if (!url.startsWith('data:application/pdf;base64,')) return 'invalid_content'
     if (url.length > CLIENT_INPUT_LIMITS.maxPdfDataUrlChars) return 'file_too_large'
     return { type: 'file', data: url, mimeType: 'application/pdf', name: typeof name === 'string' && name.trim() ? toSingleLine(name).slice(0, 120) : 'tai-lieu.pdf' }
+  }
+  // 15/11: Word / Excel (.docx / .xlsx) - their text is read on the server (officeText.ts); never forwarded as bytes. Same size bound and count as a PDF.
+  if ((DOCUMENT_ATTACHMENT_NAMES as readonly string[]).includes(contentType)) {
+    if (!url.startsWith(`data:${contentType};base64,`)) return 'invalid_content'
+    if (url.length > CLIENT_INPUT_LIMITS.maxPdfDataUrlChars) return 'file_too_large'
+    const fallback = contentType === DOCX_TYPE ? 'tai-lieu.docx' : 'bang-tinh.xlsx'
+    return { type: 'file', data: url, mimeType: contentType as DocumentMime, name: typeof name === 'string' && name.trim() ? toSingleLine(name).slice(0, 120) : fallback }
   }
   return 'invalid_content'
 }

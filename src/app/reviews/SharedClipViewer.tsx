@@ -24,6 +24,8 @@ export const DESKTOP_VIEWER_QUERY = '(min-width: 768px)'
 /** A row the stage can show: a playable clip, or a post with a picture (drawn as a poster, like the side cards). */
 export const isStageClip = (r: Review) =>
   (r.content_type === 'video' && !!r.media_url) || (r.photos ?? []).filter(Boolean).length > 0 || !!r.thumbnail
+  // 21/11/2026 (owner): a text-only post opens in the same stage too (drawn as a poster with its words), instead of the phone pager on a desktop.
+  || !!r.body?.trim() || !!r.place_name?.trim()
 
 /** true on tablets/desktops, false on phones, null before the first client read (SSR-safe). */
 export function useIsDesktopViewer(): boolean | null {

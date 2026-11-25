@@ -77,15 +77,90 @@ policy_of() {
     # until the retention cron ships with the web release; apply BEFORE it (the web GET selects the column).
     20261110_chat_media_retention.sql)
       echo APPLY ;;
+    # Explore video, part 1 (owner 05/11/2026): two NEW tables (video_assets, video_asset_events) and their functions/trigger. Purely additive: nothing reads or writes
+    # them until the video routes ship AND EXPLORE_VIDEO_PIPELINE_ENABLED=true (OFF by default), so it can be applied at any time.
+    20261111_video_assets.sql)
+      echo APPLY ;;
+    # Explore video, part 3 (owner 05/11/2026): two nullable columns on video_assets, one partial index and three service-role-only functions (what to clean up, the legal hold,
+    # the removal record). Requires 20261111 (same group). Nothing calls them until the video-source-cleanup cron has a source bucket, so it can be applied at any time.
+    20261112_video_asset_cleanup.sql)
+      echo APPLY ;;
+    # Explore video, part 4 (owner 05/11/2026): three columns on video_assets (has_audio, transcode_attempts, transcode_error), a partial index, and the clean-up function recreated
+    # with an owner_id column in its result (a changed result type, so it is dropped and created again in the same file). Requires 20261111 and 20261112. Nothing reads them until
+    # the video routes are on, so it can be applied at any time, BUT only together with or after 20261112 (the video-source-cleanup cron reads owner_id from this function).
+    20261113_video_transcode.sql)
+      echo APPLY ;;
+    # Explore video, VID-03 (owner 05/11/2026): the moderation decision history and the automatic / human decide functions. Additive, service-role only. Apply only after
+    # 20261111-20261113. Nothing calls them until EXPLORE_VIDEO_PIPELINE_ENABLED is on. Rollback drops the decision history, so use it only if the feature never ran.
+    20261114_video_moderation.sql)
+      echo APPLY ;;
+    # Explore video, VID-02 / VID-04 (owner 05/11/2026): the overlay documents and the download-render table. Additive, service-role only, owner-scoped by the routes.
+    # Requires 20261111. Nothing reads them until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
+    20261115_video_overlays.sql)
+      echo APPLY ;;
+    # Explore video, publishing and delivery (owner 05/11/2026): three columns, three functions and two indexes on video_assets (the post link, the delivery copy, the claim that
+    # makes a retried publish resume the same post). Additive. Requires 20261111-20261114. Nothing calls them until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
+    20261116_video_publish_delivery.sql)
+      echo APPLY ;;
+    # Explore video, clip consent (owner 05/11/2026: every account must accept the clip conditions before it can post a clip): one NEW table, service-role only. Independent of the other
+    # video migrations. Nothing reads it until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
+    20261117_video_clip_consent.sql)
+      echo APPLY ;;
+    # Chat workspace, slice 2 (owner 10/11/2026): two additive boolean columns on conversations (pin, archive). Existing rows read as false. Nothing uses them until
+    # NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED is on.
+    20261118_conversation_pin_archive.sql)
+      echo APPLY ;;
+    # Chat workspace, slice 3 (owner 10/11/2026): projects — one new owner-only table (chat_projects), a nullable conversations.project_id and a trigger that refuses another account's
+    # project. Nothing uses them until NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED is on.
+    20261119_chat_projects.sql)
+      echo APPLY ;;
+    # TVI core, R13 §8 slice 2a (owner 10/11/2026): eight NEW service-role-only tables (entities, facts, immutable versions, state, append-only events, evidence, sources, fact-evidence)
+    # and three write functions. Independent of the other migrations; nothing reads or writes them until a later flagged slice wires the chat to the store.
+    20261120_tvi_core.sql)
+      echo APPLY ;;
+    # MCP gateway durable jobs (12/11/2026): one new service-role-only table and its SECURITY DEFINER functions. Nothing uses it until MCP_GATEWAY is on and the gateway ships, and the file has never been applied
+    # anywhere: held (DEFER, the script refuses it) until the owner lifts it when the gateway is released.
+    20261121_mcp_jobs.sql)
+      echo DEFER ;;
+    # Scam Shield weekly knowledge sync (18/11/2026): one NEW service-role-only table (scam_knowledge_versions). Independent of every other migration; until it is applied the reader
+    # fails open to the static dataset and the weekly cron answers 503 "store_unavailable" without crawling. Owner applies it (UAT first); the file has not been applied anywhere.
+    20261201_scam_knowledge_versions.sql)
+      echo APPLY ;;
+    # 18+ gate as ONE BUTTON (owner 18/11/2026): three additive nullable columns on user_demographics, a new record_age_declaration() and user_age_status() with one more column (`declaration`).
+    # Old code ignores the extra column, so it is safe before the new code; the new code FAILS CLOSED (503, nobody admitted) until this is applied. Applied to UAT only; production needs the owner.
+    20261202_age_adult_declaration.sql)
+      echo APPLY ;;
+    # Payments never refund (owner 18/11/2026): a short transfer stays on the order until topped up, a surplus becomes extra time at the plan's rate, a second transfer on a paid order
+    # becomes time too. One additive column (payment_orders.bonus_seconds) and a replaced p8_payments_apply_sepay (same signature and grants). Needs 20261011_p8_payments.sql first.
+    20261203_payments_no_refund.sql)
+      echo APPLY ;;
+    # Group dining is private (owner 20/11/2026): a join is a request the leader accepts (status pending|member, a trigger forces pending on a self-insert, RLS read boundary), then votes on the
+    # suggested venues and the bill split. Three files in this order: 20261204 (join approval), 20261205 (suggestion votes), 20261206 (bills). Applied to UAT only; each has a rollback in
+    # supabase/migrations/rollback/. The new web code needs all three (it reads the new tables); apply them just before the single web deploy.
+    20261204_group_join_approval.sql|20261205_group_suggestion_votes.sql|20261206_group_bills.sql)
+      echo APPLY ;;
+    # Auto-hold of a reported post (owner 21/11/2026): enough different reporters hold a post until a moderator looks. Needs 20261009 (queue trigger). Rollback in supabase/migrations/rollback/.
+    20261207_auto_hold_reported_posts.sql)
+      echo APPLY ;;
+    # Hiding a comment (owner 21/11/2026): the post owner hides a comment; enough different reporters hide it until a moderator looks. Needs 20260928c (comment read boundary) and 20261001b/d (reports + queue). Rollback in supabase/migrations/rollback/.
+    20261208_comment_hiding.sql)
+      echo APPLY ;;
+    # Authority takedown register (owner 25/11/2026): one service-role-only table + a no-delete trigger; nothing uses it until the admin takedown routes run behind MODERATION_ADMIN_ENABLED. Rollback in supabase/migrations/rollback/.
+    20261209_authority_takedowns.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
-    20260928b_revoke_increment_deal_click_public.sql|20260928c_review_comments_publication_boundary.sql|\
+    20260928b_revoke_increment_deal_click_public.sql|\
     20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql|\
     20261001_user_blocks.sql|20261001b_user_reports.sql|20261001d_moderation_standards.sql|\
     20261001e_banned_identity_hash.sql|20261005_account_deletion_cleanup.sql|20261009_content_reports_to_queue.sql|20261010_content_reports_flood_guard.sql|\
     20261018_chat_honours_user_blocks.sql)
       echo AFTER-SMOKE ;;
+    # 20260928c moved from AFTER-SMOKE to APPLY (22/11/2026 rehearsal on a restore of the production dump): 20261208_comment_hiding calls public.is_content_moderator() that 28c creates
+    # (ERROR: function public.is_content_moderator() does not exist without it), and the new web code reads review_comments.hidden_at, so 28c must be on production before the deploy.
+    # 28c itself says "no code dependency - apply any time" and has a rollback.
+    20260928c_review_comments_publication_boundary.sql|\
     20260913_g1_growth_foundation.sql|20260913_plan_shares.sql|20260915_profile_public_presentation.sql|\
     20260915b_review_likes_private.sql|20260918_g1b_share_ancestry.sql|20260920100000_commerce_providers.sql|\
     20260920110000_commerce_feed_items.sql|20260927100000_commerce_providers_portal_state.sql|\

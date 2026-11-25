@@ -5,6 +5,8 @@
 // stay; only the unsourced figures go, and the sentence says once where the dose comes from (the label, a pharmacist or a doctor). A clause
 // that held nothing but the figure ("tối đa 3.000 mg/24 giờ" → "tối đa") goes with it. Pure; the figures come from the gate's own claims.
 
+import { unverifiedWord } from '../unverifiedLabel'
+
 const NOTE: Record<string, string> = {
   vi: 'liều dùng theo hướng dẫn trên nhãn hoặc hỏi dược sĩ',
   en: 'dose as on the label or as a pharmacist advises',
@@ -40,13 +42,15 @@ const UNVERIFIED: Record<string, string> = { vi: 'chưa xác minh', en: 'unverif
  */
 export function markUnverifiedClaims(text: string, values: readonly string[], lang: string, o: { sentenceEnd?: boolean } = {}): { text: string; marked: number } {
   const label = UNVERIFIED[lang] ?? UNVERIFIED.en
-  if (o.sentenceEnd) return markAtSentenceEnd(text, values, label)
+  if (o.sentenceEnd) return markAtSentenceEnd(text, values, label, lang)
   let out = text
   let marked = 0
   for (const v of [...new Set(values.map(x => x.trim()).filter(Boolean))].sort((a, b) => b.length - a.length)) {
     const at = out.indexOf(v)
     if (at < 0 || /^\s*\(/.test(out.slice(at + v.length))) continue
-    out = `${out.slice(0, at + v.length)} (${label})${out.slice(at + v.length)}`
+    // the word follows the language of the line the figure is in (18/11: a French line in a Vietnamese app)
+    const lineWord = lang === 'vi' || lang === 'en' ? unverifiedWord(out.slice(Math.max(0, out.lastIndexOf('\n', at) + 1), out.indexOf('\n', at) < 0 ? out.length : out.indexOf('\n', at)), lang) : label
+    out = `${out.slice(0, at + v.length)} (${lineWord})${out.slice(at + v.length)}`
     marked++
   }
   return { text: out, marked }
@@ -57,12 +61,13 @@ export function markUnverifiedClaims(text: string, values: readonly string[], la
  * any trailing source markers / links — never between a number and its unit or inside a range (Cổng 1: "1,25–2,2 triệu (chưa xác minh) đồng",
  * "21:30 (chưa xác minh)–22:00 (chưa xác minh)"). A sentence already carrying the label is left as is. Lines are kept. Pure.
  */
-function markAtSentenceEnd(text: string, values: readonly string[], label: string): { text: string; marked: number } {
+function markAtSentenceEnd(text: string, values: readonly string[], appLabel: string, lang: string): { text: string; marked: number } {
   const vs = [...new Set(values.map(x => x.trim()).filter(Boolean))]
   if (!vs.length) return { text, marked: 0 }
   let marked = 0
   const out = text.split('\n').map(line => line.split(/(?<=[.!?…])(\s+)/).map(piece => {
-    if (!piece.trim() || !vs.some(v => piece.includes(v)) || piece.includes(`(${label})`)) return piece
+    const label = lang === 'vi' || lang === 'en' ? unverifiedWord(piece, lang) : appLabel // the word follows the language of the sentence it labels
+    if (!piece.trim() || !vs.some(v => piece.includes(v)) || piece.includes(`(${label})`) || piece.includes('(chưa xác minh)') || piece.includes('(unverified)')) return piece
     // the tail: final punctuation, then source markers / markdown links / closing marks after it or before it
     const tail = piece.match(/(?:\s*(?:\[S\d{1,2}\]|\(\[[^\]]*\]\([^)]*\)\)|\[[^\]]*\]\([^)]*\)))*\s*[.!?…:;]*\s*(?:\[S\d{1,2}\])*\s*$/)![0]
     const body = piece.slice(0, piece.length - tail.length)

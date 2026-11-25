@@ -237,8 +237,10 @@ describe('presentation — "Mua trên …" per provider, no generic search besid
     // The marker round-trips the full set.
     const back = parseShoppingMarker(`x\n${renderShoppingMarker(view)}`)
     expect(back.view?.entities[0].commerceLinks?.map(c => c.providerId)).toEqual(e.commerceLinks?.map(c => c.providerId))
-    // …and the canonical Action list leads with the same handoff.
-    expect(productRecommendations(result)[0].entity.actions[0].commerce?.providerId).toBe('dmx')
+    // 19/11 (owner decision, intentionally changed from 'dmx'): Lazada is the shopping affiliate partner, so among handoffs of the same kind it leads the card's
+    // list and its action list; the entity's own-shop handoff (`e.commerce`, the seller's page) is a statement about the seller and stays as it was.
+    expect(e.commerceLinks?.[0].providerId).toBe('lazada')
+    expect(productRecommendations(result)[0].entity.actions[0].commerce?.providerId).toBe('lazada')
   })
 
   it('the legacy search builders are registry projections (Shopee + Lazada), TikTok Shop absent by fact, Tiki gone; the prompt template follows', () => {

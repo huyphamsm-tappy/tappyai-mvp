@@ -205,6 +205,73 @@ describe('server-authored CTA', () => {
   })
 })
 
+describe('17/11: a provider booking link is a "reservation" only where the search was for a venue that takes one', () => {
+  const ROW = { name: 'Khu di tích Lam Kinh', maps_link: 'https://maps.google.com/?cid=9', booking_links: ['https://lamkinh.example/dat-ve/tham-quan'] }
+  const kindsOf = (domain: string) => buildActions(ROW, domain).filter(a => a.url === ROW.booking_links[0]).map(a => a.kind)
+
+  it('a plain place search (a historic site, a museum): the link is kept as the venue\'s page, never "Đặt chỗ"', () => {
+    expect(kindsOf('place')).toEqual(['website'])
+    expect(buildActions(ROW, 'place').some(a => a.kind === 'reservation')).toBe(false)
+  })
+  it('food, spa and entertainment searches keep the reservation; a delivery platform page stays an order everywhere', () => {
+    for (const d of ['food', 'spa', 'entertainment']) expect(kindsOf(d), d).toEqual(['reservation'])
+    const order = buildActions({ name: 'X', booking_links: ['https://shopeefood.vn/ho-chi-minh/quan-x'] }, 'place')
+    expect(order.filter(a => a.kind === 'order')).toHaveLength(1)
+  })
+})
+
+describe('19/11 (owner): a stay card leads with THIS hotel\'s own Agoda page; Booking.com is never the lead', () => {
+  const PAGE = 'https://www.agoda.com/partners/partnersearch.aspx?cid=1974819&hid=4942635&checkin=2026-10-20&checkout=2026-10-22&adults=2&rooms=1'
+  const ROW = { name: 'Some Hotel', maps_link: 'https://maps.google.com/?cid=9', link: 'https://www.booking.com/hotel/vn/some.vi.html' }
+  it('an Agoda offer page leads, ahead of Maps and of the row\'s Booking.com page (which stays as a secondary link)', () => {
+    const acts = buildActions({ ...ROW, agoda_offer_url: PAGE }, 'travel')
+    expect(acts[0]).toMatchObject({ kind: 'booking', url: PAGE, platform: 'Agoda', urlKind: 'direct' })
+    const booking = acts.find(a => /booking\.com/i.test(a.url))
+    expect(booking && acts.indexOf(booking)).toBeGreaterThan(acts.findIndex(a => a.kind === 'maps'))
+  })
+  it('Booking.com\'s own hotel page is not the lead even when it is the only booking page', () => {
+    expect(buildActions(ROW, 'travel')[0].kind).toBe('maps')
+  })
+  it('an Agoda front door or search page is never a CTA (A3.3), and an off-Agoda URL in the field is ignored', () => {
+    for (const bad of ['https://www.agoda.com/', 'https://www.agoda.com/vi-vn/search?city=15932', 'https://evil.example/hotel/1']) {
+      expect(buildActions({ name: 'Some Hotel', maps_link: ROW.maps_link, agoda_offer_url: bad }, 'travel').some(a => a.url === bad)).toBe(false)
+    }
+  })
+})
+
+describe('19/11 (owner): a product card leads with the Lazada partner page; the other marketplaces follow (at most 3)', () => {
+  const SHOPEE = 'https://shopee.vn/Tai-nghe-X-i.88201679.23456789'
+  const LAZADA = 'https://www.lazada.vn/products/tai-nghe-x-i123456-s654321.html'
+  const TIKTOK = 'https://shop.tiktok.com/view/product/1729384756'
+  const base = {
+    requestId: 'r', kind: 'PRODUCT_PAGE', merchantName: 'M', domain: 'shopping', intentType: 'buy_product', capability: 'product_discovery',
+    depth: 4, guestDepth: 4, authenticatedDepth: null, authRequiredAt: 'before_checkout', handoff: 'guest', expiresAt: null,
+    freshness: { source: 's', retrievedAt: '2026-11-19T00:00:00Z', expiresAt: null, freshnessType: 'static', confidence: 0.9 },
+    assumedParams: [], limitations: [], tracked: false,
+  }
+  const cl = (providerId: string, url: string, extra: Record<string, unknown> = {}) => ({ ...base, linkId: `l-${providerId}-${String(extra.depth ?? 4)}`, providerId, url, destinationUrl: url, ...extra }) as never
+  const platforms = (rows: unknown[], link?: string) => buildActions({ name: 'Tai nghe X', ...(link ? { link } : {}), commerce_links: rows as never }, 'shopping').filter(a => a.kind === 'purchase').map(a => a.url)
+
+  it('a Lazada commerce link leads even when CCP ranked it behind Shopee at the same depth', () => {
+    expect(platforms([cl('shopee', SHOPEE), cl('tiktokshop', TIKTOK), cl('lazada', LAZADA)])[0]).toBe(LAZADA)
+  })
+  it('depth still comes first: a deeper marketplace page keeps the lead over a shallower Lazada one', () => {
+    expect(platforms([cl('shopee', SHOPEE, { depth: 5, guestDepth: 5 }), cl('lazada', LAZADA, { depth: 4 })])[0]).toBe(SHOPEE)
+  })
+  it('without a Lazada link the CCP order is untouched', () => {
+    expect(platforms([cl('shopee', SHOPEE), cl('tiktokshop', TIKTOK)])).toEqual([SHOPEE, TIKTOK])
+  })
+  it('a Lazada row listing link (the product page that came with the row) leads the other marketplaces', () => {
+    expect(platforms([cl('shopee', SHOPEE)], LAZADA)[0]).toBe(LAZADA)
+  })
+  it('at most 3 other platforms follow the lead', () => {
+    const rows = [cl('shopee', SHOPEE), cl('tiktokshop', TIKTOK), cl('tiki', 'https://tiki.vn/tai-nghe-x-p111.html'), cl('dienmayxanh', 'https://www.dienmayxanh.com/tai-nghe/x'), cl('lazada', LAZADA)]
+    const urls = platforms(rows)
+    expect(urls[0]).toBe(LAZADA)
+    expect(urls.length).toBeLessThanOrEqual(4)
+  })
+})
+
 describe('the flags that gate all of this are OFF', () => {
   // 🚨 Both changes are staged, and shipped behaviour must be unchanged until
   // their prerequisites land. A flag flipped by accident is exactly the kind of

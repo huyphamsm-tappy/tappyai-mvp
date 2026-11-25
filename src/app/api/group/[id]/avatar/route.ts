@@ -9,6 +9,7 @@ import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
 import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
+import { refuseUnsafeImage } from '@/lib/safety/autoModeration/http'
 
 /** Same ceiling as a profile avatar (`POST /api/profile`). */
 const MAX_AVATAR_BYTES = 3 * 1024 * 1024
@@ -71,6 +72,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     console.error('[group/avatar] metadata strip failed, refusing upload:', e instanceof Error ? e.message : e)
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules): the picture is looked at BEFORE it is stored; one that cannot be judged is not stored.
+  const imageRefusal = await refuseUnsafeImage(req, user.id, 'group', clean, imageMime(kind))
+  if (imageRefusal) return imageRefusal
 
   let blob: { url: string }
   try {

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { consultOneBrainOn, CONSULT_ONE_BRAIN_FLAG } from '@/lib/config/consultFlags'
-import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, oneBrainDynamic } from './oneBrain'
+import { PLACES_BUDGET_ONE_BRAIN } from '@/lib/ai/tools/placesBudget'
+import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_NO_BLOCKS_LINE, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, PRESENT_PLAN_DESCRIPTION, oneBrainDynamic } from './oneBrain'
 
 describe('CONSULT_ONE_BRAIN flag', () => {
   it('is ON only for exactly "1", and never in a production runtime', () => {
@@ -20,11 +21,56 @@ describe('the one general instruction', () => {
       expect(ONE_BRAIN_CORE, s).toContain(s)
     }
   })
-  it('buying: concrete listings and at most three narrowing questions; a store the person names is searched on its own site (30/10)', () => {
-    for (const s of ['lay out the concrete listings', 'at most three short narrowing questions', 'from the whole message, not from single words', "search that store's own site", 'Never write a product link that did not come from a tool result', '[FOLLOWUPS]option 1|option 2|option 3[/FOLLOWUPS]', 'in place of the usual closing offer', 'then end the same way: a narrowing question and its tap-to-send chips', 'one search_products call is rarely the whole picture', 'price range by condition and version', 'a listing you did not name gets no card']) expect(ONE_BRAIN_CORE, s).toContain(s)
+  it('buying: concrete listings, a pick and one plain closing line, the narrowing choices only as tap-to-send chips (owner 18/11, ChatGPT style: no question to the person); a store the person names is searched on its own site (30/10)', () => {
+    for (const s of ['lay out the concrete listings', 'end on your pick in one plain closing line', 'from the whole message, not from single words', "search that store's own site", 'Never write a product link that did not come from a tool result', '[FOLLOWUPS]option 1|option 2|option 3[/FOLLOWUPS]', 'the answer does not end with a question to the person', 'end the same way: a closing line and the chips', 'one search_products call is rarely the whole picture', 'price range by condition and version', 'a listing you did not name gets no card']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    // the old rule must be gone: no narrowing questions to the person, in the core or in the reminder
+    expect(ONE_BRAIN_CORE).not.toContain('at most three short narrowing questions')
+    expect(ONE_BRAIN_SHAPE_REMINDER).not.toContain('narrowing questions')
     // the shape reminder (last in the prompt) must not undo the buying rule
-    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('narrowing questions of the buying rule')
+    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('closing line of the buying rule')
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('[FOLLOWUPS] chips') // the reminder is last in the prompt: the chips line is named there too (measured 17/20 without it)
+  })
+  // 19/11: the "recommend only venues search_places returned" sentence was measured in three gates (s6, s8, s8b: content 3.54/3.45/3.39 vs 3.62 in M1, time and cost creeping up) with no gain on
+  // the venue questions, and was taken out again; the plan-card rules below stay (the visa gap closed in D30).
+  it('the plan card holds the one budget and the visa note for a border crossing (UI eval M1, 19/11); the venue-only sentence is not in the core', () => {
+    expect(ONE_BRAIN_CORE).not.toContain('Recommend only venues that search_places returned')
+    expect(PRESENT_PLAN_DESCRIPTION).toContain('The budget appears ONCE, in the plan card')
+    expect(PRESENT_PLAN_DESCRIPTION).toContain('whether the traveller needs a visa for their passport')
+    // general principles only: no country, city or place name in them
+    for (const w of ['Singapore', 'Sa Pa', 'Đà Nẵng', 'Hội An', 'Tân Bình']) expect(`${ONE_BRAIN_CORE}${PRESENT_PLAN_DESCRIPTION}`, w).not.toContain(w)
+  })
+  // 19/11 (UAT: a trip plan made 13 search_places calls, 7 refused by the per-turn cap of 6 the model was never told; the turn then hit the 110 s deadline): the cap is in the prompt, equal to the code's own,
+  // and the venue rule and the itinerary rule are two bullets (an edit once merged them onto one line)
+  it('the model is told the search_places cap of the turn (the same number the code enforces) and the venue and itinerary bullets are separate lines', () => {
+    expect(ONE_BRAIN_CORE).toContain(`A turn may spend at most ${PLACES_BUDGET_ONE_BRAIN} search_places calls and a call over that is refused`)
+    const lines = ONE_BRAIN_CORE.split('\n')
+    expect(lines.some(l => l.startsWith('- A venue the person may go to') && !l.includes('- A trip or evening itinerary'))).toBe(true)
+    expect(lines.some(l => l.startsWith('- A trip or evening itinerary'))).toBe(true)
+  })
+  // 19/11 (owner: the answers are too slow; the first step of nearly every turn was think_deeper ALONE, a model round trip with nothing else in it): it is asked for in the same step as the first lookups
+  it('think_deeper is called in the first step together with the lookups, not alone', async () => {
+    const { THINK_DEEPER_DESCRIPTION } = await import('./oneBrain')
+    expect(THINK_DEEPER_DESCRIPTION).toContain('in the same step as the lookups you already know you need')
+    expect(THINK_DEEPER_DESCRIPTION).not.toContain('FIRST, alone')
+  })
+  // 19/11 (owner: answers are too slow and history / list answers too thin): the measured turns made one lookup per step (about 8 s a step); lists give each item a few sentences
+  it('the model is told to make all foreseeable lookups in the first step, and each listed item gets a few sentences', () => {
+    expect(ONE_BRAIN_CORE).toContain('Make ALL the lookups you can foresee in your first step together')
+    expect(ONE_BRAIN_CORE).toContain('each item stands on its own: what or who it is, when or where, why it matters and one concrete detail, in two or three sentences')
+  })
+  // 19/11 (final UAT: two of three comparisons of two subjects showed one card and no table; the model had run one shared search, the server dropped the card whose facts no lookup carried)
+  it('subjects side by side: one lookup per subject, in the same step, before the cards are declared', () => {
+    expect(ONE_BRAIN_CORE).toContain('Look each subject up on its own (one lookup per subject, all in the same step) before you declare its card')
+  })
+  // 19/11 (owner UAT: "biết hồ chủ tịch ko" was answered with an emoji, "tui" and "are you teasing me?"): the tone follows the subject, in general terms (no name of a person or country in the rule)
+  it('the tone rule: plain and respectful for history, politics, religion, tragedy and national figures; no joke, emoji or guessing the motive', () => {
+    expect(ONE_BRAIN_CORE).toContain('The tone follows the subject.')
+    expect(ONE_BRAIN_CORE).toContain('no joke, no emoji, no slang, no teasing, and never guess or comment on why the person asks')
+    for (const w of ['Hồ Chí Minh', 'Hồ Chủ tịch', 'Bác Hồ']) expect(ONE_BRAIN_CORE, w).not.toContain(w)
+  })
+  it('buying: the model is told when to declare purchase intent (buy links) and to make one call per distinct need (owner 19/11: the tool call, not a Serper cap)', () => {
+    expect(ONE_BRAIN_CORE).toContain('Set purchase_links to true only when the person asks where to buy')
+    expect(ONE_BRAIN_CORE).toContain('One call per distinct need')
   })
   it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
     const rule = ONE_BRAIN_CORE.split('\n').filter(l => /BUY something|names a store|price or buying question|Name each product or listing/.test(l)).join('\n')
@@ -48,7 +94,14 @@ describe('the one general instruction', () => {
   it('N3 (30/10): useful, not only careful - known facts are stated, only what changes is hedged, a partial lookup still answers every part', () => {
     // Measured 30/10: "5 tin kinh tế" answered with 2 items and "mình chưa tìm đủ 5 tin"; three air purifiers with "chưa xác nhận được CADR,
     // độ ồn" for each (ChatGPT stated the maker's published figures). The rule against inventing stays as it is.
-    for (const s of ['# Be useful, not only careful', 'Use what you reliably know', 'Hedge only what changes', 'Asked for N items, give N items', 'never in place of the answer']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    // 17/11 (owner: every answer that states a fact carries an authoritative source; Pro and Promax have the tools): the "known facts without a search" licence is replaced by a duty to
+    // check and cite every statement of fact; calculation, code, writing, translation, small talk and refusals need no search. The hedge and partial-lookup rules stay.
+    for (const s of ['every statement of fact about the world', 'carries the link of its source', 'most authoritative page', 'No search is needed for what a tool result already states', 'for calculation, code, writing or translating','say so instead of stating it with no source']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    expect(ONE_BRAIN_CORE).not.toContain('may be stated from your own knowledge without a search result')
+    // 18/11 (owner: the place cards of yesterday's mockup came back as avatar cards and tables): the every-fact rule must not send the model past its dedicated tools - the card is the source of what its tool states
+    for (const s of ['with the tool that fits it (the dedicated tool when there is one', 'the card is the source']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    expect(ONE_BRAIN_CORE).not.toContain('is checked with web_search in this turn')
+    for (const s of ['# Be useful, not only careful', 'Hedge only what changes', 'Asked for N items, give N items', 'never in place of the answer']) expect(ONE_BRAIN_CORE, s).toContain(s)
     expect(ONE_BRAIN_CORE).toContain('Never invent a fact')
     expect(ONE_BRAIN_SHAPE_REMINDER).toMatch(/hedge only what changes/i)
   })
@@ -85,6 +138,20 @@ describe('oneBrainDynamic', () => {
     expect(PLACE_RULE).toMatch(/in Vietnam by default, whatever language/)
     expect(PLACE_RULE).toMatch(/hospitals and clinics, emergency numbers/)
     expect(PLACE_RULE).toMatch(/unless their device location or their own words/)
+  })
+  it('18/11 review: the instruction never contradicts a turn - no "do not search" licence beside the check-every-fact duty, no brand in the buying line, and a turn without present_blocks or without tools says so', () => {
+    expect(ONE_BRAIN_CORE).not.toContain('Do NOT search for general knowledge')
+    expect(ONE_BRAIN_CORE).not.toContain('unless it is world-famous')
+    expect(ONE_BRAIN_CORE).not.toMatch(/Shopee|TikTok Shop|Lazada/)
+    expect(ONE_BRAIN_CORE).not.toContain('offer to lighten')
+    const base = { lang: 'vi', now, address: null, hasLocation: false, blocks: [] as string[], mode: 'chat' as const }
+    expect(oneBrainDynamic(base)).not.toContain(ONE_BRAIN_NO_BLOCKS_LINE)
+    expect(oneBrainDynamic({ ...base, noBlocks: true })).toContain(ONE_BRAIN_NO_BLOCKS_LINE)
+    expect(ONE_BRAIN_NO_BLOCKS_LINE).toContain('do not call it')
+    // a Free turn has one line that overrides every tool instruction above it
+    const free = oneBrainDynamic({ ...base, noTools: true, noBlocks: true })
+    expect(free).toContain('This overrides every instruction above that calls a tool')
+    expect(free).not.toContain(ONE_BRAIN_NO_BLOCKS_LINE)
   })
   it('names the address the device sent, never coordinates', () => {
     expect(oneBrainDynamic({ lang: 'en', now, address: 'Quận 1, TP.HCM', hasLocation: true, blocks: [] })).toContain('device location: Quận 1, TP.HCM')

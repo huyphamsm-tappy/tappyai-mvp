@@ -18,6 +18,10 @@ export interface PlanBrochureStrings {
   stops: string
   people: string
   budget: string
+  costsTitle: string
+  tipsTitle: string
+  staysTitle: string
+  dishesTitle: string
   budgetPerPerson: string
   maps: string
   booking: string
@@ -52,6 +56,10 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     stops: '{n} điểm dừng',
     people: '{n} người',
     budget: 'Ngân sách ước tính',
+    costsTitle: 'Dự toán chi phí',
+    tipsTitle: 'Mẹo khi đi theo kế hoạch',
+    staysTitle: 'Chỗ ở gợi ý',
+    dishesTitle: 'Món nên thử',
     budgetPerPerson: 'Ngân sách',
     maps: 'Bản đồ',
     booking: 'Đặt chỗ',
@@ -83,6 +91,10 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     stops: '{n} stops',
     people: '{n} people',
     budget: 'Estimated budget',
+    costsTitle: 'Cost estimate',
+    tipsTitle: 'Tips for following the plan',
+    staysTitle: 'Where to stay',
+    dishesTitle: 'What to try',
     budgetPerPerson: 'Budget',
     maps: 'Maps',
     booking: 'Book',

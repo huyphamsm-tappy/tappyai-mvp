@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from '@/components/media/SafeImage'
-import { Loader2, MessageCircle, X, Trash2 } from 'lucide-react'
+import { Loader2, MessageCircle, X, Trash2, Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface CommentProfile { full_name: string | null; avatar_url: string | null }
 interface Comment {
@@ -16,6 +17,8 @@ interface Comment {
   profiles: CommentProfile | null
   reactions: Record<string, number>
   my_reaction: string | null
+  hidden_at?: string | null
+  hidden_by?: string | null
 }
 
 // Reaction keys must mirror the web's ALLOWED set (src/app/api/comments/[commentId]/reactions).
@@ -29,25 +32,29 @@ const COMMENT_REACTIONS: { key: string; emoji: string }[] = [
 ]
 const reactionEmoji = (key: string) => COMMENT_REACTIONS.find(r => r.key === key)?.emoji || '👍'
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: (key: string, vars?: Record<string, string>) => string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'vừa xong'
-  if (mins < 60) return `${mins} phút trước`
+  if (mins < 1) return t('reviewDetail.timeJustNow')
+  if (mins < 60) return t('reviewDetail.timeMinutesAgo', { n: String(mins) })
   const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return `${hrs} giờ trước`
+  if (hrs < 24) return t('reviewDetail.timeHoursAgo', { n: String(hrs) })
   const days = Math.floor(hrs / 24)
-  if (days < 30) return `${days} ngày trước`
-  return `${Math.floor(days / 30)} tháng trước`
+  if (days < 30) return t('reviewDetail.timeDaysAgo', { n: String(days) })
+  return t('reviewDetail.timeMonthsAgo', { n: String(Math.floor(days / 30)) })
 }
 
 export default function ReviewCommentButton({
   reviewId,
   initialCount,
+  ownerId,
 }: {
   reviewId: string
   initialCount: number
+  /** The owner of the post: may hide a comment under it (owner 21/11/2026). */
+  ownerId?: string
 }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [count, setCount] = useState(initialCount)
   const [comments, setComments] = useState<Comment[]>([])
@@ -89,6 +96,15 @@ export default function ReviewCommentButton({
       setComments(prev => prev.filter(c => c.id !== commentId && c.parent_comment_id !== commentId))
       if (typeof d.count === 'number') setCount(d.count)
     } catch { /* leave in place on failure */ }
+  }
+
+  // Owner 21/11/2026: the owner of the post hides (or shows again) a comment under their post. Hidden = not deleted: its author and the owner still see it, others do not (the database enforces it).
+  const setHidden = async (commentId: string, hidden: boolean) => {
+    try {
+      const res = await fetch(`/api/comments/${commentId}/hide`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hidden }) })
+      if (!res.ok) return
+      setComments(prev => prev.map(c => c.id === commentId ? { ...c, hidden_at: hidden ? new Date().toISOString() : null, hidden_by: hidden ? 'owner' : null } : c))
+    } catch { /* leave it as it was */ }
   }
 
   const send = async () => {
@@ -140,7 +156,7 @@ export default function ReviewCommentButton({
   }
 
   const startReply = (c: Comment) => { setReplyTo(c); setPickerFor(null); setTimeout(() => inputRef.current?.focus(), 50) }
-  const replyName = (c: Comment) => c.profiles?.full_name?.split(' ').pop() || 'Ẩn danh'
+  const replyName = (c: Comment) => c.profiles?.full_name?.split(' ').pop() || t('reviewDetail.anonymous')
 
   const renderComment = (c: Comment, isReply: boolean) => {
     const name = replyName(c)
@@ -158,15 +174,20 @@ export default function ReviewCommentButton({
         )}
         <div className="flex-1 min-w-0">
           <p className="text-xs font-semibold text-white">
-            {name} <span className="text-gray-500 font-normal">{timeAgo(c.created_at)}</span>
+            {name} <span className="text-gray-500 font-normal">{timeAgo(c.created_at, t)}</span>
           </p>
-          <p className="text-sm text-gray-300 mt-0.5 break-words">{c.body}</p>
+          <p className={`text-sm mt-0.5 break-words ${c.hidden_at ? 'text-gray-500 italic' : 'text-gray-300'}`}>{c.body}</p>
+          {c.hidden_at && (
+            <p className="text-[11px] text-amber-400/80 mt-0.5" data-testid="comment-hidden-note">
+              {c.hidden_by === 'owner' ? t(c.user_id === me ? 'reviews.commentHiddenForYou' : 'reviews.commentHiddenOwner') : t('reviews.commentHiddenReview')}
+            </p>
+          )}
           <div className="flex items-center gap-3 mt-1 relative">
             <button onClick={() => setPickerFor(pickerFor === c.id ? null : c.id)}
               className={`text-xs font-medium transition-colors ${c.my_reaction ? 'text-pink-400' : 'text-gray-500 hover:text-pink-300'}`}>
-              {c.my_reaction ? reactionEmoji(c.my_reaction) + ' Cảm xúc' : 'Cảm xúc'}
+              {c.my_reaction ? reactionEmoji(c.my_reaction) + ' ' + t('reviewDetail.cReact') : t('reviewDetail.cReact')}
             </button>
-            <button onClick={() => startReply(c)} className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors">Trả lời</button>
+            <button onClick={() => startReply(c)} className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors">{t('reviewDetail.cReply')}</button>
             {total > 0 && (
               <span className="text-xs text-gray-400 flex items-center gap-0.5">
                 {shown.slice(0, 3).map(k => <span key={k}>{reactionEmoji(k)}</span>)}
@@ -184,8 +205,15 @@ export default function ReviewCommentButton({
           </div>
         </div>
         {c.user_id === me && (
-          <button onClick={() => del(c.id)} aria-label="Xóa bình luận" className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
+          <button onClick={() => del(c.id)} aria-label={t('reviewDetail.cDeleteAria')} className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
             <Trash2 size={14} />
+          </button>
+        )}
+        {/* the owner of the post can hide / show again a comment of someone else; a hide by the system (reports) is lifted by a moderator only */}
+        {me && ownerId === me && c.user_id !== me && (!c.hidden_at || c.hidden_by === 'owner') && (
+          <button onClick={() => setHidden(c.id, !c.hidden_at)} aria-label={t(c.hidden_at ? 'reviews.commentUnhide' : 'reviews.commentHide')} title={t(c.hidden_at ? 'reviews.commentUnhide' : 'reviews.commentHide')}
+            className="flex-shrink-0 self-start p-1 text-gray-500 hover:text-amber-300 transition-colors" data-testid="comment-hide-toggle">
+            {c.hidden_at ? <Eye size={14} /> : <EyeOff size={14} />}
           </button>
         )}
         {/* WP-06 — report someone else's comment / block its author (signed-in only; the menu draws nothing while its flags are off). */}
@@ -207,7 +235,7 @@ export default function ReviewCommentButton({
       <button
         onClick={() => setOpen(true)}
         className="flex flex-col items-center gap-1 active:scale-90 transition-transform"
-        aria-label="Bình luận"
+        aria-label={t('reviewDetail.cOpenAria')}
       >
         <MessageCircle size={26} className="text-white" />
         <span className="text-white text-xs font-semibold drop-shadow-md">{count}</span>
@@ -221,8 +249,8 @@ export default function ReviewCommentButton({
               <div className="w-8 h-1 bg-gray-600 rounded-full" />
             </div>
             <div className="flex items-center px-4 pb-3 flex-shrink-0">
-              <h3 className="font-semibold text-white flex-1">{count} bình luận</h3>
-              <button onClick={() => setOpen(false)} aria-label="Đóng">
+              <h3 className="font-semibold text-white flex-1">{t('reviewDetail.cCount', { count: String(count) })}</h3>
+              <button onClick={() => setOpen(false)} aria-label={t('reviewDetail.cClose')}>
                 <X size={20} className="text-gray-400" />
               </button>
             </div>
@@ -232,7 +260,7 @@ export default function ReviewCommentButton({
                   <Loader2 size={18} className="text-white animate-spin" />
                 </div>
               ) : topLevel.length === 0 ? (
-                <p className="text-center text-gray-500 text-sm py-6">Chưa có bình luận nào</p>
+                <p className="text-center text-gray-500 text-sm py-6">{t('reviewDetail.cNone')}</p>
               ) : (
                 topLevel.map(c => (
                   <div key={c.id}>
@@ -245,8 +273,8 @@ export default function ReviewCommentButton({
             </div>
             {replyTo && (
               <div className="flex items-center justify-between px-4 py-1.5 flex-shrink-0 bg-[#222]">
-                <span className="text-xs text-gray-400 truncate">Đang trả lời {replyName(replyTo)}</span>
-                <button onClick={() => setReplyTo(null)} className="text-xs text-gray-500 hover:text-gray-300 flex-shrink-0 ml-2">Huỷ</button>
+                <span className="text-xs text-gray-400 truncate">{t('reviewDetail.cReplyingTo', { name: replyName(replyTo) })}</span>
+                <button onClick={() => setReplyTo(null)} className="text-xs text-gray-500 hover:text-gray-300 flex-shrink-0 ml-2">{t('reviewDetail.cCancel')}</button>
               </div>
             )}
             <div className="flex gap-2 px-4 py-3 border-t border-gray-800 flex-shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
@@ -255,12 +283,12 @@ export default function ReviewCommentButton({
                 value={text}
                 onChange={e => setText(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && send()}
-                placeholder={replyTo ? `Đang trả lời ${replyName(replyTo)}` : 'Thêm bình luận...'}
+                placeholder={replyTo ? t('reviewDetail.cReplyingTo', { name: replyName(replyTo) }) : t('reviewDetail.cAdd')}
                 maxLength={300}
                 className="flex-1 bg-gray-800 text-white placeholder-gray-500 text-sm px-4 py-2 rounded-full focus:outline-none"
               />
               <button onClick={send} disabled={!text.trim() || sending} className="text-pink-500 font-semibold text-sm disabled:opacity-40">
-                {sending ? <Loader2 size={16} className="animate-spin" /> : 'Đăng'}
+                {sending ? <Loader2 size={16} className="animate-spin" /> : t('reviewDetail.cPost')}
               </button>
             </div>
           </div>

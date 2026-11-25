@@ -3,11 +3,11 @@
 // `tappyai_turn_cost` for every turn (ask / pick / follow-up / plan …) so the average can be held at
 // ≤ $0.01/turn and a 300-turn/month heavy user at ≤ $3.
 
-const PRICES: Array<[RegExp, { inPerM: number; outPerM: number }]> = [
-  [/sonnet/i, { inPerM: 3, outPerM: 15 }],
-  [/opus/i, { inPerM: 15, outPerM: 75 }],
-  [/haiku/i, { inPerM: 1, outPerM: 5 }],
-]
+import { claudeCallCost, HAIKU55_MODEL_ID, SONNET55_MODEL_ID } from '@/lib/ai/llm/providers/claude'
+
+// H3 (owner 20/11/2026): Haiku and Sonnet are priced from the ONE table in providers/claude.ts (list prices, with the cache and the 100k-token card of Haiku 5.5). This file used to keep its own
+// generic rows (haiku 1/5, sonnet 3/15), 10x the real Haiku 5.5, so a turn logged without a model was overstated. Opus has no row there (no Opus is used), so it keeps this legacy one.
+const OPUS_LEGACY = { inPerM: 15, outPerM: 75 }
 
 export interface TurnUsage {
   promptTokens: number
@@ -25,8 +25,14 @@ export function serperUsdPerCredit(env: Record<string, string | undefined> = pro
 }
 
 export function turnUsd(u: TurnUsage, env: Record<string, string | undefined> = process.env): number {
-  const p = PRICES.find(([re]) => re.test(u.model ?? 'haiku'))?.[1] ?? PRICES[2][1]
-  const model = (u.promptTokens * p.inPerM + (u.cacheReadTokens ?? 0) * p.inPerM * 0.1 + (u.cacheCreationTokens ?? 0) * p.inPerM * 1.25 + u.completionTokens * p.outPerM) / 1e6
+  const hint = u.model ?? 'haiku'
+  let model: number
+  if (/opus/i.test(hint)) {
+    model = (u.promptTokens * OPUS_LEGACY.inPerM + (u.cacheReadTokens ?? 0) * OPUS_LEGACY.inPerM * 0.1 + (u.cacheCreationTokens ?? 0) * OPUS_LEGACY.inPerM * 1.25 + u.completionTokens * OPUS_LEGACY.outPerM) / 1e6
+  } else {
+    const id = /sonnet/i.test(hint) ? SONNET55_MODEL_ID : HAIKU55_MODEL_ID
+    model = claudeCallCost(id, { input: u.promptTokens, cacheRead: u.cacheReadTokens ?? 0, cacheWrite: u.cacheCreationTokens ?? 0, output: u.completionTokens })?.usd ?? 0
+  }
   const serper = (u.serperCredits ?? 0) * serperUsdPerCredit(env)
   return Math.round((model + serper) * 1e6) / 1e6
 }

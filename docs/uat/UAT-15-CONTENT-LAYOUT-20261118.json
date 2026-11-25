@@ -1,0 +1,25 @@
+{
+  "purpose": "15 câu đa thể loại (tin tức, tìm kiếm nhiều lĩnh vực, lập kế hoạch đi chơi) để kiểm hai điều anh Huy hỏi ngày 18/11/2026: nội dung còn nhạt không, bố cục (layout) đã làm còn đúng thiết kế không. Chạy trên giao diện thật localhost:3000, gói Promax, chụp ảnh từng ca.",
+  "grading": {
+    "content": "Đủ ý được hỏi, có số liệu/ngày/tên cụ thể thật, có lý do và lời khuyên chứ không chung chung; độ dài hợp câu hỏi; không câu mở thừa, không câu mời cuối thừa.",
+    "layout": "Bố cục đã thiết kế: bảng cho số liệu và so sánh; thẻ quán/sản phẩm có ảnh, giá, nút; lịch trình có mốc giờ và ảnh điểm dừng; tin tức có tiêu đề + nguồn + ngày; ảnh cho thứ có hình dáng; chữ thường cho câu ngắn. Không lỗi hiển thị, không thẻ trần, không khối trùng chữ.",
+    "source": "Mỗi dữ kiện về thế giới có link nguồn bấm được, trang chính thống nhất."
+  },
+  "questions": [
+    { "id": 1, "group": "news", "q": "tin tức nóng nhất hôm nay ở Việt Nam là gì", "expect": "5-7 tin có ngày, nguồn báo, một dòng tóm tắt; không chỉ liệt kê tiêu đề" },
+    { "id": 2, "group": "news", "q": "tình hình kinh tế thế giới tuần này có gì đáng chú ý", "expect": "các mốc chính (lãi suất, giá dầu, chứng khoán), số liệu và nguồn, ý nghĩa với người Việt" },
+    { "id": 3, "group": "news", "q": "kết quả bóng đá hôm qua và lịch thi đấu cuối tuần này của các giải lớn", "expect": "bảng kết quả + bảng lịch, giờ Việt Nam" },
+    { "id": 4, "group": "news", "q": "có tin công nghệ nào đáng chú ý trong tuần này, đặc biệt về AI và điện thoại mới", "expect": "tin có ngày, nguồn, vì sao quan trọng" },
+    { "id": 5, "group": "search", "q": "so sánh bảo hiểm y tế tự nguyện và bảo hiểm sức khỏe tư nhân cho gia đình có hai con nhỏ", "expect": "bảng so sánh, quyền lợi, chi phí ước tính, nguồn pháp lý, lời khuyên chọn" },
+    { "id": 6, "group": "search", "q": "gửi tiết kiệm kỳ hạn 12 tháng ngân hàng nào lãi suất cao nhất hiện nay", "expect": "bảng ngân hàng - lãi suất - điều kiện, ngày cập nhật, nguồn" },
+    { "id": 7, "group": "search", "q": "triệu chứng và cách chăm sóc bé 2 tuổi bị sốt xuất huyết, khi nào phải đi viện ngay", "expect": "dấu hiệu nguy hiểm rõ, khuyến cáo Bộ Y tế, nguồn, không tự kê thuốc" },
+    { "id": 8, "group": "search", "q": "thủ tục đổi giấy phép lái xe hết hạn gồm những gì, mất bao lâu và phí bao nhiêu", "expect": "các bước, giấy tờ, phí, thời hạn, cơ quan, nguồn chính thống" },
+    { "id": 9, "group": "shopping", "q": "laptop văn phòng mỏng nhẹ dưới 20 triệu nên mua cái nào", "expect": "thẻ sản phẩm có ảnh, giá, link; bảng so sánh ngắn; khuyến nghị rõ" },
+    { "id": 10, "group": "places", "q": "quán cà phê yên tĩnh để làm việc ở quận 1 Sài Gòn", "expect": "thẻ quán có ảnh, địa chỉ, giờ mở, đánh giá, nút bản đồ; vì sao hợp làm việc" },
+    { "id": 11, "group": "food", "q": "tối nay ăn lẩu ở Hà Nội cho 6 người, tầm 300 nghìn một người", "expect": "thẻ quán, giá thực tế, cách đặt chỗ, gợi ý chọn" },
+    { "id": 12, "group": "plan", "q": "lên kế hoạch đi Đà Nẵng - Hội An 4 ngày 3 đêm cho gia đình 2 người lớn 1 bé 4 tuổi, ngân sách 20 triệu, đi cuối tháng 12", "expect": "lịch trình từng ngày có mốc giờ, ảnh điểm dừng, khách sạn gợi ý có giá, chi phí tổng, lưu ý thời tiết và bé nhỏ" },
+    { "id": 13, "group": "plan", "q": "cuối tuần này có hai ngày rảnh, cặp đôi muốn đi chơi gần Sài Gòn, lên kế hoạch giúp mình", "expect": "chọn một điểm đến có lý do, lịch trình hai ngày, cách đi, chi phí, chỗ ăn ở" },
+    { "id": 14, "group": "plan", "q": "tối thứ bảy này đi chơi ở Hà Nội với nhóm bạn 5 người, ăn gì chơi gì, từ 6 giờ tối đến khuya", "expect": "kế hoạch theo giờ, quán ăn, địa điểm chơi, cách di chuyển, chi phí đầu người" },
+    { "id": 15, "group": "plan", "q": "đi Nhật 7 ngày mùa xuân cho 2 người, lần đầu, từ Hà Nội, ngân sách 60 triệu mỗi người", "expect": "tuyến Tokyo-Kyoto-Osaka, lịch trình theo ngày, vé máy bay, visa, chi phí, lưu ý hoa anh đào" }
+  ]
+}

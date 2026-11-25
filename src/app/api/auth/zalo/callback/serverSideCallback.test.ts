@@ -55,8 +55,28 @@ beforeEach(() => {
   fetchMock = vi.fn(async () => new Response(JSON.stringify({ access_token: TOKEN }), { status: 200 }))
   vi.stubGlobal('fetch', fetchMock)
   vi.spyOn(console, 'error').mockImplementation(() => {})
+  // Read at REQUEST time now (not module load), so the test sets them per test.
+  vi.stubEnv('ZALO_APP_ID', 'test-app-id')
+  vi.stubEnv('ZALO_APP_SECRET', 'test-app-secret')
 })
-afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.unstubAllEnvs() })
+
+describe('configuration is read at request time', () => {
+  it('a missing ZALO_APP_SECRET answers zalo_unavailable, logs the NAME only, and calls nobody', async () => {
+    vi.stubEnv('ZALO_APP_SECRET', '')
+    const res = await GET(callback())
+    expect(res.headers.get('location')).toContain('/login?error=zalo_unavailable')
+    expect(fetchMock).not.toHaveBeenCalled()
+    const logged = JSON.stringify((console.error as unknown as ReturnType<typeof vi.fn>).mock.calls)
+    expect(logged).toContain('ZALO_APP_SECRET')
+    expect(logged).not.toContain('test-app-id')
+  })
+  it('a missing ZALO_APP_ID answers zalo_unavailable too', async () => {
+    vi.stubEnv('ZALO_APP_ID', '')
+    const res = await GET(callback())
+    expect(res.headers.get('location')).toContain('/login?error=zalo_unavailable')
+  })
+})
 
 describe('the happy path never shows the browser a token', () => {
   it('redirects straight to /auth/confirm with a one-time hash', async () => {

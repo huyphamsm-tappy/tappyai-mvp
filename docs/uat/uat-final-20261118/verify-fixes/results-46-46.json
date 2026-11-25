@@ -1,0 +1,33 @@
+[
+  {
+    "id": 46,
+    "group": "multilingual",
+    "turns": [
+      {
+        "q": "What are the best things to do in Hanoi in 2 days?",
+        "done": true,
+        "seconds": 62,
+        "screen": "screens/q46.jpg",
+        "answered": true,
+        "chars": 4821,
+        "head": "For two full days, focus on Hoàn Kiếm and the Old Quarter on day one, then Ba Đình and Văn Miếu on day two. I’ve favoured quieter evening options over the noisier beer-street scene.\n\nHÀNH TRÌNH\n\nHanoi in 2 days — historic core, food and a quieter after-dark stroll\n2 ngày\n14 điểm dừng\n2 người\nƯớc tính 1.200.000–2.400.000đ cho 2 người; chưa gồm khách sạn, đi lại đường dài và mua sắm.\n2 người lớn (giả định)\nKhám phá trọn ngày, đi bộ nhiều nhưng tránh các điểm ăn chơi quá ồn\nlịch sử và di tích\nẩm thực Hà Nội\ncà phê yên tĩnh\nđi dạo buổi tối\n\nMình giả định: Giả định hai người lớn, lưu trú gần Hồ Hoàn Kiếm và có đủ hai ngày trọn vẹn. · Ước tính ngân sách chưa gồm khách sạn, vé máy bay/tàu và di chu",
+        "tail": "vel to Hanoi; confirm attraction and show prices before booking.\nThe best two-day balance is a historic centre walk, one major cultural show and a Ba Đình–Văn Miếu day.\nM\nT\nV\nNguồn · 3\n🔖 Lưu địa điểm",
+        "links": 22,
+        "hosts": {
+          "maps.google.com": 14,
+          "google.com": 3,
+          "vihanoi.com": 1,
+          "thanglongwaterpuppet.com": 2,
+          "vietnamairlines.com": 2
+        },
+        "sourcesChip": "M T V Nguồn · 3",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/fde5d735-a88e-401c-abfb-393dafba751a",
+        "proNote": 0
+      }
+    ]
+  }
+]

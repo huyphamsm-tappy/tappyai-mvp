@@ -2,6 +2,7 @@
 // page links it may carry. Shared by the server (which builds the block from tool / Wikipedia data) and the client (which re-checks every
 // URL before rendering, so a stored or forged block can never point the browser anywhere else). Pure, no I/O.
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { topicImageSrc, topicVariantOf, type TopicKey } from '@/lib/media/topicImages'
 
 /** News CDNs of the three RSS feeds get_news reads, and Wikimedia's file hosts (the REST summary's thumbnails are on thumb.wikimedia.org,
  *  measured 17/10; originals on upload.wikimedia.org). */
@@ -51,7 +52,7 @@ export interface MediaOption {
   linkLabel?: string
 }
 /** TAPPY_ANSWER_V4: `entities` = the subjects of a comparison side by side (2–3 Wikipedia cards). `options` = the option cards of a recommendation. */
-export type MediaBlock = { v: 1; kind: 'news'; items: MediaNewsItem[] } | { v: 1; kind: 'entity'; entity: MediaEntity } | { v: 1; kind: 'entities'; entities: MediaEntity[] } | { v: 1; kind: 'options'; title?: string; options: MediaOption[] }
+export type MediaBlock = { v: 1; kind: 'news'; items: MediaNewsItem[] } | { v: 1; kind: 'entity'; entity: MediaEntity } | { v: 1; kind: 'entities'; entities: MediaEntity[] } | { v: 1; kind: 'options'; title?: string; options: MediaOption[] } | { v: 1; kind: 'topic'; topic: TopicKey; variant?: number }
 
 const clean = (s: unknown, max: number) => (typeof s === 'string' ? s.replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max) : '')
 
@@ -110,6 +111,13 @@ export function sanitizeMediaBlock(raw: unknown): MediaBlock | null {
     const seen = new Set<string>()
     const entities = r.entities.map(cleanEntity).filter((e): e is MediaEntity => !!e && !seen.has(e.href) && !!seen.add(e.href)).slice(0, 3)
     return entities.length > 1 ? { v: 1, kind: 'entities', entities } : entities.length === 1 ? { v: 1, kind: 'entity', entity: entities[0] } : null
+  }
+  // the fixed picture of a live-information topic (topicImages.ts): only a topic of the closed list that has its file
+  if (r.kind === 'topic') {
+    if (!topicImageSrc(r.topic)) return null
+    const topic = r.topic as TopicKey
+    const variant = topicVariantOf(topic, r.variant)
+    return { v: 1, kind: 'topic', topic, ...(variant > 0 ? { variant } : {}) }
   }
   if (r.kind === 'options' && Array.isArray(r.options)) {
     const options = r.options.map(cleanOption).filter((o): o is MediaOption => !!o).slice(0, MAX_MEDIA_OPTIONS)

@@ -33,7 +33,7 @@ describe('T38: a subject card of another sense than the answer is not shown (one
     expect(short.block).toBeNull()
   })
   it('in a comparison only the confirmed cards stay', async () => {
-    const two = U({ intent: 'knowledge', entities: [{ name: 'Elon Musk', type: 'person', wiki_title: 'Elon Musk' }, { name: 'Claude', type: 'product', wiki_title: null }] })
+    const two = U({ intent: 'knowledge', answer_shape: 'comparison', entities: [{ name: 'Elon Musk', type: 'person', wiki_title: 'Elon Musk' }, { name: 'Claude', type: 'product', wiki_title: null }] })
     const wiki = async (s: string) => (s === 'Claude' ? ALLIGATOR : { name: s, summary: `${s} là doanh nhân.`, href: `https://vi.wikipedia.org/wiki/${s.replace(/ /g, '_')}`, source: 'Wikipedia' as const })
     const r = await resolveDocMedia(two, ANSWER, ONE, { wiki, webImages: async () => [], confirmSense: async (_a, cards) => cards.map(c => c.name !== 'Claude') })
     expect(r.block).toMatchObject({ kind: 'entity', entity: { name: 'Elon Musk' } })
@@ -92,13 +92,37 @@ describe('the one-brain instruction (share run 31/10)', () => {
     const d = (latestLang: string | null) => oneBrainDynamic({ lang: 'vi', now: new Date('2026-10-31T03:00:00Z'), address: null, hasLocation: false, blocks: [], latestLang })
     expect(d('zh')).toContain("The person's latest message is written in Chinese: write this whole answer in Chinese")
     expect(d('ja')).toContain('written in Japanese')
-    for (const l of [null, 'vi', 'en']) expect(d(l), String(l)).not.toContain('write this whole answer in')
+    expect(d(null)).not.toContain('write this whole answer in')
+    // 17/11: a name reaches the turn only through the one language decision (replyLanguage `named`); when it does, Vietnamese and English are named too
+    expect(d('vi')).toContain('write this whole answer in Vietnamese')
+    expect(d('en')).toContain('write this whole answer in English')
   })
-  it('the route passes the script-certain language of the latest message (detectLangConfident) to the turn', async () => {
+  it('the route passes the name from the turn\'s ONE language decision; an ordinary Vietnamese or English thread names nothing', async () => {
     const { detectLangConfident } = await import('@/lib/ai/intent')
+    const { resolveReplyLanguage } = await import('@/lib/ai/replyLanguage')
     expect(detectLangConfident('你能幫我找出全球貧窮的成因，以及非洲兒童挨餓、無法上學的原因嗎？')).toBe('zh')
     const src = (await import('node:fs')).readFileSync('src/app/api/chat/route.ts', 'utf8')
-    expect(src).toContain('latestLang: detectLangConfident(lastText)')
+    expect(src).toContain('latestLang: replyLanguage.named')
+    expect(src).not.toContain('latestLang: detectLangConfident(lastText)')
+    const named = (lastText: string, priorUserTexts: string[] = []) => resolveReplyLanguage({ lastText, priorUserTexts, clientLocale: 'vi' }).named
+    expect(named('quán phở ngon ở quận 1')).toBeNull()
+    expect(named('what is the best laptop for students', ['What are the best cafes near District 1 for working?'])).toBeNull()
+    expect(named('你能幫我找出全球貧窮的成因嗎？', ['quán phở ngon ở quận 1'])).toBe('zh')
+  })
+  it('17/11: a message that switches the conversation is read whole and named (Japanese opening with kanji; Vietnamese after Japanese)', async () => {
+    const { detectLangConfident } = await import('@/lib/ai/intent')
+    const { resolveReplyLanguage } = await import('@/lib/ai/replyLanguage')
+    const ja = '東京でおすすめのラーメン屋を教えてください'
+    const vi = 'ủa nghe nói obama ra tranh cử tổng thống lại với donal trump à'
+    expect(detectLangConfident(ja)).toBe('ja')
+    expect(detectLangConfident(vi)).toBe('vi')
+    expect(resolveReplyLanguage({ lastText: vi, priorUserTexts: [ja], clientLocale: 'vi' })).toEqual({ lang: 'vi', source: 'message', named: 'vi' })
+    expect(resolveReplyLanguage({ lastText: 'And what about West Lake, is it worth a visit?', priorUserTexts: ['Giới thiệu ngắn về Hồ Gươm'], clientLocale: 'vi' })).toEqual({ lang: 'en', source: 'message', named: 'en' })
+    // a Han word quoted inside a Vietnamese sentence does not make the sentence Chinese; one Vietnamese word inside an English sentence decides nothing
+    expect(detectLangConfident('chữ 你好 trong tiếng Trung nghĩa là gì vậy')).toBe('vi')
+    expect(detectLangConfident('what is the best phở in town')).not.toBe('vi')
+    // brand names in Latin letters inside a Japanese sentence leave it Japanese
+    expect(detectLangConfident('iPhone 17 と Galaxy S26 はどちらがいいですか')).toBe('ja')
   })
   it('voice: the person\'s own address and register are mirrored; "mình/bạn" is only the default with no cue', () => {
     expect(ONE_BRAIN_CORE).toContain('address the person the way they address you and themselves')

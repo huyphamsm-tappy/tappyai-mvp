@@ -10,19 +10,24 @@ import {
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { performSignOut } from '@/lib/auth/signOut'
 import { SUPPORT_EMAIL } from '@/components/landing/config'
+import { safeReturnTo } from '@/lib/auth/returnTo'
 
 type AgeStatus = 'eligible' | 'unknown' | 'ineligible'
 
 interface ProfileAgeState {
   ageStatus: AgeStatus
   canCorrectAge: boolean
+  /** The one-button answer on file ('minor' = the person said they are under 18). */
+  declaration?: 'adult' | 'minor' | null
 }
 
 /** Two digits, so a single-digit day or month still forms a valid ISO date. */
 const pad = (v: string) => v.padStart(2, '0')
 
 // ── Date-of-birth options (approved design 2026-09-10: three dropdowns) ──────
-// PRESENTATION ONLY. The values are the same digit strings the old text inputs
+// Since 18/11/2026 the screen asks ONE question with ONE button (owner decision), so these
+// dropdowns survive only for the single self-correction of an account that already has a date of
+// birth that reads as under 18. PRESENTATION ONLY. The values are the same digit strings the old text inputs
 // produced ("7", "12", "1990"), so `submit()` validates and pads exactly as it
 // did before and the request body is byte-identical. Nothing here decides
 // eligibility — the year list is simply wide enough for every living adult;
@@ -54,10 +59,9 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
   /** The ineligible user has tapped "I entered the wrong date". */
   const [correcting, setCorrecting] = useState(false)
 
-  const next = searchParams.get('next') || '/'
-  // Same restriction the auth callback applies: a relative path only, so this
-  // cannot be turned into an open redirect by a crafted link.
-  const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/'
+  // The ONE strict destination check (`safeReturnTo`): same-origin paths only. The old inline
+  // `startsWith('/') && !startsWith('//')` let "/\evil.com" through.
+  const safeNext = safeReturnTo(searchParams.get('next'))
 
   useEffect(() => {
     let cancelled = false
@@ -69,6 +73,7 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
         const s: ProfileAgeState = {
           ageStatus: body.ageStatus ?? 'unknown',
           canCorrectAge: body.canCorrectAge ?? true,
+          declaration: body.ageDeclaration === 'minor' || body.ageDeclaration === 'adult' ? body.ageDeclaration : null,
         }
         setState(s)
         // Already eligible — there is nothing to ask. replace() so this page
@@ -92,8 +97,9 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
 
     setSaving(true)
     try {
-      const res = await fetch(guest ? '/api/age-declaration' : '/api/profile', {
-        method: guest ? 'POST' : 'PATCH',
+      // Only reachable for a signed-in account correcting a date of birth already on file.
+      const res = await fetch('/api/profile', {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dateOfBirth: iso }),
       })
@@ -128,7 +134,45 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
     } finally {
       setSaving(false)
     }
-  }, [day, month, year, router, safeNext, t, guest])
+  }, [day, month, year, router, safeNext, t])
+
+  /**
+   * THE ONE BUTTON (owner decision 18/11/2026). `adult` = "I confirm I am 18 or older";
+   * `!adult` = the quiet "I am under 18". Same endpoint for a guest and for an account: the
+   * server decides where the answer is stored (device cookie, and the account when signed in) and
+   * what it means. The client never concludes "eligible" by itself — it follows the verdict.
+   */
+  const declare = useCallback(async (adult: boolean) => {
+    setError(null)
+    setSaving(true)
+    try {
+      const res = await fetch('/api/age-declaration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(adult ? { confirm18: true } : { under18: true }),
+      })
+      const body = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        // 503 (could not store it) lands here too: the screen stays, nobody is admitted.
+        setError(body?.message || t('age.error.failed'))
+        return
+      }
+      if (body?.ageStatus === 'eligible') {
+        router.replace(safeNext)
+        return
+      }
+      setState({
+        ageStatus: body?.ageStatus ?? 'ineligible',
+        canCorrectAge: body?.canCorrectAge ?? false,
+        declaration: body?.ageDeclaration === 'adult' ? 'adult' : 'minor',
+      })
+      setCorrecting(false)
+    } catch {
+      setError(t('age.error.failed'))
+    } finally {
+      setSaving(false)
+    }
+  }, [router, safeNext, t])
 
   const signOut = useCallback(async () => {
     // The ONE sign-out primitive (`src/lib/auth/signOut.ts`). A second
@@ -150,7 +194,11 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
   }
 
   const blocked = state.ageStatus === 'ineligible'
-  const showForm = !blocked || correcting
+  // A refusal the person chose with the button (or any refusal for a guest, who has no date of
+  // birth to correct) gets the polite refusal sentence, not the date-of-birth one.
+  const minorBlocked = blocked && (guest || state.declaration === 'minor')
+  const showAsk = !blocked
+  const showDobForm = blocked && correcting
 
   return (
     // ── A POST-AUTHENTICATION ONBOARDING STEP, NOT A LANDING PAGE ────────────
@@ -275,13 +323,56 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
               </h1>
               <p className="mx-auto mt-2.5 max-w-md text-center text-[14px] leading-relaxed text-white/55 sm:text-[15px]">
                 {blocked && !correcting
-                  ? t('age.blocked.desc')
+                  ? (minorBlocked ? t('age.blocked.minorDesc') : t('age.blocked.desc'))
                   : correcting
                     ? t('age.correct.desc')
                     : t('age.ask.desc')}
               </p>
 
-              {showForm && (
+              {showAsk && (
+                <>
+                  {error && <p role="alert" className="mt-5 text-center text-sm text-red-400">{error}</p>}
+
+                  {/* The primary action: one statement, one button. */}
+                  <button
+                    type="button"
+                    data-testid="age-confirm-adult"
+                    onClick={() => declare(true)}
+                    disabled={saving}
+                    className="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 py-4 text-[16px] font-bold text-white shadow-lg shadow-blue-900/40 transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {saving ? (
+                      <><Loader2 size={18} className="animate-spin" /> {t('age.submitting')}</>
+                    ) : (
+                      <>{t('age.ask.confirm')} <ArrowRight size={18} /></>
+                    )}
+                  </button>
+
+                  {/* The quiet refusal: honest, one tap, deliberately not a second primary. */}
+                  <button
+                    type="button"
+                    data-testid="age-confirm-minor"
+                    onClick={() => declare(false)}
+                    disabled={saving}
+                    className="mt-3 w-full py-2 text-center text-sm text-white/45 transition-colors hover:text-white/75 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {t('age.ask.minor')}
+                  </button>
+
+                  {/* What is stored, in the words the Terms and Privacy Policy use. */}
+                  <div data-testid="age-privacy-note" className="mt-4 flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-blue-400/20 bg-blue-500/15">
+                      <Lock size={18} className="text-blue-300" />
+                    </span>
+                    <span>
+                      <span className="block text-[13px] font-semibold text-white/85">{t('age.ask.privacyTitle')}</span>
+                      <span className="mt-1 block text-[13px] leading-relaxed text-white/55">{t('age.ask.privacy')}</span>
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {showDobForm && (
                 <>
                   {/* Three dropdowns (design 2026-09-10). Each is a native
                       <select> inside its <label>, so its accessible name is the
@@ -336,24 +427,27 @@ function AgeCheckInner({ guest = false }: { guest?: boolean }) {
                       <>{correcting ? t('age.correct.submit') : t('age.submit')} <ArrowRight size={18} /></>
                     )}
                   </button>
-
-                  {/* Scope only — what the field is used for, and where it will
-                      not appear. No advertising, analytics or personalisation. */}
-                  <div data-testid="age-privacy-note" className="mt-4 flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-blue-400/20 bg-blue-500/15">
-                      <Lock size={18} className="text-blue-300" />
-                    </span>
-                    <span>
-                      <span className="block text-[13px] font-semibold text-white/85">{t('age.ask.privacyTitle')}</span>
-                      <span className="mt-1 block text-[13px] leading-relaxed text-white/55">{t('age.ask.privacy')}</span>
-                    </span>
-                  </div>
                 </>
+              )}
+
+              {blocked && !correcting && guest && (
+                // A guest has no account to sign out of and no date of birth to correct: the
+                // refusal is the whole screen.
+                <p data-testid="age-minor-note" className="mt-7 text-center text-sm leading-relaxed text-white/55">
+                  {t('age.blocked.minorThanks')}
+                </p>
               )}
 
               {blocked && !correcting && !guest && (
                 <div className="mt-7 flex flex-col gap-3">
-                  {state.canCorrectAge ? (
+                  {minorBlocked ? (
+                    <p className="text-center text-sm leading-relaxed text-white/55">
+                      {t('age.blocked.minorHelp')}{' '}
+                      <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-blue-300 underline">
+                        {SUPPORT_EMAIL}
+                      </a>
+                    </p>
+                  ) : state.canCorrectAge ? (
                     <button
                       onClick={() => { setError(null); setCorrecting(true) }}
                       className="w-full rounded-2xl border border-white/15 bg-white/[0.04] py-3.5 text-sm font-semibold text-white/85 transition-colors hover:bg-white/[0.08]"

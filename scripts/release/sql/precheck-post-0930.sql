@@ -1,0 +1,41 @@
+-- READ-ONLY probe of which post-2026-09-30 migrations are already on production. Run with:
+--   bash scripts/release/apply-migration.sh --check scripts/release/sql/precheck-post-0930.sql
+-- One row per migration: t = its key objects exist (already applied), f = not applied. Never writes.
+with probes(migration, ok) as (values
+  ('20261001_user_blocks',                 to_regclass('public.user_blocks') is not null),
+  ('20261001b_user_reports',               to_regclass('public.user_reports') is not null),
+  ('20261001c_commerce_providers_cinemas', (select count(*) from public.commerce_providers where provider_id in ('cgv','lotte','galaxy','bhd')) > 0),
+  ('20261001d_moderation_standards',       exists (select 1 from information_schema.columns where table_name = 'content_reports' and column_name = 'policy_id')),
+  ('20261001e_banned_identity_hash',       to_regclass('public.banned_identities') is not null),
+  ('20261005_account_deletion_cleanup',    exists (select 1 from pg_proc where proname ilike '%account_deletion%')),
+  ('20261009_content_reports_to_queue',    exists (select 1 from pg_trigger where tgname ilike '%report%queue%' or tgname ilike '%content_reports%')),
+  ('20261010_content_reports_flood_guard', exists (select 1 from pg_proc where proname ilike '%flood%')),
+  ('20260924_p8_subscriptions_plan_model', to_regclass('public.subscriptions') is not null),
+  ('20261011_p8_payments',                 to_regclass('public.payment_orders') is not null and exists (select 1 from pg_proc where proname = 'p8_payments_apply_sepay')),
+  ('20261015_p8_subscriptions',            exists (select 1 from pg_proc where proname = 'p8_apply_entitlement')),
+  ('20261016_p7_pip_one_time',             exists (select 1 from pg_proc where proname = 'p7_pip_used')),
+  ('20261018_ai_data_consent',             to_regclass('public.ai_data_consent') is not null),
+  ('20261106_messenger_notification_collapse', exists (select 1 from pg_proc where proname = 'emit_message_notification')),
+  ('20261110_chat_media_retention',        exists (select 1 from information_schema.columns where table_name = 'chat_messages' and column_name = 'media_expired_at')),
+  ('H1 20260927 column privileges (t = still OPEN, i.e. NOT applied)', has_column_privilege('authenticated', 'public.reviews', 'publication_state', 'UPDATE')),
+  ('M1 20260928 reviews INSERT (t = still OPEN, i.e. NOT applied)', has_table_privilege('authenticated', 'public.reviews', 'INSERT')),
+  ('20261018_chat_honours_user_blocks',    exists (select 1 from pg_policies where tablename = 'chat_messages' and (qual ilike '%block%' or with_check ilike '%block%'))),
+  ('20261101_ai_usage_events',             to_regclass('public.ai_usage_events') is not null),
+  ('20261105_chat_messages_client_id',     exists (select 1 from information_schema.columns where table_name = 'chat_messages' and column_name = 'client_id')),
+  ('20261109_chat_media',                  exists (select 1 from information_schema.columns where table_name = 'chat_messages' and column_name like 'media%')),
+  ('20261111_video_assets',                to_regclass('public.video_assets') is not null),
+  ('20261117_video_clip_consent',          to_regclass('public.video_clip_consents') is not null),
+  ('20261118_conversation_pin_archive',    exists (select 1 from information_schema.columns where table_name = 'conversations' and column_name = 'is_archived')),
+  ('20261119_chat_projects',               to_regclass('public.chat_projects') is not null),
+  ('20261120_tvi_core',                    to_regclass('public.knowledge_sources') is not null),
+  ('20261121_mcp_jobs (DEFER)',            to_regclass('public.mcp_jobs') is not null),
+  ('20261201_scam_knowledge_versions',     to_regclass('public.scam_knowledge_versions') is not null),
+  ('20261202_age_adult_declaration',       exists (select 1 from information_schema.columns where table_name = 'user_demographics' and column_name = 'adult_declared_at')),
+  ('20261203_payments_no_refund',          exists (select 1 from information_schema.columns where table_name = 'payment_orders' and column_name = 'bonus_seconds')),
+  ('20261204_group_join_approval',         exists (select 1 from pg_proc where proname = 'fn_group_member_force_pending')),
+  ('20261205_group_suggestion_votes',      to_regclass('public.group_votes') is not null),
+  ('20261206_group_bills',                 to_regclass('public.group_bills') is not null),
+  ('20261207_auto_hold_reported_posts',    exists (select 1 from pg_proc where proname = 'content_report_auto_hold')),
+  ('20261208_comment_hiding',              exists (select 1 from information_schema.columns where table_name = 'review_comments' and column_name = 'hidden_at'))
+)
+select migration, ok from probes order by migration;

@@ -19,7 +19,7 @@ export function AccountPlanCardView({ subscription }: { subscription: MySubscrip
     return (
       <Link href="/subscription" data-account-plan="active" className="flex items-center gap-3 rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         {/* eslint-disable-next-line @next/next/no-img-element -- owner-supplied art in /public/subscription */}
-        <img src={`/subscription/${subscription.plan.id}.webp`} alt="" width={64} height={64} className="h-16 w-16 rounded-2xl object-cover" />
+        <img src={`/subscription/${subscription.plan.id}.webp`} alt="" width={64} height={64} className="h-16 w-16 rounded-2xl object-contain" />
         <span className="min-w-0 flex-1">
           <span className="block font-bold text-gray-900 dark:text-white">{t('sub.plan.fullName', { plan: subscription.plan.name })}</span>
           <span className="inline-block rounded-full bg-emerald-500 px-2.5 py-0.5 text-xs font-semibold text-white">{t('sub.manage.state.ACTIVE')}</span>

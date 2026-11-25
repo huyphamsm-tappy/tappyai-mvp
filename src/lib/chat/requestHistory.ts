@@ -35,6 +35,42 @@ function textLength(m: Msg): number {
   return 0
 }
 
+function textOf(m: Msg): string {
+  if (typeof m.content === 'string') return m.content
+  if (Array.isArray(m.content)) return (m.content as Part[]).map(p => (p && p.type === 'text' && typeof p.text === 'string' ? p.text : '')).join('\n')
+  return ''
+}
+
+/** A long assistant message with several "## " sections: a finished report (deep research writes exactly this). Pure. */
+export function looksLikeReport(text: string): boolean {
+  return text.length >= 8_000 && (text.match(/^##\s/gm) ?? []).length >= 4
+}
+
+export const REPORT_DIGEST_CHARS = 6_000
+const SOURCES_HEAD = /^(ngu[oồ]n|sources|tài liệu tham khảo|references)\b/i
+
+/**
+ * What a follow-up needs of a report when the report itself cannot travel: the title, then each section's heading with its opening paragraph (cut at 480 characters), the list of sources reduced to its
+ * size, all within `max`. A note says it is a digest, so the model never claims to have read the rest. Deterministic, no model. Pure.
+ */
+export function reportDigest(text: string, max = REPORT_DIGEST_CHARS): string {
+  const lines = text.split('\n')
+  const title = lines.find(l => /^#\s/.test(l))?.replace(/^#\s+/, '').trim()
+  const sections = text.split(/^##\s+/m).slice(1)
+  const parts: string[] = []
+  for (const s of sections) {
+    const [head, ...rest] = s.split('\n')
+    const heading = head.trim()
+    if (SOURCES_HEAD.test(heading.replace(/^\d+[.)]?\s*/, ''))) { parts.push(`## ${heading}\n(${rest.filter(l => /\S/.test(l)).length} lines of sources, not repeated here)`); continue }
+    const para = rest.join('\n').split(/\n\s*\n/).map(p => p.trim()).find(p => p && !/^[|>#\-*\d]/.test(p))
+    const open = para ? (para.length > 480 ? para.slice(0, 480).replace(/\s+\S*$/, '') + '…' : para) : ''
+    parts.push(`## ${heading}${open ? `\n${open}` : ''}`)
+  }
+  const note = '[Digest of the research report written earlier in this conversation: the title and, for each section, its heading and opening paragraph. It is NOT the full text; the full report is on the person\'s screen and cannot be exported by you.]'
+  const body = `${note}\n${title ? `# ${title}\n` : ''}${parts.join('\n\n')}`
+  return body.length > max ? body.slice(0, max).replace(/\s+\S*$/, '') + '…' : body
+}
+
 function mapText(m: Msg, f: (s: string) => string): Msg {
   if (typeof m.content === 'string') return { ...m, content: f(m.content) }
   if (Array.isArray(m.content)) return { ...m, content: (m.content as Part[]).map(p => (p && p.type === 'text' && typeof p.text === 'string' ? { ...p, text: f(p.text) } : p)) }
@@ -68,6 +104,9 @@ export function compactRequestMessages<M extends Msg>(messages: readonly M[], bu
     .filter(m => !(m.role === 'assistant' && textLength(m) === 0)) as M[]
 
   const total = () => out.reduce((n, m) => n + textLength(m), 0)
+  // Owner 11/11: a finished deep research report (27 000+ characters) never fits the 20 000-character budget, so the loop below dropped it - and every follow-up ("xuất PDF", "tóm tắt mục 3")
+  // answered "I don't see the report". Over budget, a report becomes its DIGEST (title, each section's heading and opening paragraph) instead of vanishing.
+  if (total() > budget) out = out.map(m => (m.role === 'assistant' && looksLikeReport(textOf(m)) ? mapText(m, reportDigest) as M : m))
   // Still over: the last assistant turn goes to prose too, then the oldest turns go.
   if (total() > budget) out = out.map(m => (m.role === 'assistant' ? mapText(m, proseOnly) as M : m))
   while (total() > budget && out.length > 1) {

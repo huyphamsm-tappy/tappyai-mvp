@@ -44,4 +44,10 @@ enum ProductFlags {
     /// Viết nội dung (Captions) — HIDDEN, NOT DELETED (owner decision 2026-10-25). Mirrors web
     /// `SHOW_VIET_CONTENT`. Flip both together.
     static let showVietContent = false
+
+    /// Coi bói (Fortune: Tử vi, Tarot, Cung hoàng đạo) — HIDDEN, NOT DELETED (owner decision 2026-11-18).
+    /// The hub, the three screens, their data and view models stay in place; the entry points are gated off.
+    /// Mirrors web `SHOW_FORTUNE` (served as `flags.showFortune`) and Android
+    /// `com.tappyai.app.ProductFlags.SHOW_FORTUNE`. Flip all three together.
+    static let showFortune = false
 }

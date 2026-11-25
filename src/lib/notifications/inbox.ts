@@ -45,6 +45,11 @@ export interface GroupedNotif {
    * has not seen, and marking it read is what clears it.
    */
   unread: boolean
+  /**
+   * The ids of the unread notifications collapsed into this row, so tapping the row can mark exactly those read
+   * (a stack of likes is several rows in the table). Empty when the row is already read.
+   */
+  unreadIds: string[]
 }
 
 export const NOTIF_COLOR: Record<string, string> = {
@@ -137,7 +142,7 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
       if (n.actor_id && !existing.actors.find(a => a.id === n.actor_id))
         existing.actors.push({ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id })
       existing.count++
-      if (!n.read_at) existing.unread = true
+      if (!n.read_at) { existing.unread = true; existing.unreadIds.push(n.id) }
       if (new Date(n.created_at) > new Date(existing.created_at)) existing.created_at = n.created_at
     } else {
       map.set(key, {
@@ -149,6 +154,7 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
         // a collapsed message row stands for `count` unread messages (D4); every other row starts as one notification
         created_at: n.created_at, count: n.type === 'message' && n.count ? n.count : 1,
         unread: !n.read_at,
+        unreadIds: n.read_at ? [] : [n.id],
       })
     }
   }

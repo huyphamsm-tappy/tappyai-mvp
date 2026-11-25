@@ -29,6 +29,16 @@ export interface DeletionDeps {
    * on any failure, which keeps the job pending and retried: "done" is never reported while the private pictures may still be there.
    */
   chatMedia?: { deleteForUser(userId: string): Promise<number> }
+  /**
+   * The user's ORIGINAL videos in the PRIVATE source bucket (src/lib/media/video/sourceDeletion.ts). Same contract as chatMedia: it THROWS on any failure (or if anything
+   * remains after deletion), so the job stays pending and is retried and "done" is never reported while a source video may still be there.
+   */
+  videoSource?: { deleteForUser(userId: string): Promise<number> }
+  /**
+   * The user's approved HLS copies in the DELIVERY bucket (src/lib/media/video/deliveryDeletion.ts), plus their CDN cache. Same contract as videoSource: it THROWS on any failure
+   * (anything remaining after deletion, a failed CDN invalidation), so the job stays pending and "done" is never reported while an approved copy may still be served.
+   */
+  videoDelivery?: { deleteForUser(userId: string): Promise<number> }
   /** true = revoked or already invalid at Google; false = try again later. */
   revoke: (token: string) => Promise<boolean>
   /** Jobs per database read (a batch). The run keeps reading batches until the queue is empty. */
@@ -126,6 +136,10 @@ export async function processAccountDeletionJobs(deps: DeletionDeps): Promise<De
       }
       // The private chat pictures live in another store (Supabase Storage), so the public-bucket listing above cannot see them.
       if (deps.chatMedia) deleted += await deps.chatMedia.deleteForUser(job.user_id)
+      // The original videos live in a third place, the private source bucket (Explore video).
+      if (deps.videoSource) deleted += await deps.videoSource.deleteForUser(job.user_id)
+      // ...and a fourth, the delivery bucket the CDN serves approved copies from.
+      if (deps.videoDelivery) deleted += await deps.videoDelivery.deleteForUser(job.user_id)
       result.objectsDeleted += deleted
 
       const done = pendingTokens.length === 0

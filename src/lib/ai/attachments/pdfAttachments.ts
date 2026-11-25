@@ -10,6 +10,7 @@
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { pdfToText, pdfTextUnmapped, PDF_LIMITS } from '@/lib/ai/retrievalV5/pdfText'
 import type { ValidatedMessage, ValidatedPart, FilePart } from '@/lib/ai/security/clientInput'
+import { docxToText, xlsxToText, DOCX_MIME, XLSX_MIME } from '@/lib/ai/attachments/officeText'
 
 /** Characters of one document handed to the model: the latest message's documents in full (the page reader's cap), earlier ones shorter. */
 export const PDF_TEXT_CHARS = { latest: PDF_LIMITS.chars, earlier: 8_000 } as const
@@ -23,10 +24,22 @@ export function pdfDataUrlBytes(dataUrl: string): Uint8Array | null {
   try { return new Uint8Array(Buffer.from(m[1], 'base64')) } catch { return null }
 }
 
-/** The text part a PDF becomes. Vietnamese labels: the model reads them in a Vietnamese app; the document text itself is fenced. */
-export function pdfPartText(name: string, outcome: PdfOutcome, text: string | null, cut: boolean): string {
-  const label = `Tệp PDF người dùng gửi: "${name.replace(/["\n\r]/g, ' ').slice(0, 120)}"`
-  if (outcome === 'read' && text) return `${label}${cut ? ' (chỉ phần đầu tệp)' : ''}\n${fenceUntrusted('user_document', text)}`
+/** The bytes of a `data:<mime>;base64,…` URL for the given document type, or null. */
+export function documentDataUrlBytes(dataUrl: string, mime: string): Uint8Array | null {
+  const prefix = `data:${mime};base64,`
+  if (!dataUrl.startsWith(prefix) || !/^[A-Za-z0-9+/=\s]+$/.test(dataUrl.slice(prefix.length))) return null
+  try { return new Uint8Array(Buffer.from(dataUrl.slice(prefix.length), 'base64')) } catch { return null }
+}
+
+const KIND_LABEL = { pdf: 'PDF', word: 'Word', excel: 'Excel' } as const
+export type DocKind = keyof typeof KIND_LABEL
+const kindOf = (mime: string): DocKind => mime === DOCX_MIME ? 'word' : mime === XLSX_MIME ? 'excel' : 'pdf'
+
+/** The text part a document (PDF, Word or Excel) becomes. Vietnamese labels: the model reads them in a Vietnamese app; the document text itself is fenced. */
+export function pdfPartText(name: string, outcome: PdfOutcome, text: string | null, cut: boolean, kind: DocKind = 'pdf'): string {
+  const label = `Tệp ${KIND_LABEL[kind]} người dùng gửi: "${name.replace(/["\n\r]/g, ' ').slice(0, 120)}"`
+  if (outcome === 'read' && text) return `${label}${cut ? (kind === 'excel' ? ' (chỉ phần đầu bảng tính)' : ' (chỉ phần đầu tệp)') : ''}${kind === 'excel' ? ' - ô công thức hiện giá trị đã lưu, ngày tháng có thể hiện dạng số của Excel' : ''}\n${fenceUntrusted('user_document', text)}`
+  if (kind !== 'pdf' && outcome !== 'read') return `${label} - hệ thống không đọc được tệp này (hỏng, có mật khẩu, hoặc không phải định dạng .${kind === 'word' ? 'docx' : 'xlsx'} chuẩn).`
   if (outcome === 'no_text') return `${label} - hệ thống không lấy được chữ trong tệp (có thể là bản scan/ảnh chụp, tệp có mật khẩu hoặc bị hỏng).`
   if (outcome === 'unmapped') return `${label} - chữ trong tệp bị mã hoá phông nên hệ thống không đọc đúng được nội dung.`
   return `${label} - hệ thống không mở được tệp này (hỏng, có mật khẩu hoặc quá lớn).`
@@ -53,13 +66,20 @@ export async function pdfPartsToText(messages: readonly ValidatedMessage[], read
     for (const p of m.content) {
       if (p.type !== 'file') { parts.push(p); continue }
       const f = p as FilePart
-      const bytes = pdfDataUrlBytes(f.data)
-      const text = bytes ? await read(bytes, { chars: cap }).catch(() => null) : null
-      const outcome: PdfOutcome = !bytes ? 'unreadable' : text === null ? 'no_text' : pdfTextUnmapped(text) ? 'unmapped' : 'read'
-      const cut = !!text && text.length > cap
+      const kind = kindOf(f.mimeType)
+      const bytes = documentDataUrlBytes(f.data, f.mimeType)
+      let text: string | null = null
+      let officeCut = false
+      if (bytes && kind === 'pdf') text = await read(bytes, { chars: cap }).catch(() => null)
+      else if (bytes && kind === 'word') text = docxToText(bytes)
+      else if (bytes && kind === 'excel') { const x = xlsxToText(bytes); text = x ? x.text : null; officeCut = !!x?.cut }
+      // an Office file with no text at all is "no_text" (an empty document); only a PDF can have unmapped letters
+      if (kind !== 'pdf' && text === '') text = null
+      const outcome: PdfOutcome = !bytes ? 'unreadable' : text === null ? 'no_text' : kind === 'pdf' && pdfTextUnmapped(text) ? 'unmapped' : 'read'
+      const cut = officeCut || (!!text && text.length > cap)
       const body = outcome === 'read' && text ? text.slice(0, cap) : null
       docs.push({ outcome, chars: body?.length ?? 0, latest })
-      parts.push({ type: 'text', text: pdfPartText(f.name, outcome, body, cut) })
+      parts.push({ type: 'text', text: pdfPartText(f.name, outcome, body, cut, kind) })
     }
     out.push({ role: 'user', content: parts })
   }

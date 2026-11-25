@@ -106,6 +106,12 @@ function isAllowedIPv6(b: number[]): boolean {
   if (b[0] === 0x00 && b[1] === 0x64 && b[2] === 0xff && b[3] === 0x9b && b.slice(4, 12).every(x => x === 0)) {
     return isAllowedIPv4(b.slice(12))
   }
+  // ::a.b.c.d — the deprecated IPv4-compatible form (::7f00:1 is ::127.0.0.1): the last four bytes are the destination.
+  if (allZeroThrough(12)) return isAllowedIPv4(b.slice(12))
+  // 2002::/16 — 6to4: bytes 2..5 are an IPv4 address the packet is relayed to. Judge it as that address.
+  if (b[0] === 0x20 && b[1] === 0x02) return isAllowedIPv4(b.slice(2, 6))
+  // 2001:0::/32 — Teredo: a tunnel to a client behind a NAT; nothing we should open a socket to.
+  if (b[0] === 0x20 && b[1] === 0x01 && b[2] === 0 && b[3] === 0) return false
   return true
 }
 

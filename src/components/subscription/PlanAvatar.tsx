@@ -15,7 +15,7 @@ export function PlanAvatar({ plan, size, className = '' }: {
   const { imageUrl, pose } = plan.character
   if (imageUrl) {
     // eslint-disable-next-line @next/next/no-img-element -- server-manifest art, any https host
-    return <img src={imageUrl} alt="" width={size} height={size} className={`rounded-2xl object-cover ${className}`} style={{ width: size, height: size }} />
+    return <img src={imageUrl} alt="" width={size} height={size} className={`rounded-2xl object-contain ${className}`} style={{ width: size, height: size }} />
   }
   return <TappyMascot pose={pose} size={size} className={className} />
 }
