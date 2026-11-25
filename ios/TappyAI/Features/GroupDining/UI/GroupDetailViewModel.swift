@@ -28,6 +28,7 @@ final class GroupDetailViewModel: AppObservableObject {
     /// Only the creator may ask for a suggestion — the server enforces it (403 `owner_only`) and
     /// the button is hidden for everyone else rather than shown and rejected.
     var isCreator: Bool {
+        if room?.state == "creator" { return true }   // the server's own word, when it sends one
         guard let creatorId = room?.creatorId, let me = session.userId else { return false }
         return creatorId == me
     }
@@ -109,6 +110,69 @@ final class GroupDetailViewModel: AppObservableObject {
                 log.error("group suggest failed: \(error)")
             }
             isSuggesting = false
+        }
+    }
+
+    // MARK: - Leader and member actions (G2–G4)
+
+    /// The server says this person asked to join and the leader has not answered.
+    var isPending: Bool { room?.isPendingForMe ?? false }
+    /// People waiting for the leader's answer (sent to the leader only).
+    var pendingRequests: [GroupMember] { room?.pendingRequests ?? [] }
+    /// An accepted member who is not the leader can leave; the leader deletes instead.
+    var canLeave: Bool { room?.state == "member" && !isCreator }
+    /// Set once the group is gone for this person (left, withdrew or deleted): the screen closes.
+    @AppPublished var didExit = false
+    @AppPublished var isWorking = false
+
+    /// Accept, decline or remove — then reload, so the lists and the count match the server.
+    func manage(_ member: GroupMember, _ action: GroupService.MemberAction) {
+        guard isCreator, !isWorking else { return }
+        isWorking = true
+        errorMessage = nil
+        Task {
+            do {
+                try await service.manageMember(groupId: groupId, memberId: member.id, action: action)
+                await load()
+            } catch {
+                errorMessage = GroupErrorMessages.text(for: error, action: .manage)
+                log.error("group member action failed: \(error)")
+            }
+            isWorking = false
+        }
+    }
+
+    /// Leave the group, or withdraw a request that is still waiting.
+    func leave() {
+        guard !isWorking, isPending || canLeave else { return }
+        isWorking = true
+        errorMessage = nil
+        Task {
+            do {
+                try await service.leaveGroup(id: groupId)
+                didExit = true
+            } catch {
+                errorMessage = GroupErrorMessages.text(for: error, action: .leave)
+                log.error("group leave failed: \(error)")
+            }
+            isWorking = false
+        }
+    }
+
+    /// Leader only; the confirmation is asked by the view (Apple 5.1.1(v) spirit: no silent destroy).
+    func deleteGroup() {
+        guard isCreator, !isWorking else { return }
+        isWorking = true
+        errorMessage = nil
+        Task {
+            do {
+                try await service.deleteGroup(id: groupId)
+                didExit = true
+            } catch {
+                errorMessage = GroupErrorMessages.text(for: error, action: .delete)
+                log.error("group delete failed: \(error)")
+            }
+            isWorking = false
         }
     }
 

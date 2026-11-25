@@ -69,6 +69,32 @@ struct GroupService: Sendable {
         return try await api.send(endpoint, as: JoinGroupResponse.self)
     }
 
+    /// What the leader can do with a person in the group (`POST /api/group/{id}/members`).
+    enum MemberAction: String, Sendable { case approve, decline, remove }
+
+    /// `memberId` is the id of the MEMBER ROW (what the group read returns as each member's `id`),
+    /// never the person's account id.
+    func manageMember(groupId: String, memberId: String, action: MemberAction) async throws {
+        guard DeepLinkHandler.isSafeId(groupId) else { throw AppError.validation(message: "invalid group id") }
+        let payload = try JSONSerialization.data(withJSONObject: ["memberId": memberId, "action": action.rawValue])
+        let endpoint = Endpoint(path: "/api/group/\(groupId)/members", method: .post, body: payload, requiresAuth: true)
+        _ = try await api.send(endpoint, as: GroupOkResponse.self)
+    }
+
+    /// `POST /api/group/{id}/leave` — a member leaves, or a person withdraws a request still waiting.
+    func leaveGroup(id: String) async throws {
+        guard DeepLinkHandler.isSafeId(id) else { throw AppError.validation(message: "invalid group id") }
+        let endpoint = Endpoint(path: "/api/group/\(id)/leave", method: .post, requiresAuth: true)
+        _ = try await api.send(endpoint, as: GroupOkResponse.self)
+    }
+
+    /// `DELETE /api/group/{id}` — leader only; members, requests, votes and bills go with it.
+    func deleteGroup(id: String) async throws {
+        guard DeepLinkHandler.isSafeId(id) else { throw AppError.validation(message: "invalid group id") }
+        let endpoint = Endpoint(path: "/api/group/\(id)", method: .delete, requiresAuth: true)
+        _ = try await api.send(endpoint, as: GroupOkResponse.self)
+    }
+
     /// `POST /api/group/{id}/suggest` — the creator asks the AI for places that suit everyone.
     ///
     /// Creator-only and rate-limited server-side (5/minute) because it is a paid LLM call. The

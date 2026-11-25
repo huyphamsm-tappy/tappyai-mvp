@@ -83,6 +83,11 @@ struct JoinGroupResponse: Decodable, Sendable {
     let pending: Bool?
 }
 
+/// `{ ok: true }` — the answer of the members, leave and delete calls. Only success matters.
+struct GroupOkResponse: Decodable, Sendable {
+    let ok: Bool?
+}
+
 /// `POST /api/group/{id}/suggest`.
 struct GroupSuggestionResponse: Decodable, Sendable {
     let suggestion: String

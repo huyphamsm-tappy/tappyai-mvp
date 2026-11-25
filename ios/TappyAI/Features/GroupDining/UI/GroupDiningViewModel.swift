@@ -67,7 +67,8 @@ final class GroupDiningViewModel: AppObservableObject {
 /// be full or your details are incomplete" when joining — and would otherwise collapse into one
 /// unhelpful message.
 enum GroupErrorMessages {
-    enum Action { case create, join, suggest }
+    /// `manage` = the leader accepts, declines or removes someone; `leave` also covers withdrawing a request.
+    enum Action { case create, join, suggest, manage, leave, delete }
 
     static func text(for error: Error, action: Action) -> String {
         guard let appError = error as? AppError else {
@@ -87,7 +88,10 @@ enum GroupErrorMessages {
             switch action {
             case .create: return NSLocalizedString("group.error.nameRequired", comment: "")
             case .join: return NSLocalizedString("group.error.joinRejected", comment: "")
-            case .suggest: return NSLocalizedString("group.error.generic", comment: "")
+            case .suggest, .delete: return NSLocalizedString("group.error.generic", comment: "")
+            // The only 400s the server sends here: `group_full` (accepting) and `creator_cannot_leave`.
+            case .manage: return NSLocalizedString("group.full", comment: "")
+            case .leave: return NSLocalizedString("group.error.leaderCannotLeave", comment: "")
             }
         case .network(let status, _):
             if status == 429 { return NSLocalizedString("group.error.rateLimited", comment: "") }

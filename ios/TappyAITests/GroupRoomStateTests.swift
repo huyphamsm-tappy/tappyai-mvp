@@ -53,9 +53,40 @@ final class GroupRoomStateTests: XCTestCase {
 
     func testFetchGroupRequiresAuth() async throws {
         // The web answers 401 without an account; the call must carry the token.
-        let source = try String(contentsOfFile: #file.replacingOccurrences(of: "TappyAITests/GroupRoomStateTests.swift", with: "TappyAI/Features/GroupDining/Data/GroupService.swift"))
-        guard let start = source.range(of: "func fetchGroup") else { return XCTFail("fetchGroup missing") }
-        let body = source[start.lowerBound...].prefix(400)
-        XCTAssertTrue(body.contains("requiresAuth: true"))
+        let api = MockAPIClient()
+        api.stubbed = Data(#"{"id":"g1","state":"member"}"#.utf8)
+        _ = try await GroupService(api: api).fetchGroup(id: "g1")
+        XCTAssertEqual(api.sentEndpoints.first?.requiresAuth, true)
+    }
+
+    // MARK: G2–G4
+
+    func testLeaderAnswerSendsMemberRowIdAndAction() async throws {
+        let api = MockAPIClient()
+        api.stubbed = Data(#"{"ok":true}"#.utf8)
+        try await GroupService(api: api).manageMember(groupId: "g1", memberId: "row-9", action: .approve)
+        let sent = try XCTUnwrap(api.sentEndpoints.first)
+        XCTAssertEqual(sent.path, "/api/group/g1/members")
+        XCTAssertEqual(sent.method, .post)
+        XCTAssertTrue(sent.requiresAuth)
+        let body = try XCTUnwrap(sent.body.flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: String] })
+        XCTAssertEqual(body, ["memberId": "row-9", "action": "approve"])
+    }
+
+    func testLeaveAndDeleteUseTheRightCalls() async throws {
+        let api = MockAPIClient()
+        api.stubbed = Data(#"{"ok":true}"#.utf8)
+        let service = GroupService(api: api)
+        try await service.leaveGroup(id: "g1")
+        try await service.deleteGroup(id: "g1")
+        XCTAssertEqual(api.sentEndpoints.map(\.path), ["/api/group/g1/leave", "/api/group/g1"])
+        XCTAssertEqual(api.sentEndpoints.map(\.method), [.post, .delete])
+        XCTAssertTrue(api.sentEndpoints.allSatisfy(\.requiresAuth))
+    }
+
+    func testUnsafeIdIsNeverWrittenIntoThePath() async {
+        let api = MockAPIClient()
+        do { try await GroupService(api: api).deleteGroup(id: "../x"); XCTFail("must refuse") } catch {}
+        XCTAssertTrue(api.sentEndpoints.isEmpty)
     }
 }

@@ -7,6 +7,9 @@ import SwiftUI
 /// eat, and — if you created the room — ask Tappy to pick somewhere that suits everyone.
 struct GroupDetailView: View {
     @AppStateObject private var vm: GroupDetailViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var confirmLeave = false
+    @State private var confirmDelete = false
 
     init(deps: AppDependencies, groupId: String) {
         _vm = AppStateObject(wrappedValue: GroupDetailViewModel(
@@ -45,20 +48,31 @@ struct GroupDetailView: View {
         .navigationTitle(Text("group.title"))
         .navigationBarTitleDisplayMode(.inline)
         .task { await vm.load() }
+        .onChange(of: vm.didExit) { gone in if gone { dismiss() } }
     }
 
     private var loaded: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.lg) {
-                heading
-                shareSection
-                membersSection
-                if vm.hasJoined {
-                    joinedNotice
+                if vm.isPending {
+                    // Only the name came back: the leader has not accepted this person yet.
+                    Text(verbatim: vm.room?.name ?? "")
+                        .font(TappyFont.title)
+                        .foregroundStyle(TappyColor.textPrimary)
+                    pendingCard
                 } else {
-                    joinForm
+                    heading
+                    shareSection
+                    requestsSection
+                    membersSection
+                    if vm.hasJoined || vm.canLeave || vm.isCreator {
+                        if !vm.isCreator { joinedNotice }
+                    } else {
+                        joinForm
+                    }
+                    suggestionSection
+                    exitSection
                 }
-                suggestionSection
             }
             .padding(Spacing.md)
             .padding(.bottom, Spacing.xl)
@@ -137,10 +151,97 @@ struct GroupDetailView: View {
                             detail(icon: "fork.knife", value: member.foodPreferences)
                             detail(icon: "nosign", value: member.dietaryRestrictions)
                             detail(icon: "mappin.and.ellipse", value: member.area)
+                            // The leader can take someone out (member rows carry no account id, so no row is singled out).
+                            if vm.isCreator {
+                                Button("group.member.remove", role: .destructive) { vm.manage(member, .remove) }
+                                    .font(TappyFont.caption)
+                                    .disabled(vm.isWorking)
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+
+    // MARK: - Pending, requests, leave and delete (G2–G4)
+
+    @ViewBuilder
+    private var pendingCard: some View {
+        TappyCard {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("group.pending.title")
+                    .font(TappyFont.bodyEmphasis)
+                    .foregroundStyle(TappyColor.textPrimary)
+                Text("group.pending.message")
+                    .font(TappyFont.callout)
+                    .foregroundStyle(TappyColor.textSecondary)
+                if let message = vm.errorMessage {
+                    Text(verbatim: message)
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.danger)
+                }
+                Button("group.pending.withdraw") { vm.leave() }
+                    .buttonStyle(.tappy(.secondary))
+                    .disabled(vm.isWorking)
+            }
+        }
+    }
+
+    /// The leader's list of people asking to come in.
+    @ViewBuilder
+    private var requestsSection: some View {
+        if vm.isCreator && !vm.pendingRequests.isEmpty {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("group.requests.label")
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                ForEach(vm.pendingRequests) { person in
+                    TappyCard {
+                        VStack(alignment: .leading, spacing: Spacing.xs) {
+                            Text(verbatim: person.displayName)
+                                .font(TappyFont.bodyEmphasis)
+                                .foregroundStyle(TappyColor.textPrimary)
+                            detail(icon: "mappin.and.ellipse", value: person.area)
+                            HStack(spacing: Spacing.sm) {
+                                Button("group.requests.approve") { vm.manage(person, .approve) }
+                                    .buttonStyle(.tappy(.primary))
+                                Button("group.requests.decline") { vm.manage(person, .decline) }
+                                    .buttonStyle(.tappy(.secondary))
+                            }
+                            .disabled(vm.isWorking)
+                        }
+                    }
+                }
+                if let message = vm.errorMessage {
+                    Text(verbatim: message)
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.danger)
+                }
+            }
+        }
+    }
+
+    /// Leave (member) or delete (leader), each behind a confirmation.
+    @ViewBuilder
+    private var exitSection: some View {
+        if vm.canLeave {
+            Button("group.leave.button") { confirmLeave = true }
+                .buttonStyle(.tappy(.secondary))
+                .disabled(vm.isWorking)
+                .confirmationDialog(Text("group.leave.confirm"), isPresented: $confirmLeave, titleVisibility: .visible) {
+                    Button("group.leave.button", role: .destructive) { vm.leave() }
+                    Button("common.cancel", role: .cancel) {}
+                }
+        }
+        if vm.isCreator {
+            Button("group.delete.button") { confirmDelete = true }
+                .buttonStyle(.tappy(.secondary))
+                .disabled(vm.isWorking)
+                .confirmationDialog(Text("group.delete.confirm"), isPresented: $confirmDelete, titleVisibility: .visible) {
+                    Button("group.delete.button", role: .destructive) { vm.deleteGroup() }
+                    Button("common.cancel", role: .cancel) {}
+                }
         }
     }
 

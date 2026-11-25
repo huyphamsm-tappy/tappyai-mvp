@@ -11070,6 +11070,90 @@
         }
       }
     },
+    "group.pending.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Waiting for the group leader" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đang chờ trưởng nhóm duyệt" } }
+      }
+    },
+    "group.pending.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The leader has to accept you before you can see the group." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Trưởng nhóm duyệt thì bạn mới xem được nhóm nhé." } }
+      }
+    },
+    "group.pending.withdraw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Withdraw request" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Rút yêu cầu" } }
+      }
+    },
+    "group.requests.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Waiting to join" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đang chờ vào nhóm" } }
+      }
+    },
+    "group.requests.approve": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Accept" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Duyệt" } }
+      }
+    },
+    "group.requests.decline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Decline" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Từ chối" } }
+      }
+    },
+    "group.member.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Remove from group" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa khỏi nhóm" } }
+      }
+    },
+    "group.leave.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Leave group" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Rời nhóm" } }
+      }
+    },
+    "group.leave.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Leave this group?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Rời khỏi nhóm này?" } }
+      }
+    },
+    "group.delete.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete group" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa nhóm" } }
+      }
+    },
+    "group.delete.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete this group for everyone? This cannot be undone." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa nhóm này với tất cả mọi người? Không hoàn tác được." } }
+      }
+    },
+    "group.error.leaderCannotLeave": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The leader cannot leave — delete the group instead." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Trưởng nhóm không rời nhóm được — hãy xóa nhóm." } }
+      }
+    },
     "group.title": {
       "extractionState": "manual",
       "localizations": {
