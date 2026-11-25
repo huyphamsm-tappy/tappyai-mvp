@@ -44,4 +44,14 @@ enum ProductFlags {
     /// Viết nội dung (Captions) — HIDDEN, NOT DELETED (owner decision 2026-10-25). Mirrors web
     /// `SHOW_VIET_CONTENT`. Flip both together.
     static let showVietContent = false
+
+    /// Quét hóa đơn, Tỷ giá, Coi bói and "Gợi ý cho bạn" — HIDDEN, NOT DELETED. Web decisions of
+    /// 18/11 (`SHOW_FORTUNE`) and 20/11 (`SHOW_SCAN`, `SHOW_CURRENCY`, `SHOW_RECOMMENDATIONS`) in
+    /// `src/lib/config/product.ts`; the web is the specification, so every entry point here is gated
+    /// off as it is there (Smart Tools, Home's recommendations rail, the how-to guide). The screens
+    /// and services stay in place. Flip with the web.
+    static let showScan = false
+    static let showCurrency = false
+    static let showFortune = false
+    static let showRecommendations = false
 }
