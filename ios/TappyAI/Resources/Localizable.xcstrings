@@ -12680,6 +12680,60 @@
         }
       }
     },
+    "history.segment.all": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "All" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tất cả" } }
+      }
+    },
+    "history.segment.pinned": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pinned" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã ghim" } }
+      }
+    },
+    "history.segment.archived": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Archived" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã lưu trữ" } }
+      }
+    },
+    "history.search": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Search conversations" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tìm cuộc trò chuyện" } }
+      }
+    },
+    "history.noMatch": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Nothing here." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có cuộc trò chuyện nào ở đây." } }
+      }
+    },
+    "history.pin": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pin" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ghim" } }
+      }
+    },
+    "history.unpin": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Unpin" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bỏ ghim" } }
+      }
+    },
+    "history.archive": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Archive" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lưu trữ" } }
+      }
+    },
+    "history.restore": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Restore" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Khôi phục" } }
+      }
+    },
     "history.title": {
       "localizations": {
         "en": {

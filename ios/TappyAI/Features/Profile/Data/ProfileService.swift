@@ -95,9 +95,28 @@ struct ProfileService {
 
     // MARK: - Conversations
 
-    func fetchConversations() async throws -> [ChatHistoryItem] {
-        let endpoint = Endpoint(path: "/api/conversations", requiresAuth: true)
+    /// The server's page size for the history list; a shorter page means there is no older one.
+    static let conversationPageSize = 40
+
+    /// `before` = the `updated_at` of the last row already held: returns the next, older page.
+    func fetchConversations(before: String? = nil) async throws -> [ChatHistoryItem] {
+        let query = before.map { [URLQueryItem(name: "before", value: $0)] } ?? []
+        let endpoint = Endpoint(path: "/api/conversations", query: query, requiresAuth: true)
         return try await api.send(endpoint, as: LossyList<ChatHistoryItem>.self).items
+    }
+
+    /// `PUT /api/conversations` with only the flag that changes (a pin must not touch the messages).
+    func setConversationFlags(id: String, pinned: Bool? = nil, archived: Bool? = nil) async throws {
+        var body: [String: Any] = ["id": id]
+        if let pinned { body["pinned"] = pinned }
+        if let archived { body["archived"] = archived }
+        let endpoint = Endpoint(
+            path: "/api/conversations",
+            method: .put,
+            body: try JSONSerialization.data(withJSONObject: body),
+            requiresAuth: true
+        )
+        _ = try await api.send(endpoint)
     }
 
     func deleteConversation(_ id: String) async throws {

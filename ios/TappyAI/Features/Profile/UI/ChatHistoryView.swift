@@ -7,6 +7,15 @@ struct ChatHistoryView: View {
     @State private var conversations: [ChatHistoryItem] = []
     @State private var loading = true
     @State private var deleteTarget: String?
+    @State private var segment: HistorySegment = .all
+    @State private var query = ""
+    /// The `updated_at` to ask the next, older page from; nil when there is nothing older.
+    @State private var nextCursor: String?
+    @State private var loadingMore = false
+
+    private var shown: [ChatHistoryItem] {
+        HistoryFilter.visible(conversations, segment: segment, query: query)
+    }
 
     private let categoryEmoji: [String: String] = [
         "food": "🍜", "travel": "✈️", "spa": "💆", "hotel": "🏨",
@@ -26,9 +35,28 @@ struct ChatHistoryView: View {
                 } else if conversations.isEmpty {
                     emptyState
                 } else {
-                    ForEach(conversations) { conv in
-                        conversationRow(conv)
+                    Picker("history.title", selection: $segment) {
+                        Text("history.segment.all").tag(HistorySegment.all)
+                        Text("history.segment.pinned").tag(HistorySegment.pinned)
+                        Text("history.segment.archived").tag(HistorySegment.archived)
                     }
+                    .pickerStyle(.segmented)
+                    TappyTextField(titleKey: "history.search", text: $query)
+
+                    if shown.isEmpty {
+                        Text("history.noMatch")
+                            .font(TappyFont.callout)
+                            .foregroundStyle(TappyColor.textSecondary)
+                            .padding(.top, Spacing.lg)
+                    }
+                    ForEach(shown) { conv in
+                        conversationRow(conv)
+                            .onAppear {
+                                // Older pages load as the end of the list comes into view.
+                                if conv.id == conversations.last?.id { Task { await loadMore() } }
+                            }
+                    }
+                    if loadingMore { ProgressView().frame(maxWidth: .infinity) }
                 }
             }
             .padding(.horizontal, Spacing.md)
@@ -107,15 +135,30 @@ struct ChatHistoryView: View {
             }
             .buttonStyle(.plain)
 
-            Button {
-                deleteTarget = conv.id
+            Menu {
+                Button {
+                    Task { await setFlags(conv, pinned: !conv.isPinned) }
+                } label: {
+                    Label(LocalizedStringKey(conv.isPinned ? "history.unpin" : "history.pin"),
+                          systemImage: conv.isPinned ? "pin.slash" : "pin")
+                }
+                Button {
+                    Task { await setFlags(conv, archived: !conv.isArchived) }
+                } label: {
+                    Label(LocalizedStringKey(conv.isArchived ? "history.restore" : "history.archive"),
+                          systemImage: conv.isArchived ? "tray.and.arrow.up" : "archivebox")
+                }
+                Button(role: .destructive) {
+                    deleteTarget = conv.id
+                } label: {
+                    Label("common.delete", systemImage: "trash")
+                }
             } label: {
-                Image(systemName: "trash")
+                Image(systemName: conv.isPinned ? "pin.fill" : "ellipsis")
                     .font(.system(size: 13))
                     .foregroundStyle(TappyColor.textSecondary)
                     .frame(width: 32, height: 32)
             }
-            .buttonStyle(.plain)
         }
         .padding(Spacing.md)
         .background(TappyColor.cardBackground)
@@ -130,9 +173,34 @@ struct ChatHistoryView: View {
 
     private func loadData() async {
         do {
-            conversations = try await service.fetchConversations()
+            let page = try await service.fetchConversations()
+            conversations = page
+            nextCursor = HistoryFilter.nextCursor(lastPage: page, all: page, pageSize: ProfileService.conversationPageSize)
         } catch {}
         loading = false
+    }
+
+    private func loadMore() async {
+        guard let cursor = nextCursor, !loadingMore else { return }
+        loadingMore = true
+        defer { loadingMore = false }
+        guard let page = try? await service.fetchConversations(before: cursor) else { return }
+        let known = Set(conversations.map(\.id))
+        conversations += page.filter { !known.contains($0.id) }
+        nextCursor = HistoryFilter.nextCursor(lastPage: page, all: conversations, pageSize: ProfileService.conversationPageSize)
+    }
+
+    /// Optimistic: the list changes at once and goes back if the server refuses.
+    private func setFlags(_ conv: ChatHistoryItem, pinned: Bool? = nil, archived: Bool? = nil) async {
+        guard let index = conversations.firstIndex(where: { $0.id == conv.id }) else { return }
+        let before = conversations[index]
+        if let pinned { conversations[index].isPinned = pinned }
+        if let archived { conversations[index].isArchived = archived }
+        do {
+            try await service.setConversationFlags(id: conv.id, pinned: pinned, archived: archived)
+        } catch {
+            if let i = conversations.firstIndex(where: { $0.id == conv.id }) { conversations[i] = before }
+        }
     }
 
     private func deleteConversation(_ id: String) async {

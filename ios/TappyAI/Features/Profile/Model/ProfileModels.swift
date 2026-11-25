@@ -70,11 +70,16 @@ struct ChatHistoryItem: Codable, Identifiable {
     var category: String?
     var updatedAt: String
     var messages: [AnyCodable]?
+    /// Pinned / archived (web chat workspace, migration 20261118). False from a server without it.
+    var isPinned: Bool = false
+    var isArchived: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case id, title, category
         case updatedAt = "updated_at"
         case messages
+        case isPinned = "is_pinned"
+        case isArchived = "is_archived"
     }
 
     var messageCount: Int {
@@ -255,6 +260,8 @@ extension ChatHistoryItem {
         category = c.lenient(String.self, forKey: .category)
         updatedAt = c.lenient(String.self, forKey: .updatedAt, default: "")
         messages = c.lenient([AnyCodable].self, forKey: .messages)
+        isPinned = c.lenient(Bool.self, forKey: .isPinned, default: false)
+        isArchived = c.lenient(Bool.self, forKey: .isArchived, default: false)
     }
 }
 
