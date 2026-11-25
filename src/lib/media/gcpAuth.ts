@@ -65,7 +65,28 @@ export function readDeploymentOidcToken(
 ): string | null {
   const fromRequest = req?.headers?.get(VERCEL_OIDC_HEADER)
   if (fromRequest) return fromRequest
+  // Code far from the route handler (the notification sender, called from a cron) has no `req` to pass. Vercel also exposes the
+  // current invocation's headers through its request context (the same slot `@vercel/functions` reads), so the live token is
+  // still reachable there. Without this, every Android push from a cron failed at the oidc stage (216 failures, 27/10–25/11/2026).
+  const fromContext = oidcFromVercelRequestContext()
+  if (fromContext) return fromContext
   return env.VERCEL_OIDC_TOKEN || null
+}
+
+/** The OIDC header of the current Vercel invocation, read from Vercel's request-context slot. Null anywhere else (local, tests). */
+export function oidcFromVercelRequestContext(
+  root: Record<symbol, unknown> = globalThis as unknown as Record<symbol, unknown>
+): string | null {
+  try {
+    const holder = root[Symbol.for('@vercel/request-context')] as
+      | { get?: () => { headers?: Record<string, string | string[] | undefined> } | undefined }
+      | undefined
+    const raw = holder?.get?.()?.headers?.[VERCEL_OIDC_HEADER]
+    const value = Array.isArray(raw) ? raw[0] : raw
+    return typeof value === 'string' && value ? value : null
+  } catch {
+    return null
+  }
 }
 
 /** Which sources hold an identity. Booleans only — never the token. */
