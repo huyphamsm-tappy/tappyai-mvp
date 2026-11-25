@@ -28618,6 +28618,41 @@
         }
       }
     },
+    "home.suggest.cat.food": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Food" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ẩm thực" } }
+      }
+    },
+    "home.suggest.cat.travel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Travel" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Du lịch" } }
+      }
+    },
+    "home.suggest.cat.shopping": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Shopping" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mua sắm" } }
+      }
+    },
+    "home.suggest.cat.entertainment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Entertainment" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Giải trí" } }
+      }
+    },
+    "home.suggest.cat.spa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Wellness" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thư giãn" } }
+      }
+    },
     "home.category.food": {
       "extractionState": "manual",
       "localizations": {

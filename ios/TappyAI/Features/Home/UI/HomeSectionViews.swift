@@ -438,29 +438,30 @@ struct HomeFlowLayout: Layout {
 
 struct HomeSuggestionsSection: View {
     /// One card: the prompt it sends (in the app language), its category and the art for that slot.
-    struct Suggestion: Identifiable { let id: Int; let text: String; let category: String; let emoji: String; var art = "" }
+    struct Suggestion: Identifiable { let id: Int; let text: String; let category: String; let emoji: String; var art = ""; var tone = "" }
 
-    /// Web `getDynamicPrompts(hour, day, …, 5)` → `suggestions.slice(0, 5)` + `assignCardArt`.
-    /// `dayOfWeek` is JS-style (0 = Sunday), which is what `DynamicPrompts` expects.
+    /// Web `getDynamicPrompts(hour, day, …, 5)` → `suggestions.slice(0, 5)` + `assignCardArt`,
+    /// with hour and weekday in Vietnam time (web `page.tsx:83`).
     static let cardCount = 5
 
-    static func make(now: Date = Date(), english: Bool, calendar: Calendar = .current) -> [Suggestion] {
-        let hour = calendar.component(.hour, from: now)
-        let dayOfWeek = calendar.component(.weekday, from: now) - 1
-        let prompts = Array(DynamicPrompts.get(hour: hour, dayOfWeek: dayOfWeek, count: cardCount).prefix(cardCount))
-        let art = HomeInspireArt.assign(prompts.map { $0.category })
+    static func make(now: Date = Date(), english: Bool) -> [Suggestion] {
+        let (hour, dayOfWeek) = HomeSuggestedPrompts.vietnamHourAndDay(now)
+        let prompts = Array(HomeSuggestedPrompts.get(hour: hour, dayOfWeek: dayOfWeek, count: cardCount).prefix(cardCount))
+        return suggestions(from: prompts, english: english)
+    }
+
+    static func suggestions(from prompts: [HomeSuggestedPrompt], english: Bool) -> [Suggestion] {
+        let art = HomeCardArt.assign(prompts.map { HomeCardArt.Card(category: $0.category, topic: $0.topic) })
         return prompts.enumerated().map { i, p in
-            Suggestion(id: i + 1, text: english ? p.textEn : p.text, category: p.category, emoji: emoji(p.category), art: art[i])
+            Suggestion(id: i + 1, text: english ? p.textEn : p.text, category: p.category, emoji: p.emoji, art: art[i], tone: p.tone)
         }
     }
 
-    static func emoji(_ category: String) -> String {
+    /// Web `CATEGORY_LABEL` (HomeV3.tsx:258): only the five verticals carry a label badge; any-topic cards have none.
+    static func labelKey(_ category: String) -> String? {
         switch category {
-        case "food": return "🍜"
-        case "shopping": return "🛍️"
-        case "travel": return "✈️"
-        case "spa": return "💆"
-        default: return "🎭"
+        case "food", "travel", "shopping", "entertainment", "spa": return "home.suggest.cat." + category
+        default: return nil
         }
     }
 
@@ -472,7 +473,7 @@ struct HomeSuggestionsSection: View {
             HomeSmallHeading(titleKey: "home.v3.forYouTitle", sparkle: true)
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 ForEach(suggestions) { s in
-                    Button { onPrompt(s.text) } label: { card(text: s.text, category: s.category, emoji: s.emoji, art: s.art) }
+                    Button { onPrompt(s.text) } label: { card(s) }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("home-suggestion-\(s.id)")
                 }
@@ -480,30 +481,37 @@ struct HomeSuggestionsSection: View {
         }
     }
 
-    static func categoryTitle(_ category: String) -> String {
-        let key = "home.category." + category
-        return NSLocalizedString(key, comment: "").uppercased()
-    }
-
-    private func card(text: String, category: String, emoji: String, art: String) -> some View {
+    private func card(_ s: Suggestion) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Color.clear.frame(height: 94)
-                .overlay { HomeInspireImage(name: art) }
+                .background {
+                    // Web: a mascot card sits on a deep-blue gradient (HomeV3.tsx:727).
+                    if HomeCardArt.isMascot(s.art) {
+                        LinearGradient(stops: [.init(color: Color(hex: 0x1B2A5E), location: 0),
+                                               .init(color: Color(hex: 0x2B2260), location: 0.55),
+                                               .init(color: Color(hex: 0x162447), location: 1)],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing)
+                    }
+                }
+                .overlay { HomeCardArtImage(art: s.art) }
                 .overlay(alignment: .bottomLeading) {
-                    Text(Self.categoryTitle(category))
-                        .font(.system(size: 9.5, weight: .bold)).kerning(0.6).foregroundStyle(.white)
-                        .padding(.horizontal, 8).padding(.vertical, 3)
-                        .background(Color(hex: 0x080B12, alpha: 0.66), in: RoundedRectangle(cornerRadius: 6))
-                        .padding(.leading, 10).padding(.bottom, 8)
+                    if let key = Self.labelKey(s.category) {
+                        Text(LocalizedStringKey(key)).textCase(.uppercase)
+                            .font(.system(size: 9.5, weight: .bold)).kerning(0.6).foregroundStyle(.white)
+                            .padding(.horizontal, 8).padding(.vertical, 3)
+                            .background(Color(hex: 0x080B12, alpha: 0.66), in: RoundedRectangle(cornerRadius: 6))
+                            .padding(.leading, 10).padding(.bottom, 8)
+                    }
                 }
                 .overlay(alignment: .topTrailing) {
-                    Text(emoji).font(.system(size: 15)).frame(width: 32, height: 32)
-                        .background(Self.tint(category), in: RoundedRectangle(cornerRadius: 12))
+                    Text(s.emoji).font(.system(size: 15)).frame(width: 32, height: 32)
+                        .background(Self.tint(s.tone.isEmpty ? s.category : s.tone), in: RoundedRectangle(cornerRadius: 12))
                         .padding(10)
                 }
                 .clipped()
-            Text(text).font(.system(size: 13, weight: .medium)).foregroundStyle(HomeV3.onSurface)
-                .lineLimit(2).multilineTextAlignment(.leading)
+            Text(s.text).font(.system(size: 13, weight: .medium)).foregroundStyle(HomeV3.onSurface)
+                .multilineTextAlignment(.leading) // web does not clamp (HomeV3.tsx:761)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(12)
                 .frame(maxWidth: .infinity, minHeight: 60, alignment: .topLeading)
         }
@@ -512,26 +520,54 @@ struct HomeSuggestionsSection: View {
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(HomeV3.outline, lineWidth: 1))
     }
 
-    /// Light badge tint per category (web DEFAULT_GRADIENT top stop).
-    static func tint(_ category: String) -> Color {
-        switch category {
-        case "food": return Color(hex: 0xFFEDD5)
-        case "shopping": return Color(hex: 0xFCE7F3)
-        case "entertainment": return Color(hex: 0xF3E8FF)
-        case "travel": return Color(hex: 0xDBEAFE)
-        case "spa": return Color(hex: 0xDCFCE7)
-        default: return Color(hex: 0xF3F4F6)
+    /// Badge gradient per tone (web `DEFAULT_GRADIENT` / `CAFE_GRADIENT`: `from-*-100 to-*-50`, bottom-right).
+    static func tint(_ tone: String) -> LinearGradient {
+        let stops: (from: UInt, to: UInt)
+        switch tone {
+        case "food": stops = (0xFFEDD5, 0xFFF7ED)
+        case "shopping": stops = (0xFCE7F3, 0xFDF2F8)
+        case "entertainment": stops = (0xF3E8FF, 0xFAF5FF)
+        case "travel": stops = (0xDBEAFE, 0xEFF6FF)
+        case "spa": stops = (0xDCFCE7, 0xF0FDF4)
+        case "cafe": stops = (0xFEF3C7, 0xFFFBEB)
+        default: stops = (0xEDE9FE, 0xF5F3FF) // general: violet
         }
+        return LinearGradient(colors: [Color(hex: stops.from), Color(hex: stops.to)], startPoint: .topLeading, endPoint: .bottomTrailing)
     }
 }
 
-/// One of the five web photographs (`Resources/HomeInspire/home_inspire_<name>.webp`).
-struct HomeInspireImage: View {
-    let name: String
+/// The picture for one card: a web art id (`/home/inspire/food-2.webp`, `/home/topics/work.webp`,
+/// `/tappy/thinking.png`) resolved to its bundled file. Photos are `Resources/HomeInspire/*.webp`
+/// (filled); mascot poses are the `Tappy*` image sets (fitted with 8pt padding, as on the web).
+struct HomeCardArtImage: View {
+    let art: String
+
+    /// Bundle file name (without extension) for a photo id, nil for anything else.
+    static func photoFile(_ art: String) -> String? {
+        guard art.hasSuffix(".webp") else { return nil }
+        let base = (art as NSString).lastPathComponent.replacingOccurrences(of: ".webp", with: "")
+        if art.hasPrefix("/home/inspire/") { return "home_inspire_" + base }
+        if art.hasPrefix("/home/topics/") { return "home_topic_" + base }
+        return nil
+    }
+
+    /// Image-set name for a mascot id.
+    static func mascotAsset(_ art: String) -> String? {
+        switch art {
+        case "/tappy/thinking.png": return "TappyThinking"
+        case "/tappy/speaking.png": return "TappySpeaking"
+        case "/tappy/recommendation.png": return "TappyRecommendation"
+        case "/tappy/aitools.png": return "TappyAITools"
+        case "/tappy/welcome.png": return "TappyWelcome"
+        default: return nil
+        }
+    }
 
     var body: some View {
-        if let image = UIImage(named: "home_inspire_\(name).webp")
-            ?? Bundle.main.path(forResource: "home_inspire_\(name)", ofType: "webp").flatMap(UIImage.init(contentsOfFile:)) {
+        if let asset = Self.mascotAsset(art) {
+            Image(asset).resizable().scaledToFit().padding(8).accessibilityHidden(true)
+        } else if let file = Self.photoFile(art),
+                  let image = Bundle.main.path(forResource: file, ofType: "webp").flatMap(UIImage.init(contentsOfFile:)) {
             Image(uiImage: image).resizable().scaledToFill().accessibilityHidden(true)
         } else {
             HomeV3.surfaceVariant
