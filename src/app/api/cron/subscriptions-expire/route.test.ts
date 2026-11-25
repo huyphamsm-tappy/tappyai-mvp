@@ -10,11 +10,16 @@ vi.mock('@/lib/security/cronAuth', () => ({
   isAuthorizedCronRequest: (req: Request) => isAuthorizedCronRequest(req),
 }))
 
+const pingBrevo = vi.fn()
+vi.mock('@/lib/payments/mail', () => ({ pingBrevo: () => pingBrevo() }))
+
 import { GET } from './route'
 
 beforeEach(() => {
   vi.stubEnv('SUBSCRIPTIONS_ENABLED', '1')
   rpc.mockReset()
+  pingBrevo.mockReset()
+  pingBrevo.mockResolvedValue('ok')
   isAuthorizedCronRequest.mockReset()
   vi.spyOn(console, 'error').mockImplementation(() => {})
 })
@@ -50,6 +55,25 @@ describe('GET /api/cron/subscriptions-expire — Expiry Cron Job', () => {
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ ok: true, expired: 5 })
     expect(rpc).toHaveBeenCalledWith('p8_subscriptions_expire')
+  })
+
+  it('pings Brevo to keep the key alive, and a failed ping changes neither the status nor the body', async () => {
+    isAuthorizedCronRequest.mockReturnValue(true)
+    rpc.mockResolvedValue({ data: 2, error: null })
+    pingBrevo.mockResolvedValue('failed')
+    const res = await GET(new Request('https://t.test/api/cron/subscriptions-expire'))
+    expect(pingBrevo).toHaveBeenCalledTimes(1)
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ ok: true, expired: 2 })
+  })
+
+  it('does not ping Brevo when unauthorized or flag off', async () => {
+    isAuthorizedCronRequest.mockReturnValue(false)
+    await GET(new Request('https://t.test/api/cron/subscriptions-expire'))
+    isAuthorizedCronRequest.mockReturnValue(true)
+    vi.stubEnv('SUBSCRIPTIONS_ENABLED', '')
+    await GET(new Request('https://t.test/api/cron/subscriptions-expire'))
+    expect(pingBrevo).not.toHaveBeenCalled()
   })
 
   it('returns 500 when RPC encounters an error', async () => {

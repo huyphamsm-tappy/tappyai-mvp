@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { constantTimeEqual, extractOrderCode, parseSepayTransaction, sepayAuthorized, sepayBankConfig, sepayQrUrl, sepayTransferType,
   checkSepaySignature, sepayAuthMode, sepaySignature, sepaySourceAllowed, SEPAY_WEBHOOK_IPS } from './sepay'
-import { paymentMailContent, sendPaymentMail } from './mail'
+import { paymentMailContent, pingBrevo, sendPaymentMail } from './mail'
 
 const env = (v: Record<string, string>) => v as unknown as NodeJS.ProcessEnv
 
@@ -74,6 +74,21 @@ describe('payment mail', () => {
     const ok = vi.fn().mockResolvedValue({ ok: true })
     expect(await sendPaymentMail(m, env({ BREVO_API_KEY: 'x', PAYMENTS_MAIL_FROM: 'no-reply@tappyai.com' }), ok as unknown as typeof fetch)).toBe('sent')
     expect(ok.mock.calls[0][1].headers['api-key']).toBe('x')
+  })
+
+  it('pingBrevo: read-only key check, skipped without a key, failed on non-2xx or error, never throws', async () => {
+    const f = vi.fn()
+    expect(await pingBrevo(env({}), f as unknown as typeof fetch)).toBe('skipped')
+    expect(f).not.toHaveBeenCalled()
+    const ok = vi.fn().mockResolvedValue({ ok: true })
+    expect(await pingBrevo(env({ BREVO_API_KEY: 'k' }), ok as unknown as typeof fetch)).toBe('ok')
+    expect(ok.mock.calls[0][0]).toBe('https://api.brevo.com/v3/account')
+    expect(ok.mock.calls[0][1].method).toBe('GET')
+    expect(ok.mock.calls[0][1].body).toBeUndefined()
+    const denied = vi.fn().mockResolvedValue({ ok: false, status: 401 })
+    expect(await pingBrevo(env({ BREVO_API_KEY: 'k' }), denied as unknown as typeof fetch)).toBe('failed')
+    const boom = vi.fn().mockRejectedValue(new Error('down'))
+    expect(await pingBrevo(env({ BREVO_API_KEY: 'k' }), boom as unknown as typeof fetch)).toBe('failed')
   })
 })
 
