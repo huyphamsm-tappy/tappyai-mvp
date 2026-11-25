@@ -21,6 +21,7 @@ struct TappyKnowsView: View {
         guard let m = memory else { return 0 }
         var n = 0
         if m.locationBase != nil { n += 1 }
+        if m.discoveryCity != nil { n += 1 }
         if m.companions != nil { n += 1 }
         if m.timing != nil { n += 1 }
         if m.personality != nil { n += 1 }
@@ -228,6 +229,13 @@ struct TappyKnowsView: View {
             if let loc = m.locationBase {
                 memoryCard(icon: "mappin", label: NSLocalizedString("memory.card.area", comment: ""), iconColor: .blue) {
                     editableRow(loc) { removeField("location_base") }
+                }
+            }
+
+            // Destination (web `memory.card.destination`): the city the person is going to, kept apart from where they live.
+            if let city = m.discoveryCity {
+                memoryCard(icon: "mappin.and.ellipse", label: NSLocalizedString("memory.card.destination", comment: ""), iconColor: .purple) {
+                    editableRow(city) { removeField("discovery_city") }
                 }
             }
 
@@ -545,6 +553,7 @@ struct TappyKnowsView: View {
         guard var m = memory else { return }
         switch field {
         case "location_base": m.locationBase = nil
+        case "discovery_city": m.discoveryCity = nil
         case "companions": m.companions = nil
         case "timing": m.timing = nil
         case "personality": m.personality = nil

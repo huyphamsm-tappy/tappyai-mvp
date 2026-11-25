@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 /// One group-dining room — the native counterpart of the web's `/group/[id]` and Android's
@@ -11,6 +12,7 @@ struct GroupDetailView: View {
     @State private var confirmLeave = false
     @State private var confirmDelete = false
     @State private var confirmResuggest = false
+    @State private var avatarItem: PhotosPickerItem?
     @Environment(\.openURL) private var openURL
 
     init(deps: AppDependencies, groupId: String) {
@@ -87,6 +89,27 @@ struct GroupDetailView: View {
     @ViewBuilder
     private var heading: some View {
         VStack(alignment: .leading, spacing: Spacing.xxs) {
+            // The group's own picture (web group page); the leader can change it.
+            if let url = vm.room?.avatarUrl.flatMap({ safeWebURL($0) }) {
+                AsyncImage(url: url) { image in image.resizable().scaledToFill() } placeholder: { TappyColor.surface }
+                    .frame(width: 72, height: 72)
+                    .clipShape(Circle())
+                    .accessibilityHidden(true)
+            }
+            if vm.isCreator {
+                PhotosPicker(selection: $avatarItem, matching: .images) {
+                    Text("group.avatar.change")
+                        .font(TappyFont.caption)
+                }
+                .disabled(vm.isUploadingAvatar)
+                .onChange(of: avatarItem) { item in
+                    guard let item else { return }
+                    Task {
+                        if let data = try? await item.loadTransferable(type: Data.self) { vm.setAvatar(imageData: data) }
+                        avatarItem = nil
+                    }
+                }
+            }
             Text(verbatim: vm.room?.name ?? "")
                 .font(TappyFont.title)
                 .foregroundStyle(TappyColor.textPrimary)

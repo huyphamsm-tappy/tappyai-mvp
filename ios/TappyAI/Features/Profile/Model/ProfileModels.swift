@@ -24,6 +24,8 @@ struct UserProfile: Codable {
 
 struct UserMemory: Codable {
     var locationBase: String?
+    /// The city the person is planning to visit (web `discovery_city`): where they will be, not where they live.
+    var discoveryCity: String?
     var companions: String?
     var timing: String?
     var personality: String?
@@ -34,6 +36,7 @@ struct UserMemory: Codable {
 
     enum CodingKeys: String, CodingKey {
         case locationBase = "location_base"
+        case discoveryCity = "discovery_city"
         case companions, timing, personality, preferences, budget, history
         case updatedAt = "updated_at"
     }
@@ -226,6 +229,7 @@ extension UserMemory {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         locationBase = c.lenient(String.self, forKey: .locationBase)
+        discoveryCity = c.lenient(String.self, forKey: .discoveryCity)
         companions = c.lenient(String.self, forKey: .companions)
         timing = c.lenient(String.self, forKey: .timing)
         personality = c.lenient(String.self, forKey: .personality)

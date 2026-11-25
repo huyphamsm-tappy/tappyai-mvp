@@ -178,6 +178,33 @@ final class GroupDetailViewModel: AppObservableObject {
         }
     }
 
+    // MARK: - Group picture (G8)
+
+    @AppPublished var isUploadingAvatar = false
+
+    /// Leader only. The photo is re-encoded as JPEG (as the profile picture is); too large or unreadable shows a sentence.
+    func setAvatar(imageData: Data) {
+        guard isCreator, !isUploadingAvatar else { return }
+        guard let image = UIImage(data: imageData), let jpeg = image.jpegData(compressionQuality: 0.85) else {
+            errorMessage = NSLocalizedString("group.avatar.error", comment: "")
+            return
+        }
+        isUploadingAvatar = true
+        errorMessage = nil
+        Task {
+            do {
+                try await service.uploadAvatar(groupId: groupId, jpeg: jpeg)
+                await load()
+            } catch {
+                errorMessage = UploadUnavailable.matches(error)
+                    ? NSLocalizedString("editprofile.error.uploadUnavailable", comment: "")
+                    : NSLocalizedString("group.avatar.error", comment: "")
+                log.error("group avatar failed: \(error)")
+            }
+            isUploadingAvatar = false
+        }
+    }
+
     // MARK: - Bill (G7)
 
     /// Two or more people share the meal, so a bill makes sense (what the web requires).

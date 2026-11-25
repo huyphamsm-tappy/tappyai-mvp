@@ -67,6 +67,26 @@ final class GroupBillTests: XCTestCase {
         XCTAssertNil(GroupMoney.parse("99999999999999999999"))
     }
 
+    func testGroupPictureIsOneMultipartPartNamedAvatar() async throws {
+        let api = MockAPIClient()
+        api.stubbed = Data(#"{"ok":true}"#.utf8)
+        try await GroupService(api: api).uploadAvatar(groupId: "g1", jpeg: Data([0xFF, 0xD8, 0xFF]))
+        let sent = try XCTUnwrap(api.sentEndpoints.first)
+        XCTAssertEqual(sent.path, "/api/group/g1/avatar")
+        XCTAssertEqual(sent.method, .post)
+        XCTAssertTrue(sent.contentType?.hasPrefix("multipart/form-data; boundary=") == true)
+        let text = String(decoding: try XCTUnwrap(sent.body), as: UTF8.self)
+        XCTAssertTrue(text.contains(#"name="avatar""#))
+        do { try await GroupService(api: api).uploadAvatar(groupId: "g1", jpeg: Data(count: GroupService.maxAvatarBytes + 1)); XCTFail("too large") } catch {}
+        XCTAssertEqual(api.sentEndpoints.count, 1, "an oversized photo is refused before any request")
+    }
+
+    func testTheDestinationCityIsReadFromMemory() throws {
+        let m = try ResponseDecoder.json.decode(UserMemory.self, from: Data(#"{"discovery_city":"Đà Nẵng","location_base":"Hà Nội"}"#.utf8))
+        XCTAssertEqual(m.discoveryCity, "Đà Nẵng")
+        XCTAssertEqual(m.locationBase, "Hà Nội", "where they live stays apart from where they are going")
+    }
+
     func testBillCallsMatchTheRoute() async throws {
         let api = MockAPIClient()
         api.stubbed = Data(#"{"ok":true}"#.utf8)

@@ -95,6 +95,36 @@ struct GroupService: Sendable {
         _ = try await api.send(endpoint, as: GroupOkResponse.self)
     }
 
+    /// The group's picture is capped like a profile picture (the server refuses more than 3 MB).
+    static let maxAvatarBytes = 3 * 1024 * 1024
+
+    /// The multipart body of `POST /api/group/{id}/avatar`: one JPEG part named `avatar`.
+    static func avatarBody(jpeg: Data, boundary: String) -> Data {
+        var body = Data()
+        body.append(Data("--\(boundary)\r\n".utf8))
+        body.append(Data("Content-Disposition: form-data; name=\"avatar\"; filename=\"group.jpg\"\r\n".utf8))
+        body.append(Data("Content-Type: image/jpeg\r\n\r\n".utf8))
+        body.append(jpeg)
+        body.append(Data("\r\n--\(boundary)--\r\n".utf8))
+        return body
+    }
+
+    /// `POST /api/group/{id}/avatar` — leader only (403 otherwise); the server strips the photo's
+    /// location data and checks it before storing. The caller reloads the room to see the new picture.
+    func uploadAvatar(groupId: String, jpeg: Data) async throws {
+        guard DeepLinkHandler.isSafeId(groupId) else { throw AppError.validation(message: "invalid group id") }
+        guard jpeg.count <= Self.maxAvatarBytes else { throw AppError.validation(message: "image too large") }
+        let boundary = UUID().uuidString
+        let endpoint = Endpoint(
+            path: "/api/group/\(groupId)/avatar",
+            method: .post,
+            body: Self.avatarBody(jpeg: jpeg, boundary: boundary),
+            requiresAuth: true,
+            contentType: "multipart/form-data; boundary=\(boundary)"
+        )
+        _ = try await api.send(endpoint, as: GroupOkResponse.self)
+    }
+
     /// What the payer enters. Whole dong; `forId` and `excluded` are person KEYS from the group read.
     struct BillDraft: Sendable, Equatable {
         var totalVnd: Int

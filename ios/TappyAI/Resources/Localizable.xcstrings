@@ -12828,6 +12828,24 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Không tìm thấy bài viết nào." } }
       }
     },
+    "memory.card.destination": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Destination of interest" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Điểm đến quan tâm" } }
+      }
+    },
+    "group.avatar.change": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Change group picture" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đổi ảnh nhóm" } }
+      }
+    },
+    "group.avatar.error": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Could not set the picture. Use a photo under 3 MB and try again." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa đặt được ảnh. Hãy chọn ảnh dưới 3 MB và thử lại." } }
+      }
+    },
     "likers.title": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Likes" } },
