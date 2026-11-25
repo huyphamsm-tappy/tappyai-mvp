@@ -64,6 +64,8 @@ export interface DecideInput {
   /** The kinds without which the clip cannot be approved. */
   required: EvidenceKind[]
   autoRejectEnabled: boolean
+  /** No human reviewer: every non-severe case that would wait for a person is rejected instead (see decideModeration). */
+  automated?: boolean
   policy?: ModerationPolicy
 }
 
@@ -72,7 +74,19 @@ export function isSevereCategory(category: string): boolean {
   return /minor|child|csam/i.test(category)
 }
 
+/**
+ * With NO human reviewer (owner 25/11/2026: "máy duyệt hết, chặt"), `review_required` would be a dead end: nobody opens it, so the clip would sit unpublished for ever. In AUTOMATED mode the
+ * machine closes every case itself: anything that is not a clean approval is REJECTED (the author can edit and upload again), whether the cause is a high score, a borderline score or evidence
+ * that could not be gathered. The one exception is the SEVERE case (anything about minors): it keeps its urgent hold and legal hold and is never approved or rejected by the machine (the database
+ * refuses it too), so the clip simply never publishes.
+ */
 export function decideModeration(input: DecideInput): ModerationDecision {
+  const d = decideManual(input)
+  if (!input.automated || d.decision !== 'review_required' || d.severe) return d
+  return { ...d, decision: 'reject', priority: 'normal', reasonCode: `auto:${d.reasonCode}` }
+}
+
+function decideManual(input: DecideInput): ModerationDecision {
   const policy = input.policy ?? DEFAULT_MODERATION_POLICY
 
   // Highest score per category across all evidence; a provider flag counts as at least the HIGH score.

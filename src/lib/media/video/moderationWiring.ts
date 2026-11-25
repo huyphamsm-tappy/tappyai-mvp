@@ -9,7 +9,8 @@ import type { MediaProvider } from '../types'
 import { hasClipConsent } from './clipConsent'
 import { supabaseOverlayStore } from './overlay/overlayStore'
 import { overlayTextOf } from './overlay/schema'
-import { videoModerationAutoRejectEnabled, videoSpeechTranscribeEnabled } from './flags'
+import { moderateImageVn, moderateTextVn, VIDEO_FILTER_MODEL } from '@/lib/safety/autoModeration/videoAdapter'
+import { videoModerationAutomatedEnabled, videoModerationAutoRejectEnabled, videoSpeechTranscribeEnabled } from './flags'
 import type { EvidenceReader, ModerationDeps, OverlayTextSource } from './moderationStep'
 import { getVideoSourceProvider } from './sourceStorage'
 import type { VideoAssetStore } from './uploadFlow'
@@ -36,6 +37,7 @@ export function buildModerationDeps(args: {
 }): ModerationDeps | null {
   try {
     const env = args.env ?? process.env
+    const automated = videoModerationAutomatedEnabled(env)
     const source = getVideoSourceProvider(env, args.req)
     if (!source) return null
     const reader: EvidenceReader = { read: (key) => readWholeObject(source.provider, key) }
@@ -44,8 +46,11 @@ export function buildModerationDeps(args: {
       reader,
       // BOTH must hold before any frame, word or text goes to a provider: the existing AI-data consent (iOS-era accounts that refused) AND the account's acceptance of the clip conditions.
       consent: { isAllowed: async (ownerId) => (await loadAllowedUserIds(args.admin, [ownerId])).has(ownerId) && (await hasClipConsent(args.admin, ownerId)) },
-      moderateImage: (bytes, mime) => moderateImageWithOpenAI(bytes, mime),
-      moderateText: (texts) => moderateTextWithOpenAI(texts),
+      // AUTOMATED (default): the Vietnam-law filter judges frames and text, and every case that would wait for a person is closed by the machine. 'false' goes back to the OpenAI endpoint + human review.
+      moderateImage: automated ? (bytes, mime) => moderateImageVn(bytes, mime) : (bytes, mime) => moderateImageWithOpenAI(bytes, mime),
+      moderateText: automated ? (texts) => moderateTextVn(texts) : (texts) => moderateTextWithOpenAI(texts),
+      automated,
+      ...(automated ? { attribution: { provider: 'tappy', model: VIDEO_FILTER_MODEL } } : {}),
       transcribe: (audio, info) => transcribeSpeechWithOpenAI(audio, info),
       // The user's own text layers are moderated too: read from the saved overlay document (nothing saved = no text).
       overlay: args.overlay ?? { textOf: async (assetId) => { const stored = await supabaseOverlayStore(args.admin).get(assetId); return stored ? overlayTextOf(stored.doc) : [] } },

@@ -52,6 +52,10 @@ export interface ModerationDeps {
   speechEnabled: boolean
   /** VIDEO_MODERATION_AUTO_REJECT_ENABLED (default off). */
   autoRejectEnabled: boolean
+  /** VIDEO_MODERATION_AUTOMATED (default on): no human reviewer; every non-severe case that would wait for a person is rejected. */
+  automated?: boolean
+  /** What is written as the provider and model of the decision (the audit record). Default: the OpenAI moderation adapter. */
+  attribution?: { provider: string; model: string }
   policy?: ModerationPolicy
   now?: () => number
 }
@@ -143,16 +147,16 @@ export async function moderateVideoAsset(assetId: string, deps: ModerationDeps):
   // 5. Decide (pure) and record everything in one call.
   const required: EvidenceKind[] = hasAudio ? ['visual', 'speech', 'overlay'] : ['visual', 'overlay']
   const policy = deps.policy ?? DEFAULT_MODERATION_POLICY
-  const d = decideModeration({ evidence: pieces.map((p) => p.item), required, autoRejectEnabled: deps.autoRejectEnabled, policy })
-  const reasonCode = transient && !d.severe && d.decision === 'review_required' ? `provider_unavailable:${d.reasonCode}` : d.reasonCode
+  const d = decideModeration({ evidence: pieces.map((p) => p.item), required, autoRejectEnabled: deps.autoRejectEnabled, automated: deps.automated === true, policy })
+  const reasonCode = transient && !d.severe && (d.decision === 'review_required' || (deps.automated === true && d.decision === 'reject')) ? `provider_unavailable:${d.reasonCode}` : d.reasonCode
   const recorded = await deps.store.recordAutoModeration(asset.id, {
     decision: d.decision,
     category: d.category,
     confidence: Math.round(d.confidence * 100000) / 100000,
     reasonCode: reasonCode.slice(0, 120),
     priority: d.priority,
-    provider: PROVIDER,
-    model: kept.transcript !== null ? `${OPENAI_MODERATION_MODEL}+${OPENAI_TRANSCRIBE_MODEL}` : OPENAI_MODERATION_MODEL,
+    provider: deps.attribution?.provider ?? PROVIDER,
+    model: (deps.attribution?.model ?? OPENAI_MODERATION_MODEL) + (kept.transcript !== null ? `+${OPENAI_TRANSCRIBE_MODEL}` : ''),
     policyVersion: policy.version,
     evidence: refs,
     transcript: kept.transcript === null ? null : kept.transcript.slice(0, 20_000),
