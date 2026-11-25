@@ -116,8 +116,15 @@ describe('consumption is visible and refundable', () => {
 })
 
 describe('entitlement → quota mapping (the one rule)', () => {
-  it.each([...PAID_PLAN_IDS])(`an active %s plan is a paid, non-exempt ${PAID_DAILY_CEILING}/day account`, (plan) => {
+  it.each([...PAID_PLAN_IDS].filter(p => p !== 'promax1m' && p !== 'promax3m'))(`an active %s plan is a paid, non-exempt ${PAID_DAILY_CEILING}/day account`, (plan) => {
     expect(accountQuotaFor(row(plan))).toEqual({ exempt: false, plan })
+  })
+  // Owner 25/11/2026: the Tappy (Promax) plan has no question-count ceiling.
+  it.each(['promax1m', 'promax3m'] as const)('an active %s (Tappy) plan is exempt from the question count', (plan) => {
+    expect(accountQuotaFor(row(plan))).toEqual({ exempt: true, plan })
+  })
+  it('an expired Tappy plan is back to the free allowance (not exempt)', () => {
+    expect(accountQuotaFor(row('promax1m', 'active', past()))).toEqual({ exempt: false, plan: 'free' })
   })
   it('an expired, cancelled or missing plan is the free allowance', () => {
     expect(accountQuotaFor(row('momo', 'active', past()))).toEqual({ exempt: false, plan: 'free' })

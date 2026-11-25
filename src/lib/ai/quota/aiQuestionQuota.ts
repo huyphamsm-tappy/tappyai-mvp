@@ -3,6 +3,7 @@ import { ANON_LIFETIME_LIMIT, vnToday } from '@/lib/config/product'
 import { aiQuotaFor, isGrandfatheredPro, type PlanId } from '@/lib/plans/planConfig'
 import { getEntitlement, type Entitlement } from '@/lib/plans/entitlement'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
+import { tierOf } from '@/lib/plans/tiers'
 import {
   distributedCountInWindow, distributedRateLimit, distributedRateLimitRelease, isDistributedStoreConfigured,
 } from '@/lib/security/distributedRateLimit'
@@ -18,8 +19,9 @@ import {
 // ============================================================================
 //   ANONYMOUS   ANON_LIFETIME_LIMIT (5) questions for the LIFETIME of the identity. One trial,
 //               once. Not per day, not per session, not again tomorrow.
-//   REGISTERED  FREE_DAILY_LIMIT (10) questions per VN calendar day. Resets at 00:00 VN.
-//   PAID PLAN   (Pip / Momo / Coco / Milo / Sunny, SUBSCRIPTIONS_ENABLED) 30 questions per VN day — PLAN_CONFIG is the one table.
+//   REGISTERED  no question limit shown to people (owner 01/11/2026); FREE_DAILY_LIMIT (300) per VN day is a hidden anti-abuse ceiling. Resets at 00:00 VN.
+//   PAID PLAN   (Pip / MoMo / Coco / Tappy, SUBSCRIPTIONS_ENABLED) no limit shown; hidden ceiling PAID_DAILY_CEILING (1000) per VN day — PLAN_CONFIG is the one table.
+//   (The 10 / 30 per day of the 15/09 contract were replaced on 01/11/2026.)
 //   LEGACY PRO  an active Stripe/Apple `pro` period stays exempt until it ends (isGrandfatheredPro); with SUBSCRIPTIONS_ENABLED OFF every
 //               active paid subscription is exempt exactly as in the release.
 // (P7 closeout 02/10: this is THE quota — plan-aware here; there is no second "v2" module.)
@@ -301,7 +303,7 @@ export async function consumeDeepResearch(userId: string, planLimit: number): Pr
  *   not paid                      → metered as Free
  *   SUBSCRIPTIONS_ENABLED off     → any active paid subscription is exempt (the release behaviour, unchanged)
  *   a grandfathered legacy `pro`  → exempt until its paid period ends
- *   a paid plan (Pip…Sunny)       → metered at that plan's limit (30/day)
+ *   a paid plan (Pip…Sunny)       → metered at that plan's hidden ceiling (PAID_DAILY_CEILING, 1000/day)
  *
  * Decided by the server from the `subscriptions` row; the client names nothing. A read failure is "not paid"
  * (getEntitlement): Free is the safe answer when the entitlement cannot be confirmed.
@@ -314,6 +316,9 @@ export function accountQuotaFor(
   if (!ent.paid) return { exempt: false, plan: 'free' }
   if (!subscriptionsEnabled(env)) return { exempt: true, plan: ent.plan }
   if (isGrandfatheredPro(ent, now, env)) return { exempt: true, plan: ent.plan }
+  // Owner 25/11/2026: the Tappy (Promax) plan has no question-count ceiling. What still bounds it: the per-minute burst cap,
+  // the Deep Research monthly allowance and the per-account daily money gate (costGate) - none of them counts questions.
+  if (tierOf(ent.plan) === 'promax') return { exempt: true, plan: ent.plan }
   return { exempt: false, plan: ent.plan }
 }
 

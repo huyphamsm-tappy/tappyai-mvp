@@ -1297,7 +1297,8 @@ export async function POST(req: Request) {
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
       // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 1000 model turns since owner 01/11/2026; the value lives in lib/security/chatCaps.ts) bounds the
       // worst day of one account; canned turns ($0) are not counted.
-      if (isPro && !quotaExempt) {
+      // Tappy (Promax) has no question-count ceiling (owner 25/11/2026); the money gate below still bounds its day.
+      if (isPro && !quotaExempt && tierOf(quotaPlan) !== 'promax') {
         const proDay = await publicDailyRateLimit(`chat:pro:${user.id}`, PRO_DAILY_CHAT_CAP)
         if (!proDay.ok) {
           console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_pro_daily', scope: proDay.scope }))
