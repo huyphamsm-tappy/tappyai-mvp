@@ -48,7 +48,8 @@ extension KeyedDecodingContainer {
     /// aggregates do all three). Nil when absent or not a number.
     func lenientInt(forKey key: Key) -> Int? {
         if let i = lenient(Int.self, forKey: key) { return i }
-        if let d = lenient(Double.self, forKey: key), d.isFinite { return Int(d) }
+        // `Int(Double)` traps outside Int's range: a value like 1e30 from a server must read as "no number", not end the app.
+        if let d = lenient(Double.self, forKey: key), d.isFinite, abs(d) < 9e15 { return Int(d) }
         if let s = lenient(String.self, forKey: key) { return Int(s.trimmingCharacters(in: .whitespaces)) }
         return nil
     }
