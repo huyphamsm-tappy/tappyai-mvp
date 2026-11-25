@@ -7,8 +7,11 @@
 // Changing a number here is the whole change. The one exception is Free, whose daily limit is
 // FREE_DAILY_LIMIT in lib/config/product.ts (shared with the anon/guest copy).
 //
-// P7 closeout (owner 02/10): Free = FREE_DAILY_LIMIT (10/day, Phase 7 canonical catalog 04/10), guest 5 for the lifetime, every paid plan 30/day.
-// A legacy `pro` row (Stripe/Apple) stays unmetered until its paid period ends (isGrandfatheredPro), then it is a 30/day plan like the others.
+// CURRENT (owner 01/11 and 20/11/2026; see product.ts): an account has NO question limit and the clients show "Không giới hạn câu hỏi AI".
+// The numbers here are hidden anti-abuse ceilings per VN day: Free = FREE_DAILY_LIMIT (300), every paid plan = PAID_DAILY_CEILING (1000).
+// The guest (not signed in) has ANON_LIFETIME_LIMIT = 5 questions for the lifetime of the identity, then must create an account.
+// (Older wording "Free 10/day, paid 30/day" was the 02/10 catalog and no longer applies.)
+// A legacy `pro` row (Stripe/Apple) stays unmetered until its paid period ends (isGrandfatheredPro), then it is a paid plan like the others (hidden ceiling).
 
 import { FREE_DAILY_LIMIT, PAID_DAILY_CEILING, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { SUBSCRIPTION_PRICES } from './subscriptionPrices'
@@ -84,7 +87,7 @@ export const SALE_PLAN_IDS: readonly PaidPlanId[] = ['pip', 'momo', 'coco', 'pro
 export const SUBSCRIPTION_PLAN_IDS: readonly SubscriptionPlanId[] = [...PAID_PLAN_IDS, 'pro']
 
 /**
- * Owner decision (Sub 2, 2026-09-25): legacy `pro` becomes 30/day under the v2
+ * Owner decision (Sub 2, 2026-09-25; the number is now the hidden ceiling, 1000/day): legacy `pro` becomes a metered plan under the v2
  * quota, EXCEPT a subscriber who is actually paying keeps the release's
  * unlimited allowance until their current paid period ends (`current_period_end`
  * — the entitlement itself expires then). `pro` is written only by the Stripe
