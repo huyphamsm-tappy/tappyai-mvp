@@ -7,6 +7,7 @@ import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { refuseUnsafeImage, refuseUnsafeText } from '@/lib/safety/autoModeration/http'
 import { getAgeEligibility, setDateOfBirth, parseDateOfBirthInput } from '@/lib/account/ageEligibility'
 import {
   getDemographics,
@@ -154,6 +155,12 @@ export async function PATCH(req: NextRequest) {
     // object this server wrote — a client-supplied URL would let anyone hang any image
     // on their public profile.
     const clearCover = body.cover_url === null
+
+    // Automatic moderation (Vietnam-law rules): the public name and bio are checked BEFORE anything is saved.
+    if (full_name !== undefined || bio !== undefined) {
+      const moderationRefusal = await refuseUnsafeText(req, user.id, 'profile', [full_name, bio])
+      if (moderationRefusal) return moderationRefusal
+    }
 
     // ── Date of birth ───────────────────────────────────────────────────────
     // Handled FIRST and returned on separately, because it is the only field
@@ -330,6 +337,10 @@ async function uploadCover(
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
 
+  // Automatic moderation (Vietnam-law rules): the picture is looked at BEFORE it is stored; one that cannot be judged is not stored.
+  const imageRefusal = await refuseUnsafeImage(req, user.id, 'profile', clean, imageMime(kind))
+  if (imageRefusal) return imageRefusal
+
   let blob: { url: string }
   try {
     blob = await putMedia(
@@ -408,6 +419,10 @@ export async function POST(req: NextRequest) {
     console.error('[profile] avatar] metadata strip failed, refusing upload:', e instanceof Error ? e.message : e)
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules): the picture is looked at BEFORE it is stored; one that cannot be judged is not stored.
+  const imageRefusal = await refuseUnsafeImage(req, user.id, 'profile', clean, imageMime(kind))
+  if (imageRefusal) return imageRefusal
 
   let blob: { url: string }
   try {

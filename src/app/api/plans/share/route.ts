@@ -7,6 +7,10 @@ import {
   canonicalPlanShareJson, newPlanShareId, planSharePath, planShareUrl, toPlanShareSnapshot,
 } from '@/lib/plans/share/planShare'
 import { planShareFingerprint } from '@/lib/plans/share/planShareServer'
+import { refuseUnsafeText } from '@/lib/safety/autoModeration/http'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { allStrings } from '@/lib/safety/autoModeration/strings'
 import type { TappyPlan } from '@/components/TripPlanCard'
 
 // POST /api/plans/share — publish one plan and get its stable link.
@@ -36,6 +40,10 @@ export async function POST(req: Request) {
   const refusal = refuseAnonymousSocialWrite(req, user)
   if (refusal) return refusal
 
+  // Every share now costs one small model call (the automatic moderation of what becomes public), so a signed-in account is capped: 20 per hour (shared store when configured).
+  const rl = await publicRateLimit(`plan-share:${user.id}`, 20, 3_600_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'plan_share')
+
   let body: { plan?: TappyPlan } | null = null
   try {
     const raw = await req.text()
@@ -49,6 +57,10 @@ export async function POST(req: Request) {
 
   const canonical = canonicalPlanShareJson(snapshot)
   const fingerprint = planShareFingerprint(canonical)
+
+  // Automatic moderation (Vietnam-law rules): a shared plan is public at a stable link, so every text it carries is checked before it is stored.
+  const moderationRefusal = await refuseUnsafeText(req, user.id, 'plan', [allStrings(JSON.parse(canonical)).join('\n').slice(0, 4000)])
+  if (moderationRefusal) return moderationRefusal
 
   // Already published by this owner? The unique key says so; reuse its id.
   const existing = await supabase

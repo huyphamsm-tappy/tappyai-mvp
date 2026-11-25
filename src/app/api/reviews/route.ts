@@ -20,6 +20,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { exploreVideoPipelineEnabled } from '@/lib/media/video/flags'
 import { claimVideoForPost, inspectVideoForPost, parseVideoAssetId, videoPostDepsFromEnv, type VideoPostFailure } from '@/lib/media/video/publishPost'
 import { notifyFollowersOfPost } from '@/lib/notifications/friendPost'
+import { refuseUnsafeText } from '@/lib/safety/autoModeration/http'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -139,6 +140,10 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: 'empty_post', message: serverMessage('review.contentRequired', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules), BEFORE any claim or write below: the caption, the hashtags and the place text must pass, or nothing is stored.
+  const moderationRefusal = await refuseUnsafeText(req, user.id, 'review', [body, placeName, placeAddress, ...hashtags])
+  if (moderationRefusal) return moderationRefusal
 
   // Confirm the referenced track still exists (no DB-level FK to Music by
   // design — validated here via the Music Module's own public API). Sound model

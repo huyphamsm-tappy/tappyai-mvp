@@ -12,6 +12,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { MAX_PHOTO_SIZE_MB } from '@/lib/config/product'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
+import { refuseUnsafeImage } from '@/lib/safety/autoModeration/http'
 
 // SQL required in Supabase:
 // ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS photos text[] DEFAULT '{}';
@@ -75,6 +76,10 @@ export async function POST(req: NextRequest) {
     console.error('[reviews/upload] metadata strip failed, refusing upload:', e instanceof Error ? e.message : e)
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules): the picture is looked at BEFORE it is stored; one that cannot be judged is not stored.
+  const imageRefusal = await refuseUnsafeImage(req, user.id, 'review', clean, imageMime(kind))
+  if (imageRefusal) return imageRefusal
 
   try {
     // Owner decision 2026-09-26: the same 24-char random suffix every other upload path uses. A bare

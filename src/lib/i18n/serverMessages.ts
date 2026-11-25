@@ -333,6 +333,10 @@ const MESSAGES = {
   'comment.postFailed': { vi: 'Không thể gửi bình luận', en: "Couldn't post your comment" },
   'comment.length': { vi: 'Bình luận phải từ 1–300 ký tự', en: 'A comment must be 1–300 characters' },
   'comment.tooFast': { vi: 'Bạn bình luận quá nhanh, thử lại sau giây lát.', en: "You're commenting too fast — please try again in a moment." },
+  // Automatic moderation (src/lib/safety/autoModeration). The refusal never names the rule or the word that matched: that would teach how to get around it.
+  'moderation.blocked': { vi: 'Nội dung này có thể vi phạm quy định pháp luật Việt Nam và Nguyên tắc cộng đồng của Tappy nên chưa được đăng. Bạn hãy chỉnh sửa rồi thử lại.', en: "This content may break Vietnamese law and Tappy's Community Guidelines, so it can't be posted. Please edit it and try again." },
+  'moderation.unavailable': { vi: 'Hệ thống kiểm duyệt đang bận nên chưa đăng được nội dung này. Bạn thử lại sau ít phút nhé.', en: "The safety check is busy, so this can't be posted right now. Please try again in a few minutes." },
+  'moderation.locked': { vi: 'Bạn đã bị từ chối nhiều lần trong hôm nay nên tạm thời chưa đăng được nội dung mới. Hãy thử lại vào ngày mai.', en: "Several of your posts were declined today, so you can't post new content for now. Please try again tomorrow." },
   'reaction.invalid': { vi: 'Reaction không hợp lệ', en: 'That reaction is not valid' },
   'reaction.failed': { vi: 'Không thể react', en: "Couldn't react" },
   'reaction.removeFailed': { vi: 'Không thể xóa reaction', en: "Couldn't remove the reaction" },

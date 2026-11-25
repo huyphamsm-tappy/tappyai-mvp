@@ -8,6 +8,7 @@ import { clipField } from '@/lib/group/fields'
 import { MAX_MEMBERS, MAX_PENDING } from '@/lib/group/limits'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { refuseUnsafeText } from '@/lib/safety/autoModeration/http'
 import { emitNotification } from '@/lib/notifications/emit'
 import { resolveUserLang } from '@/lib/priceWatch/messages'
 import { actorShortName, groupRequestNotice } from '@/lib/i18n/socialNotices'
@@ -41,6 +42,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   } catch {
     return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules): the name and the free-text fields are shown to the group, so they are checked before they are stored.
+  const moderationRefusal = await refuseUnsafeText(req, user.id, 'group', [name, food_preferences, dietary_restrictions, area])
+  if (moderationRefusal) return moderationRefusal
 
   // The checks below read through the service role: under the read boundary a caller sees only the groups they already belong to, and someone asking to join, by definition, does not.
   const admin = createAdminClient()

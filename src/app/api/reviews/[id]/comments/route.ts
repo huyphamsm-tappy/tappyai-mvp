@@ -11,6 +11,7 @@ import { resolveUserLang } from '@/lib/priceWatch/messages'
 import { actorShortName, commentNotice, replyNotice } from '@/lib/i18n/socialNotices'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { refuseUnsafeText } from '@/lib/safety/autoModeration/http'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
@@ -139,6 +140,10 @@ export async function POST(
   } catch {
     return NextResponse.json({ error: 'invalid_length', message: serverMessage('comment.length', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules): the comment is checked BEFORE it is stored.
+  const moderationRefusal = await refuseUnsafeText(req, user.id, 'comment', [body])
+  if (moderationRefusal) return moderationRefusal
 
   const { data: insertedComment, error } = await supabase
     .from('review_comments')

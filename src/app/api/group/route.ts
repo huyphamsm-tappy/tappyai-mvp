@@ -8,6 +8,7 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { isServableMediaUrl } from '@/lib/media/servableMedia'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { refuseUnsafeText } from '@/lib/safety/autoModeration/http'
 import { clipField } from '@/lib/group/fields'
 import { optionIdsOf, voteSummary } from '@/lib/group/voteSummary'
 import { readBillRow, toBillView, type BillView } from '@/lib/group/billView'
@@ -32,6 +33,10 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: 'invalid_name', message: serverMessage('group.invalidName', requestLocale(req)) }, { status: 400 })
   }
+
+  // Automatic moderation (Vietnam-law rules): the group name is visible to others, so it is checked before anything is stored.
+  const moderationRefusal = await refuseUnsafeText(req, user.id, 'group', [name])
+  if (moderationRefusal) return moderationRefusal
 
   const since = new Date(Date.now() - 60_000).toISOString()
   const { data: recent } = await supabase.from('groups').select('id, name').eq('creator_id', user.id).eq('name', name).gt('created_at', since).limit(1)
