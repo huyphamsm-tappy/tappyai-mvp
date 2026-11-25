@@ -87,6 +87,8 @@ vi.mock('@/lib/admin/permissions', () => ({
 vi.mock('@/lib/admin/permissions/decisionAudit', () => ({ auditActorRole: () => 'admin' }))
 vi.mock('@/lib/admin/audit', () => ({ writeAuditLog: (e: Record<string, unknown>) => { h.audits.push(e) } }))
 vi.mock('@/lib/security/distributedRateLimit', async (orig) => ({ ...(await orig<typeof import('@/lib/security/distributedRateLimit')>()), distributedRateLimit: async () => ({ ok: true, retryAfter: 0 }) }))
+// The order route's own cap (10 per 10 minutes, publicRateLimit since 21/11/2026) is tested in its limiter suite; these tests create many orders for one account and check the business rules.
+vi.mock('@/lib/security/publicRateLimit', async (orig) => ({ ...(await orig<typeof import('@/lib/security/publicRateLimit')>()), publicRateLimit: async () => ({ ok: true, retryAfter: 0 }) }))
 vi.mock('@/lib/admin/users/identity', () => ({ guardMutationTarget: async () => null }))
 vi.mock('@/lib/admin/rbac', async (orig) => ({ ...(await orig<typeof import('@/lib/admin/rbac')>()), isSameOrigin: () => true }))
 
