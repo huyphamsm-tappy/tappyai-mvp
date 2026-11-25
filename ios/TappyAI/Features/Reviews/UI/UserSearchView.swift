@@ -180,6 +180,8 @@ struct UserSearchView: View {
                                     .foregroundStyle(TappyColor.textSecondary)
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }

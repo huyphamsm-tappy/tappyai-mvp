@@ -54,6 +54,7 @@ struct AccountMenuView: View {
                         }
                         .padding(.horizontal, Spacing.md)
                         .padding(.vertical, Spacing.sm)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("account-menu-\(item.id)")

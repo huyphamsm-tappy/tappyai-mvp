@@ -195,6 +195,7 @@ struct BookingsView: View {
                         .foregroundStyle(.orange)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, Spacing.sm)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }

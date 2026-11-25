@@ -556,6 +556,7 @@ private struct MonthCardView: View {
                 }
                 .padding(.horizontal, Spacing.lg)
                 .padding(.vertical, Spacing.sm)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
@@ -624,6 +625,7 @@ private struct LifeStageCardView: View {
                 }
                 .padding(.horizontal, Spacing.lg)
                 .padding(.vertical, Spacing.sm)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 

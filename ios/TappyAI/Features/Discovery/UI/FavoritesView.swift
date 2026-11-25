@@ -308,6 +308,7 @@ struct FavoritesView: View {
                         Spacer(minLength: 0)
                     }
                     .padding(12)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 Button { Task { await deleteFavorite(f.placeId) } } label: {
@@ -354,6 +355,7 @@ struct FavoritesView: View {
                     Spacer(minLength: 0)
                 }
                 .padding(12)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }

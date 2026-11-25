@@ -130,6 +130,7 @@ struct AccountView: View {
                 }
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, Spacing.sm)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .background(TappyColor.cardBackground)

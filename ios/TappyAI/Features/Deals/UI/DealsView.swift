@@ -105,6 +105,7 @@ struct DealsView: View {
                 .foregroundStyle(TappyColor.primary)
             }
             .padding(Spacing.md)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .background(TappyColor.cardBackground)
@@ -230,6 +231,7 @@ struct DealsView: View {
                     .foregroundStyle(TappyColor.textSecondary)
             }
             .padding(Spacing.md)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .background(TappyColor.cardBackground)

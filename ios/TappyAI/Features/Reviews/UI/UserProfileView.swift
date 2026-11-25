@@ -238,6 +238,7 @@ struct UserProfileView: View {
                         Rectangle().fill(tab == t ? TappyColor.primary : Color.clear).frame(height: 2)
                     }
                     .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityAddTraits(tab == t ? .isSelected : [])

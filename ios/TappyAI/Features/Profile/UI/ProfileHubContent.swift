@@ -276,6 +276,7 @@ struct ProfileHubContentPanel: View {
                                 Spacer()
                             }
                             .padding(.vertical, 10)
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                     }
@@ -461,6 +462,7 @@ struct ProfileFollowingCard: View {
                                 Text(u.displayName).font(.system(size: 14, weight: .medium)).foregroundStyle(TappyColor.textPrimary)
                                 Spacer()
                             }
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                     }

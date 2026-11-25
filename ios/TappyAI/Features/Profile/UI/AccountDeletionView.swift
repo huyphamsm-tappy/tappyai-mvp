@@ -103,6 +103,7 @@ struct AccountDeletionView: View {
                     Text("account.delete.cancel")
                         .font(TappyFont.callout)
                         .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .disabled(deleting)

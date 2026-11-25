@@ -105,6 +105,7 @@ struct NotificationsInboxView: View {
             .padding(.horizontal, Spacing.md)
             .padding(.vertical, Spacing.sm)
             .background(item.isUnread ? TappyColor.primary.opacity(0.04) : Color.clear)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }

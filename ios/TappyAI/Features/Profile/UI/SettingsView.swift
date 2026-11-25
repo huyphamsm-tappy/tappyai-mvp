@@ -289,6 +289,7 @@ struct ProfileSettingsView: View {
                 }
                 .foregroundStyle(Color(hex: 0xF43F5E))
                 .frame(maxWidth: .infinity).padding(.vertical, 16)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("settings-signout")
@@ -311,6 +312,7 @@ struct ProfileSettingsView: View {
             .padding(16)
             .background(HomeV3.surface, in: RoundedRectangle(cornerRadius: 20))
             .overlay(RoundedRectangle(cornerRadius: 20).stroke(HomeV3.purple.opacity(0.5), lineWidth: 1))
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("settings-signin")
@@ -377,6 +379,7 @@ struct ProfileSettingsView: View {
                     .foregroundStyle(HomeV3.onSurfaceVariant.opacity(0.6))
             }
             .padding(.horizontal, 14).padding(.vertical, 12)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("settings-" + id)

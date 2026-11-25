@@ -35,6 +35,7 @@ struct ReviewLikersSheet: View {
                                 .foregroundStyle(TappyColor.textPrimary)
                             Spacer()
                         }
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .onAppear { if person.id == likers.last?.id { Task { await loadMore() } } }
