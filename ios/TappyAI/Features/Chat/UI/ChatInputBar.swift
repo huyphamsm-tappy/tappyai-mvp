@@ -60,32 +60,9 @@ struct ChatInputBar: View {
                 .foregroundStyle(TappyColor.separator)
 
             VStack(spacing: Spacing.xs) {
-                // Action chips row
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: Spacing.xs) {
-                        actionChip(
-                            label: NSLocalizedString("chat.chip.nearby", comment: ""),
-                            color: TappyColor.primary,
-                            action: onNearby
-                        )
-                        actionChip(
-                            label: NSLocalizedString("chat.chip.tonight", comment: ""),
-                            color: TappyColor.secondary,
-                            action: onTonight
-                        )
-                        actionChip(
-                            label: NSLocalizedString("chat.chip.planTrip", comment: ""),
-                            color: Color.blue,
-                            action: onTripPrefill
-                        )
-                        actionChip(
-                            label: NSLocalizedString("chat.chip.priceWatch", comment: ""),
-                            color: Color.green,
-                            action: onPriceWatchPrefill
-                        )
-                    }
-                    .padding(.horizontal, Spacing.md)
-                }
+                // The row of action chips (Gần bạn / Tối nay / Lên kế hoạch / Theo dõi giá) is gone: the web hides it
+                // (ChatInterface.tsx `ACTION_CHIPS_VISIBLE`, owner 19/11) and the owner asked for no suggested questions
+                // and a bigger chat area (UAT 25/11). The callbacks stay as parameters; the composer does not draw them.
 
                 if showNearYou {
                     HStack(spacing: Spacing.xxs) {

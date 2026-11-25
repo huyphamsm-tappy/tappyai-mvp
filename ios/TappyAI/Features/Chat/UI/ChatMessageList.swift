@@ -234,7 +234,7 @@ private struct UserBubble: View {
 
     var body: some View {
         HStack {
-            Spacer(minLength: Spacing.xxl)
+            Spacer(minLength: Spacing.lg)   // was xxl: the person's own message gets more of the width
             VStack(alignment: .trailing, spacing: Spacing.xxs) {
                 // The photo or PDF sent with the question (web: above the text, which is hidden when empty).
                 if let attachment {
