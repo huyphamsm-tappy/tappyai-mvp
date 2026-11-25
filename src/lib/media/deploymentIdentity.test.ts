@@ -54,6 +54,27 @@ describe('readDeploymentOidcToken', () => {
     expect(readDeploymentOidcToken(null, noEnv)).toBeNull()
   })
 
+  // The cron case: no `req` reaches the notification sender, so the token comes from Vercel's request context.
+  it('reads the token from the Vercel request context when no request is passed', () => {
+    const slot = Symbol.for('@vercel/request-context')
+    const g = globalThis as unknown as Record<symbol, unknown>
+    const before = g[slot]
+    try {
+      g[slot] = { get: () => ({ headers: { [VERCEL_OIDC_HEADER]: HEADER_TOKEN } }) }
+      expect(readDeploymentOidcToken(undefined, noEnv)).toBe(HEADER_TOKEN)
+      expect(readDeploymentOidcToken(undefined, withEnv)).toBe(HEADER_TOKEN)
+      // a real request header still wins
+      expect(readDeploymentOidcToken(requestWithToken('req.token'), noEnv)).toBe('req.token')
+      g[slot] = { get: () => { throw new Error('boom') } }
+      expect(readDeploymentOidcToken(undefined, withEnv)).toBe(ENV_TOKEN)
+      g[slot] = { get: () => ({ headers: {} }) }
+      expect(readDeploymentOidcToken(undefined, noEnv)).toBeNull()
+    } finally {
+      if (before === undefined) delete g[slot]
+      else g[slot] = before
+    }
+  })
+
   it('treats an empty header or empty env value as absent', () => {
     expect(readDeploymentOidcToken(requestWithToken(''), noEnv)).toBeNull()
     expect(
