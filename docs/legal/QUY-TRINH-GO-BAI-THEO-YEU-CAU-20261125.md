@@ -10,7 +10,7 @@
 - API (đăng nhập quản trị, cùng nguồn gốc): `GET /api/admin/takedowns?view=open|recent`; `POST /api/admin/takedowns` (ghi yêu cầu; thêm `"execute": true` để gỡ ngay); `POST /api/admin/takedowns/<id>` với `action` = `execute` | `reject` (bắt buộc ghi lý do) | `needs_info` (yêu cầu vẫn mở, đồng hồ vẫn chạy).
 
 ## 2. CHƯA có
-- **Giao diện quản trị** cho sổ này. Hiện chỉ có API; người vận hành không lập trình chưa dùng được. Đây là việc kế tiếp (một trang trong bàn kiểm duyệt: danh sách theo hạn, nút ghi yêu cầu, nút gỡ/từ chối).
+- (Đã có giao diện, xem mục 5.) CHƯA kiểm giao diện trên trình duyệt thật với cơ sở dữ liệu: cần áp migration `20261209` lên UAT và bật `MODERATION_ADMIN_ENABLED` ở UAT.
 - Đầu mối tiếp nhận công khai: cần quyết định địa chỉ (ví dụ `legal@tappyai.com`) và công bố trên trang Điều khoản/Liên hệ; người trực **trong 24 giờ, kể cả cuối tuần** (và 6 giờ khi khẩn cấp). Không có người trực thì công cụ chỉ báo, không tự gỡ.
 - Gỡ hàng loạt theo tài khoản (tất cả bài của một người); khôi phục khi cơ quan rút yêu cầu (hiện cần làm tay trong bàn kiểm duyệt).
 - Báo cáo định kỳ/nộp văn bản trả lời cho cơ quan: làm tay.
@@ -23,6 +23,14 @@
 5. **Phản hồi** cơ quan bằng văn bản (mẫu do luật sư soạn) kèm thời điểm đã gỡ.
 6. **Lưu** văn bản gốc và phản hồi (bản sao nội dung đã tự lưu trong sổ).
 7. Nếu yêu cầu không hợp lệ/không đủ căn cứ: `reject` kèm lý do, trả lời cơ quan.
+
+## 5. Giao diện (đã làm 25/11/2026)
+Trang **Quản trị → Kiểm duyệt** (`/admin/moderation`), phần "Yêu cầu gỡ bài của cơ quan chức năng" nằm dưới bàn duyệt báo cáo (chỉ hiện khi `MODERATION_ADMIN_ENABLED` bật):
+- Ba ô đếm: đang mở / sắp quá hạn / quá hạn; danh sách theo hạn (gấp nhất lên đầu), mỗi yêu cầu có nhãn đồng hồ, "còn X giờ Y phút" hoặc "quá …", cơ quan, số công văn, nội dung.
+- Nút **Gỡ ngay** (có bước xác nhận; với tài khoản ghi rõ là KHOÁ tài khoản), **Cần thêm thông tin** và **Từ chối** (bắt buộc ghi lý do). Chỉ vẽ nút khi người dùng có quyền; máy chủ kiểm lại từng thao tác.
+- Tab **Lịch sử** là cả sổ (mọi trạng thái).
+- Form **Ghi yêu cầu mới**: nguồn (cơ quan / khiếu nại người dùng, khiếu nại tự gán 48 giờ), thời hạn, cơ quan, số công văn, căn cứ, thời điểm Tappy nhận, loại nội dung, mã nội dung, ghi chú, tuỳ chọn "gỡ luôn khi ghi".
+- Chữ tiếng Việt và tiếng Anh nằm ở `src/lib/i18n/admin/takedowns.ts`.
 
 ## 4. Cấu hình khi lên production
 - `MODERATION_ADMIN_ENABLED=true` (đã có trong checklist deploy); `MODERATION_DIGEST_USER_IDS` = các tài khoản quản trị nhận cảnh báo (cần ít nhất 2 người, một dự phòng); `CRON_SECRET`.

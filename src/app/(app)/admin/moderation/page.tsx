@@ -3,6 +3,7 @@ import { permissionEngine } from '@/lib/admin/permissions/engine'
 import { ModerationQueue } from '@/components/admin/moderation/ModerationQueue'
 import { GuardedSurface } from '@/components/admin/layout/GuardedSurface'
 import { ModerationDesk } from '@/components/admin/moderation/ModerationDesk'
+import { TakedownDesk } from '@/components/admin/moderation/TakedownDesk'
 import { moderationAdminEnabled } from '@/lib/safety/userBlocks'
 
 // Module 09 Content Moderation — the Controller surface.
@@ -35,6 +36,8 @@ export default async function AdminModerationPage() {
     return (
       <GuardedSurface>
         <ModerationDesk can={{ ...can, suspend: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_SUSPEND), ban: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_BAN) }} />
+        {/* Authority takedown register (owner 25/11/2026): requests to remove content with the legal clock. Same flag as the desk; its API routes answer 404 while the flag is off. */}
+        <div className="mt-10"><TakedownDesk can={{ hide: can.hide, ban: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_BAN) }} /></div>
       </GuardedSurface>
     )
   }

@@ -489,6 +489,8 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //   (Monday 03:00 UTC = 10:00 VN) and stores them in `scam_knowledge_versions`. At most 7 page reads per run; the model step is off unless SCAM_SHIELD_SYNC_AI=true.
     // 22 -> 24 on 2026-11-20 (owner approved the cleanup list, A3): `/api/cron/moderation-snapshot-purge` (clears appeal snapshots older than 60 days; 404 while MODERATION_ADMIN_ENABLED is off) and
     //   `/api/cron/business-order-expiry` (closes Tappy Business orders pending past 72 h; no rows until the Business feature is live). Both daily, fixed minute and hour; neither notifies anybody.
-    expect(vercelJson.crons.length).toBe(24)
+    // 24 -> 28 on 2026-11-25 (authority takedown register, owner): `/api/cron/takedown-clock` is four entries (?run=1..4 at 00:00, 06:00, 12:00, 18:00 UTC), each DAILY like every other entry (the Hobby plan
+    //   allows one run per day per entry, the way the moderation digest does it). 404 while MODERATION_ADMIN_ENABLED is off; it alerts the moderation team only when a request is at risk or overdue.
+    expect(vercelJson.crons.length).toBe(28)
   })
 })

@@ -5,6 +5,7 @@ import { moderationAdminEnabled } from '@/lib/safety/userBlocks'
 import { clockState } from '@/lib/safety/takedown/clock'
 import { listOpenTakedowns } from '@/lib/safety/takedown/service'
 import { alertTakedownRecipients } from '@/lib/safety/takedown/notify'
+import { clockText } from '@/lib/i18n/takedownAlerts'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -25,11 +26,6 @@ export async function GET(req: Request) {
   const counts = { open: rows.length, at_risk: states.filter((s) => s === 'at_risk').length, overdue: states.filter((s) => s === 'overdue').length }
   if (counts.at_risk + counts.overdue === 0) return NextResponse.json({ ok: true, sent: 0, counts })
 
-  const r = await alertTakedownRecipients({
-    title: counts.overdue > 0 ? `QUÁ HẠN GỠ BÀI · ${counts.overdue} yêu cầu` : `SẮP QUÁ HẠN GỠ BÀI · ${counts.at_risk} yêu cầu`,
-    body: `Yêu cầu gỡ bài đang mở: ${counts.open} (quá hạn ${counts.overdue}, sắp quá hạn ${counts.at_risk}). Vào bàn kiểm duyệt xử lý ngay.`,
-    escalate: counts.overdue > 0,
-    data: counts,
-  })
+  const r = await alertTakedownRecipients({ ...clockText(counts), escalate: counts.overdue > 0, data: counts })
   return NextResponse.json({ ok: true, ...r, counts })
 }

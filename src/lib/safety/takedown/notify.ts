@@ -2,6 +2,7 @@
 // recipients are told too when `escalate` is set. Counts and a due time only: never the agency, the reference, or the content. Best effort: a failure never undoes a request.
 import { emitNotification } from '@/lib/notifications/emit'
 import { alertRecipients, backupRecipients } from '@/lib/safety/operatorAlert'
+import { ESCALATION_PREFIX, newRequestText } from '@/lib/i18n/takedownAlerts'
 
 export interface TakedownAlert { title: string; body: string; escalate?: boolean; data?: Record<string, unknown> }
 
@@ -15,7 +16,7 @@ export async function alertTakedownRecipients(a: TakedownAlert, deps: { recipien
   }
   if (a.escalate) {
     for (const userId of deps.backups ?? backupRecipients(recipients)) {
-      try { if ((await emit({ userId, type: 'system', category: 'system', title: `LEO THANG · ${a.title}`, body: a.body, entityUrl: '/admin/moderation', data: { kind: 'takedown_clock', escalation: true, ...a.data } })).id) escalated++ } catch { /* best effort */ }
+      try { if ((await emit({ userId, type: 'system', category: 'system', title: `${ESCALATION_PREFIX}${a.title}`, body: a.body, entityUrl: '/admin/moderation', data: { kind: 'takedown_clock', escalation: true, ...a.data } })).id) escalated++ } catch { /* best effort */ }
     }
   }
   if (recipients.length > 0 && sent === 0) console.error('[takedown] no alert delivered to', recipients.length, 'recipient(s)')
@@ -25,12 +26,6 @@ export async function alertTakedownRecipients(a: TakedownAlert, deps: { recipien
 /** The alert for a request that was just recorded. */
 export function newRequestAlert(urgency: string, dueAtIso: string): TakedownAlert {
   const hours = urgency === 'emergency_6h' ? 6 : urgency === 'complaint_48h' ? 48 : 24
-  const due = new Date(dueAtIso)
-  const when = `${new Date(due.getTime() + 7 * 3_600_000).toISOString().replace('T', ' ').slice(0, 16)} (giờ Việt Nam)`
-  return {
-    title: urgency === 'emergency_6h' ? 'KHẨN · Yêu cầu gỡ bài mới (6 giờ)' : `Yêu cầu gỡ bài mới (${hours} giờ)`,
-    body: `Có yêu cầu gỡ bài cần xử lý trước ${when}. Vào bàn kiểm duyệt xử lý ngay.`,
-    escalate: urgency === 'emergency_6h',
-    data: { urgency },
-  }
+  const dueVn = new Date(new Date(dueAtIso).getTime() + 7 * 3_600_000).toISOString().replace('T', ' ').slice(0, 16)
+  return { ...newRequestText(urgency, hours, dueVn), escalate: urgency === 'emergency_6h', data: { urgency } }
 }
