@@ -103,9 +103,11 @@ struct HowToUseView: View {
             id: "tools",
             title: "guide.tools.title",
             intro: "guide.tools.intro",
-            steps: ProductFlags.showTranslate
-                ? ["guide.tools.scan", "guide.tools.translate", "guide.tools.currency", "guide.tools.splitbill"]
-                : ["guide.tools.scan", "guide.tools.currency", "guide.tools.splitbill"],
+            // Only the tools this build still shows (the web guide lists what its Smart Tools list shows).
+            steps: (ProductFlags.showScan ? ["guide.tools.scan"] : [])
+                + (ProductFlags.showTranslate ? ["guide.tools.translate"] : [])
+                + (ProductFlags.showCurrency ? ["guide.tools.currency"] : [])
+                + ["guide.tools.splitbill"],
             outcome: nil,
             note: "guide.tools.note"
         ),

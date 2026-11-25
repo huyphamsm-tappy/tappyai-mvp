@@ -54,11 +54,18 @@ struct SmartTool: Identifiable {
 
     /// Hidden tools are removed here (owner decision 2026-10-25). Their views and services stay in place.
     /// Translate follows `ProductFlags.showTranslate`; Captions follows `ProductFlags.showVietContent`.
-    static func tools(showTranslate: Bool, showVietContent: Bool) -> [SmartTool] {
+    /// Scan, Currency and Fortune follow the web's `SHOW_SCAN` / `SHOW_CURRENCY` / `SHOW_FORTUNE`.
+    static func tools(showTranslate: Bool, showVietContent: Bool,
+                      showScan: Bool = ProductFlags.showScan,
+                      showCurrency: Bool = ProductFlags.showCurrency,
+                      showFortune: Bool = ProductFlags.showFortune) -> [SmartTool] {
         catalogue.filter { tool in
             switch tool.id {
             case .translate: return showTranslate
             case .captions: return showVietContent
+            case .scan: return showScan
+            case .currency: return showCurrency
+            case .fortune: return showFortune
             default: return true
             }
         }

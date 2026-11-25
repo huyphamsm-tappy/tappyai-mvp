@@ -45,6 +45,8 @@ final class HomeViewModel: AppObservableObject {
     }
 
     func loadRecommendations() async {
+        // No request leaves the phone for a hidden rail.
+        guard ProductFlags.showRecommendations else { return }
         let items = (try? await places.fetchRecommendations())?.recommendations ?? []
         recommendations = Self.rail(Array(items.prefix(Self.recommendationsLimit)))
     }

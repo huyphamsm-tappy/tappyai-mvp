@@ -703,7 +703,7 @@ final class ScreenshotTests: XCTestCase {
         shot("25-home-3")
         XCTAssertTrue(scrollTo(app, "home-suggestion-1"), "suggestion cards")
         shot("26-home-4")
-        XCTAssertTrue(scrollTo(app, "tool-scan"), "smart tools")
+        XCTAssertTrue(scrollTo(app, "tool-split"), "smart tools")
         shot("27-home-5")
     }
 

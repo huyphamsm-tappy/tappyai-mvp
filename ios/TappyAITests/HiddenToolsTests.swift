@@ -10,21 +10,24 @@ final class HiddenToolsTests: XCTestCase {
     func testFlagsDefaultToHidden() {
         XCTAssertFalse(ProductFlags.showTranslate)
         XCTAssertFalse(ProductFlags.showVietContent)
+        // The web hides these too (product.ts: SHOW_SCAN / SHOW_CURRENCY / SHOW_FORTUNE / SHOW_RECOMMENDATIONS = false).
+        XCTAssertFalse(ProductFlags.showScan)
+        XCTAssertFalse(ProductFlags.showCurrency)
+        XCTAssertFalse(ProductFlags.showFortune)
+        XCTAssertFalse(ProductFlags.showRecommendations)
     }
 
-    func testRegistryOmitsTranslateAndCaptionsWhileHidden() {
+    func testRegistryOmitsTheToolsTheWebHides() {
         let ids = SmartTool.all.map(\.id)
-        XCTAssertFalse(ids.contains(.translate))
-        XCTAssertFalse(ids.contains(.captions))
-        // The other tools are untouched.
-        XCTAssertTrue(ids.contains(.scan))
-        XCTAssertTrue(ids.contains(.safety))
+        for hidden in [SmartToolId.translate, .captions, .scan, .currency, .fortune] {
+            XCTAssertFalse(ids.contains(hidden), "\(hidden)")
+        }
+        // The tools the web still shows are untouched.
+        XCTAssertEqual(ids, [.safety, .split, .together])
     }
 
-    func testHomeCurationOmitsTranslateWhileHidden() {
-        let ids = SmartTool.home.map(\.id)
-        XCTAssertFalse(ids.contains(.translate))
-        XCTAssertEqual(ids, [.safety, .scan, .currency, .split])
+    func testHomeCurationOmitsTheHiddenTools() {
+        XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .split])
     }
 
     func testServiceSendsNothingWhileHidden() async {

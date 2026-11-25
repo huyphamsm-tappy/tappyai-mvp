@@ -90,10 +90,11 @@ final class HomeV3Tests: XCTestCase {
         // Translate and Captions are hidden in this build (ProductFlags.showTranslate / showVietContent = false,
         // owner decision 2026-10-25): the shipped lists omit them. The full web order is still pinned below for
         // the day the flags are flipped, so un-hiding cannot silently reorder the registry.
-        XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .scan, .currency, .split])
-        XCTAssertEqual(SmartTool.all.map(\.id), [.safety, .scan, .currency, .split, .together, .fortune])
-        XCTAssertEqual(SmartTool.all.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .currency, .split])
-        let unhidden = SmartTool.tools(showTranslate: true, showVietContent: true)
+        // Scan, Currency and Fortune are hidden too, as on the web (product.ts SHOW_SCAN / SHOW_CURRENCY / SHOW_FORTUNE = false).
+        XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .split])
+        XCTAssertEqual(SmartTool.all.map(\.id), [.safety, .split, .together])
+        XCTAssertEqual(SmartTool.all.filter { $0.group == .daily }.map(\.id), [.safety, .split])
+        let unhidden = SmartTool.tools(showTranslate: true, showVietContent: true, showScan: true, showCurrency: true, showFortune: true)
         XCTAssertEqual(unhidden.map(\.id), [.safety, .scan, .translate, .currency, .split, .together, .fortune, .captions])
         XCTAssertEqual(unhidden.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .translate, .currency, .split])
         XCTAssertEqual(SmartTool.all.first { $0.id == .together }?.destination, .groupDining)

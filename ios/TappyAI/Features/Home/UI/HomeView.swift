@@ -36,7 +36,8 @@ struct HomeView: View {
                     HomeGreetingSection(hero: hero)
                     HomeAskBar { router.switchTo(.chat) }
                 }
-                if case .loaded(let recs) = vm.recommendations {
+                // Hidden as on the web (SHOW_RECOMMENDATIONS = false); the rail and its screen stay in place.
+                if ProductFlags.showRecommendations, case .loaded(let recs) = vm.recommendations {
                     HomeRecommendationsSection(items: recs) { router.push(HomeDestination.recommendations, on: .home) }
                 }
                 HomeDiscoverBanner { router.switchTo(.deals) }
