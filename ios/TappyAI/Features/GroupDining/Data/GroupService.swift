@@ -31,14 +31,15 @@ struct GroupService: Sendable {
 
     /// `GET /api/group?id=` — the room and its members.
     ///
-    /// Public by design: a room is shared as a link, and everyone who opens that link has to be
-    /// able to see who is already in before deciding to join. Nothing private is returned — the
-    /// fields are the answers people gave in order to be pooled.
+    /// Needs a Tappy account: the newer server answers 401 without one and returns only the group
+    /// name to people who are not yet accepted (`state` = `none` / `pending`). Older servers are
+    /// unaffected by the extra token.
     func fetchGroup(id: String) async throws -> GroupRoom {
         let endpoint = Endpoint(
             path: "/api/group",
             method: .get,
-            query: [URLQueryItem(name: "id", value: id)]
+            query: [URLQueryItem(name: "id", value: id)],
+            requiresAuth: true
         )
         return try await api.send(endpoint, as: GroupRoom.self)
     }

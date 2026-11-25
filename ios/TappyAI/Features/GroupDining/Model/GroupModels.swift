@@ -32,6 +32,39 @@ struct GroupRoom: Decodable, Sendable, Identifiable, Hashable {
     let suggestion: String?
     let createdAt: String?
     let members: [GroupMember]?
+    /// Who is asking, as the server sees it: `creator`, `member`, `pending` (asked to join, waiting
+    /// for the leader) or `none` (only the group name is returned). Nil from an older server that
+    /// does not send it — treated as the previous behaviour (a readable room).
+    let state: String?
+    /// Join requests waiting for the leader (only sent to the creator).
+    let pendingRequests: [GroupMember]?
+    /// The group's own picture, already filtered to a servable URL by the server.
+    let avatarUrl: String?
+
+    init(id: String, name: String?, creatorId: String?, status: String?, suggestion: String?,
+         createdAt: String?, members: [GroupMember]?, state: String? = nil,
+         pendingRequests: [GroupMember]? = nil, avatarUrl: String? = nil) {
+        self.id = id
+        self.name = name
+        self.creatorId = creatorId
+        self.status = status
+        self.suggestion = suggestion
+        self.createdAt = createdAt
+        self.members = members
+        self.state = state
+        self.pendingRequests = pendingRequests
+        self.avatarUrl = avatarUrl
+    }
+
+    /// The same room with a new suggestion text (everything else kept).
+    func withSuggestion(_ text: String) -> GroupRoom {
+        GroupRoom(id: id, name: name, creatorId: creatorId, status: status, suggestion: text,
+                  createdAt: createdAt, members: members, state: state,
+                  pendingRequests: pendingRequests, avatarUrl: avatarUrl)
+    }
+
+    /// True when the server says this person has asked to join and the leader has not answered.
+    var isPendingForMe: Bool { state == "pending" }
 }
 
 /// `POST /api/group` — the room that was just created.
@@ -46,6 +79,8 @@ struct JoinGroupResponse: Decodable, Sendable {
     /// The server treats a duplicate join as success and says so. Joining twice is not an error —
     /// it is what happens when someone reopens a link they already used.
     let alreadyJoined: Bool?
+    /// The newer server holds a join until the leader accepts it.
+    let pending: Bool?
 }
 
 /// `POST /api/group/{id}/suggest`.
@@ -76,7 +111,7 @@ enum GroupLimits {
 
 /// Lenient (LenientDecoding.swift): a member that does not decode is dropped, not the room.
 extension GroupRoom {
-    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members }
+    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members, state, pendingRequests, avatarUrl }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -87,6 +122,9 @@ extension GroupRoom {
         suggestion = c.lenient(String.self, forKey: .suggestion)
         createdAt = c.lenient(String.self, forKey: .createdAt)
         members = c.lossyArray(GroupMember.self, forKey: .members)
+        state = c.lenient(String.self, forKey: .state)
+        pendingRequests = c.lossyArray(GroupMember.self, forKey: .pendingRequests)
+        avatarUrl = c.lenient(String.self, forKey: .avatarUrl)
     }
 }
 

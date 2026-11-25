@@ -103,17 +103,7 @@ final class GroupDetailViewModel: AppObservableObject {
                 // The server persists the suggestion on the row, so everyone in the room sees the
                 // same one. Reloading keeps this screen consistent with what they see rather than
                 // holding a local copy that only exists here.
-                room = room.map { current in
-                    GroupRoom(
-                        id: current.id,
-                        name: current.name,
-                        creatorId: current.creatorId,
-                        status: current.status,
-                        suggestion: response.suggestion,
-                        createdAt: current.createdAt,
-                        members: current.members
-                    )
-                }
+                room = room.map { $0.withSuggestion(response.suggestion) }
             } catch {
                 errorMessage = GroupErrorMessages.text(for: error, action: .suggest)
                 log.error("group suggest failed: \(error)")
