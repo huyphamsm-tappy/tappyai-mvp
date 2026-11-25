@@ -79,6 +79,9 @@ struct AppConfig: Decodable, Sendable {
         /// Public result pages (`/r/<slug>`) — mirrors Web `publicShareEnabled()`. Absent = off:
         /// the share-a-result-link button stays hidden.
         let publicShare: Bool?
+        /// The lowest iOS version the server still supports, e.g. `1.1.0` (`flags.iosMinVersion`). A build below it is
+        /// shown a full-screen «update» notice. Not sent yet: absent = nothing is ever required (see `AppUpdate`).
+        let iosMinVersion: String?
     }
 
     struct Upload: Decodable, Sendable {

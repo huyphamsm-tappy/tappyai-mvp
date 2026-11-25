@@ -12876,6 +12876,42 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Chọn tệp (PDF hoặc ảnh)" } }
       }
     },
+    "update.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A new version is available" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Có bản mới" } }
+      }
+    },
+    "update.message": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "TappyAI %@ is ready on the App Store with improvements and fixes. Update now?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "TappyAI %@ đã có trên App Store với nhiều cải tiến và sửa lỗi. Cập nhật ngay nhé?" } }
+      }
+    },
+    "update.now": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Update" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cập nhật" } }
+      }
+    },
+    "update.later": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Later" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Để sau" } }
+      }
+    },
+    "update.required.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Please update TappyAI" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Vui lòng cập nhật TappyAI" } }
+      }
+    },
+    "update.required.message": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This version is no longer supported. Update to %@ to keep using the app." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Phiên bản này không còn được hỗ trợ. Hãy cập nhật lên %@ để tiếp tục dùng app." } }
+      }
+    },
     "likers.title": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Likes" } },

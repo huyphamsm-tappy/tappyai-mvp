@@ -83,6 +83,8 @@ struct PlaceholderShellView: View {
             if !signedIn { router.resetAfterSignOut() }
         }
         .modifier(AIConsentSheet(consent: deps.aiConsent))
+        // «Có bản mới»: the App Store lists a newer version (suggest), or the server requires one (require).
+        .appUpdatePrompt(config: deps.configService)
         // Sends any AI-consent decision the server has not accepted yet (after sign-in, or after a failed send), and each
         // new decision as it is made.
         .task(id: session.state.isAuthenticated) {
