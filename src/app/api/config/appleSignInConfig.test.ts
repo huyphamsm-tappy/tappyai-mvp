@@ -82,8 +82,10 @@ describe('GET /api/config keeps its Phase 7 shape and adds the two capability fl
       expect(body.flags.appleSignIn).toBe(apple)
       expect(body.flags.accountSelfDelete).toBe(false)
       expect(Object.keys(body).sort()).toEqual(['auth', 'flags', 'freemium', 'onboarding', 'p8', 'scamShield', 'upload', 'video'])
-      expect(Object.keys(body.flags).sort()).toEqual(['accountSelfDelete', 'appleSignIn', 'publicShare', 'showAppConnections', 'showFortune', 'showMusic', 'showProUpgrade', 'showScamShield', 'showTranslate', 'subscriptions'])
-      for (const k of Object.keys(body.flags)) expect(typeof body.flags[k]).toBe('boolean')
+      // iosMinVersion (25/11/2026) is the one flag that is a version STRING, not a boolean; every other flag stays a boolean.
+      expect(Object.keys(body.flags).sort()).toEqual(['accountSelfDelete', 'appleSignIn', 'iosMinVersion', 'publicShare', 'showAppConnections', 'showFortune', 'showMusic', 'showProUpgrade', 'showScamShield', 'showTranslate', 'subscriptions'])
+      expect(body.flags.iosMinVersion).toMatch(/^\d+\.\d+(\.\d+)?$/)
+      for (const k of Object.keys(body.flags).filter((x) => x !== 'iosMinVersion')) expect(typeof body.flags[k]).toBe('boolean')
     }
   })
   it('Google / Zalo / email providers are exactly what they were; Apple is NOT added to the provider list', async () => {

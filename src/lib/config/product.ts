@@ -207,6 +207,17 @@ export function publicShareEnabled(env: Record<string, string | undefined> = pro
   const raw = env.SHOW_PUBLIC_SHARE?.trim().toLowerCase()
   return !(raw === 'false' || raw === '0')
 }
+/**
+ * The oldest iOS app version the server still wants people to be on (published as `flags.iosMinVersion` in /api/config).
+ * The app compares its own version with this and nudges the person to update when it is older. Env IOS_MIN_VERSION overrides the
+ * default; anything that is not `major.minor` or `major.minor.patch` (digits only) is ignored, so a typo can never publish a
+ * string the app cannot compare. Display/nudge only: nothing server-side refuses an older app.
+ */
+export const IOS_MIN_VERSION_DEFAULT = '1.1.0'
+export function iosMinVersion(env: Record<string, string | undefined> = process.env): string {
+  const raw = env.IOS_MIN_VERSION?.trim()
+  return raw && /^\d{1,4}\.\d{1,4}(\.\d{1,4})?$/.test(raw) ? raw : IOS_MIN_VERSION_DEFAULT
+}
 export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
 export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 

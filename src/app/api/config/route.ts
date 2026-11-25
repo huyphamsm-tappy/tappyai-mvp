@@ -22,6 +22,7 @@ import {
   ONBOARDING_INTERESTS,
   ONBOARDING_CITIES,
   publicShareEnabled,
+  iosMinVersion,
 } from '@/lib/config/product'
 import { userBlocksEnabled, reportsEnabled, moderationAdminEnabled } from '@/lib/safety/userBlocks'
 import { appleSignInAvailable } from '@/lib/auth/appleCapability'
@@ -85,6 +86,9 @@ export async function GET() {
         // its Apple provider as enabled (GET /auth/v1/settings, see lib/auth/appleCapability.ts); false on any doubt (unconfigured, error,
         // timeout). iOS shows the button only on true. Web has no Apple button: this flag does not change the Web login page.
         appleSignIn,
+        // The oldest iOS app version we still want people on, e.g. "1.1.0" (env IOS_MIN_VERSION, default in lib/config/product.ts).
+        // The iOS app compares its own version and nudges an update when older; a missing field (older server) means no nudge.
+        iosMinVersion: iosMinVersion(),
       },
       // User-safety surfaces a client may SHOW (Android SafetyApi / iOS AppConfig.P8 already read this block). The server
       // enforces each on its own (a guarded route answers 404 while its flag is off); this only decides whether the buttons
