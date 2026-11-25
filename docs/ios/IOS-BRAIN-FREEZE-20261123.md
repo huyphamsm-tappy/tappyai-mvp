@@ -34,6 +34,7 @@ Production web (deployed 04/11, `main` 33cef8b) has none of the new brain code. 
 | "Ask Tappy about this clip" (`context: explore_clip`) | Needs a new button on the clip screen: a feature, not parity of the existing chat. |
 | The web's "Chốt một lựa chọn" card | Behind the web build flag `NEXT_PUBLIC_CONSULT_V3`. The server already sends the question as lines plus tap chips to a client that does not declare the `ask` capability. |
 | Research canvas | iOS shows the research card, charts and exports (Markdown, PDF, Word). |
+| **The web's new answer LAYOUT (the "editorial" look, `NEXT_PUBLIC_TAPPY_ANSWER_V4`, RFC-001 4.1)** | **Omitted from this note by mistake on 23/11 and found by the owner testing build 234** ("the layout is nothing like the web"). iOS draws answers with its own native article layout (headings, lists, tables, per-section pictures), not the web's editorial presentation (type scale and line height, the rich cards placed BETWEEN the paragraphs at the places the text names them, subject cards right after the opening, contents list). This is a real parity gap, not a deliberate cut. It is the next piece of brain work: audit the web layout against `ArticleLayout.swift` / `ChatMessageList.swift` and port it. |
 
 ## Not verified
 
