@@ -12810,6 +12810,24 @@
     "notices.ruleGroup.ip_privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Copyright and privacy" } }, "vi": { "stringUnit": { "state": "translated", "value": "Bản quyền và quyền riêng tư" } } } },
     "notices.ruleGroup.illegal_goods": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Illegal goods and services" } }, "vi": { "stringUnit": { "state": "translated", "value": "Hàng và dịch vụ trái pháp luật" } } } },
     "notices.ruleGroup.child_safety": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Child safety" } }, "vi": { "stringUnit": { "state": "translated", "value": "An toàn trẻ em" } } } },
+    "search.mode.people": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "People" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Người" } }
+      }
+    },
+    "search.mode.posts": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Posts" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bài viết" } }
+      }
+    },
+    "search.posts.noResults": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No posts found." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không tìm thấy bài viết nào." } }
+      }
+    },
     "likers.title": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Likes" } },

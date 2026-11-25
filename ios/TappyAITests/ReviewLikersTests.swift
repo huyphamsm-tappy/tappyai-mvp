@@ -16,6 +16,18 @@ final class ReviewLikersTests: XCTestCase {
         XCTAssertEqual(page.nextCursor, "2026-11-01T00:00:00Z")
     }
 
+    func testPostSearchUsesTheFeedSearchAndDropsAHashSign() async throws {
+        let api = MockAPIClient()
+        api.stubbed = Data(#"{"reviews":[],"page":0,"limit":20}"#.utf8)
+        let service = ReviewsService(api: api)
+        _ = try await service.searchPosts(query: "#phohanoi")
+        let sent = try XCTUnwrap(api.sentEndpoints.first)
+        XCTAssertEqual(sent.path, "/api/reviews/feed")
+        XCTAssertEqual(sent.query.first { $0.name == "search" }?.value, "phohanoi")
+        _ = try await service.searchPosts(query: "a")
+        XCTAssertEqual(api.sentEndpoints.count, 1, "one character sends nothing")
+    }
+
     func testLastPageHasNoCursor() throws {
         let page = try ResponseDecoder.json.decode(LikersPage.self, from: Data(#"{"likers":[],"next_cursor":null}"#.utf8))
         XCTAssertNil(page.nextCursor)

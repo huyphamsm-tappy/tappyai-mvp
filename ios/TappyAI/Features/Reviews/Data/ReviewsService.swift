@@ -30,6 +30,22 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: FeedResponse.self)
     }
 
+    // MARK: - Post search
+
+    /// `GET /api/reviews/feed?search=&limit=20` — the web's Explore search (place, text and hashtags).
+    /// Two characters minimum, as for people. A `#` typed in front of a hashtag is not part of the word.
+    func searchPosts(query: String) async throws -> [Review] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        let term = trimmed.hasPrefix("#") ? String(trimmed.dropFirst()) : trimmed
+        guard term.count >= 2 else { return [] }
+        let endpoint = Endpoint(
+            path: "/api/reviews/feed",
+            method: .get,
+            query: [URLQueryItem(name: "search", value: term), URLQueryItem(name: "limit", value: "20")]
+        )
+        return try await api.send(endpoint, as: FeedResponse.self).reviews
+    }
+
     // MARK: - People search
 
     /// `GET /api/users/search?q=` — the people search Web and Android both have and iOS did not.

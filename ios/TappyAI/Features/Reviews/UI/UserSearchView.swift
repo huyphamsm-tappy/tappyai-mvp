@@ -11,6 +11,18 @@ final class UserSearchViewModel: AppObservableObject {
     @AppPublished var results: [UserSearchResult] = []
     @AppPublished var busyIds: Set<String> = []
     @AppPublished var followFailed = false
+    /// What is searched: people (the original) or posts (web Explore search: place, text, hashtags).
+    enum Mode: String, CaseIterable, Identifiable { case people, posts; var id: String { rawValue } }
+    @AppPublished var mode: Mode = .people
+    @AppPublished var posts: [Review] = []
+
+    func setMode(_ new: Mode) {
+        guard new != mode else { return }
+        mode = new
+        results = []
+        posts = []
+        search(query)
+    }
 
     private let service: ReviewsService
     private let log = AppLogger.app
@@ -29,6 +41,7 @@ final class UserSearchViewModel: AppObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmed.count >= 2 else {
             results = []
+            posts = []
             state = .idle
             return
         }
@@ -37,9 +50,15 @@ final class UserSearchViewModel: AppObservableObject {
             guard !Task.isCancelled else { return }
             state = .searching
             do {
-                let found = try await service.searchUsers(query: trimmed)
-                guard !Task.isCancelled else { return }
-                results = found
+                if mode == .posts {
+                    let found = try await service.searchPosts(query: trimmed)
+                    guard !Task.isCancelled else { return }
+                    posts = found
+                } else {
+                    let found = try await service.searchUsers(query: trimmed)
+                    guard !Task.isCancelled else { return }
+                    results = found
+                }
                 state = .loaded
             } catch {
                 guard !Task.isCancelled else { return }
@@ -79,8 +98,21 @@ struct UserSearchView: View {
     /// App Review 1.2: people the person has blocked drop out of the list the moment they are blocked.
     private var shownResults: [UserSearchResult] { safety.visible(vm.results) { $0.id } }
 
+    /// Posts: people the person blocked and posts they reported drop out, as in the feed.
+    private var shownPosts: [Review] {
+        safety.visible(vm.posts) { $0.userId }.filter { !safety.reportedReviewIds.contains($0.id) }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
+            Picker("search.title", selection: Binding(get: { vm.mode }, set: { vm.setMode($0) })) {
+                Text("search.mode.people").tag(UserSearchViewModel.Mode.people)
+                Text("search.mode.posts").tag(UserSearchViewModel.Mode.posts)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, Spacing.md)
+            .padding(.top, Spacing.sm)
+
             TextField("search.placeholder", text: Binding(
                 get: { vm.query },
                 set: { vm.search($0) }
@@ -124,6 +156,35 @@ struct UserSearchView: View {
             )
             .padding(.top, 40)
             Spacer()
+        case .loaded where vm.mode == .posts:
+            if shownPosts.isEmpty {
+                TappyEmptyState(systemImage: "text.magnifyingglass", title: "search.posts.noResults")
+                    .padding(.top, 40)
+                Spacer()
+            } else {
+                List(shownPosts) { post in
+                    Button { router.push(ReviewsDestination.reviewDetail(id: post.id)) } label: {
+                        VStack(alignment: .leading, spacing: Spacing.xxs) {
+                            Text(verbatim: post.placeName ?? post.profiles?.fullName ?? "")
+                                .font(TappyFont.bodyEmphasis)
+                                .foregroundStyle(TappyColor.textPrimary)
+                            if let body = post.body, !body.isEmpty {
+                                Text(verbatim: body)
+                                    .font(TappyFont.callout)
+                                    .foregroundStyle(TappyColor.textSecondary)
+                                    .lineLimit(2)
+                            }
+                            if let tags = post.hashtags, !tags.isEmpty {
+                                Text(verbatim: tags.prefix(4).map { "#" + $0 }.joined(separator: " "))
+                                    .font(TappyFont.caption)
+                                    .foregroundStyle(TappyColor.textSecondary)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+                .listStyle(.plain)
+            }
         case .loaded:
             if shownResults.isEmpty {
                 TappyEmptyState(systemImage: "person.slash", title: "search.noResults")
