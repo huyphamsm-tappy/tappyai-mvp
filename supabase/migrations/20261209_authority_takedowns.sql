@@ -37,8 +37,7 @@ CREATE INDEX IF NOT EXISTS authority_takedowns_open_idx ON public.authority_take
 CREATE INDEX IF NOT EXISTS authority_takedowns_target_idx ON public.authority_takedowns (target_type, target_id);
 
 ALTER TABLE public.authority_takedowns ENABLE ROW LEVEL SECURITY;
-REVOKE ALL ON public.authority_takedowns FROM PUBLIC;
-REVOKE ALL ON public.authority_takedowns FROM anon, authenticated;
+REVOKE ALL ON public.authority_takedowns FROM PUBLIC, anon, authenticated;
 GRANT ALL ON public.authority_takedowns TO service_role;
 
 -- The register is kept: nobody deletes a row (not even the service role by mistake).

@@ -192,7 +192,7 @@ describe('the alerts', () => {
 describe('wiring', () => {
   it('the migration is the register: service-role only, RLS on, no delete', () => {
     const sql = readFileSync('supabase/migrations/20261209_authority_takedowns.sql', 'utf8')
-    expect(sql).toMatch(/ENABLE ROW LEVEL SECURITY/); expect(sql).toMatch(/REVOKE ALL ON public\.authority_takedowns FROM anon, authenticated/)
+    expect(sql).toMatch(/ENABLE ROW LEVEL SECURITY/); expect(sql).toMatch(/REVOKE ALL ON public\.authority_takedowns FROM PUBLIC, anon, authenticated/)
     expect(sql).toMatch(/BEFORE DELETE ON public\.authority_takedowns/); expect(sql).not.toMatch(/CREATE POLICY/)
     for (const u of ['standard_24h', 'emergency_6h', 'complaint_48h']) expect(sql).toContain(u)
   })
