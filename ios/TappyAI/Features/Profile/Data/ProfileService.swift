@@ -3,6 +3,25 @@ import Foundation
 struct ProfileService {
     let api: APIClient
 
+    // MARK: - Violation notices and appeals (App Review 1.2)
+
+    /// `GET /api/moderation/decisions` — what was decided about the caller's own content. The server
+    /// answers 404 while moderation is off (the caller shows "no notices", not an error).
+    func fetchModerationNotices() async throws -> [ModerationNotice] {
+        let endpoint = Endpoint(path: "/api/moderation/decisions", requiresAuth: true)
+        return try await api.send(endpoint, as: ModerationNoticesResponse.self).decisions
+    }
+
+    /// `POST /api/moderation/decisions/{id}/appeal` — one appeal per decision, 10–1000 characters.
+    func appealModerationNotice(id: String, message: String) async throws {
+        guard DeepLinkHandler.isSafeId(id), ModerationNotice.isValidAppeal(message) else {
+            throw AppError.validation(message: "invalid appeal")
+        }
+        let body = try JSONSerialization.data(withJSONObject: ["message": message.trimmingCharacters(in: .whitespacesAndNewlines)])
+        let endpoint = Endpoint(path: "/api/moderation/decisions/\(id)/appeal", method: .post, body: body, requiresAuth: true)
+        _ = try await api.send(endpoint)
+    }
+
     // MARK: - Profile
 
     func fetchProfile() async throws -> UserProfile {

@@ -385,4 +385,6 @@ enum ProfileDestination: Hashable {
     case groupDining
     /// Settings → Tài khoản đã chặn (App Store 1.2). Only reachable while the server's `p8.userBlocks` is on.
     case blockedAccounts
+    /// Settings → Thông báo vi phạm: the decisions about the person's own content, with the appeal.
+    case moderationNotices
 }

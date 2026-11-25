@@ -12680,6 +12680,136 @@
         }
       }
     },
+    "notices.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Violation notices" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thông báo vi phạm" } }
+      }
+    },
+    "notices.intro": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "These are decisions about your own content. Each decision can be appealed once within %d days. You can also write to support@tappyai.com." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đây là các quyết định về nội dung của bạn. Mỗi quyết định được kháng nghị một lần trong %d ngày. Bạn cũng có thể viết cho support@tappyai.com." } }
+      }
+    },
+    "notices.empty": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "You have no violation notices." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn không có thông báo vi phạm nào." } }
+      }
+    },
+    "notices.error": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Could not load. Please try again later." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không tải được. Bạn thử lại sau nhé." } }
+      }
+    },
+    "notices.rule": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Rule" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Quy tắc" } }
+      }
+    },
+    "notices.strikeUntil": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Strike expires: %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Strike hết hạn: %@" } }
+      }
+    },
+    "notices.outcome.warning": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Warning (no effect on your account)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cảnh cáo (không ảnh hưởng tài khoản)" } }
+      }
+    },
+    "notices.outcome.content_removed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Content removed and 1 strike" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nội dung bị gỡ và 1 strike" } }
+      }
+    },
+    "notices.outcome.restricted": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Posting and commenting restricted for %d days" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hạn chế đăng bài và bình luận %d ngày" } }
+      }
+    },
+    "notices.outcome.banned": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Account locked" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Khoá tài khoản" } }
+      }
+    },
+    "notices.outcome.other": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A decision was made about your content" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Có một quyết định về nội dung của bạn" } }
+      }
+    },
+    "notices.appeal.pending": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Your appeal is being reviewed." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Kháng nghị đang được xem xét." } }
+      }
+    },
+    "notices.appeal.upheld": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Reviewed: the decision stands." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã xem lại: quyết định được giữ nguyên." } }
+      }
+    },
+    "notices.appeal.reversed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Reviewed: the decision was reversed." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã xem lại: quyết định được đảo ngược." } }
+      }
+    },
+    "notices.appeal.cta": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Appeal" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Kháng nghị" } }
+      }
+    },
+    "notices.appeal.label": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Why do you think this is a mistake? (at least 10 characters)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Vì sao bạn cho rằng đây là nhầm lẫn? (ít nhất 10 ký tự)" } }
+      }
+    },
+    "notices.appeal.send": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Send appeal" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gửi kháng nghị" } }
+      }
+    },
+    "notices.appeal.sent": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sent. We will tell you the result in Notifications." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã gửi. Mình sẽ báo kết quả trong Thông báo." } }
+      }
+    },
+    "notices.appeal.failed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Could not send. Please try again." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa gửi được. Bạn thử lại nhé." } }
+      }
+    },
+    "notices.appeal.closed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The appeal window has closed." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã quá thời hạn kháng nghị." } }
+      }
+    },
+    "notices.ruleGroup.spam": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Spam" } }, "vi": { "stringUnit": { "state": "translated", "value": "Spam" } } } },
+    "notices.ruleGroup.harassment": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Harassment and bullying" } }, "vi": { "stringUnit": { "state": "translated", "value": "Quấy rối và bắt nạt" } } } },
+    "notices.ruleGroup.hate": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Hate" } }, "vi": { "stringUnit": { "state": "translated", "value": "Thù ghét" } } } },
+    "notices.ruleGroup.sexual": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Sensitive / sexual content" } }, "vi": { "stringUnit": { "state": "translated", "value": "Nội dung nhạy cảm / tình dục" } } } },
+    "notices.ruleGroup.violence_selfharm": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Violence and self-harm" } }, "vi": { "stringUnit": { "state": "translated", "value": "Bạo lực và tự hại" } } } },
+    "notices.ruleGroup.scam_misinfo": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Scams and harmful misinformation" } }, "vi": { "stringUnit": { "state": "translated", "value": "Lừa đảo và thông tin sai gây hại" } } } },
+    "notices.ruleGroup.impersonation": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Impersonation" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mạo danh" } } } },
+    "notices.ruleGroup.ip_privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Copyright and privacy" } }, "vi": { "stringUnit": { "state": "translated", "value": "Bản quyền và quyền riêng tư" } } } },
+    "notices.ruleGroup.illegal_goods": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Illegal goods and services" } }, "vi": { "stringUnit": { "state": "translated", "value": "Hàng và dịch vụ trái pháp luật" } } } },
+    "notices.ruleGroup.child_safety": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Child safety" } }, "vi": { "stringUnit": { "state": "translated", "value": "An toàn trẻ em" } } } },
     "history.segment.all": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "All" } },

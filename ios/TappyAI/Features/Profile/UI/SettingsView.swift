@@ -250,7 +250,8 @@ struct ProfileSettingsView: View {
                     if isSignedIn {
                         divider
                         row(id: "notices", icon: "bell.badge.fill", accent: 0xF59E0B, labelKey: "settings.notices", desc: "settings.notices.desc") {
-                            if let url = URL(string: TappyShare.canonicalOrigin + "/profile/notices") { UIApplication.shared.open(url) }
+                            // In the app (App Review 1.2: an appeal path inside the app), not the web page.
+                            router.push(ProfileDestination.moderationNotices, on: .profile)
                         }
                     }
                 }

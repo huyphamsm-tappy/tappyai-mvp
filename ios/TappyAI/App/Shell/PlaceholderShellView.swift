@@ -218,6 +218,8 @@ struct PlaceholderShellView: View {
                         GroupDiningView(deps: deps)
                     case .blockedAccounts:
                         BlockedAccountsView(deps: deps)
+                    case .moderationNotices:
+                        ModerationNoticesView(deps: deps)
                     }
                 }
         default:
