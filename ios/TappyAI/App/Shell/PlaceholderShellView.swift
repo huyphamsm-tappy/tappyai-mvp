@@ -62,6 +62,30 @@ struct PlaceholderShellView: View {
                                     .accessibilityLabel(Text(NSLocalizedString("account.title", comment: "")))
                                 }
                             }
+                            // The bell (owner UAT: «thông báo có 2 tin nhưng vào xem không biết xem ở đâu»): the red number was
+                            // on the Profile tab and the list two taps deeper. Now every tab has a bell with the same number that
+                            // opens the Inbox directly (Android has the bell on Home; the web has it in the header).
+                            if tab != .explore && session.state.isAuthenticated {
+                                ToolbarItem(placement: .navigationBarTrailing) {
+                                    Button { openInbox() } label: {
+                                        Image(systemName: "bell.fill")
+                                            .overlay(alignment: .topTrailing) {
+                                                if notificationCenter.badgeCount > 0 {
+                                                    Text(notificationCenter.badgeCount > 99 ? "99+" : "\(notificationCenter.badgeCount)")
+                                                        .font(.system(size: 10, weight: .bold))
+                                                        .foregroundStyle(.white)
+                                                        .padding(.horizontal, 4)
+                                                        .frame(minWidth: 16, minHeight: 16)
+                                                        .background(Capsule().fill(Color.red))
+                                                        .offset(x: 9, y: -8)
+                                                }
+                                            }
+                                    }
+                                    .accessibilityLabel(Text("notif.bell"))
+                                    .accessibilityValue(Text(verbatim: notificationCenter.badgeCount > 0 ? "\(notificationCenter.badgeCount)" : ""))
+                                    .accessibilityIdentifier("inbox-bell")
+                                }
+                            }
                             #if DEBUG
                             if tab != .explore && !UITestLaunch.isAppStoreShot {
                                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -227,6 +251,13 @@ struct PlaceholderShellView: View {
         default:
             PlaceholderTabView(tab: tab)
         }
+    }
+
+    /// The bell: the Inbox ("Tin nhắn | Thông báo") on the Profile stack, from whichever tab the person is on.
+    private func openInbox() {
+        router.popToRoot(on: .profile)
+        router.switchTo(.profile)
+        router.push(ProfileDestination.notificationsInbox, on: .profile)
     }
 
     private func accountTapped() {

@@ -15232,6 +15232,12 @@
         }
       }
     },
+    "notif.bell": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Notifications" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thông báo" } }
+      }
+    },
     "notif.inbox.empty": {
       "extractionState": "manual",
       "localizations": {
