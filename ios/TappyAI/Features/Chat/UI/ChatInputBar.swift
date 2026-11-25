@@ -151,12 +151,8 @@ struct ChatInputBar: View {
                         .font(TappyFont.body)
                         .foregroundStyle(ChatTheme.text)
                         .lineLimit(1...8)
-                        .padding(.horizontal, Spacing.md)
-                        .padding(.vertical, 14)
-                        .frame(minHeight: 52)   // a roomier box (owner UAT 25/11: «khung chat ở dưới nhỏ, cần làm rộng ra»)
-                        .background(ChatTheme.panel)
-                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(ChatTheme.border, lineWidth: 1))
+                        .padding(.vertical, 12)
+                        .frame(minHeight: 44)
                         .focused($isFocused)
                         .accessibilityIdentifier("chat-input")
                         .disabled(isStreaming)
@@ -183,9 +179,10 @@ struct ChatInputBar: View {
                         Image(systemName: "mic.fill")
                             .font(.system(size: 18))
                             .foregroundStyle(isListening ? .white : Color.orange)
-                            .frame(width: 52, height: 52)
-                            .background(isListening ? Color.orange : ChatTheme.panel)
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .frame(width: 44, height: 44)
+                            .background(isListening ? Color.orange : Color.clear)
+                            .clipShape(Circle())
+                            .contentShape(Circle())
                     }
                     .buttonStyle(.plain)
                     .disabled(isStreaming)
@@ -197,21 +194,21 @@ struct ChatInputBar: View {
                         Button(action: onStop) {
                             Image(systemName: "stop.fill")
                                 .font(.system(size: 14))
-                                .foregroundStyle(TappyColor.textPrimary)
-                                .frame(width: 52, height: 52)
-                                .background(ChatTheme.panel)
-                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .foregroundStyle(ChatTheme.background)
+                                .frame(width: 44, height: 44)
+                                .background(ChatTheme.text)
+                                .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(Text("chat.stop"))
                     } else {
                         Button(action: sendAndEndEditing) {
-                            Image(systemName: "paperplane.fill")
-                                .font(.system(size: 18))
+                            Image(systemName: "arrow.up")
+                                .font(.system(size: 18, weight: .bold))
                                 .foregroundStyle(.white)
-                                .frame(width: 52, height: 52)
+                                .frame(width: 44, height: 44)
                                 .background(canSend ? ChatTheme.userBubble : ChatTheme.userBubble.opacity(0.4))
-                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
                         .disabled(!canSend)
@@ -219,7 +216,16 @@ struct ChatInputBar: View {
                         .accessibilityIdentifier("chat-send")
                     }
                 }
-                .padding(.horizontal, Spacing.md)
+                // ONE capsule like ChatGPT: «+», the text, the microphone and the round send button inside a single rounded
+                // field, taller and nearly full width (owner UAT 25/11: «khung chat nhỏ quá, làm giống ChatGPT»).
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .frame(minHeight: 60)
+                .background(ChatTheme.panel)
+                .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 30, style: .continuous).stroke(ChatTheme.border, lineWidth: 1))
+                .padding(.horizontal, Spacing.sm)
+                .padding(.bottom, 2)
             }
             .padding(.vertical, Spacing.xs)
             .background(ChatTheme.background)
@@ -262,12 +268,12 @@ struct ChatInputBar: View {
                 }
             }
         } label: {
+            // Inside the composer capsule (ChatGPT's layout): no box of its own.
             Image(systemName: "plus")
-                .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(ChatTheme.textSecondary)
-                .frame(width: 52, height: 52)
-                .background(ChatTheme.panel)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .font(.system(size: 22, weight: .regular))
+                .foregroundStyle(ChatTheme.text)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
         }
         .disabled(isStreaming)
         .opacity(isStreaming ? 0.4 : 1)

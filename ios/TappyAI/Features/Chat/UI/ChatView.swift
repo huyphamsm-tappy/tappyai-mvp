@@ -161,10 +161,8 @@ struct ChatView: View {
                 .transition(.opacity)
             }
         }
-        // The chat is ALWAYS dark like the web. Scoped to this screen's content and its nav bar (environment, not
-        // preferredColorScheme, which would turn the whole window dark); the modifiers below, sheets and covers, stay outside it.
-        .environment(\.colorScheme, .dark)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        // The chat follows the app's appearance (Cài đặt → Giao diện: theo hệ thống / sáng / tối); `ChatTheme` colors are
+        // adaptive, dark = the web's chat. (It used to be forced dark; the owner asked to be able to switch.)
         .toolbarBackground(ChatTheme.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)

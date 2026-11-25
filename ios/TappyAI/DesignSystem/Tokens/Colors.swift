@@ -58,19 +58,22 @@ enum TappyColor {
     }
 }
 
-/// The Chat screen is ALWAYS dark, like the web (`v3-theme dark`, globals.css `--v3-*`). Fixed colors, not adaptive:
-/// added for the chat only; no existing token changes.
+/// The Chat screen's colors. Dark = the web's chat (`v3-theme dark`, globals.css `--v3-*`); light = the web's light `--v3-*`.
+/// The screen follows the app's appearance setting (Cài đặt → Giao diện: theo hệ thống / sáng / tối; owner UAT 25/11:
+/// «khung chat màu đen có thể chỉnh sáng tối được không»). Added for the chat only; no existing token changes.
 enum ChatTheme {
     /// `--v3-bg`
-    static let background = Color(hex: 0x0A0F1C)
+    static let background = TappyColor.dynamic(light: 0xF5F7FA, dark: 0x0A0F1C)
     /// `--v3-panel` (composer, cards)
-    static let panel = Color(hex: 0x111827)
+    static let panel = TappyColor.dynamic(light: 0xFFFFFF, dark: 0x111827)
     /// `--v3-border`
-    static let border = Color(hex: 0x1F2937)
+    static let border = TappyColor.dynamic(light: 0xE3E8EF, dark: 0x1F2937)
     /// `--v3-text`
-    static let text = Color(hex: 0xF3F4F6)
+    static let text = TappyColor.dynamic(light: 0x111827, dark: 0xF3F4F6)
     /// `--v3-text-secondary`
-    static let textSecondary = Color(hex: 0xDCE2EC)
+    static let textSecondary = TappyColor.dynamic(light: 0x4B5563, dark: 0xDCE2EC)
+    /// The opening greeting line: the web's gold on dark, a deeper amber on light so it can be read.
+    static let greeting = TappyColor.dynamic(light: 0xB45309, dark: 0xFFC83D)
     /// `--v3-interactive`: the person's own bubble
     static let userBubble = Color(hex: 0x0062CC)
     /// The user bubble's corners: the bottom-right one nearly square (web `rounded-br-[4px]`).
@@ -78,5 +81,5 @@ enum ChatTheme {
     static let userBubbleSquareCorner: CGFloat = 4
     /// Quote / callout block (web ArticleAnswer, dark): orange bar on a dark amber ground.
     static let quoteBar = Color(hex: 0xFF9500)
-    static let quoteBackground = Color(hex: 0x2A2113)
+    static let quoteBackground = TappyColor.dynamic(light: 0xFFF4E5, dark: 0x2A2113)
 }

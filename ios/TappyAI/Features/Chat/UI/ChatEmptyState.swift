@@ -19,7 +19,7 @@ struct ChatEmptyState: View {
                 TappyAvatar(size: 112)
                 Text(verbatim: greeting)
                     .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(Color(hex: 0xFFC83D))
+                    .foregroundStyle(ChatTheme.greeting)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, Spacing.md)
