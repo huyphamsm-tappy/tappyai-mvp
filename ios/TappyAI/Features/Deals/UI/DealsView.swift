@@ -117,6 +117,8 @@ struct DealsView: View {
         ScrollView {
             VStack(spacing: Spacing.sm) {
                 askHero(partners: vm.deals.map(\.partnerName).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } })
+                // The partners first (their links carry the server's tracking), then the deals.
+                if !vm.partnerCards.isEmpty { partnerSection }
                 ForEach(vm.deals) { deal in
                     dealCard(deal)
                 }

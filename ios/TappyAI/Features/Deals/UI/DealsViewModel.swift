@@ -18,15 +18,24 @@ final class DealsViewModel: AppObservableObject {
 
     func load(lang: String) async {
         state = .loading
+        // Web (owner 20/11/2026): the page draws only the deals of Accesstrade, Lazada, Agoda and Vexere.
+        // The partner cards (the booking partners with the server's tracked links) are ALWAYS loaded and shown first:
+        // owner UAT 25/11, «tập trung vào ưu đãi của partner». A failure of one list does not hide the other (web
+        // `DealsView.tsx` swallows the deals error and still loads the cards); only when both fail is it an error.
+        async let cardsTask = service.fetchPartnerCards(lang: lang)
+        var loadedDeals: [PartnerDeal] = []
+        var dealsFailed = false
         do {
-            // Web (owner 20/11/2026): the page draws only the deals of Accesstrade, Lazada, Agoda and Vexere.
-            deals = try await service.fetchDeals(lang: lang).filter { DealPartnerAllowlist.isAllowed($0.partnerName) }
-            partnerCards = deals.isEmpty ? await service.fetchPartnerCards(lang: lang) : []
-            state = .loaded
+            loadedDeals = try await service.fetchDeals(lang: lang).filter { DealPartnerAllowlist.isAllowed($0.partnerName) }
         } catch {
-            state = Task.isCancelled ? .idle : .failed
+            dealsFailed = true
             log.error("deals load failed: \(error)")
         }
+        let cards = await cardsTask
+        if Task.isCancelled { state = .idle; return }
+        deals = loadedDeals
+        partnerCards = cards
+        state = (dealsFailed && cards.isEmpty) ? .failed : .loaded
     }
 
     func openDeal(_ deal: PartnerDeal) {
