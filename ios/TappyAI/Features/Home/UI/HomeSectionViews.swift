@@ -88,26 +88,25 @@ struct HomeGreetingSection: View {
     var body: some View {
         // The copy sets the height; the mascot, its glow and the sparkles are an overlay, so they
         // never push the ask bar down (Android draws the mascot in a 0-high unbounded slot).
+        // Web order: eyebrow → name line → the two-line contextual greeting → askSub.
         VStack(alignment: .leading, spacing: 8) {
-                Text(hero.welcome).font(.system(size: 32, weight: .heavy)).foregroundStyle(HomeV3.onSurface)
+                HStack(spacing: 8) {
+                    RoundedRectangle(cornerRadius: 6).fill(HomeV3.purple).frame(width: 19, height: 19)
+                        .overlay(Image(systemName: "sparkles").font(.system(size: 11)).foregroundStyle(.white))
+                    Text("home.v3.eyebrow").font(.system(size: 10.5, weight: .semibold)).kerning(1.6)
+                        .textCase(.uppercase).foregroundStyle(HomeV3.blue).lineLimit(2)
+                        .accessibilityIdentifier("home-eyebrow")
+                }
+                Text(hero.welcome).font(.system(size: 15, weight: .medium)).foregroundStyle(HomeV3.onSurfaceVariant)
                     .lineLimit(1).minimumScaleFactor(0.7)
                     .accessibilityIdentifier("home-welcome")
-                Text(hero.title).font(.system(size: 22, weight: .bold)).foregroundStyle(HomeV3.onSurface).lineLimit(2)
-                Text(hero.supporting ?? NSLocalizedString("home.v3.heroTagline", comment: ""))
-                    .font(.system(size: 15)).foregroundStyle(HomeV3.onSurfaceVariant).lineLimit(2)
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 6) {
-                        Circle().fill(HomeV3.statusGreen).frame(width: 7, height: 7)
-                        Text("home.v3.statusReady").font(.system(size: 13, weight: .medium)).foregroundStyle(HomeV3.statusGreen)
-                    }
-                    .padding(.horizontal, 12).padding(.vertical, 7)
-                    .background(HomeV3.statusGreen.opacity(0.16), in: Capsule())
-                    Text("home.v3.statusTraits").font(.system(size: 13, weight: .medium)).foregroundStyle(HomeV3.onSurfaceVariant)
-                        .lineLimit(1)
-                        .padding(.horizontal, 12).padding(.vertical, 7)
-                        .background(HomeV3.surfaceVariant, in: Capsule())
+                Text(hero.title).font(.system(size: 26, weight: .semibold)).foregroundStyle(HomeV3.onSurface).lineLimit(3)
+                if let supporting = hero.supporting {
+                    Text(supporting).font(.system(size: 26, weight: .semibold)).foregroundStyle(HomeV3.blue).lineLimit(3)
                 }
-                .padding(.top, 6)
+                Text("home.v3.askSub").font(.system(size: 15, weight: .light)).foregroundStyle(HomeV3.onSurfaceVariant)
+                    .lineLimit(4).padding(.top, 4)
+                    .accessibilityIdentifier("home-ask-sub")
         }
         .padding(.top, 8)
         .padding(.trailing, 110)
@@ -135,31 +134,48 @@ struct HomeGreetingSection: View {
 
 // MARK: - Ask bar
 
-/// A tall pill that opens Chat (the composer lives there, not on Home). The mic is part of the same
-/// target, so it never implies that recording starts here.
+/// A real text field (web `ask(text)`): typing and sending hands the question to Chat through
+/// `onSend` — Home never answers in place. Attach and mic stay in Chat.
 struct HomeAskBar: View {
-    let onTap: () -> Void
+    let onSend: (String) -> Void
+    @State private var text = ""
+
+    private var trimmed: String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    private func submit() {
+        let q = trimmed
+        guard !q.isEmpty else { return }
+        text = ""
+        onSend(q)
+    }
 
     var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 12) {
-                Text("home.v3.askPlaceholder").font(.system(size: 17)).foregroundStyle(HomeV3.onSurfaceVariant)
-                    .lineLimit(1).frame(maxWidth: .infinity, alignment: .leading)
-                Image(systemName: "mic.fill").font(.system(size: 20)).foregroundStyle(HomeV3.onSurfaceVariant)
-                RoundedRectangle(cornerRadius: 18).fill(HomeV3.actionGradient).frame(width: 56, height: 56)
-                    .overlay(Image(systemName: "sparkles").font(.system(size: 22, weight: .semibold)).foregroundStyle(.white))
+        HStack(spacing: 12) {
+            Image(systemName: "magnifyingglass").font(.system(size: 18)).foregroundStyle(HomeV3.onSurfaceVariant)
+                .accessibilityHidden(true)
+            TextField(LocalizedStringKey("home.v3.askPlaceholder"), text: $text)
+                .font(.system(size: 17)).foregroundStyle(HomeV3.onSurface)
+                .submitLabel(.send)
+                .onSubmit(submit)
+                .accessibilityLabel(Text("home.v3.askAction"))
+                .accessibilityIdentifier("home-ask")
+            Button(action: submit) {
+                RoundedRectangle(cornerRadius: 18).fill(HomeV3.actionGradient).frame(width: 48, height: 48)
+                    .overlay(Image(systemName: "arrow.up").font(.system(size: 20, weight: .semibold)).foregroundStyle(.white))
+                    .opacity(trimmed.isEmpty ? 0.45 : 1)
             }
-            .padding(.leading, 24).padding(.trailing, 8)
-            .frame(height: 72)
-            .background(HomeV3.surface, in: RoundedRectangle(cornerRadius: 34))
-            .overlay(RoundedRectangle(cornerRadius: 34).stroke(
-                LinearGradient(colors: [HomeV3.purple.opacity(0.55), HomeV3.blue.opacity(0.45)], startPoint: .leading, endPoint: .trailing),
-                lineWidth: 1))
-            .shadow(color: HomeV3.purple.opacity(0.45), radius: 14, y: 4)
+            .buttonStyle(.plain)
+            .disabled(trimmed.isEmpty)
+            .accessibilityLabel(Text("home.v3.askAction"))
+            .accessibilityIdentifier("home-ask-send")
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text("home.v3.askAction"))
-        .accessibilityIdentifier("home-ask")
+        .padding(.leading, 20).padding(.trailing, 8)
+        .frame(height: 64)
+        .background(HomeV3.surface, in: RoundedRectangle(cornerRadius: 32))
+        .overlay(RoundedRectangle(cornerRadius: 32).stroke(
+            LinearGradient(colors: [HomeV3.purple.opacity(0.55), HomeV3.blue.opacity(0.45)], startPoint: .leading, endPoint: .trailing),
+            lineWidth: 1))
+        .shadow(color: HomeV3.purple.opacity(0.25), radius: 10, y: 3)
     }
 }
 
@@ -421,34 +437,47 @@ struct HomeFlowLayout: Layout {
 // MARK: - Suggestions
 
 struct HomeSuggestionsSection: View {
-    struct Suggestion: Identifiable { let id: Int; let category: String; let emoji: String; var art = "" }
-    static let suggestions: [Suggestion] = {
-        let base = [
-            Suggestion(id: 1, category: "food", emoji: "🍜"), Suggestion(id: 2, category: "entertainment", emoji: "🎁"),
-            Suggestion(id: 3, category: "food", emoji: "🍜"), Suggestion(id: 4, category: "travel", emoji: "✈️"),
-            Suggestion(id: 5, category: "shopping", emoji: "🛍️"), Suggestion(id: 6, category: "entertainment", emoji: "🎮"),
-        ]
-        let art = HomeInspireArt.assign(base.map { $0.category })
-        return zip(base, art).map { s, a in var s = s; s.art = a; return s }
-    }()
+    /// One card: the prompt it sends (in the app language), its category and the art for that slot.
+    struct Suggestion: Identifiable { let id: Int; let text: String; let category: String; let emoji: String; var art = "" }
+
+    /// Web `getDynamicPrompts(hour, day, …, 5)` → `suggestions.slice(0, 5)` + `assignCardArt`.
+    /// `dayOfWeek` is JS-style (0 = Sunday), which is what `DynamicPrompts` expects.
+    static let cardCount = 5
+
+    static func make(now: Date = Date(), english: Bool, calendar: Calendar = .current) -> [Suggestion] {
+        let hour = calendar.component(.hour, from: now)
+        let dayOfWeek = calendar.component(.weekday, from: now) - 1
+        let prompts = Array(DynamicPrompts.get(hour: hour, dayOfWeek: dayOfWeek, count: cardCount).prefix(cardCount))
+        let art = HomeInspireArt.assign(prompts.map { $0.category })
+        return prompts.enumerated().map { i, p in
+            Suggestion(id: i + 1, text: english ? p.textEn : p.text, category: p.category, emoji: emoji(p.category), art: art[i])
+        }
+    }
+
+    static func emoji(_ category: String) -> String {
+        switch category {
+        case "food": return "🍜"
+        case "shopping": return "🛍️"
+        case "travel": return "✈️"
+        case "spa": return "💆"
+        default: return "🎭"
+        }
+    }
+
+    let suggestions: [Suggestion]
     let onPrompt: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HomeSmallHeading(titleKey: "home.section.suggested")
+            HomeSmallHeading(titleKey: "home.v3.forYouTitle", sparkle: true)
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-                ForEach(Self.suggestions) { s in
-                    Button { onPrompt(Self.text(s)) } label: { card(text: Self.text(s), category: s.category, emoji: s.emoji, art: s.art) }
+                ForEach(suggestions) { s in
+                    Button { onPrompt(s.text) } label: { card(text: s.text, category: s.category, emoji: s.emoji, art: s.art) }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("home-suggestion-\(s.id)")
                 }
             }
         }
-    }
-
-    static func text(_ s: Suggestion) -> String {
-        let key = "home.suggestion." + String(s.id)   // composed key: the catalogue holds one entry per suggestion id
-        return NSLocalizedString(key, comment: "")
     }
 
     static func categoryTitle(_ category: String) -> String {
@@ -519,7 +548,7 @@ struct HomeRecentConversationsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HomeSmallHeading(titleKey: "home.section.recentActivity")
+            HomeSmallHeading(titleKey: "home.v3.continue")
             switch rail {
             case .loading:
                 ProgressView().frame(maxWidth: .infinity)

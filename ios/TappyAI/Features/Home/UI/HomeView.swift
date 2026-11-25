@@ -2,9 +2,10 @@ import SwiftUI
 
 /// The V3 Home — iOS follows Android's approved layout (owner L12, 30/09), not the web's:
 ///
-///   hero → ask bar → 6 quick suggestions → recommendations rail → discover banner →
-///   Scam Shield → deals → community videos → categories → suggestions → recent activity →
-///   Smart Tools
+///   greeting → ask box → 5 dynamic suggestion cards → Smart Tools → recent conversations
+///
+/// (Owner, 2026-11: iOS Home = the web's Home. Discover banner, Scam Shield section, videos and the
+/// category row are no longer drawn; their views stay in HomeSectionViews.swift.)
 ///
 /// 🚨 HOME IS NOT CHAT. Every entry point switches to Chat (optionally with a prompt through
 /// `router.chatSeed`) or pushes an existing screen — nothing streams a reply here.
@@ -20,6 +21,9 @@ struct HomeView: View {
             profile: ProfileService(api: deps.api), session: deps.session))
     }
 
+    /// Five cards by hour/day, picked once per appearance of Home (not on every redraw).
+    @State private var suggestions: [HomeSuggestionsSection.Suggestion] = []
+
     private var hero: HeroGreeting {
         let english = localization.language.rawValue != "vi"
         return HeroGreeting.make(
@@ -34,24 +38,21 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 28) {
                 VStack(alignment: .leading, spacing: 20) {
                     HomeGreetingSection(hero: hero)
-                    HomeAskBar { router.switchTo(.chat) }
+                    HomeAskBar { ask($0) }
                 }
                 // Hidden as on the web (SHOW_RECOMMENDATIONS = false); the rail and its screen stay in place.
                 if ProductFlags.showRecommendations, case .loaded(let recs) = vm.recommendations {
                     HomeRecommendationsSection(items: recs) { router.push(HomeDestination.recommendations, on: .home) }
                 }
-                HomeDiscoverBanner { router.switchTo(.deals) }
-                HomeScamShieldSection { router.push(HomeScamShieldSection.destination, on: .home) }
-                if case .loaded(let videos) = vm.videos {
-                    HomeVideosSection(videos: videos) { router.switchTo(.explore) }
-                }
-                HomeCategoriesSection { router.push(HomeDestination.categoryChat($0), on: .home) }
-                HomeSuggestionsSection { ask($0) }
+                // Web order: ask box → "Hỏi Tappy thử" cards → Smart Tools → "Tiếp tục".
+                // Not drawn on Home any more (web has none of them): discover banner, Scam Shield
+                // section (reachable from Smart Tools), community videos, category row.
+                HomeSuggestionsSection(suggestions: suggestions) { ask($0) }
+                HomeQuickActionsSection(onOpen: { router.push($0.destination, on: .home) },
+                                      onSeeAll: { router.push(HomeDestination.smartTools, on: .home) })
                 HomeRecentConversationsSection(rail: vm.recent, language: localization.language.rawValue) {
                     router.push(HomeDestination.conversation(id: $0), on: .home)
                 }
-                HomeQuickActionsSection(onOpen: { router.push($0.destination, on: .home) },
-                                      onSeeAll: { router.push(HomeDestination.smartTools, on: .home) })
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
@@ -61,6 +62,12 @@ struct HomeView: View {
         .background(HomeV3.background.ignoresSafeArea())
         .refreshable { await vm.refresh(lang: localization.language.rawValue) }
         .task { await vm.refresh(lang: localization.language.rawValue) }
+        .onAppear { reloadSuggestions() }
+        .onChange(of: localization.language.rawValue) { _ in reloadSuggestions() }
+    }
+
+    private func reloadSuggestions() {
+        suggestions = HomeSuggestionsSection.make(english: localization.language.rawValue != "vi")
     }
 
     /// Opens Chat and sends `prompt` there (the chat view consumes `chatSeed`).

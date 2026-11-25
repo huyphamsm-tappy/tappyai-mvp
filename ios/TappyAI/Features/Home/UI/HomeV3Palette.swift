@@ -4,14 +4,16 @@ import SwiftUI
 /// own light greys in light mode; the accents (purple / blue / orange) are the identity and only
 /// shift in tone. Scoped to Home — the rest of the app keeps `TappyColor`.
 enum HomeV3 {
-    static let background = TappyColor.dynamic(light: 0xF8FAFC, dark: 0x050814)
-    static let surface = TappyColor.dynamic(light: 0xFFFFFF, dark: 0x0F1730)
-    static let surfaceVariant = TappyColor.dynamic(light: 0xF1F5F9, dark: 0x18213D)
-    static let purple = TappyColor.dynamic(light: 0x6B47FF, dark: 0x7C5CFF)
-    static let blue = TappyColor.dynamic(light: 0x1877E8, dark: 0x3391FF)
-    static let onSurface = TappyColor.dynamic(light: 0x0F172A, dark: 0xEEF1FB)
-    static let onSurfaceVariant = TappyColor.dynamic(light: 0x475569, dark: 0x98A2C4)
-    static let outline = TappyColor.dynamic(light: 0xE2E8F0, dark: 0x26314F)
+    // Values are the web's --v3-* tokens (globals.css): page, panel, panel-elevated, violet, accent,
+    // fg, fg-secondary, border — light / dark.
+    static let background = TappyColor.dynamic(light: 0xF5F7FA, dark: 0x0A0F1C)
+    static let surface = TappyColor.dynamic(light: 0xFFFFFF, dark: 0x111827)
+    static let surfaceVariant = TappyColor.dynamic(light: 0xEEF1F6, dark: 0x161F32)
+    static let purple = TappyColor.dynamic(light: 0x6D28D9, dark: 0x8B5CF6)
+    static let blue = TappyColor.dynamic(light: 0x0069DB, dark: 0x3391FF)
+    static let onSurface = TappyColor.dynamic(light: 0x111827, dark: 0xF3F4F6)
+    static let onSurfaceVariant = TappyColor.dynamic(light: 0x4B5563, dark: 0xDCE2EC)
+    static let outline = TappyColor.dynamic(light: 0xE3E8EF, dark: 0x1F2937)
     static let brandSpark = Color(hex: 0xFF9500)
     static let statusGreen = Color(hex: 0x34D399)
 

@@ -33,9 +33,9 @@ final class HomeViewModel: AppObservableObject {
     func refresh(lang: String) async {
         async let a: () = loadName()
         async let b: () = loadRecommendations()
-        async let c: () = loadVideos()
+        // Community videos are no longer on Home (web has none): no request leaves the phone for them.
         async let d: () = loadRecent()
-        _ = await (a, b, c, d)
+        _ = await (a, b, d)
     }
 
     func loadName() async {
