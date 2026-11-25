@@ -11,10 +11,18 @@ struct InboxContainerView: View {
     @State private var tab: Tab
 
     /// `initial`: a message notification's link opens on the messages tab; everything else on notifications.
-    init(deps: AppDependencies, initial: Tab = .messages) {
+    init(deps: AppDependencies, initial: Tab? = nil) {
         self.deps = deps
         _center = ObservedObject(wrappedValue: deps.notificationCenter)
-        _tab = State(initialValue: initial)
+        _tab = State(initialValue: initial ?? Self.defaultTab(notificationUnread: deps.notificationCenter.unreadCount,
+                                                              messageUnread: deps.notificationCenter.messageUnread.messages))
+    }
+
+    /// Opened from the red badge with nothing said about which list: land where the unread things are. Only unread
+    /// notifications → the notifications tab (the web's `NotificationsView` does the same); otherwise messages. Owner UAT:
+    /// «báo đỏ nhưng không tìm thấy mục báo» — the badge counted notifications while this opened on an empty messages tab.
+    static func defaultTab(notificationUnread: Int, messageUnread: Int) -> Tab {
+        notificationUnread > 0 && messageUnread == 0 ? .notifications : .messages
     }
 
     var body: some View {
