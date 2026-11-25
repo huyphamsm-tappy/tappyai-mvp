@@ -95,6 +95,26 @@ struct GroupService: Sendable {
         _ = try await api.send(endpoint, as: GroupOkResponse.self)
     }
 
+    /// `POST /api/group/{id}/vote` — one vote per person, changeable until the decision.
+    /// 409 `already_decided`: the caller reloads. The server decides the majority, never the app.
+    func vote(groupId: String, optionId: String) async throws -> GroupVoteResponse {
+        try await decide(path: "vote", groupId: groupId, optionId: optionId)
+    }
+
+    /// `POST /api/group/{id}/choose` — the leader settles a tie (everyone voted, no majority).
+    func choose(groupId: String, optionId: String) async throws -> GroupVoteResponse {
+        try await decide(path: "choose", groupId: groupId, optionId: optionId)
+    }
+
+    private func decide(path: String, groupId: String, optionId: String) async throws -> GroupVoteResponse {
+        guard DeepLinkHandler.isSafeId(groupId), DeepLinkHandler.isSafeId(optionId) else {
+            throw AppError.validation(message: "invalid id")
+        }
+        let payload = try JSONSerialization.data(withJSONObject: ["optionId": optionId])
+        let endpoint = Endpoint(path: "/api/group/\(groupId)/\(path)", method: .post, body: payload, requiresAuth: true)
+        return try await api.send(endpoint, as: GroupVoteResponse.self)
+    }
+
     /// `POST /api/group/{id}/suggest` — the creator asks the AI for places that suit everyone.
     ///
     /// Creator-only and rate-limited server-side (5/minute) because it is a paid LLM call. The

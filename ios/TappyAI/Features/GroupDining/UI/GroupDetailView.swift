@@ -10,6 +10,8 @@ struct GroupDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var confirmLeave = false
     @State private var confirmDelete = false
+    @State private var confirmResuggest = false
+    @Environment(\.openURL) private var openURL
 
     init(deps: AppDependencies, groupId: String) {
         _vm = AppStateObject(wrappedValue: GroupDetailViewModel(
@@ -160,6 +162,87 @@ struct GroupDetailView: View {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // MARK: - Suggestion cards and vote (G5–G6)
+
+    /// The three real places, with the vote. The server counts and decides; this only draws.
+    @ViewBuilder
+    private var cardsSection: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            Text("group.suggestion.title")
+                .font(TappyFont.headline)
+                .foregroundStyle(TappyColor.textPrimary)
+
+            if let chosen = vm.room?.chosenCard {
+                TappyCard {
+                    VStack(alignment: .leading, spacing: Spacing.xxs) {
+                        Text("group.vote.chosen")
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.textSecondary)
+                        Text(verbatim: chosen.name)
+                            .font(TappyFont.bodyEmphasis)
+                            .foregroundStyle(TappyColor.textPrimary)
+                    }
+                }
+            } else if let votes = vm.room?.votes {
+                Text(String(format: NSLocalizedString("group.vote.progress", comment: ""), votes.voted, votes.participants))
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                if votes.isTie {
+                    Text(LocalizedStringKey(vm.isCreator ? "group.vote.tieLeader" : "group.vote.tieWait"))
+                        .font(TappyFont.callout)
+                        .foregroundStyle(TappyColor.textSecondary)
+                }
+            }
+
+            ForEach(vm.cards) { card in
+                TappyCard {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        HStack(alignment: .top) {
+                            VStack(alignment: .leading, spacing: Spacing.xxs) {
+                                Text(verbatim: card.name + (card.rating.map { " · ⭐ \(String(format: "%.1f", $0))" } ?? ""))
+                                    .font(TappyFont.bodyEmphasis)
+                                    .foregroundStyle(TappyColor.textPrimary)
+                                if let address = card.address, !address.isEmpty {
+                                    detail(icon: "mappin.and.ellipse", value: address)
+                                }
+                            }
+                            Spacer(minLength: Spacing.xs)
+                            Text(String(format: NSLocalizedString("group.vote.count", comment: ""), vm.votes(for: card)))
+                                .font(TappyFont.caption)
+                                .foregroundStyle(TappyColor.textSecondary)
+                        }
+                        if let why = card.why, !why.isEmpty {
+                            Text(verbatim: why)
+                                .font(TappyFont.callout)
+                                .foregroundStyle(TappyColor.textPrimary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        // Opened only when it is a plain web address that passes the app's link guard.
+                        if let link = card.mapsLink.flatMap({ safeWebURL($0) }) {
+                            Button("group.vote.map") { openURL(link) }
+                                .font(TappyFont.caption)
+                        }
+                        if vm.canVote {
+                            Button(LocalizedStringKey(vm.isMyVote(card) ? "group.vote.mine" : "group.vote.button")) { vm.vote(card) }
+                                .buttonStyle(.tappy(vm.isMyVote(card) ? .secondary : .primary))
+                                .disabled(vm.isWorking)
+                        }
+                        if vm.canChoose {
+                            Button("group.vote.choose") { vm.choose(card) }
+                                .buttonStyle(.tappy(.secondary))
+                                .disabled(vm.isWorking)
+                        }
+                    }
+                }
+            }
+            if let message = vm.errorMessage {
+                Text(verbatim: message)
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.danger)
             }
         }
     }
@@ -330,7 +413,8 @@ struct GroupDetailView: View {
     @ViewBuilder
     private var suggestionSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            if let suggestion = vm.room?.suggestion, !suggestion.isEmpty {
+            if vm.hasCards { cardsSection }
+            if !vm.hasCards, let suggestion = vm.room?.suggestion, !suggestion.isEmpty {
                 TappyCard {
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text("group.suggestion.title")
@@ -347,9 +431,16 @@ struct GroupDetailView: View {
             // Creator-only, and hidden rather than disabled for everyone else: a member is not
             // "not allowed yet", they are simply not the person who asks.
             if vm.isCreator {
-                Button("group.suggest.button") { vm.requestSuggestion() }
-                    .buttonStyle(.tappy(.primary))
-                    .disabled(!vm.canSuggest)
+                // With cards on screen the same call is "suggest again", which clears the votes and the decision.
+                Button(LocalizedStringKey(vm.hasCards ? "group.resuggest.button" : "group.suggest.button")) {
+                    if vm.hasCards { confirmResuggest = true } else { vm.requestSuggestion() }
+                }
+                .buttonStyle(.tappy(vm.hasCards ? .secondary : .primary))
+                .disabled(!vm.canSuggest)
+                .confirmationDialog(Text("group.resuggest.confirm"), isPresented: $confirmResuggest, titleVisibility: .visible) {
+                    Button("group.resuggest.button", role: .destructive) { vm.requestSuggestion() }
+                    Button("common.cancel", role: .cancel) {}
+                }
                 if vm.isSuggesting {
                     HStack(spacing: Spacing.xs) {
                         TappyLoadingIndicator()

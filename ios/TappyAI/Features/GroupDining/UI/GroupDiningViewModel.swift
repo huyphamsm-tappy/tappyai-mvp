@@ -68,7 +68,7 @@ final class GroupDiningViewModel: AppObservableObject {
 /// unhelpful message.
 enum GroupErrorMessages {
     /// `manage` = the leader accepts, declines or removes someone; `leave` also covers withdrawing a request.
-    enum Action { case create, join, suggest, manage, leave, delete }
+    enum Action { case create, join, suggest, manage, leave, delete, vote }
 
     static func text(for error: Error, action: Action) -> String {
         guard let appError = error as? AppError else {
@@ -88,7 +88,7 @@ enum GroupErrorMessages {
             switch action {
             case .create: return NSLocalizedString("group.error.nameRequired", comment: "")
             case .join: return NSLocalizedString("group.error.joinRejected", comment: "")
-            case .suggest, .delete: return NSLocalizedString("group.error.generic", comment: "")
+            case .suggest, .delete, .vote: return NSLocalizedString("group.error.generic", comment: "")
             // The only 400s the server sends here: `group_full` (accepting) and `creator_cannot_leave`.
             case .manage: return NSLocalizedString("group.full", comment: "")
             case .leave: return NSLocalizedString("group.error.leaderCannotLeave", comment: "")

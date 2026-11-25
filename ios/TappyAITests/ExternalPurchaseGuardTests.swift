@@ -60,6 +60,8 @@ final class ExternalPurchaseGuardTests: XCTestCase {
             "TappyAI/Features/Chat/UI/VoiceListeningView.swift",
             "TappyAI/Features/Deals/UI/DealsView.swift",
             "TappyAI/Features/Discovery/UI/ServiceDetailView.swift",
+            // Group dining: the "open map" link of a suggested place (a plain web address through `safeWebURL`; no purchase).
+            "TappyAI/Features/GroupDining/UI/GroupDetailView.swift",
             "TappyAI/Features/Music/UI/CopyrightPolicyView.swift",
             "TappyAI/Features/Planner/UI/PlannerView.swift",
             "TappyAI/Features/Profile/Model/ProfileModels.swift",

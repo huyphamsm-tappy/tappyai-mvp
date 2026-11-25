@@ -104,7 +104,9 @@ final class GroupDetailViewModel: AppObservableObject {
                 // The server persists the suggestion on the row, so everyone in the room sees the
                 // same one. Reloading keeps this screen consistent with what they see rather than
                 // holding a local copy that only exists here.
-                room = room.map { $0.withSuggestion(response.suggestion) }
+                room = room.map { $0.withNewSuggestion(response.suggestion, cards: response.options) }
+                // With cards, read the room again for the vote state (what the web does).
+                if !response.options.isEmpty { await load() }
             } catch {
                 errorMessage = GroupErrorMessages.text(for: error, action: .suggest)
                 log.error("group suggest failed: \(error)")
@@ -171,6 +173,41 @@ final class GroupDetailViewModel: AppObservableObject {
             } catch {
                 errorMessage = GroupErrorMessages.text(for: error, action: .delete)
                 log.error("group delete failed: \(error)")
+            }
+            isWorking = false
+        }
+    }
+
+    // MARK: - Cards and vote (G5–G6)
+
+    var cards: [GroupCard] { room?.suggestionOptions ?? [] }
+    var hasCards: Bool { !cards.isEmpty }
+    var isDecided: Bool { room?.chosenOption != nil }
+    /// Anyone in the group (the leader or an accepted member) may vote; a person only asking to join may not.
+    var canVote: Bool { !isDecided && (isCreator || room?.state == "member") }
+    /// The leader settles a tie: everyone voted and no place has more than half.
+    var canChoose: Bool { isCreator && !isDecided && (room?.votes?.isTie ?? false) }
+
+    func votes(for card: GroupCard) -> Int { room?.votes?.counts[card.id] ?? 0 }
+    func isMyVote(_ card: GroupCard) -> Bool { room?.votes?.mine == card.id }
+
+    func vote(_ card: GroupCard) { decide(card, leader: false) }
+    func choose(_ card: GroupCard) { decide(card, leader: true) }
+
+    private func decide(_ card: GroupCard, leader: Bool) {
+        guard !isWorking, leader ? canChoose : canVote else { return }
+        isWorking = true
+        errorMessage = nil
+        Task {
+            do {
+                if leader { _ = try await service.choose(groupId: groupId, optionId: card.id) }
+                else { _ = try await service.vote(groupId: groupId, optionId: card.id) }
+                await load()   // the server counts; the app shows what it says
+            } catch {
+                // 409 already_decided / not_allowed_yet: someone else settled it first — show the new state.
+                if case AppError.network(let status, _) = error, status == 409 { await load() }
+                else { errorMessage = GroupErrorMessages.text(for: error, action: .vote) }
+                log.error("group vote failed: \(error)")
             }
             isWorking = false
         }

@@ -11154,6 +11154,83 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Trưởng nhóm không rời nhóm được — hãy xóa nhóm." } }
       }
     },
+    "group.resuggest.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Suggest again" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gợi ý lại" } }
+      }
+    },
+    "group.resuggest.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Suggesting again clears the votes and the chosen place. Continue?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gợi ý lại sẽ xóa các phiếu và quán đã chốt. Tiếp tục?" } }
+      }
+    },
+    "group.vote.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Vote for this place" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bình chọn quán này" } }
+      }
+    },
+    "group.vote.mine": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Your vote" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn đã chọn quán này" } }
+      }
+    },
+    "group.vote.count": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d votes" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d phiếu" } }
+      }
+    },
+    "group.vote.progress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d/%d people have voted. A place with more than half of the votes is chosen." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d/%d người đã bình chọn. Quán nào được hơn nửa số người chọn sẽ được chốt." } }
+      }
+    },
+    "group.vote.chosen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The group chose" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cả nhóm đã chọn" } }
+      }
+    },
+    "group.vote.tieLeader": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No place has more than half of the votes. The leader chooses for the group." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa quán nào được hơn nửa số phiếu. Trưởng nhóm chọn quán cho cả nhóm." } }
+      }
+    },
+    "group.vote.tieWait": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No place has more than half of the votes. Waiting for the leader to choose." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa quán nào được hơn nửa số phiếu. Chờ trưởng nhóm chọn quán." } }
+      }
+    },
+    "group.vote.choose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Choose this place" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chốt quán này" } }
+      }
+    },
+    "group.vote.map": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Open map" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem bản đồ" } }
+      }
+    },
     "group.title": {
       "extractionState": "manual",
       "localizations": {

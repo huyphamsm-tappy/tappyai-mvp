@@ -40,10 +40,21 @@ struct GroupRoom: Decodable, Sendable, Identifiable, Hashable {
     let pendingRequests: [GroupMember]?
     /// The group's own picture, already filtered to a servable URL by the server.
     let avatarUrl: String?
+    /// The three real places the AI chose among (empty when none yet — the plain `suggestion` text
+    /// is then the whole answer, as before).
+    let suggestionOptions: [GroupCard]
+    /// The id of the place the group settled on, once decided.
+    let chosenOption: String?
+    /// Who has voted and how (nil from a server without the vote migration).
+    let votes: GroupVotes?
 
     init(id: String, name: String?, creatorId: String?, status: String?, suggestion: String?,
          createdAt: String?, members: [GroupMember]?, state: String? = nil,
-         pendingRequests: [GroupMember]? = nil, avatarUrl: String? = nil) {
+         pendingRequests: [GroupMember]? = nil, avatarUrl: String? = nil,
+         suggestionOptions: [GroupCard] = [], chosenOption: String? = nil, votes: GroupVotes? = nil) {
+        self.suggestionOptions = suggestionOptions
+        self.chosenOption = chosenOption
+        self.votes = votes
         self.id = id
         self.name = name
         self.creatorId = creatorId
@@ -60,8 +71,20 @@ struct GroupRoom: Decodable, Sendable, Identifiable, Hashable {
     func withSuggestion(_ text: String) -> GroupRoom {
         GroupRoom(id: id, name: name, creatorId: creatorId, status: status, suggestion: text,
                   createdAt: createdAt, members: members, state: state,
-                  pendingRequests: pendingRequests, avatarUrl: avatarUrl)
+                  pendingRequests: pendingRequests, avatarUrl: avatarUrl,
+                  suggestionOptions: suggestionOptions, chosenOption: chosenOption, votes: votes)
     }
+
+    /// A fresh suggestion replaces the cards and clears the vote and the decision (what the web does).
+    func withNewSuggestion(_ text: String, cards: [GroupCard]) -> GroupRoom {
+        GroupRoom(id: id, name: name, creatorId: creatorId, status: status, suggestion: text,
+                  createdAt: createdAt, members: members, state: state,
+                  pendingRequests: pendingRequests, avatarUrl: avatarUrl,
+                  suggestionOptions: cards, chosenOption: nil, votes: nil)
+    }
+
+    /// The card the group chose, if it is one of the cards.
+    var chosenCard: GroupCard? { suggestionOptions.first { $0.id == chosenOption } }
 
     /// True when the server says this person has asked to join and the leader has not answered.
     var isPendingForMe: Bool { state == "pending" }
@@ -88,9 +111,98 @@ struct GroupOkResponse: Decodable, Sendable {
     let ok: Bool?
 }
 
-/// `POST /api/group/{id}/suggest`.
+/// One suggested place. Every fact on it was read from a real place row by the server.
+struct GroupCard: Decodable, Sendable, Identifiable, Hashable {
+    let id: String
+    let name: String
+    let address: String?
+    let rating: Double?
+    /// One sentence on why it suits this group.
+    let why: String?
+    let mapsLink: String?
+    let photoUrl: String?
+
+    enum CodingKeys: String, CodingKey { case id, name, address, rating, why, mapsLink, photoUrl }
+
+    init(id: String, name: String, address: String? = nil, rating: Double? = nil, why: String? = nil,
+         mapsLink: String? = nil, photoUrl: String? = nil) {
+        self.id = id; self.name = name; self.address = address; self.rating = rating
+        self.why = why; self.mapsLink = mapsLink; self.photoUrl = photoUrl
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        // A card with no name is not a place: the row is dropped by `lossyArray`.
+        guard let n = c.lenient(String.self, forKey: .name), !n.isEmpty else {
+            throw DecodingError.keyNotFound(CodingKeys.name, .init(codingPath: c.codingPath, debugDescription: "no name"))
+        }
+        name = n
+        address = c.lenient(String.self, forKey: .address)
+        rating = c.lenientDouble(forKey: .rating).flatMap { $0.isFinite ? $0 : nil }
+        why = c.lenient(String.self, forKey: .why)
+        mapsLink = c.lenient(String.self, forKey: .mapsLink)
+        photoUrl = c.lenient(String.self, forKey: .photoUrl)
+    }
+}
+
+/// The state of a group's vote. One vote per person, changeable until the decision; a place with
+/// MORE THAN HALF of the participants' votes is chosen by the server in the same step.
+struct GroupVotes: Decodable, Sendable, Hashable {
+    let counts: [String: Int]
+    let voted: Int
+    let participants: Int
+    let majority: String?
+    let allVoted: Bool
+    /// The card this person voted for.
+    let mine: String?
+
+    enum CodingKeys: String, CodingKey { case counts, voted, participants, majority, allVoted, mine }
+
+    init(counts: [String: Int] = [:], voted: Int = 0, participants: Int = 0, majority: String? = nil,
+         allVoted: Bool = false, mine: String? = nil) {
+        self.counts = counts; self.voted = voted; self.participants = participants
+        self.majority = majority; self.allVoted = allVoted; self.mine = mine
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        counts = c.lenient([String: Int].self, forKey: .counts, default: [:])
+        voted = min(max(c.lenientInt(forKey: .voted) ?? 0, 0), 1000)
+        participants = min(max(c.lenientInt(forKey: .participants) ?? 0, 0), 1000)
+        majority = c.lenient(String.self, forKey: .majority)
+        allVoted = c.lenient(Bool.self, forKey: .allVoted, default: false)
+        mine = c.lenient(String.self, forKey: .mine)
+    }
+
+    /// Nobody has more than half and everyone has voted: only the leader's choice can settle it.
+    var isTie: Bool { allVoted && majority == nil }
+}
+
+/// `POST /api/group/{id}/vote` and `.../choose` — the decision, if one was reached.
+struct GroupVoteResponse: Decodable, Sendable {
+    let ok: Bool?
+    let chosen: String?
+}
+
+/// `POST /api/group/{id}/suggest`. `options` are the cards; the text stays for a group whose
+/// places could not be searched.
 struct GroupSuggestionResponse: Decodable, Sendable {
     let suggestion: String
+    let options: [GroupCard]
+
+    enum CodingKeys: String, CodingKey { case suggestion, options }
+
+    init(suggestion: String, options: [GroupCard] = []) {
+        self.suggestion = suggestion
+        self.options = options
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        suggestion = try c.decode(String.self, forKey: .suggestion)
+        options = c.lossyArray(GroupCard.self, forKey: .options)
+    }
 }
 
 /// What one person answers when joining. `name` and `area` are required by the server; the rest
@@ -116,7 +228,7 @@ enum GroupLimits {
 
 /// Lenient (LenientDecoding.swift): a member that does not decode is dropped, not the room.
 extension GroupRoom {
-    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members, state, pendingRequests, avatarUrl }
+    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members, state, pendingRequests, avatarUrl, suggestionOptions, chosenOption, votes }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -130,6 +242,9 @@ extension GroupRoom {
         state = c.lenient(String.self, forKey: .state)
         pendingRequests = c.lossyArray(GroupMember.self, forKey: .pendingRequests)
         avatarUrl = c.lenient(String.self, forKey: .avatarUrl)
+        suggestionOptions = c.lossyArray(GroupCard.self, forKey: .suggestionOptions)
+        chosenOption = c.lenient(String.self, forKey: .chosenOption)
+        votes = c.lenient(GroupVotes.self, forKey: .votes)
     }
 }
 
