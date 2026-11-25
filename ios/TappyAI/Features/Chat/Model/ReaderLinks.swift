@@ -59,8 +59,29 @@ struct LinkPreview: Equatable, Sendable {
         }
         var date: Date?
         if let iso = o["publishedAt"] as? String { date = StayOfferLine.parse(iso) ?? ISO8601DateFormatter().date(from: iso) }
-        return LinkPreview(ok: true, title: text(o["title"], 200), siteName: text(o["siteName"], 80), description: text(o["description"], 600),
-                           publishedAt: date, passages: (o["passages"] as? [Any] ?? []).prefix(8).compactMap { text($0, 800) })
+        // A page's <style>/<script> text sometimes reaches the passages (owner UAT: the reader showed «@charset "UTF-8";.Modal-modalBackground{…»):
+        // anything that looks like CSS or script is dropped, whatever the server sent.
+        let description = text(o["description"], 600).flatMap { looksLikeCode($0) ? nil : $0 }
+        let passages = (o["passages"] as? [Any] ?? []).prefix(8).compactMap { text($0, 800) }.filter { !looksLikeCode($0) }
+        return LinkPreview(ok: true, title: text(o["title"], 200), siteName: text(o["siteName"], 80), description: description,
+                           publishedAt: date, passages: passages)
+    }
+
+    /// True for a text that is CSS, JavaScript or JSON-ish markup rather than something a person wrote: an at-rule start, braces with
+    /// declarations, script keywords, or a dense run of code punctuation with hardly any spaces. Ordinary prose, quotes and the odd
+    /// bracket pass.
+    static func looksLikeCode(_ s: String) -> Bool {
+        let t = s.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty else { return false }
+        let lower = t.lowercased()
+        for start in ["@charset", "@import", "@font-face", "@keyframes", "@media", "@supports", "<style", "<script", "!function", "(function", "window.", "document."] where lower.hasPrefix(start) { return true }
+        for marker in ["function(", "function (", "=>{", "var ", "const ", "{background:", "{display:", "{position:", "{margin:", "{padding:", "px;", "px}", "}.", "};"] where lower.contains(marker) { return true }
+        let braces = t.filter { $0 == "{" || $0 == "}" }.count
+        let semicolons = t.filter { $0 == ";" }.count
+        if braces >= 2 && semicolons >= 2 { return true }
+        let codePunct = t.filter { "{}();=<>[]".contains($0) }.count
+        let spaces = t.filter { $0 == " " }.count
+        return t.count >= 40 && Double(codePunct) / Double(t.count) > 0.08 && Double(spaces) / Double(t.count) < 0.08
     }
 }
 
