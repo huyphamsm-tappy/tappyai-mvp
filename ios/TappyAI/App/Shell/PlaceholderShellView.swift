@@ -14,6 +14,9 @@ struct PlaceholderShellView: View {
     @AppEnvironmentState private var notificationCenter: NotificationCenterStore
 
     @State private var showSignOut = false
+    @State private var showHistory = false
+    /// Bumped by «Cuộc trò chuyện mới»: the Chat tab root is rebuilt with an empty conversation.
+    @State private var chatEpoch = 0
     @State private var showDiagnostics = false
 
     var body: some View {
@@ -62,6 +65,18 @@ struct PlaceholderShellView: View {
                                     .accessibilityLabel(Text(NSLocalizedString("account.title", comment: "")))
                                 }
                             }
+                            // The Chat screen carries the web's two chat-workspace actions (the web's history sidebar sits beside the chat):
+                            // «Lịch sử trò chuyện» (a sheet with the history) and «Cuộc trò chuyện mới».
+                            if tab == .chat {
+                                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                                    Button { chatEpoch += 1 } label: { Image(systemName: "square.and.pencil") }
+                                        .accessibilityLabel(Text("chat.new"))
+                                        .accessibilityIdentifier("chat-new")
+                                    Button { showHistory = true } label: { Image(systemName: "clock.arrow.circlepath") }
+                                        .accessibilityLabel(Text("history.title"))
+                                        .accessibilityIdentifier("chat-history")
+                                }
+                            }
                             // The bell (owner UAT: «thông báo có 2 tin nhưng vào xem không biết xem ở đâu»): the red number was
                             // on the Profile tab and the list two taps deeper. Now every tab has a bell with the same number that
                             // opens the Inbox directly (Android has the bell on Home; the web has it in the header).
@@ -107,6 +122,16 @@ struct PlaceholderShellView: View {
             if !signedIn { router.resetAfterSignOut() }
         }
         .modifier(AIConsentSheet(consent: deps.aiConsent))
+        .sheet(isPresented: $showHistory) {
+            NavigationStack {
+                ChatHistoryView(deps: deps, onOpen: { showHistory = false })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("common.close") { showHistory = false }
+                        }
+                    }
+            }
+        }
         // «Có bản mới»: the App Store lists a newer version (suggest), or the server requires one (require).
         .appUpdatePrompt(config: deps.configService)
         // Sends any AI-consent decision the server has not accepted yet (after sign-in, or after a failed send), and each
@@ -185,7 +210,8 @@ struct PlaceholderShellView: View {
                     }
                 }
         case .chat:
-            ChatView(deps: deps)
+            // A new `id` builds a fresh ChatView and view model: «Cuộc trò chuyện mới».
+            ChatView(deps: deps).id(chatEpoch)
         case .explore:
             ReviewsFeedView(deps: deps)
         // C31 — Deals had NO case here, so a top-level tab every user can press fell through to

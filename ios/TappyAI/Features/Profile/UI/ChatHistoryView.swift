@@ -6,6 +6,8 @@ import SwiftUI
 /// and a "load more history" button at the end.
 struct ChatHistoryView: View {
     let deps: AppDependencies
+    /// Called when a conversation is opened from here (the Chat screen's history sheet closes itself with it).
+    var onOpen: (() -> Void)? = nil
     @AppEnvironmentState private var router: AppRouter
 
     @State private var conversations: [ChatHistoryItem] = []
@@ -309,6 +311,7 @@ struct ChatHistoryView: View {
     private func conversationRow(_ conv: ChatHistoryItem, in group: HistoryGroupKey) -> some View {
         HStack(spacing: Spacing.xs) {
             Button {
+                onOpen?()
                 router.push(HomeDestination.conversation(id: conv.id), on: .home)
                 router.switchTo(.home)
             } label: {

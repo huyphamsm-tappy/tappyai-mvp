@@ -15232,6 +15232,12 @@
         }
       }
     },
+    "chat.new": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "New chat" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cuộc trò chuyện mới" } }
+      }
+    },
     "notif.bell": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Notifications" } },
