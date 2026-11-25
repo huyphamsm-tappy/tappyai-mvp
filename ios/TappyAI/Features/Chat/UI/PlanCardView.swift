@@ -52,7 +52,9 @@ struct ChatPlanCardView: View {
                 costLines
                 staysPanel
                 dishesPanel
-                fullPlanCta
+                // «Xem kế hoạch đầy đủ trên Tappy» is not drawn in the app (owner UAT 25/11: the person is already in Tappy and
+                // the card above IS the full plan). It opened the plan's public web page, which makes sense for a link sent to
+                // someone else — the share sheet still publishes and shares that page. `fullPlanCta` stays for that use.
                 pdfButton
                 Text("chat.planV2.madeBy").font(.system(size: 12)).foregroundStyle(PlanPal.muted)
                     .frame(maxWidth: .infinity)

@@ -572,7 +572,7 @@ final class ScreenshotTests: XCTestCase {
         shot("48-plan-travel")
         XCTAssertTrue(scrollTo(app, "plan-overview"), "«Tổng quan chuyến đi»")
         XCTAssertTrue(scrollTo(app, "plan-highlights"), "«Điểm nổi bật»")
-        XCTAssertTrue(scrollTo(app, "plan-full-cta"), "«Xem kế hoạch đầy đủ trên Tappy»")
+        XCTAssertTrue(scrollTo(app, "plan-pdf"), "«Tải PDF» (the full-plan web link is no longer drawn in the app)")
         shot("49-plan-travel-bottom")
     }
 
