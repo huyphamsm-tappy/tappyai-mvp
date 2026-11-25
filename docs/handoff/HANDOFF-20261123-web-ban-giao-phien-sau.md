@@ -61,8 +61,12 @@ Bộ não Consultative, báo cáo nghiên cứu sâu + PDF thiết kế, kế ho
 - **Dọn sạch + đóng băng** (`d984f8f`): tắt đường hầm và máy chủ; xoá 6 app OAuth test ở Supabase UAT; xoá connector Claude.ai và `tappy-uat` ở Claude Code; xoá QR, link đăng nhập, thư mục scratch.
 - **Kiểm trước đóng băng:** toàn bộ test app 28.234 qua; `vendorCacheRule` đôi khi hết 5 giây khi chạy cả bộ (chạy riêng qua); `tsc` sạch; 17 luật kiến trúc qua. **`next build` chưa chạy lại** ở mốc này.
 
+### 4.3 Cập nhật 25/11/2026 — kiểm duyệt nội dung (commit `9242bc2`, SAU tag `web-freeze-20261123`)
+Anh Huy yêu cầu: tuân thủ chặt pháp luật Việt Nam cho nền tảng, **không có nhân lực duyệt, máy duyệt hết**. Đã làm: cổng kiểm duyệt tự động `src/lib/safety/autoModeration/` (luật từ khoá tiếng Việt + một lần gọi mô hình nhỏ, 10 nhóm theo luật; lỗi/không xác định thì KHÔNG đăng; quá 10 lần bị chặn/ngày thì khoá đăng trong ngày; nhật ký không ghi nội dung) gắn vào: bài đánh giá/bài đăng, bình luận, tên+giới thiệu hồ sơ, tên nhóm và thông tin thành viên nhóm, kế hoạch chia sẻ, và ảnh (hồ sơ, bìa, đánh giá, nhóm). ĐÃ KIỂM trên UAT với mô hình thật (chặn đúng ~16 ca xấu, cho qua đúng các ca cảnh báo/tin báo/góp ý/giáo dục). Cờ `AUTO_MODERATION_ENABLED` (BẬT trừ khi đặt đúng `false`; test app ghim `false` ở `src/test/autoModeration.setup.ts`). `plans/share` có thêm giới hạn 20/giờ. Chi tiết, khung luật (từ nguồn thứ cấp, CẦN LUẬT SƯ) và các khoảng trống: **`docs/legal/VN-PLATFORM-COMPLIANCE-20261125.md`**.
+**Khoảng trống lớn còn mở (hỏi anh/luật sư trước deploy):** xác thực số điện thoại để đăng bài (NĐ 147) chưa có; có cần giấy phép mạng xã hội không; công cụ xử lý yêu cầu gỡ bài của cơ quan chức năng 24 giờ/6 giờ chưa có (bàn duyệt admin nằm sau cờ tắt); chat AI và tin nhắn riêng (chữ) chưa lọc; ảnh tin nhắn và clip phụ thuộc quyền Moderations của khoá OpenAI; thêm một dòng vào chính sách quyền riêng tư; chưa đo tỷ lệ bỏ sót/chặn nhầm trên dữ liệu thật. Tag `web-freeze-20261123` KHÔNG gồm các thay đổi này: nếu anh muốn đóng băng lại, tạo tag mới (`web-freeze-20261125`) sau khi anh UAT.
+
 ## 5. ĐANG LÀM
-Không có việc nào dở dang. Cây git sạch tại `d984f8f`; máy chủ UAT và đường hầm đang tắt.
+Không có việc nào dở dang. Cây git sạch (HEAD `9242bc2` sau commit kiểm duyệt). Máy chủ UAT có thể đang chạy; đường hầm đang tắt.
 
 ## 6. CHƯA LÀM (theo thứ tự anh chốt)
 
