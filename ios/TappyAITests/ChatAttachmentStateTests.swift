@@ -35,6 +35,26 @@ final class ChatAttachmentStateTests: XCTestCase {
         XCTAssertNil(vm.attachError)
     }
 
+    func testAPhotoTakenWithTheCameraIsStagedAsAJpeg() async throws {
+        let vm = makeViewModel(SequencedChatStreaming([]))
+        UIGraphicsBeginImageContext(CGSize(width: 64, height: 64))
+        UIColor.orange.setFill()
+        UIRectFill(CGRect(x: 0, y: 0, width: 64, height: 64))
+        let image = try XCTUnwrap(UIGraphicsGetImageFromCurrentImageContext())
+        UIGraphicsEndImageContext()
+        await vm.attachCameraPhoto(image)
+        XCTAssertEqual(vm.stagedAttachment?.kind, .image)
+        XCTAssertEqual(vm.stagedAttachment?.mime, "image/jpeg")
+        XCTAssertNil(vm.attachError)
+    }
+
+    func testCancellingTheCameraStagesNothingAndSaysNothing() async {
+        let vm = makeViewModel(SequencedChatStreaming([]))
+        await vm.attachCameraPhoto(nil)
+        XCTAssertNil(vm.stagedAttachment)
+        XCTAssertNil(vm.attachError)
+    }
+
     func testAPhotoIsStaged() {
         let vm = makeViewModel(SequencedChatStreaming([]))
         vm.attach(mime: "image/jpeg", name: "", byteCount: 3, data: Data([0xFF, 0xD8, 0xFF]))

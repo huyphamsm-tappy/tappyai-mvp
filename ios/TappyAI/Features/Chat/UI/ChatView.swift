@@ -9,8 +9,9 @@ struct ChatView: View {
     @AppEnvironmentState private var localization: LocalizationManager
     @State private var ageScreen = false
     @State private var showVoice = false
-    // The "+" menu's «Thêm ảnh & tệp PDF»: a choice between the photo library and the Files picker.
-    @State private var showAttachChoice = false
+    // The "+" menu's three attach items (camera, photo library, Files). Each picker hangs on its OWN view below: three
+    // presentations on one view lost the photo picker (owner UAT: only a PDF could be added).
+    @State private var showCamera = false
     @State private var showPhotoPicker = false
     @State private var showPdfPicker = false
     @State private var pickedPhoto: PhotosPickerItem?
@@ -121,7 +122,13 @@ struct ChatView: View {
                         menuModes: vm.menuModes,
                         onSelectMode: { vm.selectMode($0) },
                         onClearMode: { vm.clearMode() },
-                        onAttach: { showAttachChoice = true },
+                        onAttach: { source in
+                            switch source {
+                            case .camera: showCamera = true
+                            case .photo: showPhotoPicker = true
+                            case .file: showPdfPicker = true
+                            }
+                        },
                         stagedAttachment: vm.stagedAttachment,
                         attachError: vm.attachError,
                         onRemoveAttachment: { vm.removeAttachment() }
@@ -143,19 +150,23 @@ struct ChatView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .confirmationDialog(Text("chat.composer.attach"), isPresented: $showAttachChoice, titleVisibility: .hidden) {
-            Button("chat.attach.pickPhoto") { showPhotoPicker = true }
-            Button("chat.attach.pickPdf") { showPdfPicker = true }
-            Button("common.cancel", role: .cancel) {}
-        }
-        .photosPicker(isPresented: $showPhotoPicker, selection: $pickedPhoto, matching: .images)
+        // One presentation per anchor view.
+        .background(Color.clear.photosPicker(isPresented: $showPhotoPicker, selection: $pickedPhoto, matching: .images))
         .onChange(of: pickedPhoto) { item in
             guard let item else { return }
             pickedPhoto = nil
             Task { await vm.attachPhoto(from: item) }
         }
-        .fileImporter(isPresented: $showPdfPicker, allowedContentTypes: [UTType.pdf], allowsMultipleSelection: false) { result in
+        // Files: a PDF or any picture (the web also takes .docx/.xlsx/text; the server path for those is not on iOS yet).
+        .background(Color.clear.fileImporter(isPresented: $showPdfPicker, allowedContentTypes: [UTType.pdf, UTType.image], allowsMultipleSelection: false) { result in
             Task { await vm.attachFile(from: result) }
+        })
+        .fullScreenCover(isPresented: $showCamera) {
+            CameraPicker { image in
+                showCamera = false
+                Task { await vm.attachCameraPhoto(image) }
+            }
+            .ignoresSafeArea()
         }
         .sheet(item: $vm.shareArtifact) { artifact in
             TappyShareSheet(artifact: artifact, lang: localization.language.rawValue, planShare: vm.planShare) {

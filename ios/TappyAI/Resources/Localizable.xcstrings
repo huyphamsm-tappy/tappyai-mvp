@@ -12864,6 +12864,18 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Chưa tạo được link. Bạn thử lại nhé." } }
       }
     },
+    "chat.attach.camera": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Take a photo" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chụp ảnh" } }
+      }
+    },
+    "chat.attach.pickFile": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Choose a file (PDF or picture)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chọn tệp (PDF hoặc ảnh)" } }
+      }
+    },
     "likers.title": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Likes" } },

@@ -27,8 +27,8 @@ struct ChatInputBar: View {
     var menuModes: [ChatMode] = []
     var onSelectMode: (ChatMode) -> Void = { _ in }
     var onClearMode: () -> Void = {}
-    /// Adding a photo or PDF. Nil = this build cannot attach yet: the item is not shown.
-    var onAttach: (() -> Void)? = nil
+    /// Adding a photo (camera or library) or a file. Nil = this build cannot attach yet: the items are not shown.
+    var onAttach: ((ChatAttachSource) -> Void)? = nil
     /// The photo or PDF chosen for the next question (shown above the box, with a button to remove it), and why the last one was refused.
     var stagedAttachment: ChatAttachment? = nil
     var attachError: String? = nil
@@ -253,8 +253,17 @@ struct ChatInputBar: View {
     private var plusMenu: some View {
         Menu {
             if let onAttach {
-                Button(action: onAttach) {
-                    Label(NSLocalizedString("chat.composer.attach", comment: ""), systemImage: "paperclip")
+                // Three direct items, no second dialog (the old dialog + two pickers on one view lost the photo picker).
+                if CameraPicker.isAvailable {
+                    Button { onAttach(.camera) } label: {
+                        Label(NSLocalizedString("chat.attach.camera", comment: ""), systemImage: "camera")
+                    }
+                }
+                Button { onAttach(.photo) } label: {
+                    Label(NSLocalizedString("chat.attach.pickPhoto", comment: ""), systemImage: "photo")
+                }
+                Button { onAttach(.file) } label: {
+                    Label(NSLocalizedString("chat.attach.pickFile", comment: ""), systemImage: "doc")
                 }
                 .accessibilityHint(Text("chat.composer.attachHint"))
             }

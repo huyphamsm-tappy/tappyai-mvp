@@ -184,7 +184,28 @@ final class ChatViewModel: AppObservableObject {
             attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
             return
         }
+        // A picture chosen in Files (any format the system reads: HEIC, TIFF, …) is brought to a JPEG within the
+        // server's bounds exactly like a library photo; everything else (a PDF) goes through the type and size check.
+        if let mime = picked.mime, mime.hasPrefix("image/"), let raw = picked.data {
+            guard let jpeg = await AttachmentPreparer.prepareJPEG(raw) else {
+                attachError = NSLocalizedString("chat.attach.unsupported", comment: "")
+                return
+            }
+            attach(mime: "image/jpeg", name: "", byteCount: jpeg.count, data: jpeg)
+            return
+        }
         attach(mime: picked.mime, name: picked.name, byteCount: picked.byteCount, data: picked.data)
+    }
+
+    /// A photo taken with the camera: the same JPEG preparation as a library photo.
+    func attachCameraPhoto(_ image: UIImage?) async {
+        guard let image else { return }   // cancelled
+        guard let raw = image.jpegData(compressionQuality: 0.9),
+              let jpeg = await AttachmentPreparer.prepareJPEG(raw) else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        attach(mime: "image/jpeg", name: "", byteCount: jpeg.count, data: jpeg)
     }
 
     /// The preview card's ×.
