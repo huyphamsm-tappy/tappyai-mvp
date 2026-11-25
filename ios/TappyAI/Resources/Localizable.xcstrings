@@ -12914,8 +12914,8 @@
     },
     "history.search": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Search conversations" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Tìm cuộc trò chuyện" } }
+        "en": { "stringUnit": { "state": "translated", "value": "Search your conversations..." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tìm trong các cuộc trò chuyện..." } }
       }
     },
     "history.noMatch": {
@@ -12926,8 +12926,8 @@
     },
     "history.pin": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Pin" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Ghim" } }
+        "en": { "stringUnit": { "state": "translated", "value": "Pin to the top" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ghim lên đầu danh sách" } }
       }
     },
     "history.unpin": {
@@ -12938,14 +12938,182 @@
     },
     "history.archive": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Archive" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Lưu trữ" } }
+        "en": { "stringUnit": { "state": "translated", "value": "Archive (hide from the list)" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lưu trữ (ẩn khỏi danh sách)" } }
       }
     },
     "history.restore": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Restore" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Khôi phục" } }
+        "en": { "stringUnit": { "state": "translated", "value": "Restore to the main list" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Khôi phục về danh sách chính" } }
+      }
+    },
+    "history.group.pinned": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pinned" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã ghim" } }
+      }
+    },
+    "history.group.today": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Today" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hôm nay" } }
+      }
+    },
+    "history.group.sevenDays": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Last 7 days" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "7 ngày qua" } }
+      }
+    },
+    "history.group.older": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Older" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cũ hơn" } }
+      }
+    },
+    "history.group.collapse": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Collapse group" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thu gọn nhóm" } }
+      }
+    },
+    "history.group.expand": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Expand group" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mở rộng nhóm" } }
+      }
+    },
+    "history.empty.none.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No conversations yet" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có cuộc trò chuyện nào" } }
+      }
+    },
+    "history.empty.none.desc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Start a new chat and Tappy will help you plan, find places or research in depth." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bắt đầu một cuộc trò chuyện mới để Tappy giúp bạn lên kế hoạch, tìm địa điểm hoặc nghiên cứu chuyên sâu." } }
+      }
+    },
+    "history.empty.none.action": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Start a chat" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bắt đầu cuộc trò chuyện" } }
+      }
+    },
+    "history.empty.pinned.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No pinned conversations" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có cuộc trò chuyện nào được ghim" } }
+      }
+    },
+    "history.empty.pinned.desc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Open the menu (…) on a conversation and choose \"Pin to the top\" to keep an important one up front." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nhấn vào menu (…) trên một cuộc trò chuyện rồi chọn \"Ghim lên đầu danh sách\" để giữ cuộc trò chuyện quan trọng ở trên cùng." } }
+      }
+    },
+    "history.empty.archived.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Nothing archived" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Kho lưu trữ đang trống" } }
+      }
+    },
+    "history.empty.archived.desc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Conversations you archive are kept here and can be restored at any time. Use the menu (…) and choose \"Archive\" to tidy the main list." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cuộc trò chuyện bạn lưu trữ sẽ được cất ở đây và có thể khôi phục bất cứ lúc nào. Dùng menu (…) rồi chọn \"Lưu trữ\" để ẩn bớt cuộc trò chuyện cũ khỏi danh sách chính." } }
+      }
+    },
+    "history.empty.toAll": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "See all conversations" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem tất cả cuộc trò chuyện" } }
+      }
+    },
+    "history.empty.search.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No results" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không tìm thấy kết quả" } }
+      }
+    },
+    "history.empty.search.desc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No conversation matches \"%@\". Try another keyword." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không có cuộc trò chuyện nào khớp với \"%@\". Thử từ khóa khác hoặc gõ không dấu (ví dụ: \"da lat\")." } }
+      }
+    },
+    "history.empty.search.action": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Clear search" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa tìm kiếm" } }
+      }
+    },
+    "history.more.load": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Load more history" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem thêm lịch sử" } }
+      }
+    },
+    "history.more.loading": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Loading…" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đang tải…" } }
+      }
+    },
+    "history.messageCount": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d messages" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d tin nhắn" } }
+      }
+    },
+    "history.untitled": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "New conversation" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cuộc trò chuyện mới" } }
+      }
+    },
+    "history.row.updated": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Updated %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cập nhật %@" } }
+      }
+    },
+    "history.search.clear": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Clear search" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa tìm kiếm" } }
+      }
+    },
+    "history.pinned.badge": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pinned" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã ghim" } }
+      }
+    },
+    "history.menu.delete": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete permanently…" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa vĩnh viễn…" } }
+      }
+    },
+    "history.delete.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete this conversation permanently?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa vĩnh viễn cuộc trò chuyện?" } }
+      }
+    },
+    "history.delete.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The conversation %@ and all its messages will be deleted. This cannot be undone." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cuộc trò chuyện %@ và toàn bộ tin nhắn sẽ bị xóa. Không thể khôi phục." } }
+      }
+    },
+    "history.delete.confirmButton": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete permanently" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xác nhận xóa vĩnh viễn" } }
       }
     },
     "history.title": {
@@ -27639,6 +27807,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "TappyAI có thể giúp gì cho bạn hôm nay?"
+          }
+        }
+      }
+    },
+    "home.v3.eyebrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your personal AI agent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trợ lý AI cá nhân của bạn"
+          }
+        }
+      }
+    },
+    "home.v3.askSub": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tell Tappy what you need. Tappy will find it, plan it and help you do it."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nói cho Tappy biết bạn cần gì. Tappy sẽ giúp bạn tìm, lên kế hoạch và thực hiện."
+          }
+        }
+      }
+    },
+    "home.v3.forYouTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try asking Tappy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hỏi Tappy thử"
+          }
+        }
+      }
+    },
+    "home.v3.continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục"
           }
         }
       }

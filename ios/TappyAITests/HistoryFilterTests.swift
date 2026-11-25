@@ -32,6 +32,38 @@ final class HistoryFilterTests: XCTestCase {
         XCTAssertNil(HistoryFilter.nextCursor(lastPage: [], all: [], pageSize: 40))
     }
 
+    // "Now" is 2026-11-25 10:00 in Vietnam (UTC+7) = 03:00 UTC. Today starts at 2026-11-24T17:00:00Z.
+    private var now: Date { ISO8601Timestamp.date(from: "2026-11-25T03:00:00Z")! }
+
+    func testTimeGroupUsesTheVietnamCalendarDay() {
+        // 00:30 Vietnam time on the 25th is still the 24th in UTC, but it is today for the web.
+        XCTAssertEqual(HistoryFilter.timeGroup(of: "2026-11-24T17:30:00Z", now: now), .today)
+        // 23:30 Vietnam time on the 24th is yesterday: inside the 7 days.
+        XCTAssertEqual(HistoryFilter.timeGroup(of: "2026-11-24T16:30:00Z", now: now), .sevenDays)
+        // Exactly 7 days before the start of today still counts; one second earlier does not.
+        XCTAssertEqual(HistoryFilter.timeGroup(of: "2026-11-17T17:00:00Z", now: now), .sevenDays)
+        XCTAssertEqual(HistoryFilter.timeGroup(of: "2026-11-17T16:59:59Z", now: now), .older)
+        XCTAssertEqual(HistoryFilter.timeGroup(of: "not a date", now: now), .older)
+        XCTAssertEqual(HistoryFilter.timeGroup(of: "2026-12-30T00:00:00Z", now: now), .today)
+    }
+
+    func testGroupsPutPinnedFirstOnAllAndDropEmptyOnes() {
+        let list = [
+            item("old", "Old", at: "2026-10-01T00:00:00Z"),
+            item("t1", "T1", at: "2026-11-25T01:00:00Z"),
+            item("t2", "T2", at: "2026-11-25T02:00:00Z"),
+            item("p", "P", pinned: true, at: "2026-10-02T00:00:00Z"),
+        ]
+        let all = HistoryFilter.groups(list, segment: .all, now: now)
+        XCTAssertEqual(all.map(\.key), [.pinned, .today, .older])
+        XCTAssertEqual(all[0].items.map(\.id), ["p"])
+        XCTAssertEqual(all[1].items.map(\.id), ["t2", "t1"], "newest first inside a group")
+        // On the other tabs a pinned row is grouped by its day like any other.
+        let pinnedTab = HistoryFilter.groups(list.filter(\.isPinned), segment: .pinned, now: now)
+        XCTAssertEqual(pinnedTab.map(\.key), [.older])
+        XCTAssertTrue(HistoryFilter.groups([], segment: .all, now: now).isEmpty)
+    }
+
     func testRowsReadTheFlagsAndAnOldServerReadsFalse() throws {
         let rows = try ResponseDecoder.json.decode(LossyList<ChatHistoryItem>.self, from: Data(
             #"[{"id":"a","title":"A","updated_at":"2026-11-20T00:00:00Z","is_pinned":true,"is_archived":false},{"id":"b","title":"B","updated_at":"2026-11-20T00:00:00Z"}]"#.utf8)).items
