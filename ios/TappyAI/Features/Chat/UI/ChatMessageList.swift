@@ -458,7 +458,9 @@ private struct AssistantBubble: View {
                 // The place decision. Rendered only once streaming ends, like every other
                 // structured block: a half-arrived card is not a card, and showing one mid-stream
                 // is how partial JSON reached users in the first place.
-                if !places.isEmpty, !isStreaming {
+                // A reply that already carries its plan (the stops, the stays and the dishes are in it) does not repeat its places
+                // below the plan: owner UAT 26/11 — «đã có plan rồi còn kéo thêm cards ở dưới làm gì».
+                if !places.isEmpty, !isStreaming, plan == nil {
                     PlaceCardsView(places: places, mapsSearchURL: placesMapsURL, shown: placesShown)
                 }
 
