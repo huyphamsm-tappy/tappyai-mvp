@@ -4,7 +4,7 @@
  * sound, and the browser's autoplay unlock never brings the sound back while the viewer chose silence.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, cleanup, fireEvent } from '@testing-library/react'
+import { render, cleanup, fireEvent, act } from '@testing-library/react'
 
 beforeEach(() => {
   cleanup()
@@ -13,7 +13,7 @@ beforeEach(() => {
   window.HTMLMediaElement.prototype.pause = vi.fn()
 })
 
-const unlock = () => window.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+const unlock = () => act(() => { window.dispatchEvent(new MouseEvent('click', { bubbles: true })) })
 
 describe('per-clip mute toggle', () => {
   it('muting silences a playing clip, later taps do not bring the sound back, unmuting does', async () => {
@@ -31,6 +31,39 @@ describe('per-clip mute toggle', () => {
 
     fireEvent.click(getByTestId('video-mute-toggle'))
     expect(video.muted).toBe(false)
+  })
+
+  it('the choice survives leaving the clip and coming back (the player is unmounted when swiped away)', async () => {
+    const { default: VideoPlayer } = await import('./VideoPlayer')
+    const first = render(<VideoPlayer url="https://x/a.mp4" active />)
+    ;(first.container.querySelector('video') as HTMLVideoElement).dispatchEvent(new Event('canplay'))
+    unlock()
+    fireEvent.click(first.getByTestId('video-mute-toggle')) // mute clip A
+    first.unmount()
+
+    const other = render(<VideoPlayer url="https://x/b.mp4" active />) // clip B keeps its sound
+    const vb = other.container.querySelector('video') as HTMLVideoElement
+    vb.dispatchEvent(new Event('canplay'))
+    expect(vb.muted).toBe(false)
+    other.unmount()
+
+    const back = render(<VideoPlayer url="https://x/a.mp4" active />) // back to clip A: still silent
+    const va = back.container.querySelector('video') as HTMLVideoElement
+    va.dispatchEvent(new Event('canplay'))
+    unlock()
+    expect(va.muted).toBe(true)
+  })
+
+  it('before the first tap the button says the clip is silent, and its tap turns the sound ON (not off)', async () => {
+    const { default: VideoPlayer } = await import('./VideoPlayer')
+    const { container, getByTestId } = render(<VideoPlayer url="https://x/c.mp4" active />)
+    const video = container.querySelector('video') as HTMLVideoElement
+    video.dispatchEvent(new Event('canplay'))
+    expect(video.muted).toBe(true) // browser autoplay rule
+    expect(getByTestId('video-mute-toggle').getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(getByTestId('video-mute-toggle'))
+    expect(video.muted).toBe(false)
+    expect(getByTestId('video-mute-toggle').getAttribute('aria-pressed')).toBe('false')
   })
 
   it('muting one clip leaves the other clip with its sound', async () => {

@@ -67,7 +67,15 @@ const defaultLoadHls = async (): Promise<HlsCtorLike | null> => {
   const mod = await import('hls.js')
   return (mod.default ?? null) as unknown as HlsCtorLike | null
 }
-const defaultNative = (v: HTMLVideoElement): boolean => typeof v.canPlayType === 'function' && v.canPlayType('application/vnd.apple.mpegurl') !== ''
+// Native HLS only where it is dependable: Safari and every iOS browser (WebKit). Chromium browsers (Chrome, Edge) now answer canPlayType('application/vnd.apple.mpegurl')
+// with "maybe" too, but their native player failed on this video (MEDIA_ERR_SRC_NOT_SUPPORTED, measured on production 26/11/2026 while the manifest, playlists and segments
+// were all 200) and cannot send the CDN cookie in the credentials mode we need. They go through hls.js, as designed.
+const defaultNative = (v: HTMLVideoElement): boolean => {
+  if (typeof v.canPlayType !== 'function' || v.canPlayType('application/vnd.apple.mpegurl') === '') return false
+  const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+  const chromium = /\b(Chrome|Chromium|Edg|OPR)\//.test(ua) && !/\b(CriOS|FxiOS|EdgiOS)\//.test(ua)
+  return !chromium
+}
 
 interface PlaybackAnswer { manifestUrl: string; ttlSeconds: number }
 
