@@ -67,7 +67,8 @@ describe('guard — every scheduler route uses it', () => {
     // 27 with cron/tvi-maintain (TVI promotion + coverage report, 20/11/2026): flag-gated (TVI_MAINTAIN), cron-secret guarded, NOT scheduled in vercel.json.
     // 28 with cron/tvi-ingest (TVI official-content ingestion, 20/11/2026): flag-gated (TVI_INGEST), cron-secret guarded, NOT scheduled in vercel.json, curated list empty.
     // 29 with cron/takedown-clock (watch on the legal clock of authority takedown requests, 25/11/2026): flag-gated (MODERATION_ADMIN_ENABLED), cron-secret guarded (checked by the it.each below), scheduled four times a day in vercel.json.
-    expect(routes.length).toBe(29)
+    // 30 with cron/deal-ingest (Accesstrade promotions for Lazada and Vexere -> partner_deals, 26/11/2026): cron-secret guarded (checked by the it.each below), scheduled daily in vercel.json.
+    expect(routes.length).toBe(30)
   })
 
   it.each(routes)('%s', (file) => {
