@@ -331,18 +331,13 @@ final class CreateReviewViewModel: AppObservableObject {
     /// Returns true when the pipeline handled the clip (success OR a shown error), false when the server says the feature is off
     /// (or the file type is not one the new route takes) and the legacy upload must run.
     private func runExploreUpload(_ explore: ExploreVideoUploader, sourceURL: URL, thumbnailURL: String) async throws -> Bool {
-        // A big clip is made smaller first (best effort, 720p): the upload over the phone's network was the long wait (owner UAT 26/11).
-        // The step stays «processing the video» while it is exported.
-        let smaller = await ClipTranscoder.smallerCopy(of: sourceURL)
-        defer { if let smaller { try? FileManager.default.removeItem(at: smaller) } }
-        try Task.checkCancellation()
-        let source = smaller ?? sourceURL
-        let ext = source.pathExtension.isEmpty ? "mp4" : source.pathExtension.lowercased()
+        // The clip goes up as the camera wrote it (owner 26/11: no compression on the phone; the server makes the 720p / 360p ladder).
+        let ext = sourceURL.pathExtension.isEmpty ? "mp4" : sourceURL.pathExtension.lowercased()
         guard let contentType = ExploreVideoUploadRules.contentType(forExtension: ext) else { return false }
 
         // Location, device and creation times are removed before the bytes leave the phone (the server refuses a clip that keeps them),
         // then the neutral copy is a temporary FILE that the PUT streams from.
-        let neutral = ClipMetadata.neutralize(try Data(contentsOf: source, options: .mappedIfSafe))
+        let neutral = ClipMetadata.neutralize(try Data(contentsOf: sourceURL, options: .mappedIfSafe))
         let prepared = FileManager.default.temporaryDirectory.appendingPathComponent("explore-\(UUID().uuidString).\(ext)")
         try neutral.write(to: prepared, options: .atomic)
         defer { try? FileManager.default.removeItem(at: prepared) }
