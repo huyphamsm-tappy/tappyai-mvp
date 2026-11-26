@@ -187,6 +187,9 @@ struct ThreadView: View {
                             .foregroundStyle(mine ? Color.white : TappyColor.textPrimary)
                     }
                 }
+                // The web's rule (ThreadView.tsx): a bubble is at most 78% of the column, so a long line wraps instead of stretching the row.
+                // iOS 16 has no container-relative frame, so the column is taken as the screen width.
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.78, alignment: .leading)
                 .padding(.horizontal, message.media != nil && message.body.isEmpty ? 6 : 12)
                 .padding(.vertical, message.media != nil && message.body.isEmpty ? 6 : 8)
                 .background(mine ? TappyColor.primary : TappyColor.surface, in: RoundedRectangle(cornerRadius: 16))
