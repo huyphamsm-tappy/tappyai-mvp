@@ -20,7 +20,9 @@ import SwiftUI
 /// Google Places content must not be stored, so a Google-sourced row persists only its identifiers
 /// and our own derived values (`mayPersist` on the server). That is a licensing outcome, not a bug,
 /// and it must never be "fixed" here by re-fetching or by inventing a value.
-struct PlaceCardsView: View {
+/// The card layout before the step-1 rework (`PlaceCardsView` in `PlaceCardsSection.swift` is the one the chat draws now). Kept for reference
+/// until the rework is signed off; nothing draws it.
+struct LegacyPlaceCardsView: View {
     let places: [PlaceCardView]
     /// «Xem tất cả trên bản đồ» — the live annotation's own Maps search URL; nil hides the footer.
     var mapsSearchURL: String? = nil

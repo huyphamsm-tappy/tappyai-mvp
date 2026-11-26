@@ -33093,6 +33093,90 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Tải câu trả lời" } }
       }
     },
+    "trip.seeMore": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "See more" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem thêm" } }
+      }
+    },
+    "trip.itinerary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Detailed itinerary" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lịch trình chi tiết" } }
+      }
+    },
+    "trip.assumptions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Assumptions" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Giả định" } }
+      }
+    },
+    "trip.duration.oneDay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d day" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d ngày" } }
+      }
+    },
+    "trip.duration.daysNights": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d days %d nights" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d ngày %d đêm" } }
+      }
+    },
+    "trip.budgetPerPerson": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Budget per person" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ngân sách mỗi người" } }
+      }
+    },
+    "trip.travelerParty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Travelling" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đi cùng" } }
+      }
+    },
+    "trip.travelerPace": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pace" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nhịp độ" } }
+      }
+    },
+    "trip.travelerInterests": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Interests" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Sở thích" } }
+      }
+    },
+    "trip.places.stays": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Places to stay" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gợi ý chỗ ở" } }
+      }
+    },
+    "trip.places.food": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Places to eat" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gợi ý quán ăn" } }
+      }
+    },
+    "trip.places.generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Suggested places" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gợi ý địa điểm" } }
+      }
+    },
     "chat.recoverFailed": {
       "extractionState": "manual",
       "localizations": {

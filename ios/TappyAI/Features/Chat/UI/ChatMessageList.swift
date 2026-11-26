@@ -133,6 +133,7 @@ struct ChatMessageList: View {
                                     ?? parsed.places.compactMap { $0.toCardView() },
                                 placesMapsURL: msg.livePlaces?.mapsSearchUrl,
                                 placesShown: msg.livePlaces?.shown,
+                                placesDomain: msg.livePlaces?.domain,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 media: parsed.media,
                                 isLastMessage: isLast,
@@ -378,6 +379,8 @@ private struct AssistantBubble: View {
     /// The «Xem tất cả trên bản đồ» link and the fold size, from the live annotation only.
     var placesMapsURL: String? = nil
     var placesShown: Int? = nil
+    /// The live decision's domain («hotel», «food», ...): it names the section of a trip answer («Gợi ý chỗ ở»).
+    var placesDomain: String? = nil
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     /// The page of a tapped link that opens in the quick-read sheet (web LinkDrawer); nil when no sheet is open.
@@ -460,10 +463,13 @@ private struct AssistantBubble: View {
                     EmergencyCardView(cards: safetyCards)
                 }
 
-                // Plan card
+                // The trip answer (step 1 of the layout rework): overview card, the stays carousel, the itinerary row, the accordions, the PDF.
+                // It spans the whole width (the 16 pt margin, not the avatar column). The places ride inside it, once the reply is complete.
                 if let plan {
-                    ChatPlanCardView(plan: plan, planJSON: planJSON, planShare: planShare, onShare: onShare,
-                                     stopImages: subjectImages?.stops ?? [:])
+                    TripAnswerView(plan: plan, stopImages: subjectImages?.stops ?? [:],
+                                   places: isStreaming ? [] : places, placesTitle: tripPlacesTitle,
+                                   mapsSearchURL: placesMapsURL, placesShown: placesShown)
+                        .answerFullBleed(!content.isEmpty)
                 }
 
                 // D1 — the shopping DECISION. Rendered only once streaming ends, like every other
@@ -472,10 +478,10 @@ private struct AssistantBubble: View {
                 // The place decision. Rendered only once streaming ends, like every other
                 // structured block: a half-arrived card is not a card, and showing one mid-stream
                 // is how partial JSON reached users in the first place.
-                // A reply that already carries its plan (the stops, the stays and the dishes are in it) does not repeat its places
-                // below the plan: owner UAT 26/11 — «đã có plan rồi còn kéo thêm cards ở dưới làm gì».
+                // A reply that carries its plan draws its places INSIDE the trip answer (above); a reply without a plan draws them here.
                 if !places.isEmpty, !isStreaming, plan == nil {
                     PlaceCardsView(places: places, mapsSearchURL: placesMapsURL, shown: placesShown)
+                        .answerFullBleed(!content.isEmpty)
                 }
 
                 // News pictures / Wikipedia subject cards (CONSULT_V3 / ANSWER_V4): only validated blocks, only
@@ -597,6 +603,14 @@ private struct AssistantBubble: View {
 
     private var attributedContent: AttributedString {
         ContentParser.renderMarkdown(content)
+    }
+
+    /// The header of the places inside a trip answer, by what the decision is about; nil for a domain the app has no word for.
+    private var tripPlacesTitle: String? {
+        let domain = (placesDomain ?? "").lowercased()
+        if ["hotel", "stay", "lodging", "accommodation"].contains(where: { domain.contains($0) }) { return NSLocalizedString("trip.places.stays", comment: "") }
+        if ["food", "restaurant", "cafe", "eat"].contains(where: { domain.contains($0) }) { return NSLocalizedString("trip.places.food", comment: "") }
+        return NSLocalizedString("trip.places.generic", comment: "")
     }
 
     /// The laid-out answer, or nil when the reply is plain prose (then the single text view above draws it, as it always did).

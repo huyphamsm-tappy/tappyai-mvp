@@ -121,6 +121,8 @@ struct PlanCardModel: Equatable {
         /// The photo the server matched to this stop (https only, never another AI product's), drawn before the key picture.
         let photoUrl: URL?
         let emoji: String
+        /// The server's `category` word for the stop («food», «hotel», ...), empty when it gave none: it picks the small symbol of a stop that has no picture.
+        var category: String = ""
         let name: String
         let description: String?
         let address: String?
@@ -182,6 +184,7 @@ struct PlanCardModel: Equatable {
                             imageKey: cleanKey(item.image),
                             photoUrl: httpsPhoto(item.photoUrl),
                             emoji: item.emoji.isEmpty ? "📍" : item.emoji,
+                            category: item.category,
                             name: named.isEmpty ? (words ?? "") : named,
                             description: named.isEmpty ? nil : words,
                             address: (address?.isEmpty == false && address != "Xem bản đồ") ? address : nil,
