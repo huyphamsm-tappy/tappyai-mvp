@@ -50,6 +50,8 @@ export default async function AdminUsersPage() {
     // "you never see a door you cannot open". The API enforces it again on
     // every request; this flag is UX, exactly like the ones above.
     correctDob: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_DOB_CORRECT),
+    // Owner 26/11/2026: give a person a paid plan. `admin` and `super_admin` (the Owner holds everything); UX only, the API enforces it again.
+    grantPlan: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_PLAN_GRANT),
   }
 
   return <UsersManager can={can} />

@@ -12,6 +12,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { UserSessionsPanel } from './UserSessionsPanel'
 import { UserNotesPanel } from './UserNotesPanel'
 import { UserDobCorrectionPanel } from './UserDobCorrectionPanel'
+import { UserPlanGrantPanel } from './UserPlanGrantPanel'
 import { GuardedSurface, useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Module 08 User Management — the Controller surface.
@@ -72,6 +73,8 @@ export interface UsersCapabilities {
    * extended to imply, permission to READ a date of birth.
    */
   correctDob: boolean
+  /** `users.plan.grant` (owner 26/11/2026): may give this account a paid plan for N days. A WRITE of access value, never of authority. */
+  grantPlan: boolean
 }
 
 const STANDING_BADGE: Record<Standing, BadgeProps['variant']> = {
@@ -447,6 +450,11 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
           all without the permission. */}
       {detail && !detailLoading && (
         <GuardedSurface><UserDobCorrectionPanel userId={detail.id} can={can.correctDob} /></GuardedSurface>
+      )}
+
+      {/* Owner 26/11/2026: give this person a paid plan for N days (no payment). Renders nothing without `users.plan.grant`. */}
+      {detail && !detailLoading && (
+        <GuardedSurface><UserPlanGrantPanel userId={detail.id} can={can.grantPlan} /></GuardedSurface>
       )}
     </div>
   )
