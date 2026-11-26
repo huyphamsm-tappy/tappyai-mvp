@@ -141,7 +141,10 @@ final class ChatResearchStateTests: XCTestCase {
         await gate.open()
     }
 
-    func testADropAfterSomeTextKeepsTheTextTheCardTheChartsAndThePicturesAndSaysFailed() async {
+    // 26/11 (owner UAT, «Tiểu sử elon»): a connection lost after some text used to end as a FAILED reply with an error banner. It now keeps the
+    // reply as it is, says «Kết nối bị gián đoạn» (`.connectionLost`) and offers «Tải câu trả lời» (the server stored the whole answer). What
+    // this test pinned before is unchanged: the text, the card, the charts and the pictures stay, and the live state is cleared.
+    func testADropAfterSomeTextKeepsTheTextTheCardTheChartsAndThePicturesAndSaysTheConnectionWasLost() async {
         let streaming = SequencedChatStreaming([.init(lines: [researchFrame(phase: "writing"), "0:\"Nửa báo cáo\"", chartsFrame, mediaFrame],
                                                       error: AppError.streaming(reason: "connection lost"))])
         let vm = makeViewModel(streaming)
@@ -151,11 +154,12 @@ final class ChatResearchStateTests: XCTestCase {
         let reply = vm.messages.last
         XCTAssertEqual(reply?.role, .assistant)
         XCTAssertEqual(reply?.content, "Nửa báo cáo")
-        XCTAssertEqual(reply?.status, .failed)
+        XCTAssertEqual(reply?.status, .complete)
         XCTAssertEqual(reply?.research?.phase, .writing)
         XCTAssertEqual(reply?.charts.count, 1)
         XCTAssertEqual(reply?.docMedia.count, 1)
-        XCTAssertNotNil(vm.error)
+        XCTAssertNil(vm.error, "no blocking error: the text on screen is kept")
+        XCTAssertEqual(vm.endNotice, .connectionLost)
         XCTAssertNil(vm.liveResearch)
         XCTAssertEqual(vm.liveDocMedia, [])
     }

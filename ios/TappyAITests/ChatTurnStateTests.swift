@@ -24,9 +24,11 @@ final class ChatTurnStateTests: XCTestCase {
 
     // MARK: 4 — retry
 
+    // 26/11: a half reply that failed for a reason other than a lost connection (here an unexpected error) keeps the old rule: it stays on
+    // screen marked as failed, and the retry replaces it. A LOST connection is `.connectionLost` (next test), not a failure.
     func testRetryAfterAHalfReplyReplacesTheBubbleAndSendsAHistoryEndingWithTheQuestion() async {
         let streaming = SequencedChatStreaming([
-            .init(lines: ["0:\"Nửa câu\""], error: AppError.streaming(reason: "cut")),
+            .init(lines: ["0:\"Nửa câu\""], error: AppError.unexpected(message: "cut")),
             .init(lines: ["0:\"Đủ câu\"", "d:{\"finishReason\":\"stop\"}"]),
         ])
         let vm = makeViewModel(streaming)
@@ -43,6 +45,31 @@ final class ChatTurnStateTests: XCTestCase {
         XCTAssertEqual(vm.messages.last?.status, .complete)
         let sent = streaming.sentMessages(at: 1)
         XCTAssertEqual(sent.map(\.role), ["user"], "the history ends with the user's question, never with the failed half reply")
+        XCTAssertEqual(sent.last?.content, "Hỏi")
+    }
+
+    // 26/11: a connection lost after some text keeps the reply and says so; asking again (the message's «answer again») still replaces the
+    // half bubble and sends a history that ends with the question.
+    func testAnswerAgainAfterALostConnectionReplacesTheBubbleAndSendsAHistoryEndingWithTheQuestion() async {
+        let streaming = SequencedChatStreaming([
+            .init(lines: ["0:\"Nửa câu\""], error: AppError.offline),
+            .init(lines: ["0:\"Đủ câu\"", "d:{\"finishReason\":\"stop\"}"]),
+        ])
+        let vm = makeViewModel(streaming)
+        vm.inputText = "Hỏi"
+        vm.send()
+        await waitUntil { !vm.isStreaming }
+        XCTAssertEqual(vm.messages.last?.content, "Nửa câu")
+        XCTAssertEqual(vm.endNotice, .connectionLost)
+        XCTAssertNil(vm.error)
+
+        vm.regenerate()
+        await waitUntil { !vm.isStreaming }
+
+        XCTAssertEqual(vm.messages.map(\.content), ["Hỏi", "Đủ câu"], "one bubble, not two")
+        XCTAssertEqual(vm.messages.last?.status, .complete)
+        let sent = streaming.sentMessages(at: 1)
+        XCTAssertEqual(sent.map(\.role), ["user"], "the history ends with the user's question, never with the half reply")
         XCTAssertEqual(sent.last?.content, "Hỏi")
     }
 
