@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -114,6 +114,13 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
   const [durationHours, setDurationHours] = useState('')
   const [confirmWord, setConfirmWord] = useState('')
   const [submitting, setSubmitting] = useState(false)
+
+  // The card (and the action form inside it) renders UNDER the table. A button on a row opened it out of sight, which read as "the button does nothing"
+  // (owner 26/11/2026): once the form is there, scroll it into the middle of the screen.
+  const actionFormRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (action && detail && !detailLoading) actionFormRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
+  }, [action, detail, detailLoading])
 
   const fmtDate = useCallback(
     (iso: string | null) => (iso ? new Date(iso).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-GB') : '—'),
@@ -440,7 +447,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
             )}
 
             {action && (
-              <div className="space-y-3 rounded-md border p-4">
+              <div ref={actionFormRef} className="space-y-3 rounded-md border p-4">
                 <p className="font-medium">{t(`admin.users.action.${action}`)}</p>
                 {action === 'ban' && (
                   <p className="text-muted-foreground text-xs">{t('admin.users.ban.warning')}</p>
