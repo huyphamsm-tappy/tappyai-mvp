@@ -270,10 +270,14 @@ export async function POST(req: NextRequest) {
       hashtags: reviewData.hashtags,
       place_name: reviewData.place_name,
       place_address: reviewData.place_address,
-      content_type: reviewData.content_type,
-      source_type: reviewData.source_type,
-      media_url: reviewData.media_url,
-      thumbnail: reviewData.thumbnail,
+      // A clip that came through the Explore pipeline was ALREADY examined there (frames, speech and on-screen text) and is only here because it
+      // was approved (inspectVideoForPost refuses anything else). This older engine cannot examine a video at all (examination INCOMPLETE ->
+      // LEGAL_REVIEW_REQUIRED -> RESTRICTED), which held every approved clip back: the first real clip (26/11/2026) was approved in 70 s and
+      // then parked. So for such a post it judges the TEXT (caption, hashtags, place) only; the media was judged by the pipeline.
+      content_type: videoReviewId ? undefined : reviewData.content_type,
+      source_type: videoReviewId ? undefined : reviewData.source_type,
+      media_url: videoReviewId ? undefined : reviewData.media_url,
+      thumbnail: videoReviewId ? undefined : reviewData.thumbnail,
     },
     new Date().toISOString(),
   )

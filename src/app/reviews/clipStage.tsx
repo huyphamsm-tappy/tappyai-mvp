@@ -325,7 +325,15 @@ export function ClipStage({
       <div className="v3-xp-state"><AlertCircle size={34} className="opacity-60" aria-hidden="true" /><p className="text-[13px]">{t('reviews.feedLoadError')}</p></div>
     )}
     {!loading && !error && count === 0 && (
-      <div className="v3-xp-state"><PlayCircle size={34} className="opacity-50" aria-hidden="true" /><p className="text-[13px]">{t('v3.explore.empty')}</p></div>
+      <>
+        <div className="v3-xp-state"><PlayCircle size={34} className="opacity-50" aria-hidden="true" /><p className="text-[13px]">{t('v3.explore.empty')}</p></div>
+        {/* The Post CTA must exist on an EMPTY Explore too (26/11/2026: with no clip yet the button vanished and nobody could post the first one).
+            Same destination as the shell's Post / Upload. */}
+        <Link href="/reviews/new" className="v3-xp-post" data-xp-post aria-label={t('v3.explore.post')}>
+          <Plus size={21} strokeWidth={2.25} aria-hidden="true" />
+          <span>{t('v3.explore.post')}</span>
+        </Link>
+      </>
     )}
 
     {!loading && !error && count > 0 && (
