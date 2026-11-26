@@ -170,6 +170,17 @@ struct TappyPlan: Equatable, Sendable, Decodable {
     let stays: [Stay]?
     /// "What to try" (web `v206.trip.dishes`): up to 6 dishes; a venue, address and price appear only for a place the turn searched.
     let dishes: [Dish]?
+    /// Plan v2 (web `planV2.ts`, `CONSULT_PLAN_V2`): who the plan is for, folded onto the plan by the server. Absent on a plan without it.
+    let traveler: Traveler?
+    /// Plan v2: what the plan took for granted because the person did not say, at most 4 (web `assumptions`).
+    let assumptions: [String]?
+
+    /// Plan v2 `traveler`: the party, the pace the plan is built for and what the person enjoys.
+    struct Traveler: Equatable, Sendable {
+        let party: String?
+        let pace: String?
+        let interests: [String]
+    }
 
     /// One line of the cost block: the server's label and its amount (a number the server wrote is kept as text).
     struct CostLine: Equatable, Sendable {
@@ -364,6 +375,7 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         case budgetTotal = "budget_total", costBreakdown = "cost_breakdown"
         case shareText = "share_text", localTips = "local_tips"
         case domain, destination, duration, tagline, highlights, stays, dishes
+        case traveler, assumptions
         case heroImage = "hero_image", budgetPerPerson = "budget_per_person"
     }
 
@@ -417,6 +429,24 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         let dishRows: [Lossy<Dish>]? = (try? c.decodeIfPresent([Lossy<Dish>].self, forKey: .dishes)) ?? nil
         let keptDishes = Array((dishRows?.compactMap(\.value) ?? []).prefix(6))
         dishes = keptDishes.isEmpty ? nil : keptDishes
+        // Plan v2: same rules as the web fold (`planV2.ts`): one line each, no link, no marker; a wrong-typed value is absent.
+        let travelerRaw = (try? c.decodeIfPresent(RawTraveler.self, forKey: .traveler)) ?? nil
+        let partyLine = TappyPlan.cleanLine(travelerRaw?.party, max: 80)
+        let paceLine = TappyPlan.cleanLine(travelerRaw?.pace, max: 80)
+        let interestLines = (travelerRaw?.interests ?? []).compactMap { TappyPlan.cleanLine($0, max: 40) }.prefix(5)
+        traveler = (partyLine == nil && paceLine == nil && interestLines.isEmpty)
+            ? nil
+            : Traveler(party: partyLine, pace: paceLine, interests: Array(interestLines))
+        let asmRaw = ((try? c.decodeIfPresent([String].self, forKey: .assumptions)) ?? nil) ?? []
+        let asm = asmRaw.compactMap { TappyPlan.cleanLine($0, max: 100) }.prefix(4)
+        assumptions = asm.isEmpty ? nil : Array(asm)
+    }
+
+    /// The raw `traveler` object as the server writes it; every field optional so a wrong type costs only that field.
+    private struct RawTraveler: Decodable {
+        let party: String?
+        let pace: String?
+        let interests: [String]?
     }
 
     /// Decodes an element or yields nil, so one malformed element does not sink the whole array.

@@ -50,6 +50,8 @@ struct ChatPlanCardView: View {
                 if !m.highlights.isEmpty { highlights(m) }
                 tips
                 costLines
+                travelerPanel
+                assumptionsPanel
                 staysPanel
                 dishesPanel
                 // «Xem kế hoạch đầy đủ trên Tappy» is not drawn in the app (owner UAT 25/11: the person is already in Tappy and
@@ -334,6 +336,33 @@ struct ChatPlanCardView: View {
                         Text(line.value).foregroundStyle(PlanPal.text)
                     }
                     .font(.system(size: 13))
+                }
+            }
+        }
+    }
+
+    /// Plan v2 «Dành cho» (web planV2 `traveler`): who the plan is built for, its pace and what the person enjoys. Drawn only when the server sent it.
+    @ViewBuilder private var travelerPanel: some View {
+        if let t = plan.traveler {
+            panel("Dành cho", id: "plan-traveler") {
+                VStack(alignment: .leading, spacing: 6) {
+                    if let party = t.party { Text(party).font(.system(size: 13)).foregroundStyle(PlanPal.text) }
+                    if let pace = t.pace { Text(pace).font(.system(size: 13)).foregroundStyle(PlanPal.muted) }
+                    if !t.interests.isEmpty {
+                        Text(t.interests.joined(separator: " · ")).font(.system(size: 12)).foregroundStyle(PlanPal.muted)
+                    }
+                }
+            }
+        }
+    }
+
+    /// Plan v2 «Giả định» (web planV2 `assumptions`): what the plan took for granted because the person did not say. Drawn only when the server sent some.
+    @ViewBuilder private var assumptionsPanel: some View {
+        if let list = plan.assumptions, !list.isEmpty {
+            panel("Giả định", id: "plan-assumptions") {
+                ForEach(Array(list.enumerated()), id: \.offset) { _, a in
+                    Text(verbatim: "• " + a).font(.system(size: 13)).foregroundStyle(PlanPal.muted)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
