@@ -172,15 +172,18 @@ private struct PlaceCardRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let image = place.image, !image.isEmpty, let url = safeWebURL(image) {
+                // The slot is as tall as the picture only while it loads or once it shows: an image that cannot be loaded leaves NO slot.
+                // Owner UAT 26/11: the card kept an empty dark block 120 pt tall above the name when the picture failed to load.
                 AsyncImage(url: url) { phase in
-                    if let img = phase.image {
-                        img.resizable().aspectRatio(contentMode: .fill)
-                    } else {
-                        Color.clear
+                    switch phase {
+                    case .success(let img):
+                        img.resizable().aspectRatio(contentMode: .fill).frame(height: 120).clipped()
+                    case .failure:
+                        EmptyView()
+                    default:
+                        Color.clear.frame(height: 120)
                     }
                 }
-                .frame(height: 120)
-                .clipped()
             }
 
             VStack(alignment: .leading, spacing: Spacing.xxs) {
