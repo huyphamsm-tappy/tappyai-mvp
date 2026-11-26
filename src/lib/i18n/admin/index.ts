@@ -196,6 +196,16 @@ export const vi: Record<string, string> = {
   'admin.dob.submit': 'Lưu ngày sinh',
   'admin.dob.done': 'Đã cập nhật ngày sinh.',
   'admin.dob.error': 'Không cập nhật được. Chưa có gì thay đổi.',
+  'admin.plan.title': 'Cấp gói',
+  'admin.plan.subtitle':
+    'Cho tài khoản này dùng một gói trả phí trong một số ngày, không cần thanh toán. Cộng dồn nếu người này đang có gói. Chỉ cấp quyền dùng, không cấp quyền quản trị. Mọi lần cấp đều được ghi lại kèm lý do.',
+  'admin.plan.planLabel': 'Gói',
+  'admin.plan.daysLabel': 'Số ngày',
+  'admin.plan.reasonLabel': 'Lý do',
+  'admin.plan.reasonPlaceholder': 'Vì sao cấp gói này (ít nhất 10 ký tự)…',
+  'admin.plan.submit': 'Cấp gói',
+  'admin.plan.done': 'Đã cấp gói. Có hiệu lực ngay.',
+  'admin.plan.error': 'Không cấp được. Chưa có gì thay đổi.',
   'admin.sessions.title': 'Phiên đăng nhập',
   'admin.sessions.subtitle':
     'Phiên của riêng tài khoản này. Không hiển thị địa chỉ IP, trình duyệt hay bất kỳ mã thông báo nào.',
@@ -892,6 +902,16 @@ export const en: Record<string, string> = {
   'admin.dob.submit': 'Save date of birth',
   'admin.dob.done': 'Date of birth updated.',
   'admin.dob.error': 'Could not update it. Nothing changed.',
+  'admin.plan.title': 'Grant a plan',
+  'admin.plan.subtitle':
+    'Give this account a paid plan for a number of days, without a payment. It stacks if the person already holds a plan. It grants use, never admin authority. Every grant is recorded with its reason.',
+  'admin.plan.planLabel': 'Plan',
+  'admin.plan.daysLabel': 'Days',
+  'admin.plan.reasonLabel': 'Reason',
+  'admin.plan.reasonPlaceholder': 'Why this plan is being granted (at least 10 characters)…',
+  'admin.plan.submit': 'Grant plan',
+  'admin.plan.done': 'Plan granted. It is active now.',
+  'admin.plan.error': 'Could not grant it. Nothing changed.',
   'admin.sessions.title': 'Sessions',
   'admin.sessions.subtitle':
     "This account's own sessions. No IP address, browser or token of any kind is shown.",

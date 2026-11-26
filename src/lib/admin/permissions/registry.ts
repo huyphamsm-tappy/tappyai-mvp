@@ -798,6 +798,20 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     defaultRoles: ['admin', 'super_admin'],
   }),
   def({
+    id: 'users.plan.grant',
+    displayName: 'Grant a plan to a user',
+    description:
+      'Give a consumer account a paid plan for a number of days, recorded with the actor and a reason (source "manual"). It stacks on a plan the person already holds. It grants ACCESS VALUE, never authority: no admin role, no permission.',
+    module: 'users',
+    capability: 'users.manage',
+    // `write`, not `security`: that category is reserved for permissions that change who holds POWER over the platform. A plan changes what one
+    // consumer account can use. `critical` because it is worth money and cannot be seen from the outside (owner 26/11/2026: the Owner grants it,
+    // and may hand it to a manager by giving them the `admin` role).
+    category: 'write',
+    riskLevel: 'critical',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
     id: 'users.date_of_birth.correct',
     displayName: 'Correct a date of birth',
     description:
@@ -926,6 +940,7 @@ export const PERMISSIONS = {
   USERS_BAN: 'users.account.ban',
   USERS_UNBAN: 'users.account.unban',
   USERS_DOB_CORRECT: 'users.date_of_birth.correct',
+  USERS_PLAN_GRANT: 'users.plan.grant',
 } as const
 
 export type KnownPermissionId = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]

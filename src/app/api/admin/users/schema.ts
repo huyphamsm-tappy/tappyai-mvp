@@ -119,6 +119,20 @@ export const CorrectDateOfBirthSchema = z
   })
   .strict()
 
+/**
+ * Grant a paid plan to one account (owner 26/11/2026). Only the plans that are sold today (`SALE_PLAN_IDS`), for 1 to 365 days, with a reason
+ * of at least 10 characters (a grant is worth money: the record has to say why; shorter than the 20 of a sanction because it is a favour, not a
+ * punishment). The server picks the idempotency key; the caller cannot choose it.
+ */
+export const GRANT_PLAN_MAX_DAYS = 365
+export const GrantPlanSchema = z
+  .object({
+    plan: z.enum(['pip', 'momo', 'coco', 'promax1m', 'promax3m']),
+    days: z.coerce.number().int().min(1, 'days must be at least 1').max(GRANT_PLAN_MAX_DAYS, `days must be at most ${GRANT_PLAN_MAX_DAYS}`),
+    reason: z.string().trim().min(10, 'reason must be at least 10 characters').max(300, 'reason must be at most 300 characters'),
+  })
+  .strict()
+
 /** One row of the user list. */
 export interface AdminUserListItem {
   id: string
