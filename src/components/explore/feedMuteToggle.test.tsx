@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 /**
- * The viewer's own mute choice (owner 26/11/2026: "watch the clip without hearing it"): a speaker button on the clip.
- * While muted nothing makes sound whatever the browser's autoplay unlock says; the choice is remembered on this device.
+ * The viewer's own mute choice (owner 26/11/2026): a speaker button on EACH clip. It silences that clip only; other clips keep their
+ * sound, and the browser's autoplay unlock never brings the sound back while the viewer chose silence.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, cleanup, fireEvent } from '@testing-library/react'
@@ -9,41 +9,39 @@ import { render, cleanup, fireEvent } from '@testing-library/react'
 beforeEach(() => {
   cleanup()
   vi.resetModules()
-  try { localStorage.clear() } catch { /* jsdom */ }
   window.HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined)
   window.HTMLMediaElement.prototype.pause = vi.fn()
 })
 
 const unlock = () => window.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-describe('feed mute toggle', () => {
-  it('muting silences an already playing clip, unmuting brings the sound back, and the choice is remembered', async () => {
+describe('per-clip mute toggle', () => {
+  it('muting silences a playing clip, later taps do not bring the sound back, unmuting does', async () => {
     const { default: VideoPlayer } = await import('./VideoPlayer')
     const { container, getByTestId } = render(<VideoPlayer url="https://x/a.mp4" active />)
     const video = container.querySelector('video') as HTMLVideoElement
     video.dispatchEvent(new Event('canplay'))
     unlock()
-    expect(video.muted).toBe(false) // unlocked: sound on
+    expect(video.muted).toBe(false)
 
     fireEvent.click(getByTestId('video-mute-toggle'))
     expect(video.muted).toBe(true)
-    expect(localStorage.getItem('tappy.feed.muted')).toBe('1')
-
-    unlock() // a later tap must NOT bring the sound back while the viewer chose silence
+    unlock()
     expect(video.muted).toBe(true)
 
     fireEvent.click(getByTestId('video-mute-toggle'))
     expect(video.muted).toBe(false)
-    expect(localStorage.getItem('tappy.feed.muted')).toBe('0')
   })
 
-  it('a remembered choice mutes the next clip from the first frame, even after the audio is unlocked', async () => {
-    localStorage.setItem('tappy.feed.muted', '1')
+  it('muting one clip leaves the other clip with its sound', async () => {
     const { default: VideoPlayer } = await import('./VideoPlayer')
-    const { container } = render(<VideoPlayer url="https://x/b.mp4" active />)
-    const video = container.querySelector('video') as HTMLVideoElement
+    const { container, getAllByTestId } = render(<><VideoPlayer url="https://x/a.mp4" active /><VideoPlayer url="https://x/b.mp4" active /></>)
+    const [a, b] = Array.from(container.querySelectorAll('video')) as HTMLVideoElement[]
+    a.dispatchEvent(new Event('canplay')); b.dispatchEvent(new Event('canplay'))
     unlock()
-    video.dispatchEvent(new Event('canplay'))
-    expect(video.muted).toBe(true)
+    expect([a.muted, b.muted]).toEqual([false, false])
+
+    fireEvent.click(getAllByTestId('video-mute-toggle')[0])
+    expect([a.muted, b.muted]).toEqual([true, false])
   })
 })

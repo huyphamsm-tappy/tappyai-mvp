@@ -61,7 +61,7 @@ export type VideoPlayerHandle = PlaybackSession
    early return) so subsequent taps keep retrying if the first attempt fails.
    After the first successful unmuted play the page gains "audio permission" and
    subsequent clips play with sound automatically. Since 26/11/2026 the viewer can
-   turn the sound off with the speaker button (see feedAudioMuted below). */
+   turn the sound off, per clip, with the speaker button (see clipMuted in the player). */
 let feedAudioUnlocked = false
 
 /**
@@ -88,30 +88,9 @@ export function consumeAudioUnlockTap(): boolean {
 const audioSubs = new Set<() => void>()
 function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch {} }) }
 
-/* ── Viewer's own mute choice (owner 26/11/2026: "watch without sound") ─────
-   Separate from the browser's autoplay unlock above: while this is true NO clip makes sound (the clip's own audio, an attached
-   sound's companion track, a YouTube embed), whatever the unlock state. The choice is remembered on this device. */
-const MUTE_KEY = 'tappy.feed.muted'
-let feedAudioMuted = false
-try { feedAudioMuted = typeof localStorage !== 'undefined' && localStorage.getItem(MUTE_KEY) === '1' } catch { /* storage blocked: sound stays on */ }
-const muteSubs = new Set<() => void>()
-export function isFeedAudioMuted(): boolean { return feedAudioMuted }
-export function setFeedAudioMuted(muted: boolean) {
-  feedAudioMuted = muted
-  try { localStorage.setItem(MUTE_KEY, muted ? '1' : '0') } catch { /* not remembered */ }
-  notifyAudio()
-  muteSubs.forEach(fn => { try { fn() } catch {} })
-}
-function useFeedAudioMuted(): boolean {
-  const [muted, setMuted] = useState(feedAudioMuted)
-  useEffect(() => {
-    const sync = () => setMuted(feedAudioMuted)
-    muteSubs.add(sync)
-    sync()
-    return () => { muteSubs.delete(sync) }
-  }, [])
-  return muted
-}
+/* ── Viewer's own mute choice, PER CLIP (owner 26/11/2026: "watch without sound", one clip at a time) ─────
+   Separate from the browser's autoplay unlock above. Each player keeps its own `clipMuted` (below): while it is true THAT clip makes no
+   sound (its own audio, an attached sound's companion track, a YouTube embed), whatever the unlock state. Other clips keep their sound. */
 if (typeof window !== 'undefined') {
   window.addEventListener('click', () => {
     unlockTapPending = !feedAudioUnlocked
@@ -131,6 +110,15 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   // Explore video pipeline: a post whose media_url is an HLS manifest is played through the playback endpoint + signed CDN cookie (native HLS on Safari/iOS, hls.js elsewhere).
   // For every other URL (old MP4 posts, YouTube) this hook does nothing at all and the <video> below keeps `src={url}` exactly as before.
   const hlsPlayback = useVideoPlayback({ url, videoRef })
+  // This clip's own mute (the speaker button). A ref too, because the audio effects below read it without re-running.
+  const [clipMuted, setClipMuted] = useState(false)
+  const clipMutedRef = useRef(false)
+  const toggleClipMuted = () => {
+    const next = !clipMutedRef.current
+    clipMutedRef.current = next
+    setClipMuted(next)
+    notifyAudio() // every clip's audio hooks re-read their own flag; only this one changed
+  }
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
   const [playing, setPlaying] = useState(false)
@@ -185,7 +173,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     if (sourceType !== 'youtube') return
     const applyAudio = () => {
       if (!ytActiveRef.current || !feedAudioUnlocked) return
-      if (feedAudioMuted) { ytCmd('mute'); return }
+      if (clipMutedRef.current) { ytCmd('mute'); return }
       ytCmd('unMute'); ytCmd('setVolume', [100])
     }
     audioSubs.add(applyAudio)
@@ -235,7 +223,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
       // borrowed track carries the audio from the companion Audio. Otherwise:
       // if audio is unlocked (page gained permission from a prior click), try
       // playing unmuted, falling back to muted if the browser rejects.
-      v.muted = hasSoundRef.current && !soundFailedRef.current ? true : (!feedAudioUnlocked || feedAudioMuted)
+      v.muted = hasSoundRef.current && !soundFailedRef.current ? true : (!feedAudioUnlocked || clipMutedRef.current)
       v.play().catch(() => {
         if (feedAudioUnlocked) {
           v.muted = true
@@ -265,8 +253,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     const onChange = () => {
       const v = videoRef.current
       if (!v || !activeRef.current) return
-      // The viewer chose "no sound": keep (or put) the clip on mute whatever the unlock state.
-      if (feedAudioMuted) { if (!v.muted) v.muted = true; return }
+      // The viewer chose "no sound" for THIS clip: keep (or put) it on mute whatever the unlock state.
+      if (clipMutedRef.current) { if (!v.muted) v.muted = true; return }
       if (!feedAudioUnlocked) return
       // Attached sound replaces the video's audio — keep the <video> muted; the
       // companion effect starts the borrowed track on this same unlock signal.
@@ -315,7 +303,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     // Silent until the page's audio is unlocked (first tap) — matching a normal
     // clip's muted autoplay; then the sound plays whenever the video is playing.
     const syncPlay = () => {
-      if (feedAudioMuted) { audio.pause(); return }
+      if (clipMutedRef.current) { audio.pause(); return }
       if (soundFailedRef.current || !feedAudioUnlocked || v.paused) return
       audio.play().catch(() => {})
     }
@@ -330,7 +318,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
       soundFailedRef.current = true
       audio.pause()
       // Fall back to the clip's own audio so it is never silent.
-      if (feedAudioUnlocked && !feedAudioMuted && !userPausedRef.current) v.muted = false
+      if (feedAudioUnlocked && !clipMutedRef.current && !userPausedRef.current) v.muted = false
     }
     v.addEventListener('play', syncPlay)
     v.addEventListener('pause', onPause)
@@ -361,7 +349,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
     if (!hadSoundRef.current) return
     hadSoundRef.current = false
     const v = videoRef.current
-    if (v && activeRef.current && feedAudioUnlocked && !feedAudioMuted && !userPausedRef.current) {
+    if (v && activeRef.current && feedAudioUnlocked && !clipMutedRef.current && !userPausedRef.current) {
       v.muted = false
       v.play().catch(() => {
         v.muted = true
@@ -485,11 +473,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
             allow="autoplay; encrypted-media"
             allowFullScreen
             title="video"
-            onLoad={() => { if (feedAudioUnlocked && !feedAudioMuted) { ytCmd('unMute'); ytCmd('setVolume', [100]) } }}
+            onLoad={() => { if (feedAudioUnlocked && !clipMutedRef.current) { ytCmd('unMute'); ytCmd('setVolume', [100]) } }}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-        <MuteButton />
+        <MuteButton muted={clipMuted} onToggle={toggleClipMuted} />
       </div>
     )
   }
@@ -566,15 +554,14 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           </div>
         </div>
       )}
-      <MuteButton />
+      <MuteButton muted={clipMuted} onToggle={toggleClipMuted} />
     </div>
   )
 })
 
-/** The speaker button: one choice for the whole feed, remembered on this device. Its tap never reaches the feed's gestures (no pause, no like). */
-function MuteButton() {
+/** The speaker button of ONE clip. Its tap never reaches the feed's gestures (no pause, no like). */
+function MuteButton({ muted, onToggle }: { muted: boolean; onToggle: () => void }) {
   const { t } = useTranslation()
-  const muted = useFeedAudioMuted()
   const label = t(muted ? 'video.player.soundOn' : 'video.player.soundOff')
   return (
     <button
@@ -583,7 +570,7 @@ function MuteButton() {
       aria-label={label}
       aria-pressed={muted}
       title={label}
-      onClick={e => { e.stopPropagation(); setFeedAudioMuted(!muted) }}
+      onClick={e => { e.stopPropagation(); onToggle() }}
       onPointerDown={e => e.stopPropagation()}
       onTouchStart={e => e.stopPropagation()}
       className="absolute right-3 top-14 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-sm"
