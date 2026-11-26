@@ -23,11 +23,18 @@ enum VideoFileUploader {
         let request = makeRequest(to: url, contentType: contentType)
         let delegate = ProgressDelegate(progress)
         let response: URLResponse
+        let started = Date()
+        let size = (try? FileManager.default.attributesOfItem(atPath: fileURL.path)[.size] as? Int) ?? nil
         do {
             (_, response) = try await URLSession.shared.upload(for: request, fromFile: fileURL, delegate: delegate)
         } catch {
+            DiagnosticSnapshot.shared.record("clip upload failed mb=\((size ?? 0) / 1_048_576) seconds=\(Int(Date().timeIntervalSince(started)))", isError: true)
             throw URLSessionAPIClient.mapTransport(error)
         }
+        // How big the file was and how long the upload took (sizes and times only): the owner copies it from the diagnostics.
+        let seconds = max(Date().timeIntervalSince(started), 0.001)
+        let megabytes = Double(size ?? 0) / 1_048_576
+        DiagnosticSnapshot.shared.record("clip upload mb=\(Int(megabytes)) seconds=\(Int(seconds)) mbPerSecond=\(String(format: "%.2f", megabytes / seconds))")
         guard let http = response as? HTTPURLResponse, isSuccess(status: http.statusCode) else {
             let status = (response as? HTTPURLResponse)?.statusCode
             throw AppError.network(status: status, code: "upload_put_failed")

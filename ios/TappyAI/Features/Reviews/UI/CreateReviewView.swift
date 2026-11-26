@@ -203,6 +203,9 @@ struct CreateReviewView: View {
             }
             .onDisappear { vm.viewDisappeared() }
             .onAppear {
+                // The Explore feed stays alive under this full-screen cover (it never "disappears"), so its clip kept playing while the person
+                // wrote a post. Owner UAT 26/11: «lúc đăng clip vẫn có âm thanh của clip khác trong mục khám phá».
+                FeedVideoPlayer.pauseAll()
                 if let soundId = preselectedSoundId {
                     vm.selectMusic(MusicSelection(trackId: soundId, startSec: 0, volume: 1.0))
                 }
