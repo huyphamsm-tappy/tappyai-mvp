@@ -52,6 +52,7 @@ export default async function AdminUsersPage() {
     correctDob: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_DOB_CORRECT),
     // Owner 26/11/2026: give a person a paid plan. `admin` and `super_admin` (the Owner holds everything); UX only, the API enforces it again.
     grantPlan: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_PLAN_GRANT),
+    revokePlan: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_PLAN_REVOKE),
   }
 
   return <UsersManager can={can} />
