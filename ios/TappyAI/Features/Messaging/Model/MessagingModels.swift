@@ -228,6 +228,34 @@ struct ChatUnread: Decodable, Equatable, Sendable {
     }
 }
 
+// MARK: - Message requests (`GET /api/messaging/requests`, MESSAGE-REQUESTS-CONTRACT)
+
+/// A conversation waiting for an answer. `incoming`: someone wrote to the caller, who does not follow them back (the "Tin nhắn chờ" tab);
+/// `outgoing`: the caller wrote first, and `remaining` is how many more messages it may send before an answer. The thread has the same shape as `/threads`.
+struct MessageRequest: Decodable, Equatable, Sendable, Identifiable {
+    let thread: ChatThreadSummary
+    let direction: String
+    let remaining: Int
+    let startedAt: String
+
+    var id: String { thread.id }
+    var isIncoming: Bool { direction == "incoming" }
+
+    private enum CodingKeys: String, CodingKey { case direction, remaining, startedAt }
+
+    init(from decoder: Decoder) throws {
+        thread = try ChatThreadSummary(from: decoder)
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        direction = c.lenient(String.self, forKey: .direction, default: "outgoing")
+        remaining = c.lenientInt(forKey: .remaining) ?? 0
+        startedAt = c.lenient(String.self, forKey: .startedAt, default: "")
+    }
+}
+
+struct MessageRequestsResponse: Decodable, Sendable {
+    let requests: [MessageRequest]
+}
+
 // MARK: - Limits
 
 enum ChatLimits {

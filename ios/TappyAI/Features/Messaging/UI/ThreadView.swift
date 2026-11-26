@@ -41,6 +41,23 @@ struct ThreadView: View {
     var body: some View {
         VStack(spacing: 0) {
             messagesArea
+            if vm.isIncomingRequest {
+                // The web's request strip: the person does not follow the caller; replying starts the conversation, «Bỏ qua» ends it quietly.
+                VStack(alignment: .leading, spacing: Spacing.xxs) {
+                    Text("msg.request.banner")
+                        .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                    Button {
+                        Task { if await vm.decline() { router.pop() } }
+                    } label: {
+                        Text("msg.request.decline")
+                            .font(TappyFont.caption.weight(.semibold)).foregroundStyle(TappyColor.primary)
+                    }
+                    .accessibilityIdentifier("request-decline")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, Spacing.md).padding(.vertical, Spacing.xs)
+                .background(TappyColor.surface)
+            }
             if let failure = vm.failure, failure != .load {
                 Text(LocalizedStringKey(failure.messageKey))
                     .font(TappyFont.caption).foregroundStyle(TappyColor.danger)
@@ -199,7 +216,13 @@ struct ThreadView: View {
 
     @ViewBuilder
     private var composer: some View {
-        if vm.locked {
+        if vm.awaitingReply {
+            Text("msg.request.waiting")
+                .font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity).padding(Spacing.md)
+                .accessibilityIdentifier("composer-waiting")
+        } else if vm.locked {
             // The same neutral sentence the web shows: the server never says whether it was a block, so neither does this screen.
             Text("msg.error.cannotSend")
                 .font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary)
@@ -236,7 +259,7 @@ struct ThreadView: View {
                             .frame(width: 44, height: 44)
                             .background(TappyColor.surface, in: RoundedRectangle(cornerRadius: 12))
                     }
-                    .disabled(vm.uploading || vm.sending)
+                    .disabled(vm.uploading || vm.sending || vm.textOnly)
                     .accessibilityLabel(Text("msg.attach"))
                     .accessibilityIdentifier("composer-attach")
 

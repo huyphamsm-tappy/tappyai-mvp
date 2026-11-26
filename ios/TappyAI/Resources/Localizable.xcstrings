@@ -33079,6 +33079,69 @@
         }
       }
     },
+    "msg.tab.requests": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Requests" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn chờ" } }
+      }
+    },
+    "msg.request.banner": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This person doesn't follow you, and you don't follow them. Reply to start chatting, or decline." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Người này chưa theo dõi lẫn nhau với bạn. Trả lời để bắt đầu trò chuyện, hoặc bỏ qua." } }
+      }
+    },
+    "msg.request.decline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Decline" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bỏ qua" } }
+      }
+    },
+    "msg.request.waiting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Wait for this person to reply." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hãy chờ người này trả lời." } }
+      }
+    },
+    "msg.request.limit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "You can send up to 3 messages until this person replies." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn chỉ gửi được tối đa 3 tin cho tới khi người này trả lời." } }
+      }
+    },
+    "msg.request.textOnly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Only text until this person replies." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chỉ gửi được chữ cho tới khi người này trả lời." } }
+      }
+    },
+    "msg.request.daily": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "You can start up to 10 new conversations in 24 hours. Try again later." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn chỉ mở được tối đa 10 lời nhắn mới trong 24 giờ. Hãy thử lại sau." } }
+      }
+    },
+    "msg.request.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No message requests" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có tin nhắn chờ" } }
+      }
+    },
+    "msg.request.empty.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Messages from people you don't follow appear here." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn từ người bạn chưa theo dõi sẽ hiện ở đây." } }
+      }
+    },
     "msg.tab.messages": {
       "extractionState": "manual",
       "localizations": {

@@ -11,6 +11,10 @@ final class MessagesListViewModel: AppObservableObject {
     @AppPublished private(set) var state: LoadState = .idle
     @AppPublished private(set) var threads: [ChatThreadSummary] = []
     @AppPublished var query = ""
+    /// The two lists of the Inbox's messages tab: the conversations, and "Tin nhắn chờ" (the people who wrote without being followed back).
+    enum Segment: Hashable { case messages, requests }
+    @AppPublished var segment: Segment = .messages
+    @AppPublished private(set) var requests: [MessageRequest] = []
 
     let meId: String?
     private let service: MessagingService
@@ -23,6 +27,9 @@ final class MessagesListViewModel: AppObservableObject {
 
     /// Sum of per-thread unread. Message unread ONLY — never the notification count.
     var unreadTotal: Int { threads.reduce(0) { $0 + $1.unreadCount } }
+
+    /// The "Tin nhắn chờ" list: only what someone sent the caller. The caller's own requests already sit in the conversation list.
+    var incomingRequests: [MessageRequest] { requests.filter(\.isIncoming) }
 
     /// The list under the filter: by title (counterpart / group name) or last message body.
     func visible(fallbackUser: String, fallbackGroup: String) -> [ChatThreadSummary] {
@@ -38,6 +45,8 @@ final class MessagesListViewModel: AppObservableObject {
         if threads.isEmpty { state = .loading }
         do {
             threads = try await service.threads()
+            // A failed request list keeps the previous one; it never hides the conversations.
+            requests = (try? await service.requests()) ?? requests
             state = .loaded
         } catch {
             // Keep the previous list on a transient failure, as the web does.
@@ -60,6 +69,8 @@ final class NewMessageViewModel: AppObservableObject {
     @AppPublished var groupName = "" { didSet { if groupName.count > 120 { groupName = String(groupName.prefix(120)) } } }
     @AppPublished private(set) var starting = false
     @AppPublished private(set) var startFailed = false
+    /// 429 `request_daily_limit`: the sheet says so instead of the generic failure.
+    @AppPublished private(set) var dailyLimited = false
 
     private let search: ReviewsService
     private let service: MessagingService
@@ -99,11 +110,13 @@ final class NewMessageViewModel: AppObservableObject {
         guard !selected.isEmpty, !starting else { return nil }
         starting = true
         startFailed = false
+        dailyLimited = false
         defer { starting = false }
         do {
             return try await service.start(userIds: selected.map(\.id), title: selected.count > 1 ? groupName : nil)
         } catch {
             startFailed = true
+            dailyLimited = ChatFailure.forSend(error) == .requestDaily
             return nil
         }
     }

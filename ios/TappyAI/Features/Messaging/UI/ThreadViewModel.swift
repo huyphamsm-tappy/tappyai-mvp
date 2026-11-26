@@ -40,6 +40,17 @@ final class ThreadViewModel: AppObservableObject {
     @AppPublished private(set) var locked = false
     /// Bumped when a row is appended, so the list scrolls to the end.
     @AppPublished private(set) var appendTick = 0
+    /// "incoming" / "outgoing" while this conversation is a request (MESSAGE-REQUESTS-CONTRACT); nil once it is a normal conversation.
+    @AppPublished private(set) var requestDirection: String?
+    /// For an outgoing request: how many more messages may be sent before the person answers.
+    @AppPublished private(set) var remaining: Int?
+
+    /// Incoming request: the banner with «Bỏ qua» is shown.
+    var isIncomingRequest: Bool { requestDirection == "incoming" }
+    /// Outgoing request: pictures are refused until the person answers, so only text can be sent.
+    var textOnly: Bool { requestDirection == "outgoing" }
+    /// Outgoing request with nothing left to send: the writing area says to wait for the answer.
+    var awaitingReply: Bool { requestDirection == "outgoing" && (remaining ?? 0) <= 0 }
 
     let threadId: String
     let meId: String?
@@ -58,8 +69,29 @@ final class ThreadViewModel: AppObservableObject {
     // MARK: History
 
     func start() async {
-        if let found = try? await service.threads().first(where: { $0.id == threadId }) { thread = found }
+        // A request is found in the request list first (an outgoing one is also in the conversation list, without its state).
+        let requests = (try? await service.requests()) ?? []
+        let match = requests.first { $0.thread.id == threadId }
+        requestDirection = match?.direction
+        remaining = match?.remaining
+        if let match {
+            thread = match.thread
+        } else if let found = try? await service.threads().first(where: { $0.id == threadId }) {
+            thread = found
+        }
         await load()
+    }
+
+    /// Ignores an incoming request. The sender is never told. True when the server took it.
+    func decline() async -> Bool {
+        do {
+            try await service.decline(threadId: threadId)
+            return true
+        } catch {
+            log.error("decline failed: \(error)")
+            failure = .send
+            return false
+        }
     }
 
     func load() async {
@@ -107,6 +139,8 @@ final class ThreadViewModel: AppObservableObject {
     /// A picture was picked: bring it to what the server accepts, upload it at once. A failure says why and keeps nothing pending.
     func pickPhoto(data: Data?) async {
         guard !uploading, !sending, !locked else { return }
+        // Before the person answers an outgoing request, a picture is refused (the server would answer request_text_only).
+        if textOnly { failure = .requestTextOnly; return }
         uploading = true
         failure = nil
         defer { uploading = false }
@@ -146,6 +180,9 @@ final class ThreadViewModel: AppObservableObject {
         do {
             let row = try await service.send(threadId: threadId, body: body, clientId: clientId, media: pending?.media)
             attempt = nil   // delivered: the next message is a new send, even with the same text
+            // Answering an incoming request makes it a normal conversation; an outgoing one loses one of its messages.
+            if requestDirection == "incoming" { requestDirection = nil }
+            if requestDirection == "outgoing" { remaining = max(0, (remaining ?? 1) - 1) }
             if !messages.contains(where: { $0.id == row.id }) { messages.append(row) }
             draft = ""
             photo = nil
@@ -154,6 +191,8 @@ final class ThreadViewModel: AppObservableObject {
             log.error("send failed: \(error)")
             let f = ChatFailure.forSend(error)
             if f.locksComposer { locked = true }
+            // The server says the sender has used its messages: the writing area waits for the answer.
+            if f == .requestLimit { remaining = 0 }
             failure = f
         }
     }

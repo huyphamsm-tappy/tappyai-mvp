@@ -75,6 +75,16 @@ struct MessagingService: Sendable {
         _ = try await api.send(Endpoint(path: "/api/messaging/threads/\(try safe(threadId))/read", method: .post, requiresAuth: true))
     }
 
+    /// `GET /api/messaging/requests` — conversations waiting for an answer: `incoming` (the "Tin nhắn chờ" tab) and the caller's own `outgoing` ones.
+    func requests() async throws -> [MessageRequest] {
+        try await api.send(Endpoint(path: "/api/messaging/requests", method: .get, requiresAuth: true), as: MessageRequestsResponse.self).requests
+    }
+
+    /// `POST /api/messaging/threads/{id}/decline` — an incoming request is ignored. The sender is never told.
+    func decline(threadId: String) async throws {
+        _ = try await api.send(Endpoint(path: "/api/messaging/threads/\(try safe(threadId))/decline", method: .post, requiresAuth: true))
+    }
+
     /// `GET /api/messaging/unread` — the two numbers behind the navigation badge.
     func unread() async throws -> ChatUnread {
         try await api.send(Endpoint(path: "/api/messaging/unread", method: .get, requiresAuth: true), as: ChatUnread.self)

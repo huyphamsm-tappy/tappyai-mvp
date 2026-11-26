@@ -80,6 +80,12 @@ enum ChatFailure: Equatable, Sendable {
     /// 403 `ai_consent_required`: the account has not agreed to share data with the AI provider (the picture goes through its safety scan).
     case photoConsent
     case photoUpload
+    /// 403 `request_limit`: the sender has used its 3 messages to a person who has not answered yet.
+    case requestLimit
+    /// 403 `request_text_only`: a picture is refused until the person answers.
+    case requestTextOnly
+    /// 429 `request_daily_limit`: 10 new conversations in 24 hours.
+    case requestDaily
 
     var messageKey: String {
         switch self {
@@ -87,6 +93,9 @@ enum ChatFailure: Equatable, Sendable {
         case .send: return "msg.error.send"
         case .locked: return "msg.error.cannotSend"
         case .tooFast: return "msg.error.tooFast"
+        case .requestLimit: return "msg.request.limit"
+        case .requestTextOnly: return "msg.request.textOnly"
+        case .requestDaily: return "msg.request.daily"
         case .photoType: return "msg.error.imageType"
         case .photoTooLarge: return "msg.error.imageTooLarge"
         case .photoBlocked: return "msg.error.imageBlocked"
@@ -101,6 +110,9 @@ enum ChatFailure: Equatable, Sendable {
     static func forSend(_ error: Error) -> ChatFailure {
         switch error as? AppError {
         case .network(404, _)?: return .locked
+        case .network(403, "request_limit")?: return .requestLimit
+        case .network(403, "request_text_only")?: return .requestTextOnly
+        case .network(429, "request_daily_limit")?: return .requestDaily
         case .network(429, _)?: return .tooFast
         default: return .send
         }

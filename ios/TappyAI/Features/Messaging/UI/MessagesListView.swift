@@ -22,6 +22,13 @@ struct MessagesListView: View {
     }
 
     private var fallbackUser: String { NSLocalizedString("msg.unknownUser", comment: "") }
+
+    /// "Tin nhắn chờ" or "Tin nhắn chờ (2)": zero renders no count.
+    private var requestsLabel: String {
+        let base = NSLocalizedString("msg.tab.requests", comment: "")
+        let n = vm.incomingRequests.count
+        return n > 0 ? "\(base) (\(n))" : base
+    }
     private var fallbackGroup: String { NSLocalizedString("msg.unnamedGroup", comment: "") }
 
     var body: some View {
@@ -46,6 +53,14 @@ struct MessagesListView: View {
             .padding(Spacing.sm)
             .background(TappyColor.surface, in: RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal, Spacing.md)
+
+            Picker("", selection: $vm.segment) {
+                Text("msg.tab.messages").tag(MessagesListViewModel.Segment.messages)
+                Text(verbatim: requestsLabel).tag(MessagesListViewModel.Segment.requests)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, Spacing.md)
+            .accessibilityIdentifier("msg-segments")
 
             content
         }
@@ -72,6 +87,34 @@ struct MessagesListView: View {
 
     @ViewBuilder
     private var content: some View {
+        if vm.segment == .requests {
+            requestsList
+        } else {
+            messagesContent
+        }
+    }
+
+    /// "Tin nhắn chờ": people who wrote to the caller without being followed back. Tapping one opens it with the banner and "Bỏ qua".
+    @ViewBuilder
+    private var requestsList: some View {
+        let rows = vm.incomingRequests
+        if rows.isEmpty {
+            TappyEmptyState(systemImage: "tray", title: "msg.request.empty", message: "msg.request.empty.hint")
+                .padding(.top, 40)
+        } else {
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(rows) { request in
+                        row(request.thread)
+                        Divider().padding(.leading, 64)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var messagesContent: some View {
         switch vm.state {
         case .idle, .loading:
             ProgressView().frame(maxWidth: .infinity, minHeight: 160)
@@ -251,7 +294,8 @@ struct NewMessageSheet: View {
                 }
 
                 if vm.startFailed {
-                    Text("msg.startFailed").font(TappyFont.footnote).foregroundStyle(TappyColor.danger)
+                    Text(vm.dailyLimited ? "msg.request.daily" : "msg.startFailed")
+                        .font(TappyFont.footnote).foregroundStyle(TappyColor.danger)
                 }
 
                 Button {
