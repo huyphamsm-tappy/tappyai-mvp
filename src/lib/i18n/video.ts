@@ -55,6 +55,8 @@ const T: Record<string, [string, string]> = {
   'video.player.network': ['Không phát được video. Kiểm tra kết nối rồi thử lại nhé.', 'Could not play the video. Check your connection and try again.'],
   'video.player.retry': ['Thử lại', 'Try again'],
   'video.player.watch': ['Xem video', 'Watch video'],
+  'video.player.soundOff': ['Tắt tiếng', 'Mute'],
+  'video.player.soundOn': ['Bật tiếng', 'Unmute'],
 
   // ── AI consent dialog (owner-approved wording) ──
   'video.consent.title': ['Đồng ý kiểm duyệt bằng AI', 'Agree to AI review'],
