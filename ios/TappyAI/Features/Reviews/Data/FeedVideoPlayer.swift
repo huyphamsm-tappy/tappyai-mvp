@@ -122,6 +122,7 @@ final class FeedVideoPlayer: AppObservableObject {
                 guard let self else { return }
                 // 404 or an unusable grant = do not play.
                 guard let prepared = ExploreVideoPlayback.prepare(grant) else {
+                    DiagnosticSnapshot.shared.record("clip playback grant unusable asset=\(assetId.prefix(8))", isError: true)
                     self.failed = true
                     self.isBuffering = false
                     return
@@ -133,6 +134,8 @@ final class FeedVideoPlayer: AppObservableObject {
                 // replaced by another clip
             } catch {
                 guard let self else { return }
+                // Which refusal it was (404 = the server will not play it), never any text of the post.
+                DiagnosticSnapshot.shared.record("clip playback request failed asset=\(assetId.prefix(8)) \(error.diagnosticTag)", isError: true)
                 self.failed = true
                 self.isBuffering = false
             }
@@ -197,7 +200,14 @@ final class FeedVideoPlayer: AppObservableObject {
         item.publisher(for: \.status)
             .sink { [weak self] status in
                 Task { @MainActor in
-                    if status == .failed { self?.failed = true; self?.isBuffering = false }
+                    if status == .failed {
+                        // The clip's own error: the CoreMedia code and, when the CDN answered, its HTTP status (a 403 = the cookie was not sent).
+                        let ns = item.error as NSError?
+                        let http = item.errorLog()?.events.last?.errorStatusCode ?? 0
+                        DiagnosticSnapshot.shared.record("clip player failed \(ns?.domain ?? "?")#\(ns?.code ?? 0) http=\(http)", isError: true)
+                        self?.failed = true
+                        self?.isBuffering = false
+                    }
                 }
             }
             .store(in: &itemCancellables)

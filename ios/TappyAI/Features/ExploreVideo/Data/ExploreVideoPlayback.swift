@@ -36,10 +36,18 @@ enum ExploreVideoPlayback {
     private static func isUUID(_ s: String) -> Bool { UUID(uuidString: s) != nil }
 
     /// The asset id inside an HLS manifest URL (`.m3u8`), or nil for anything else (an old MP4, a YouTube link).
-    /// A UUID path piece wins; otherwise the folder that holds the manifest.
+    ///
+    /// The delivery path is `vdel/<owner>/<asset>/manifest.m3u8`: the asset is the folder that HOLDS the manifest. 26/11 (owner UAT, «không phát
+    /// được clip»): this used to take the FIRST uuid in the path, which is the OWNER's id, so the playback request named the wrong id, the server
+    /// answered 404 and every clip of the new pipeline showed «Không tải được clip này». The CDN, the cookie and the playlists were all fine.
     static func assetId(fromManifestURL url: URL) -> String? {
         guard url.pathExtension.lowercased() == "m3u8" else { return nil }
         let parts = url.pathComponents.filter { $0 != "/" }
+        if parts.count >= 2 {
+            let holder = parts[parts.count - 2]
+            if isUUID(holder) || isSafeAssetId(holder) { return holder }
+        }
+        // Another shape (the manifest not directly in the asset's folder): a uuid anywhere in the path.
         if let uuid = parts.first(where: { isUUID($0) }) { return uuid }
         guard parts.count >= 2 else { return nil }
         let parent = parts[parts.count - 2]
