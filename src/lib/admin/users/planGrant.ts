@@ -1,4 +1,4 @@
-// Pure helpers for the admin "Cấp gói" screen (owner 26/11/2026).
+// Pure helpers for the admin "Grant a plan" screen (owner 26/11/2026).
 
 /** `months` calendar months from `from`, clamped to the end of a shorter month (31 Jan + 1 month = 28/29 Feb). UTC, so the result does not depend on the server's zone. */
 export function addMonths(from: Date, months: number): Date {

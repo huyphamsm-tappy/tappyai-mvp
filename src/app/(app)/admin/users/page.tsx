@@ -53,6 +53,8 @@ export default async function AdminUsersPage() {
     // Owner 26/11/2026: give a person a paid plan. `admin` and `super_admin` (the Owner holds everything); UX only, the API enforces it again.
     grantPlan: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_PLAN_GRANT),
     revokePlan: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_PLAN_REVOKE),
+    // Owner 26/11/2026: delete an account for good. `super_admin` alone (the Owner bypasses); UX only, the API enforces it again.
+    deleteAccount: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_ACCOUNT_DELETE),
   }
 
   return <UsersManager can={can} />

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { CONFIRM_WORDS } from '@/lib/account/selfDelete'
 import type { AccountStanding } from '@/lib/admin/users/accountStatusAdmin'
 import { parseDateOfBirthInput } from '@/lib/account/ageEligibility'
 
@@ -82,6 +83,17 @@ export const BanUserSchema = z
   .strict()
 
 export const UnbanUserSchema = z.object({ reason: ReasonSchema }).strict()
+
+/**
+ * Delete one account for good (owner 26/11/2026). The same reason floor as every sanction, AND the typed confirmation word the person's own
+ * "delete my account" asks for (`CONFIRM_WORDS`, one shared list), so an administrator cannot delete somebody by a stray click.
+ */
+export const DeleteUserSchema = z
+  .object({
+    reason: ReasonSchema,
+    confirm: z.enum(CONFIRM_WORDS),
+  })
+  .strict()
 
 /**
  * Correcting a date of birth after the single self-service allowance is spent
