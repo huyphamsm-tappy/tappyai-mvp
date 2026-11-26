@@ -170,8 +170,12 @@ struct ReviewPostView: View {
                     } else if isActive, videoPlayer.isBuffering {
                         ProgressView().tint(.white).scaleEffect(1.3)
                     }
+                    // The clip's own speaker button (top right): only this clip changes, and it never pauses or likes.
+                    if isActive, review.isVideo, !isExternalEmbed, !videoPlayer.failed {
+                        clipMuteButton
+                    }
                     // Autoplay starts muted (the Web's policy); say so, and one tap turns the sound on without pausing.
-                    if isActive, videoPlayer.isMuted, videoPlayer.isPlaying, !videoPlayer.failed {
+                    if isActive, videoPlayer.isMuted, !videoPlayer.userMuted, videoPlayer.isPlaying, !videoPlayer.failed {
                         VStack {
                             Spacer()
                             HStack(spacing: Spacing.xs) {
@@ -446,9 +450,31 @@ struct ReviewPostView: View {
 
     /// A tap on a clip whose sound is still off turns it on straight away and keeps the clip playing (it never pauses on this tap).
     private func unlockSoundNow() {
-        guard review.isVideo, !isExternalEmbed, isActive, videoPlayer.isMuted else { return }
+        guard review.isVideo, !isExternalEmbed, isActive, videoPlayer.isMuted, !videoPlayer.userMuted else { return }
         videoPlayer.handleTap()
         soundUnlockTapAt = Date()
+    }
+
+    /// Mute / unmute of THIS clip only (the web's `MuteButton`). Its own Button, so the clip's tap and double-tap gestures do not see it.
+    private var clipMuteButton: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button { videoPlayer.toggleClipMute() } label: {
+                    Image(systemName: videoPlayer.userMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 40, height: 40)
+                        .background(.black.opacity(0.45), in: Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text(verbatim: videoPlayer.userMuted ? "Bật tiếng" : "Tắt tiếng"))
+                .accessibilityIdentifier("feed-clip-mute")
+            }
+            .padding(.top, Spacing.md)
+            .padding(.trailing, Spacing.md)
+            Spacer()
+        }
     }
 
     private func handleDoubleTap() {
@@ -458,7 +484,7 @@ struct ReviewPostView: View {
 
         onDoubleTapLike()
         // A double tap is a gesture too: it unlocks sound for THIS clip as well (before it only set the flag, and this clip stayed muted).
-        if review.isVideo, !isExternalEmbed, videoPlayer.isMuted { videoPlayer.unlockAudio() }
+        if review.isVideo, !isExternalEmbed, videoPlayer.isMuted, !videoPlayer.userMuted { videoPlayer.unlockAudio() }
 
         showHeartBurst = true
         let generator = UIImpactFeedbackGenerator(style: .medium)

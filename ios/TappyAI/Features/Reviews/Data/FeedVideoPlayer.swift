@@ -27,6 +27,12 @@ final class FeedVideoPlayer: AppObservableObject {
     /// the audio session is `.playback`, so the phone's volume decides. The person can still mute (setMuted(true) turns it off).
     static var feedAudioUnlocked = true
 
+    /// Clips the person muted with their OWN speaker button, by manifest URL. Kept only while the app runs (never saved): a clip muted here stays
+    /// muted when the person swipes away and back, and every other clip keeps its sound.
+    private static var clipMutedURLs = Set<URL>()
+    /// This clip is muted by its own button (not by the feed's sound setting).
+    @AppPublished private(set) var userMuted = false
+
     // MARK: - One coherent lifecycle (the invariant: ONLY THE ACTIVE CLIP MAY PLAY)
     //
     // Every player the feed, a profile's clip viewer or a single shared clip creates is registered here. Two guarantees hang off it:
@@ -247,7 +253,11 @@ final class FeedVideoPlayer: AppObservableObject {
             if let previous = Self.activePlayer, previous !== self { previous.deactivate() }
             Self.activePlayer = self
             watchStart = Date()
-            if Self.feedAudioUnlocked {
+            // A clip the person muted with its own button stays muted; the feed's sound setting only decides the clips they did not mute.
+            userMuted = currentURL.map { Self.clipMutedURLs.contains($0) } ?? false
+            if userMuted {
+                applyMute(true)
+            } else if Self.feedAudioUnlocked {
                 setMuted(false)
             }
             if !userPaused {
@@ -271,7 +281,8 @@ final class FeedVideoPlayer: AppObservableObject {
     /// UNLOCKS it and the clip keeps playing; only once sound is on does a tap pause or resume. Before, the first tap both paused the clip and
     /// unmuted it, so the person had to tap twice — pause, then resume — before hearing anything.
     func handleTap() {
-        if isMuted {
+        // A clip the person muted with its own button is not unmuted by a tap elsewhere on it: only its button turns it back on.
+        if isMuted && !userMuted {
             setMuted(false)
             userPaused = false
             ensurePlaying()
@@ -292,8 +303,25 @@ final class FeedVideoPlayer: AppObservableObject {
     // MARK: - Audio unlock (first user tap anywhere in feed)
 
     func unlockAudio() {
-        guard !Self.feedAudioUnlocked || isMuted else { return }
+        guard !userMuted, !Self.feedAudioUnlocked || isMuted else { return }
         setMuted(false)
+    }
+
+    /// The clip's own speaker button: mutes or unmutes THIS clip only. The feed's sound setting and the other clips do not change, and the clip
+    /// does not pause (the button is not a play gesture).
+    func toggleClipMute() {
+        guard let url = currentURL else { return }
+        userMuted.toggle()
+        if userMuted { Self.clipMutedURLs.insert(url) } else { Self.clipMutedURLs.remove(url) }
+        applyMute(userMuted)
+    }
+
+    /// Mutes or unmutes the player only. Turning sound ON re-asserts the playback audio session, as `setMuted` does.
+    private func applyMute(_ muted: Bool) {
+        player.isMuted = muted
+        player.volume = 1
+        isMuted = muted
+        if !muted { configureAudioSession() }
     }
 
     /// One place decides sound. The person's choice is remembered for the clips that follow

@@ -801,6 +801,13 @@ final class ChatViewModel: AppObservableObject {
                             $0.placesView = SharePlacesView(from: view)
                         }
 
+                    case .placesCleared:
+                        // The turn's decision names no place: the card drawn earlier comes off, as the web's `cleared` does.
+                        edit {
+                            $0.livePlaces = nil
+                            $0.placesView = nil
+                        }
+
                     case .stepEnd:
                         self.activeTool = nil
 

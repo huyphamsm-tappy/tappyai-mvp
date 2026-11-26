@@ -23,6 +23,8 @@ enum StreamFrame: Equatable, Sendable {
     /// card in the browser and bare prose on the phone. Nothing about the server contract changes
     /// to read it — the frame was always there.
     case places(PlacesLiveView)
+    /// The place decision of this turn is EMPTY (web `liveView.ts`, `cleared: true`): the place cards drawn earlier in the reply go.
+    case placesCleared
     /// A message ANNOTATION (`8:`) of kind `tappy.turn_status.v1`: how the server says the turn ENDED when it
     /// did not end cleanly (C2 P2; web `readTurnStatus`). A status line under the reply, never answer text.
     case turnStatus(TurnStatusKind)
@@ -159,6 +161,8 @@ enum DataStreamLineParser {
             case subjectImagesAnnotationKind:
                 return SubjectImages.frame(item).map { .subjectImages($0) }
             case placesAnnotationKind:
+                // An empty decision that says so: the server found no place for this reply, so nothing drawn earlier stays on screen.
+                if (item["cleared"] as? Bool) == true { return .placesCleared }
                 guard let data = try? JSONSerialization.data(withJSONObject: item),
                       let view = try? JSONDecoder().decode(PlacesLiveView.self, from: data),
                       !view.items.isEmpty else { return nil }
