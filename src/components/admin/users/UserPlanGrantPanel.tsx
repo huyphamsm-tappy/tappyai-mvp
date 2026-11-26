@@ -22,7 +22,10 @@ import { isLifetimeEnd } from '@/lib/admin/users/planGrant'
 type GrantablePlan = 'pip' | 'momo' | 'coco' | 'promax1m' | 'promax3m'
 const GRANTABLE: readonly GrantablePlan[] = ['pip', 'momo', 'coco', 'promax1m', 'promax3m']
 // Names come from the ONE plan table, so this list can never drift from what is sold.
-const PLANS: ReadonlyArray<{ id: GrantablePlan; label: string }> = GRANTABLE.map((id) => ({ id, label: PLAN_CONFIG[id].label }))
+// One entry per plan NAME: Coco and Tappy each exist as a 1- and a 3-month plan id, but the length is picked separately below, so listing both made "Coco, Coco, Tappy, Tappy".
+const PLANS: ReadonlyArray<{ id: GrantablePlan; label: string }> = GRANTABLE
+  .map((id) => ({ id, label: PLAN_CONFIG[id].label }))
+  .filter((p, i, all) => all.findIndex((o) => o.label === p.label) === i)
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1)
 
 /** Matches the server schema, so the form refuses what the API would refuse. */
