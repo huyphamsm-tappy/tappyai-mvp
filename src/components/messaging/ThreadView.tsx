@@ -16,9 +16,14 @@ import { bubbleMetas } from '@/lib/messaging/bubbles'
 export default function ThreadView({
   thread,
   onBack,
+  request = false,
+  onDecline,
 }: {
   thread: ChatThreadSummary
   onBack: () => void
+  /** True while this conversation is a waiting message request addressed to me: a reply accepts it, `onDecline` ignores it. */
+  request?: boolean
+  onDecline?: () => void
 }) {
   const { t } = useTranslation()
   // `t` is a NEW function on every render. Used as an effect dependency it re-ran the history fetch (and cleared the list) after every
@@ -219,7 +224,11 @@ export default function ThreadView({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ body, ...(photo ? { media: { path: photo.path, width: photo.width, height: photo.height } } : {}), clientId: attempt.current.id }),
       })
-      if (!r.ok) throw new Error(String(r.status))
+      if (!r.ok) {
+        // 403 carries a named reason (message request limits); everything else keeps its status.
+        const j = r.status === 403 ? await r.json().catch(() => null) as { error?: string } | null : null
+        throw new Error(j?.error ?? String(r.status))
+      }
       const d = await r.json()
       attempt.current = null // delivered: the next message is a new send, even with the same text
       // The server's row, not a locally minted one: it carries the real id and
@@ -233,7 +242,11 @@ export default function ThreadView({
       // says only that this conversation cannot be written to. 429: the sender is going too fast. Anything else keeps the generic text.
       const status = e instanceof Error ? e.message : ''
       if (status === '404') setLocked(true)
-      setError(t(status === '404' ? 'v3.msg.cannotSend' : status === '429' ? 'v3.msg.sendTooFast' : 'v3.msg.sendError'))
+      setError(t(status === '404' ? 'v3.msg.cannotSend'
+        : status === '429' ? 'v3.msg.sendTooFast'
+        : status === 'request_limit' ? 'v3.msg.requestLimit'
+        : status === 'request_text_only' ? 'v3.msg.requestTextOnly'
+        : 'v3.msg.sendError'))
     } finally {
       setSending(false)
     }
@@ -361,6 +374,17 @@ export default function ThreadView({
         )}
         <div ref={bottomRef} />
       </div>
+
+      {request && (
+        <div data-testid="request-banner" className="flex flex-shrink-0 items-center gap-3 border-t px-3 py-2.5" style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel-elevated)' }}>
+          <p className="min-w-0 flex-1 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>{t('v3.msg.requestBanner')}</p>
+          {onDecline && (
+            <button type="button" onClick={onDecline} className="min-h-[34px] flex-shrink-0 rounded-lg border px-3 text-[12.5px] font-semibold" style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg)' }}>
+              {t('v3.msg.requestIgnore')}
+            </button>
+          )}
+        </div>
+      )}
 
       {error && (
         <p role="alert" className="px-3 pb-2 text-[12px]" style={{ color: 'var(--v3-rose)' }}>{error}</p>

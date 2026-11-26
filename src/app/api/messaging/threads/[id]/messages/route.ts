@@ -247,6 +247,19 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         { status: 404 },
       )
     }
+    // Message requests (migration 20261210): the sender of a waiting request may send 3 text messages until the recipient replies.
+    if (error.code === '22023' && error.message.includes('request_limit')) {
+      return NextResponse.json(
+        { error: 'request_limit', message: serverMessage('messaging.requestLimit', requestLocale(req)) },
+        { status: 403 },
+      )
+    }
+    if (error.code === '22023' && error.message.includes('request_text_only')) {
+      return NextResponse.json(
+        { error: 'request_text_only', message: serverMessage('messaging.requestTextOnly', requestLocale(req)) },
+        { status: 403 },
+      )
+    }
     // The database backstop on sending (trigger chat_messages_send_limit, 120 a minute per sender): answered like the route's own limiter.
     if (error.code === '53400') {
       return NextResponse.json(

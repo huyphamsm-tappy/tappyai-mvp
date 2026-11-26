@@ -23,6 +23,8 @@ import { MESSAGES_READ_EVENT } from '@/lib/messaging/useMessageUnread'
 
 interface MessagesContextValue {
   threads: ChatThreadSummary[]
+  /** Incoming message requests (strangers who wrote first), kept apart from `threads` and never counted in `unreadTotal`. */
+  requests: ChatThreadSummary[]
   /** Sum of per-thread unread. Message unread ONLY — never notification unread. */
   unreadTotal: number
   loading: boolean
@@ -38,6 +40,7 @@ interface MessagesContextValue {
 
 const MessagesContext = createContext<MessagesContextValue>({
   threads: [],
+  requests: [],
   unreadTotal: 0,
   loading: false,
   error: false,
@@ -54,6 +57,7 @@ export function useMessages() {
 export function MessagesProvider({ children }: { children: React.ReactNode }) {
   const supabase = useMemo(() => createClient(), [])
   const [threads, setThreads] = useState<ChatThreadSummary[]>([])
+  const [requests, setRequests] = useState<ChatThreadSummary[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [meId, setMeId] = useState<string | null>(null)
@@ -70,6 +74,14 @@ export function MessagesProvider({ children }: { children: React.ReactNode }) {
       const d = await r.json()
       setThreads(d.threads ?? [])
       setError(false)
+      // The waiting list: only requests addressed TO me are shown apart; the ones I sent already sit in the main list. A failure keeps the previous list.
+      try {
+        const rr = await fetch('/api/messaging/requests')
+        if (rr.ok) {
+          const rd = await rr.json()
+          setRequests(((rd?.requests ?? []) as Array<ChatThreadSummary & { direction?: string }>).filter(x => x.direction === 'incoming'))
+        }
+      } catch { /* the waiting list keeps its previous content */ }
     } catch {
       // keep the previous state on a transient failure, but say the list could not be read
       setError(true)
@@ -89,7 +101,7 @@ export function MessagesProvider({ children }: { children: React.ReactNode }) {
   }, [supabase])
 
   useEffect(() => {
-    if (!meId) { setThreads([]); setError(false); return }
+    if (!meId) { setThreads([]); setRequests([]); setError(false); return }
     let cancelled = false
     setLoading(true)
     refetch().finally(() => { if (!cancelled) setLoading(false) })
@@ -169,8 +181,8 @@ export function MessagesProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo<MessagesContextValue>(
-    () => ({ threads, unreadTotal, loading, error, meId, refetch, markThreadRead, subscribeToIncoming }),
-    [threads, unreadTotal, loading, error, meId, refetch, markThreadRead, subscribeToIncoming],
+    () => ({ threads, requests, unreadTotal, loading, error, meId, refetch, markThreadRead, subscribeToIncoming }),
+    [threads, requests, unreadTotal, loading, error, meId, refetch, markThreadRead, subscribeToIncoming],
   )
 
   return <MessagesContext.Provider value={value}>{children}</MessagesContext.Provider>
