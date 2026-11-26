@@ -102,6 +102,11 @@ struct MessagesListView: View {
             TappyEmptyState(systemImage: "tray", title: "msg.request.empty", message: "msg.request.empty.hint")
                 .padding(.top, 40)
         } else {
+            VStack(spacing: 0) {
+                Text("msg.request.tabHint")
+                    .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, Spacing.md).padding(.bottom, Spacing.xs)
             ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach(rows) { request in
@@ -109,6 +114,7 @@ struct MessagesListView: View {
                         Divider().padding(.leading, 64)
                     }
                 }
+            }
             }
         }
     }

@@ -33103,29 +33103,36 @@
     "msg.request.waiting": {
       "extractionState": "manual",
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Wait for this person to reply." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Hãy chờ người này trả lời." } }
+        "en": { "stringUnit": { "state": "translated", "value": "You've sent the 3 messages allowed. Wait for this person to reply." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn đã gửi đủ 3 tin. Hãy chờ người này trả lời nhé." } }
       }
     },
     "msg.request.limit": {
       "extractionState": "manual",
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "You can send up to 3 messages until this person replies." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Bạn chỉ gửi được tối đa 3 tin cho tới khi người này trả lời." } }
+        "en": { "stringUnit": { "state": "translated", "value": "You've sent the 3 messages allowed. Wait for this person to reply." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn đã gửi đủ 3 tin. Hãy chờ người này trả lời nhé." } }
       }
     },
     "msg.request.textOnly": {
       "extractionState": "manual",
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Only text until this person replies." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Chỉ gửi được chữ cho tới khi người này trả lời." } }
+        "en": { "stringUnit": { "state": "translated", "value": "Until this person replies, you can only send text." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Khi người này chưa trả lời, bạn chỉ gửi được tin nhắn chữ." } }
       }
     },
     "msg.request.daily": {
       "extractionState": "manual",
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "You can start up to 10 new conversations in 24 hours. Try again later." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Bạn chỉ mở được tối đa 10 lời nhắn mới trong 24 giờ. Hãy thử lại sau." } }
+        "en": { "stringUnit": { "state": "translated", "value": "You've sent 10 new messages to people you don't follow today. Try again tomorrow." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hôm nay bạn đã gửi đủ 10 lời nhắn tới người chưa theo dõi nhau. Thử lại vào ngày mai nhé." } }
+      }
+    },
+    "msg.request.tabHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "People you don't follow yet. They can send only 3 messages until you reply." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Những người bạn chưa theo dõi lẫn nhau. Họ chỉ nhắn được tối đa 3 tin cho đến khi bạn trả lời." } }
       }
     },
     "msg.request.empty": {
