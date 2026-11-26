@@ -61,6 +61,8 @@ struct ChatMessageList: View {
     /// Whether the first and the last row are on screen: they drive the up / down arrows (web: the same jump buttons).
     @State private var atTop = true
     @State private var atBottom = true
+    /// When the person last swiped the list and when it last followed the streaming text. A reference, so writing it draws nothing again.
+    @State private var scrollClock = ScrollClock()
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -230,10 +232,17 @@ struct ChatMessageList: View {
                 if parseCache.hasPendingRefresh { parseTick &+= 1 }
             }
             .onChange(of: messages.last?.content) { _ in
-                if isStreaming {
-                    proxy.scrollTo("bottom", anchor: .bottom)
-                }
+                guard isStreaming else { return }
+                let now = Date()
+                // The person is reading (a swipe in the last 3 s) away from the bottom: the list is not pulled back under their finger.
+                // Before, every word jumped the list to the bottom, so swiping up to read a streaming answer fought the app and looked frozen.
+                if now.timeIntervalSince(scrollClock.lastDrag) < 3, !atBottom { return }
+                // At most ~6 jumps a second: each one lays out the whole list.
+                guard now.timeIntervalSince(scrollClock.lastAuto) > 0.16 else { return }
+                scrollClock.lastAuto = now
+                proxy.scrollTo("bottom", anchor: .bottom)
             }
+            .simultaneousGesture(DragGesture(minimumDistance: 8).onChanged { _ in scrollClock.lastDrag = Date() })
             .overlay(alignment: .bottomTrailing) { jumpButtons(proxy: proxy) }
         }
     }
@@ -423,7 +432,7 @@ private struct AssistantBubble: View {
                             .readerLinks { readerLink = $0 }
                             .font(TappyFont.body)
                             .foregroundStyle(ChatTheme.text)
-                            .textSelection(.enabled)
+                            .selectable(!isStreaming)
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
@@ -667,6 +676,19 @@ private struct ReportSummaryCard: View {
         .background(TappyColor.surface, in: RoundedRectangle(cornerRadius: Radius.lg))
         .overlay(RoundedRectangle(cornerRadius: Radius.lg).stroke(TappyColor.border, lineWidth: 1))
         .accessibilityIdentifier("report-summary")
+    }
+}
+
+/// Timestamps the message list reads while a reply streams (see `ChatMessageList.body`). Not published: changing them draws nothing.
+private final class ScrollClock {
+    var lastDrag = Date.distantPast
+    var lastAuto = Date.distantPast
+}
+
+private extension View {
+    /// Text selection adds layout work to every update of the text; it is on once the reply has finished, off while the words are arriving.
+    @ViewBuilder func selectable(_ on: Bool) -> some View {
+        if on { self.textSelection(.enabled) } else { self.textSelection(.disabled) }
     }
 }
 

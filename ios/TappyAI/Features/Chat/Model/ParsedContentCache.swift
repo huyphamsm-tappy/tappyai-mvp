@@ -33,6 +33,13 @@ final class ParsedContentCache {
         self.parse = parse
     }
 
+    /// How often a streaming reply of `length` bytes is parsed again: the base interval up to ~3,000 bytes, then longer in proportion (a 9,000-byte
+    /// reply every 0.15 s, a 20,000-byte one every 0.33 s, never slower than 0.4 s): the parse costs more the longer the text, and it runs on the
+    /// main thread, so a long reply must not take most of it.
+    func streamInterval(forLength length: Int) -> TimeInterval {
+        min(max(minStreamInterval, 0.4), minStreamInterval * max(1, Double(length) / 3000))
+    }
+
     /// A streaming reply is showing words older than its text: the view should draw again after a short pause.
     var hasPendingRefresh: Bool { !stale.isEmpty }
 
@@ -46,12 +53,17 @@ final class ParsedContentCache {
                 return entry.parsed
             }
             if isStreaming && length >= entry.length && !content.hasSuffix("\n")
-                && now >= entry.at && now - entry.at < minStreamInterval {
+                && now >= entry.at && now - entry.at < streamInterval(forLength: length) {
                 stale.insert(id)
                 return entry.parsed
             }
         }
+        let parseStarted = DispatchTime.now().uptimeNanoseconds
         let made = parse(content)
+        // Measured on CI: a parse costs about 2 ms per 1,000 characters (an 8,000-character reply ~18 ms, up to 70 ms), and a streaming reply
+        // is parsed up to 20 times a second on the main thread. A parse that takes long is recorded in the diagnostics (counts and times only).
+        let tookMs = Double(DispatchTime.now().uptimeNanoseconds - parseStarted) / 1_000_000
+        if tookMs > 60 { DiagnosticSnapshot.shared.record("reply parse slow ms=\(Int(tookMs)) chars=\(length) streaming=\(isStreaming)") }
         if entries[id] == nil {
             order.append(id)
             if order.count > capacity {

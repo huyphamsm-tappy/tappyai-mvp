@@ -1042,13 +1042,18 @@ final class ChatViewModel: AppObservableObject {
             .sink { [weak self] _ in
                 self?.thinkHintIndex += 1
             }
+        // A turn is streaming: the diagnostics will say if the main thread stops answering meanwhile (a frozen screen cannot report itself).
+        stallWatch.start()
     }
 
     private func stopThinkTimer() {
         thinkTimer?.cancel()
         thinkTimer = nil
         thinkHintIndex = 0
+        stallWatch.stop()
     }
+
+    private let stallWatch = MainThreadStallWatch()
 
     // MARK: - Conversation persistence
 

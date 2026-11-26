@@ -192,15 +192,47 @@ enum StreamWatchdog {
     static let stalledCode = "stream_stalled"
 }
 
-/// When bytes last arrived on one stream, and whether the watchdog ended it. Read by the watchdog task, written by the reader task.
+/// When bytes last arrived on one stream, what has come so far (counts and sizes only, never text), and whether the watchdog ended it. Read by
+/// the watchdog task, written by the reader task.
 final class StreamActivity: @unchecked Sendable {
     private let lock = NSLock()
+    private let startedAt = Date()
     private var lastByteAt = Date()
     private var textStarted = false
     private var stalled = false
+    private var lines = 0
+    private var bytes = 0
+    private var frames = 0
+    private var longestLine = 0
+    private var sawDone = false
 
     func touch(now: Date = Date()) {
         lock.lock(); lastByteAt = now; lock.unlock()
+    }
+
+    /// A line arrived: counted, and the stream is alive.
+    func counted(line: String, now: Date = Date()) {
+        let size = line.utf8.count + 1
+        lock.lock()
+        lastByteAt = now
+        lines += 1
+        bytes += size
+        longestLine = max(longestLine, size)
+        lock.unlock()
+    }
+
+    func countedFrame(_ frame: StreamFrame) {
+        lock.lock()
+        frames += 1
+        if frame == .done { sawDone = true }
+        lock.unlock()
+    }
+
+    /// One line for the diagnostics: what the stream has done so far.
+    func summary(now: Date = Date()) -> String {
+        lock.lock(); defer { lock.unlock() }
+        return "lines=\(lines) bytes=\(bytes) frames=\(frames) longestLine=\(longestLine) text=\(textStarted) done=\(sawDone)"
+            + " sinceLastByte=\(Int(now.timeIntervalSince(lastByteAt)))s elapsed=\(Int(now.timeIntervalSince(startedAt)))s"
     }
 
     func textBegan() {
@@ -218,37 +250,6 @@ final class StreamActivity: @unchecked Sendable {
         guard textStarted, !stalled, now.timeIntervalSince(lastByteAt) >= limit else { return false }
         stalled = true
         return true
-    }
-}
-
-/// What one turn's stream did, for the DEBUG log: sizes and counts only, never the text of the answer.
-struct StreamTurnStats {
-    private let startedAt = Date()
-    private(set) var lines = 0
-    private(set) var bytes = 0
-    private(set) var frames = 0
-    private(set) var longestLine = 0
-    private(set) var lastFrameAt: TimeInterval = 0
-    private(set) var sawDone = false
-
-    mutating func sawLine(_ line: String) {
-        let size = line.utf8.count + 1
-        lines += 1
-        bytes += size
-        longestLine = max(longestLine, size)
-    }
-
-    mutating func sawFrame(_ frame: StreamFrame) {
-        frames += 1
-        lastFrameAt = Date().timeIntervalSince(startedAt)
-        if frame == .done { sawDone = true }
-    }
-
-    func log(_ outcome: String) {
-        #if DEBUG
-        let total = Date().timeIntervalSince(startedAt)
-        AppLogger.app.info("chat stream \(outcome): lines=\(lines) bytes=\(bytes) frames=\(frames) longestLine=\(longestLine) lastFrameAt=\(String(format: "%.1f", lastFrameAt))s done=\(sawDone) total=\(String(format: "%.1f", total))s")
-        #endif
     }
 }
 
@@ -276,7 +277,6 @@ final class URLSessionStreamingClient: StreamingClient {
             // watchdog below ends it (the request's own 130 s silence limit is for the wait BEFORE the first word).
             let activity = StreamActivity()
             let task = Task {
-                var stats = StreamTurnStats()
                 do {
                     // App Review 5.1.2(i): no AI request leaves the phone before the person has agreed.
                     if consent.blocks(path: endpoint.path) { throw AIConsentStore.blockedError }
@@ -294,26 +294,26 @@ final class URLSessionStreamingClient: StreamingClient {
                        let date = DeepResetHeader.date(http.value(forHTTPHeaderField: DeepResetHeader.name)) {
                         continuation.yield(.deepResetOn(date))
                     }
+                    DiagnosticSnapshot.shared.record("chat stream open")
                     for try await line in bytes.lines {
                         try Task.checkCancellation()
-                        activity.touch()
-                        stats.sawLine(line)
+                        activity.counted(line: line)
                         if line.isEmpty { continue }
                         var finished = false
                         // A line that is not a frame (the JSON line the server may write after `d:`) gives no frame and is skipped.
                         for frame in DataStreamLineParser.frames(line: line) {
                             if case .text = frame { activity.textBegan() }
-                            stats.sawFrame(frame)
+                            activity.countedFrame(frame)
                             continuation.yield(frame)
                             if frame == .done { finished = true }
                         }
                         if finished { break }
                     }
-                    stats.log("finished")
+                    DiagnosticSnapshot.shared.record("chat stream finished \(activity.summary())")
                     continuation.finish()
                 } catch {
                     let ns = error as NSError
-                    stats.log("error \(ns.domain)#\(ns.code)")
+                    DiagnosticSnapshot.shared.record("chat stream error \(ns.domain)#\(ns.code) \(activity.summary())", isError: true)
                     if activity.isStalled {
                         continuation.finish(throwing: AppError.network(status: nil, code: StreamWatchdog.stalledCode))
                     } else {
@@ -325,10 +325,16 @@ final class URLSessionStreamingClient: StreamingClient {
             // The watchdog: every second, is the stream silent past the limit after its first words? Then stop reading and say so.
             // If the reader does not leave its wait after the cancel, the stream is ended here so the turn can never stay "streaming".
             let watchdog = Task {
+                var ticks = 0
                 while !Task.isCancelled {
                     try? await Task.sleep(nanoseconds: 1_000_000_000)
                     if Task.isCancelled { return }
+                    // Every 5 seconds the diagnostics get one line of what the stream has done: if the app has to be quit, the next launch
+                    // can show how far this one got (counts and sizes only).
+                    ticks += 1
+                    if ticks % 5 == 0 { DiagnosticSnapshot.shared.record("chat stream progress \(activity.summary())") }
                     if activity.markStalledIfSilent(longerThan: StreamWatchdog.idleAfterText) {
+                        DiagnosticSnapshot.shared.record("chat stream stalled \(activity.summary())", isError: true)
                         task.cancel()
                         try? await Task.sleep(nanoseconds: 1_500_000_000)
                         continuation.finish(throwing: AppError.network(status: nil, code: StreamWatchdog.stalledCode))
