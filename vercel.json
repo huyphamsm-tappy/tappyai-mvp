@@ -2,6 +2,10 @@
   "ignoreCommand": "node scripts/vercel-ignore.mjs",
   "crons": [
     {
+      "path": "/api/cron/deal-ingest",
+      "schedule": "0 0 * * *"
+    },
+    {
       "path": "/api/cron/deal-notifications",
       "schedule": "30 0 * * *"
     },
