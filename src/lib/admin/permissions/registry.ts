@@ -798,6 +798,19 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     defaultRoles: ['admin', 'super_admin'],
   }),
   def({
+    id: 'users.account.delete',
+    displayName: 'Delete a user account',
+    description:
+      'Permanently delete one consumer account and what the clean-up behind it removes (the same deletion the person can ask for themselves). Irreversible. Never an administrator or the Owner. Needs a reason and a typed confirmation.',
+    module: 'users',
+    capability: 'users.manage',
+    // `destructive`, the most severe a consumer-account operation gets, and `super_admin` alone (the Platform Owner bypasses): irreversible-in-effect
+    // for the person it lands on, unlike a ban, which an administrator can lift.
+    category: 'destructive',
+    riskLevel: 'critical',
+    defaultRoles: ['super_admin'],
+  }),
+  def({
     id: 'users.plan.grant',
     displayName: 'Grant a plan to a user',
     description:
@@ -951,6 +964,7 @@ export const PERMISSIONS = {
   USERS_BAN: 'users.account.ban',
   USERS_UNBAN: 'users.account.unban',
   USERS_DOB_CORRECT: 'users.date_of_birth.correct',
+  USERS_ACCOUNT_DELETE: 'users.account.delete',
   USERS_PLAN_GRANT: 'users.plan.grant',
   USERS_PLAN_REVOKE: 'users.plan.revoke',
 } as const

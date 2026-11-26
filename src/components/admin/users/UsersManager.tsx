@@ -13,6 +13,8 @@ import { UserSessionsPanel } from './UserSessionsPanel'
 import { UserNotesPanel } from './UserNotesPanel'
 import { UserDobCorrectionPanel } from './UserDobCorrectionPanel'
 import { UserPlanGrantPanel } from './UserPlanGrantPanel'
+// The words the person's own "delete my account" accepts (the API checks the same set); client-safe, the module imports only a type.
+import { isConfirmWord } from '@/lib/account/selfDelete'
 import { GuardedSurface, useGuardedActionProps } from '@/components/admin/layout/GuardedSurface'
 
 // Module 08 User Management — the Controller surface.
@@ -74,6 +76,8 @@ export interface UsersCapabilities {
    */
   correctDob: boolean
   /** `users.plan.grant` (owner 26/11/2026): may give this account a paid plan for N days. A WRITE of access value, never of authority. */
+  /** `users.account.delete` (owner 26/11/2026): may delete this account for good. `super_admin` alone; the API checks it again. */
+  deleteAccount: boolean
   grantPlan: boolean
   /** `users.plan.revoke`: may take back a plan that was granted from the screen (its unused part only). */
   revokePlan: boolean
@@ -85,8 +89,7 @@ const STANDING_BADGE: Record<Standing, BadgeProps['variant']> = {
   banned: 'destructive',
 }
 
-type ActionKind = 'suspend' | 'unsuspend' | 'ban' | 'unban'
-
+type ActionKind = 'suspend' | 'unsuspend' | 'ban' | 'unban' | 'delete'
 /** The reason floor is 19_Security.md §5 and the API rejects anything shorter. */
 const REASON_MIN = 20
 
@@ -109,6 +112,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
   const [action, setAction] = useState<ActionKind | null>(null)
   const [reason, setReason] = useState('')
   const [durationHours, setDurationHours] = useState('')
+  const [confirmWord, setConfirmWord] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   const fmtDate = useCallback(
@@ -160,7 +164,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
     void load()
   }, [load])
 
-  async function openDetail(id: string) {
+  async function openDetail(id: string, thenAction?: ActionKind) {
     if (!can.detail) return
     setDetailLoading(true)
     setAction(null)
@@ -169,6 +173,13 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error?.message ?? t('admin.users.error.detail'))
       setDetail(json.data)
+      // A button on a row opens the detail AND the form of that action, so the operator does not have to find the card under the table.
+      if (thenAction) {
+        setReason('')
+        setDurationHours('')
+        setConfirmWord('')
+        setAction(thenAction)
+      }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t('admin.users.error.detail'))
     } finally {
@@ -184,6 +195,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
       if (action === 'suspend' && durationHours.trim()) {
         body.duration_hours = Number(durationHours.trim())
       }
+      if (action === 'delete') body.confirm = confirmWord.trim()
       const res = await fetch(`/api/admin/users/${detail.id}/${action}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -200,10 +212,14 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
           ? t('admin.users.ban.sessionsPending')
           : t('admin.users.action.done')
       )
+      const deleted = action === 'delete'
       setAction(null)
       setReason('')
       setDurationHours('')
-      await openDetail(detail.id)
+      setConfirmWord('')
+      // A deleted account has no detail to reopen: close the card and refresh the list.
+      if (deleted) setDetail(null)
+      else await openDetail(detail.id)
       await load()
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t('admin.users.error.action'))
@@ -218,6 +234,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
         detail.is_suspended && can.unsuspend ? 'unsuspend' : null,
         detail.standing !== 'banned' && can.ban ? 'ban' : null,
         detail.is_banned && can.unban ? 'unban' : null,
+        can.deleteAccount ? 'delete' : null,
       ].filter(Boolean) as ActionKind[])
     : []
 
@@ -271,6 +288,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
                     <TableHead>{t('admin.users.column.name')}</TableHead>
                     <TableHead>{t('admin.users.column.standing')}</TableHead>
                     <TableHead>{t('admin.users.column.joined')}</TableHead>
+                    <TableHead>{t('admin.users.column.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -287,6 +305,37 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
                         </Badge>
                       </TableCell>
                       <TableCell>{fmtDate(row.created_at)}</TableCell>
+                      {/* The actions on the row itself (owner 26/11/2026: they were only in the detail card under the table and nobody saw them).
+                          Each one opens the detail AND its form; the API still checks every permission. */}
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <div className="flex flex-wrap gap-1">
+                          {row.standing !== 'banned' && can.suspend && (
+                            <Button size="sm" variant="outline" onClick={() => void openDetail(row.id, 'suspend')}>
+                              {t('admin.users.action.suspend')}
+                            </Button>
+                          )}
+                          {row.standing === 'suspended' && can.unsuspend && (
+                            <Button size="sm" variant="outline" onClick={() => void openDetail(row.id, 'unsuspend')}>
+                              {t('admin.users.action.unsuspend')}
+                            </Button>
+                          )}
+                          {row.standing !== 'banned' && can.ban && (
+                            <Button size="sm" variant="destructive" onClick={() => void openDetail(row.id, 'ban')}>
+                              {t('admin.users.action.ban')}
+                            </Button>
+                          )}
+                          {row.standing === 'banned' && can.unban && (
+                            <Button size="sm" variant="outline" onClick={() => void openDetail(row.id, 'unban')}>
+                              {t('admin.users.action.unban')}
+                            </Button>
+                          )}
+                          {can.deleteAccount && (
+                            <Button size="sm" variant="destructive" onClick={() => void openDetail(row.id, 'delete')}>
+                              {t('admin.users.action.delete')}
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -396,6 +445,9 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
                 {action === 'ban' && (
                   <p className="text-muted-foreground text-xs">{t('admin.users.ban.warning')}</p>
                 )}
+                {action === 'delete' && (
+                  <p className="text-destructive text-xs">{t('admin.users.delete.warning')}</p>
+                )}
                 <Input
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
@@ -409,10 +461,22 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
                     placeholder={t('admin.users.action.durationHours')}
                   />
                 )}
+                {action === 'delete' && (
+                  <Input
+                    value={confirmWord}
+                    onChange={(e) => setConfirmWord(e.target.value)}
+                    placeholder={t('admin.users.delete.confirmPlaceholder')}
+                  />
+                )}
                 <div className="flex gap-2">
                   <Button
                     onClick={() => void submitAction()}
-                    disabled={submitting || reason.trim().length < REASON_MIN || guard.disabled}
+                    disabled={
+                      submitting ||
+                      reason.trim().length < REASON_MIN ||
+                      guard.disabled ||
+                      (action === 'delete' && !isConfirmWord(confirmWord.trim()))
+                    }
                     title={guard.title}
                   >
                     {t('admin.users.action.confirm')}
