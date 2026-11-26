@@ -491,6 +491,7 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //   `/api/cron/business-order-expiry` (closes Tappy Business orders pending past 72 h; no rows until the Business feature is live). Both daily, fixed minute and hour; neither notifies anybody.
     // 24 -> 28 on 2026-11-25 (authority takedown register, owner): `/api/cron/takedown-clock` is four entries (?run=1..4 at 00:00, 06:00, 12:00, 18:00 UTC), each DAILY like every other entry (the Hobby plan
     //   allows one run per day per entry, the way the moderation digest does it). 404 while MODERATION_ADMIN_ENABLED is off; it alerts the moderation team only when a request is at risk or overdue.
-    expect(vercelJson.crons.length).toBe(28)
+    // 28 -> 29 on 2026-11-26 (owner: real Lazada / Vexere deals): `/api/cron/deal-ingest`, one DAILY entry at 00:00 UTC (07:00 in Vietnam); it reads Accesstrade and writes partner_deals only.
+    expect(vercelJson.crons.length).toBe(29)
   })
 })
