@@ -183,6 +183,74 @@ enum DataStreamLineParser {
     }
 }
 
+/// The silence a chat stream may have once its first words arrived (see `URLSessionStreamingClient.stream`).
+enum StreamWatchdog {
+    /// Seconds with no byte after the first text frame before the stream is ended as stalled.
+    static let idleAfterText: TimeInterval = 25
+    /// The `AppError.network` code of a stream the watchdog ended.
+    static let stalledCode = "stream_stalled"
+}
+
+/// When bytes last arrived on one stream, and whether the watchdog ended it. Read by the watchdog task, written by the reader task.
+final class StreamActivity: @unchecked Sendable {
+    private let lock = NSLock()
+    private var lastByteAt = Date()
+    private var textStarted = false
+    private var stalled = false
+
+    func touch(now: Date = Date()) {
+        lock.lock(); lastByteAt = now; lock.unlock()
+    }
+
+    func textBegan() {
+        lock.lock(); textStarted = true; lock.unlock()
+    }
+
+    var isStalled: Bool {
+        lock.lock(); defer { lock.unlock() }
+        return stalled
+    }
+
+    /// True (once) when the first words have arrived and nothing has come for `limit` seconds: the stream is then marked stalled.
+    func markStalledIfSilent(longerThan limit: TimeInterval, now: Date = Date()) -> Bool {
+        lock.lock(); defer { lock.unlock() }
+        guard textStarted, !stalled, now.timeIntervalSince(lastByteAt) >= limit else { return false }
+        stalled = true
+        return true
+    }
+}
+
+/// What one turn's stream did, for the DEBUG log: sizes and counts only, never the text of the answer.
+struct StreamTurnStats {
+    private let startedAt = Date()
+    private(set) var lines = 0
+    private(set) var bytes = 0
+    private(set) var frames = 0
+    private(set) var longestLine = 0
+    private(set) var lastFrameAt: TimeInterval = 0
+    private(set) var sawDone = false
+
+    mutating func sawLine(_ line: String) {
+        let size = line.utf8.count + 1
+        lines += 1
+        bytes += size
+        longestLine = max(longestLine, size)
+    }
+
+    mutating func sawFrame(_ frame: StreamFrame) {
+        frames += 1
+        lastFrameAt = Date().timeIntervalSince(startedAt)
+        if frame == .done { sawDone = true }
+    }
+
+    func log(_ outcome: String) {
+        #if DEBUG
+        let total = Date().timeIntervalSince(startedAt)
+        AppLogger.app.info("chat stream \(outcome): lines=\(lines) bytes=\(bytes) frames=\(frames) longestLine=\(longestLine) lastFrameAt=\(String(format: "%.1f", lastFrameAt))s done=\(sawDone) total=\(String(format: "%.1f", total))s")
+        #endif
+    }
+}
+
 protocol StreamingClient: Sendable {
     /// Streams frames for an endpoint. The stream ends on `.done`, error, or cancellation.
     func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error>
@@ -203,7 +271,11 @@ final class URLSessionStreamingClient: StreamingClient {
 
     func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error> {
         AsyncThrowingStream { continuation in
+            // Once the first words have arrived the server writes without long pauses, so a silent stream is a lost connection: the
+            // watchdog below ends it (the request's own 130 s silence limit is for the wait BEFORE the first word).
+            let activity = StreamActivity()
             let task = Task {
+                var stats = StreamTurnStats()
                 do {
                     // App Review 5.1.2(i): no AI request leaves the phone before the person has agreed.
                     if consent.blocks(path: endpoint.path) { throw AIConsentStore.blockedError }
@@ -223,21 +295,50 @@ final class URLSessionStreamingClient: StreamingClient {
                     }
                     for try await line in bytes.lines {
                         try Task.checkCancellation()
+                        activity.touch()
+                        stats.sawLine(line)
                         if line.isEmpty { continue }
                         var finished = false
+                        // A line that is not a frame (the JSON line the server may write after `d:`) gives no frame and is skipped.
                         for frame in DataStreamLineParser.frames(line: line) {
+                            if case .text = frame { activity.textBegan() }
+                            stats.sawFrame(frame)
                             continuation.yield(frame)
                             if frame == .done { finished = true }
                         }
                         if finished { break }
                     }
+                    stats.log("finished")
                     continuation.finish()
                 } catch {
-                    continuation.finish(throwing: (error is CancellationError) ? AppError.cancellation
-                                        : (error as? AppError) ?? URLSessionAPIClient.mapStreamTransport(error))
+                    let ns = error as NSError
+                    stats.log("error \(ns.domain)#\(ns.code)")
+                    if activity.isStalled {
+                        continuation.finish(throwing: AppError.network(status: nil, code: StreamWatchdog.stalledCode))
+                    } else {
+                        continuation.finish(throwing: (error is CancellationError) ? AppError.cancellation
+                                            : (error as? AppError) ?? URLSessionAPIClient.mapStreamTransport(error))
+                    }
                 }
             }
-            continuation.onTermination = { _ in task.cancel() }
+            // The watchdog: every second, is the stream silent past the limit after its first words? Then stop reading and say so.
+            // If the reader does not leave its wait after the cancel, the stream is ended here so the turn can never stay "streaming".
+            let watchdog = Task {
+                while !Task.isCancelled {
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                    if Task.isCancelled { return }
+                    if activity.markStalledIfSilent(longerThan: StreamWatchdog.idleAfterText) {
+                        task.cancel()
+                        try? await Task.sleep(nanoseconds: 1_500_000_000)
+                        continuation.finish(throwing: AppError.network(status: nil, code: StreamWatchdog.stalledCode))
+                        return
+                    }
+                }
+            }
+            continuation.onTermination = { _ in
+                task.cancel()
+                watchdog.cancel()
+            }
         }
     }
 

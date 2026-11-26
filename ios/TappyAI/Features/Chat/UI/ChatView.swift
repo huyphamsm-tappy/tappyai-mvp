@@ -95,6 +95,9 @@ struct ChatView: View {
                         onCancelAgeCorrection: { vm.cancelAgeCorrection() },
                         onReviewAIConsent: { vm.reviewAIConsent() },
                         endNotice: vm.endNotice,
+                        onRecover: { Task { await vm.recoverReply() } },
+                        recovering: vm.recovering,
+                        recoverFailed: vm.recoverFailed,
                         deepResetOn: vm.deepResetOn,
                         progressHint: vm.progressHint,
                         planShare: vm.planShare,
@@ -204,6 +207,10 @@ struct ChatView: View {
             guard wants else { return }
             router.chatWantsDeep = false
             if vm.mode != .deep { vm.selectMode(.deep) }
+        }
+        // Back from the background with a reply left unfinished: the stored answer is read back (the stream cannot have continued).
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            vm.recoverIfInterrupted()
         }
         // Signed in from the «sign in to continue» card: the held message goes out now, in place.
         .onChange(of: router.loginCompleted) { _ in vm.resumeAfterLogin() }

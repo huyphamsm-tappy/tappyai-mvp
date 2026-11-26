@@ -38,6 +38,10 @@ struct ChatMessageList: View {
     var onReviewAIConsent: () -> Void = {}
     /// How the last reply ended when it was not a clean finish (see `ChatEndNotice`); nil = clean.
     var endNotice: ChatEndNotice? = nil
+    /// «Tải câu trả lời» of a reply the connection lost or cut: reads the stored answer back.
+    var onRecover: () -> Void = {}
+    var recovering = false
+    var recoverFailed = false
     /// The day the Deep Research reports come back (`yyyy-MM-dd`) when the last question ran as Thinking because none were left; nil otherwise.
     var deepResetOn: String? = nil
     /// The server's progress sentence for the thinking indicator (see `ThinkingIndicator.progressHint`).
@@ -177,7 +181,8 @@ struct ChatMessageList: View {
                     // A reply that did not finish cleanly says so under itself (web `chat.streamCut` /
                     // `chat.turnIncomplete` / `chat.turnInterrupted`); a cut reply also offers «answer again».
                     if let endNotice, error == nil, !isStreaming {
-                        ChatEndNoticeView(notice: endNotice, onRegenerate: onRegenerate)
+                        ChatEndNoticeView(notice: endNotice, onRegenerate: onRegenerate,
+                                          onRecover: onRecover, recovering: recovering, recoverFailed: recoverFailed)
                     }
 
                     // Web `chat.deepExhausted`: a report asked for with none left this month ran as Thinking. One fixed sentence, never the model's.
@@ -713,12 +718,31 @@ private struct ThinkingIndicator: View {
 private struct ChatEndNoticeView: View {
     let notice: ChatEndNotice
     let onRegenerate: () -> Void
+    var onRecover: () -> Void = {}
+    var recovering = false
+    var recoverFailed = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             Text(LocalizedStringKey(notice.messageKey))
                 .font(.footnote)
                 .foregroundColor(.secondary)
+            // The answer the server stored whole is read back: the text on screen may be only a part of it.
+            if notice.isRecoverable {
+                Button(action: onRecover) {
+                    HStack(spacing: Spacing.xxs) {
+                        if recovering { ProgressView().controlSize(.small) } else { Image(systemName: "arrow.down.circle").font(.caption) }
+                        Text("chat.recover").font(TappyFont.caption)
+                    }
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(TappyColor.primary)
+                .disabled(recovering)
+                .accessibilityIdentifier("chat-recover")
+                if recoverFailed && !recovering {
+                    Text("chat.recoverFailed").font(.footnote).foregroundColor(.secondary)
+                }
+            }
             if notice == .cut {
                 Button(action: onRegenerate) {
                     HStack(spacing: Spacing.xxs) {

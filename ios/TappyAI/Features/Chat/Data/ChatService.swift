@@ -51,6 +51,18 @@ final class ChatService: Sendable {
         throw AppError.validation(message: "Conversation not found")
     }
 
+    /// The stored conversation whose last question is `userText` (newest first, the first page only), or nil. Used to read back a reply the
+    /// stream lost: the server stores the whole answer even when the phone's connection dropped.
+    func savedConversation(endingWith userText: String) async throws -> Conversation? {
+        let wanted = userText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let endpoint = Endpoint(path: "/api/conversations", method: .get, requiresAuth: true)
+        let page = try await api.send(endpoint, as: ConversationPage.self)
+        return page.conversations.first { conversation in
+            conversation.messages.last(where: { $0.role == MessageRole.user.rawValue })?
+                .content.trimmingCharacters(in: .whitespacesAndNewlines) == wanted
+        }
+    }
+
     func saveConversation(title: String, category: String, messages: [MessagePayload]) async throws -> Conversation {
         let request = SaveConversationRequest(title: title, category: category, messages: messages)
         let endpoint = Endpoint(

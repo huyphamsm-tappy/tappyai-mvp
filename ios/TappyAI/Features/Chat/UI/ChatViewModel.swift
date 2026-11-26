@@ -895,7 +895,12 @@ final class ChatViewModel: AppObservableObject {
                 // The save is NOT this turn's work: it runs in its own Task, after the message is built, so
                 // Stop cannot cancel it and the input is not locked while the network call is out. A turn
                 // that was stopped is saved by `stop()` itself.
-                self.scheduleSave()
+                if self.endNotice == .cut {
+                    // Half an answer the server stored whole: it is read back first, then saved (recovery saves in every outcome).
+                    self.startAutoRecovery(token: token)
+                } else {
+                    self.scheduleSave()
+                }
 
             } catch {
                 // Not this turn's any more (stopped or replaced): leave the current state alone.
@@ -915,14 +920,98 @@ final class ChatViewModel: AppObservableObject {
                                               hasPlaces: reply()?.livePlaces != nil) {
                     // nothing the person could read: no empty bubble next to the error
                     self.messages.removeAll { $0.id == assistantId }
+                    self.error = Self.mapError(error, isGuest: self.isGuest)
+                } else if Self.isConnectionDrop(error) {
+                    // Half an answer and a lost (or silent) connection: the text stays, the line says so, and the whole answer is read
+                    // back from the conversation the server stored. The writing area is free again (`isStreaming` is already false).
+                    edit { $0.status = .complete }
+                    self.endNotice = .connectionLost
+                    self.startAutoRecovery(token: token)
                 } else {
                     edit { $0.status = .failed }
+                    self.error = Self.mapError(error, isGuest: self.isGuest)
                 }
-
-                self.error = Self.mapError(error, isGuest: self.isGuest)
                 if case .ageIneligible? = self.error { self.refreshAgeCorrection() }
                 self.log.error("stream error: \(error.diagnosticTag)")
             }
+        }
+    }
+
+    // MARK: - Recovery of a reply the connection lost
+
+    /// A lost, timed-out, offline or watchdog-ended stream (not a refusal by the server): half an answer may be on screen.
+    nonisolated static func isConnectionDrop(_ error: Error) -> Bool {
+        switch error as? AppError {
+        case .offline?, .streaming?: return true
+        case .network(let status, _)?: return status == nil
+        default: return false
+        }
+    }
+
+    /// The turn whose reply was already read back once on its own (a second drop of the same turn waits for the button).
+    private var autoRecoveredToken: UUID?
+    /// A recovery is running (the button shows a spinner).
+    @AppPublished private(set) var recovering = false
+    /// The last recovery found no stored answer yet (the button stays; the line says so).
+    @AppPublished private(set) var recoverFailed = false
+
+    /// Reads the stored answer back once, by itself, for the turn that just lost its connection.
+    private func startAutoRecovery(token: UUID) {
+        guard autoRecoveredToken != token else { return }
+        autoRecoveredToken = token
+        Task { @MainActor in
+            // A guest has no stored conversation to read back: the reply is kept as it is on screen.
+            guard self.session.state.isAuthenticated else { self.scheduleSave(); return }
+            await self.recoverReply()
+        }
+    }
+
+    /// Back in the foreground with an unfinished reply on screen: the same read-back.
+    func recoverIfInterrupted() {
+        guard endNotice?.isRecoverable == true, !recovering, !isStreaming else { return }
+        Task { @MainActor in await self.recoverReply() }
+    }
+
+    /// The server stores the whole answer even when the phone's connection dropped (a stored conversation, newest first). This reads it back and
+    /// puts the whole text in place of the unfinished one. It takes the stored answer only when the stored last question is the one asked here
+    /// and its answer is longer than what is on screen. Saves the conversation in every outcome (a reply that was held back from the save).
+    func recoverReply() async {
+        guard !isStreaming, !recovering, session.state.isAuthenticated,
+              let index = messages.lastIndex(where: { $0.role == .assistant }),
+              let asked = messages[..<index].last(where: { $0.role == .user })?.content else { return }
+        let targetId = messages[index].id
+        let partial = messages[index].content
+        recovering = true
+        recoverFailed = false
+        defer { recovering = false }
+        let askedKey = asked.trimmingCharacters(in: .whitespacesAndNewlines)
+        do {
+            let found: Conversation?
+            if let id = conversationId {
+                found = try await service.loadConversation(id: id)
+            } else {
+                found = try await service.savedConversation(endingWith: askedKey)
+            }
+            guard let conversation = found,
+                  conversation.messages.last(where: { $0.role == MessageRole.user.rawValue })?
+                      .content.trimmingCharacters(in: .whitespacesAndNewlines) == askedKey,
+                  let full = conversation.messages.last(where: { $0.role == MessageRole.assistant.rawValue })?.content,
+                  full.count > partial.count,
+                  let at = messages.firstIndex(where: { $0.id == targetId }) else {
+                recoverFailed = true
+                scheduleSave()
+                return
+            }
+            messages[at].content = full
+            messages[at].status = .complete
+            endNotice = nil
+            conversationId = conversation.id
+            hasMemory = true
+            scheduleSave()
+        } catch {
+            log.error("recover reply failed: \(error.diagnosticTag)")
+            recoverFailed = true
+            scheduleSave()
         }
     }
 
@@ -1087,20 +1176,27 @@ final class ChatViewModel: AppObservableObject {
 /// How a reply that did not finish cleanly ended. A fixed line under the reply, in the app's language, and
 /// never text of the answer; no billing claim is made (only the server decides about a refund).
 enum ChatEndNotice: Equatable, Sendable {
-    /// The body closed without its finish frame (`d:`): half an answer. Offers «answer again».
+    /// The body closed without its finish frame (`d:`): half an answer. Offers «answer again» and «load the answer».
     case cut
     /// Server turn status `incomplete`: the answer may be missing its end.
     case incomplete
     /// Server turn status `interrupted`, or a `3:` error part after some text.
     case interrupted
+    /// The connection dropped, or went silent, after some text: the text stays and the whole answer can be read back from the saved
+    /// conversation («Tải câu trả lời»).
+    case connectionLost
 
     var messageKey: String {
         switch self {
         case .cut: return "chat.streamCut"
         case .incomplete: return "chat.turnIncomplete"
         case .interrupted: return "chat.turnInterrupted"
+        case .connectionLost: return "chat.streamLost"
         }
     }
+
+    /// The reply may be only a part of what the server wrote and stored: the whole one can be fetched.
+    var isRecoverable: Bool { self == .cut || self == .connectionLost }
 }
 
 // MARK: - Chat error enum

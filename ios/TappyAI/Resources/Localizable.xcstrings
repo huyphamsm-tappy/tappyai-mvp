@@ -33079,6 +33079,27 @@
         }
       }
     },
+    "chat.streamLost": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The connection was interrupted. The answer may be longer than what is shown." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Kết nối bị gián đoạn. Câu trả lời có thể dài hơn phần đang hiện." } }
+      }
+    },
+    "chat.recover": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Load the answer" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tải câu trả lời" } }
+      }
+    },
+    "chat.recoverFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The full answer is not available yet. Try again in a few seconds." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có bản đầy đủ. Thử lại sau ít giây." } }
+      }
+    },
     "msg.tab.requests": {
       "extractionState": "manual",
       "localizations": {
