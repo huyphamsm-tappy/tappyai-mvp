@@ -27,7 +27,7 @@ export const en: Record<string, string> = {
   'legal.privacy.s1.b2': 'Conversation history with the AI assistant.',
   'legal.privacy.s1.b3': 'Basic account information required to provide our services.',
   'legal.privacy.s1.b4':
-    'Personalization details the assistant remembers from your conversations — such as the area you are usually in, who you go out with, your usual timing, your food, spa, shopping and entertainment preferences, and your budget ranges.',
+    'Personalization details the assistant remembers from your conversations — such as the area you are usually in, who you go out with, your usual timing, your food, spa, shopping and entertainment preferences, and your budget ranges — and what you choose to tell it about yourself: your work, the projects you are working on and your goals. It remembers only what you say about yourself, never guesses, and does not remember sensitive information (health, religion, politics, sexual orientation, ethnicity, detailed personal finances, or details about children). You can review, edit or delete all of it under Settings → Memory.',
   'legal.privacy.s1.b5':
     'Feedback you give on an AI reply (like, dislike, or report, with an optional reason).',
   'legal.privacy.s1.b6':
@@ -318,7 +318,7 @@ export const vi: Record<string, string> = {
   'legal.privacy.s1.b2': 'Lịch sử trò chuyện với trợ lý AI.',
   'legal.privacy.s1.b3': 'Thông tin tài khoản cơ bản cần thiết để cung cấp dịch vụ.',
   'legal.privacy.s1.b4':
-    'Thông tin cá nhân hóa mà trợ lý ghi nhớ từ cuộc trò chuyện của bạn — ví dụ khu vực bạn thường ở, người bạn thường đi cùng, thời điểm bạn thường đi, sở thích về ăn uống, spa, mua sắm, giải trí và khoảng ngân sách của bạn.',
+    'Thông tin cá nhân hóa mà trợ lý ghi nhớ từ cuộc trò chuyện của bạn — ví dụ khu vực bạn thường ở, người bạn thường đi cùng, thời điểm bạn thường đi, sở thích về ăn uống, spa, mua sắm, giải trí và khoảng ngân sách của bạn — cùng những gì bạn tự kể về bản thân: công việc, dự án bạn đang làm và mục tiêu của bạn. Trợ lý chỉ ghi nhớ những gì chính bạn nói về mình, không suy đoán, và không ghi nhớ thông tin nhạy cảm (sức khỏe, tôn giáo, chính trị, xu hướng tính dục, dân tộc, tài chính cá nhân chi tiết, thông tin về trẻ em). Bạn có thể xem, chỉnh sửa hoặc xóa tất cả trong Cài đặt → Trí nhớ.',
   'legal.privacy.s1.b5':
     'Phản hồi của bạn về một câu trả lời của AI (thích, không thích hoặc báo cáo, kèm lý do tùy chọn).',
   'legal.privacy.s1.b6':
