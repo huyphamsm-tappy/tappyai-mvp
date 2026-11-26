@@ -156,6 +156,30 @@ describe('the cards above the fold are the venues the reply named', () => {
     } finally { err.mockRestore() }
   })
 
+  it('🚨 owner UAT 26/11: a reply about something else entirely (no word of any bold title is in any returned venue name) shows NO venue cards: the preliminary set is retracted', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const result = { source: 'serper_maps', count: NAMES.length, results: NAMES.map(row), _tappy_place_domain: 'food' }
+      const collector = createEnrichmentCollector()
+      collector.add(result.results)
+      collector.setPlacesRecommendations(placeRecommendations(result, 'TP HCM', undefined), producerSubject('search_places', 'food'))
+      collector.setRendersDecisionCard(rendersDecisionCard('android'))
+      const res = applyPlaceEnrichmentStreamFilter(
+        new Response([
+          '9:{"toolCallId":"t1","toolName":"search_places","args":{"query":"quán ăn ngon","location":"Quận 1"}}',
+          'a:' + JSON.stringify({ toolCallId: 't1', result }),
+          line0('**Chủ tịch nước** là chức danh nguyên thủ quốc gia. Mốc **Độc lập 1945** gắn với chức danh này.'),
+          END,
+        ].join('\n') + '\n'),
+        'vi', collector,
+      )
+      const out = await new Response(res.body).text()
+      const annotations = out.split('\n').filter(l => l.startsWith('8:')).map(l => JSON.parse(l.slice(2)) as unknown[]).flat() as PlacesLiveView[]
+      expect(readPlacesLiveView(annotations)).toBeNull() // the last place frame is the explicit "cleared"
+      expect(out).toContain('"cleared":true')
+    } finally { err.mockRestore() }
+  })
+
   it('a reply that names no venue at all is not that error (nothing to match)', async () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {})
     try {

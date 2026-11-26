@@ -9,7 +9,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, Smile, Image as ImageIcon, Heart, X, Square, RotateCcw, Brain, Info } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Image as ImageIcon, Heart, X, Square, RotateCcw, Brain, Info, Plus } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useDeepResearchOffered } from '@/lib/subscription/modeAccess'
 import { takeHomeHandoff } from '@/lib/chat/homeHandoff'
@@ -979,6 +979,17 @@ export default function ChatInterface({
   // 01/11 (owner chose "C", like ChatGPT Go): the default is Auto (Tappy decides when to think); "Trả lời nhanh" is Chat.
   const [chatMode, setChatMode] = useState<'auto' | 'chat' | 'web' | 'think' | 'deep'>('auto')
   const [plusOpen, setPlusOpen] = useState(false)
+  // The "+" menu closes on any press outside it and on Escape. The full-screen backdrop inside it is not enough on its own: `position: fixed` stops covering the
+  // screen when an ancestor has a transform/filter (the glow layout does), which left the menu open until "+" was pressed again (owner, 26/11/2026).
+  const plusWrapRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!plusOpen) return
+    const onDown = (e: Event) => { if (!plusWrapRef.current?.contains(e.target as Node)) setPlusOpen(false) }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setPlusOpen(false) }
+    document.addEventListener('pointerdown', onDown, true)
+    document.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('pointerdown', onDown, true); document.removeEventListener('keydown', onKey) }
+  }, [plusOpen])
   // the plan decides whether Deep Research is offered (Free: no); whole menu until the plan is known
   const deepOffered = useDeepResearchOffered()
   useEffect(() => { if (!deepOffered) setChatMode(m => (m === 'deep' ? 'auto' : m)) }, [deepOffered])
@@ -2687,15 +2698,16 @@ export default function ChatInterface({
           {/* look flag (the owner's reference bar, 14/11): a round "+" on the left, ONE pill with the text and the picture / mic icons inside it, a round glowing send on the right */}
           <div className={V206_LOOK ? 'v206-composer flex gap-3 items-center' : 'flex gap-2 items-end'} data-v206-composer={V206_LOOK ? 'true' : undefined}>
           {/* 31/10: "+" - attach a picture or a PDF, or pick a mode (ChatGPT's composer menu) */}
-          <div className="relative flex-shrink-0">
+          <div ref={plusWrapRef} className="relative flex-shrink-0">
             <button
               type="button"
               onClick={() => setPlusOpen(v => !v)}
               aria-expanded={plusOpen}
               aria-label={t('composer.plus')}
-              className={cn('w-11 h-11 rounded-2xl flex items-center justify-center transition-all text-xl leading-none', plusOpen ? 'bg-primary-500/15 text-primary-600' : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-gray-200 dark:hover:bg-gray-700')}
+              className={cn('w-11 h-11 rounded-2xl flex items-center justify-center transition-all leading-none', plusOpen ? 'bg-primary-500/15 text-primary-600' : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-gray-200 dark:hover:bg-gray-700')}
             >
-              +
+              {/* an icon, not the "+" character: the glyph sits off-centre inside its line box (owner: "not dead centre") */}
+              <Plus size={22} strokeWidth={2.2} aria-hidden="true" />
             </button>
             {plusOpen && (
               <>

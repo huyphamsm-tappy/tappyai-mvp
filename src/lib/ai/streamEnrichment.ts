@@ -2646,16 +2646,22 @@ export function applyPlaceEnrichmentStreamFilter(
      *    `pickUnmatched: true` so a client can show that the order is the engine's, not the model's.
      *    A reply with no bold venue at all ("chưa xác nhận được…") is not that case.
      */
-    const { pickedRecs, namedRecs, namedInProse, pickUnmatched } = (() => {
+    const { pickedRecs, namedRecs, namedInProse, pickUnmatched, unrelatedToRows } = (() => {
       const { named, picked, headers, allNames } = cardFold(recsForCard, mainText)
       // Only when there ARE rows to match: a no-tool turn with bold section titles is not this error.
       const unmatched = recsForCard.length > 0 && named.length === 0 && headers.length > 0
       if (unmatched) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'pick_unmatched', headers: headers.slice(0, 5).map(h => h.norm), rows: allNames.slice(0, 8) }))
+      // "Unrelated" is the clear case of unmatched: not one word of length 3+ is shared between ANY bold title and ANY returned venue name. A reply about venues whose
+      // names the matcher missed still shares words with them (kept as before, with the error); a reply about something else entirely shares none.
+      const words = (s: string) => new Set(normName(s).split(/[^a-z0-9]+/).filter(w => w.length >= 3))
+      const rowWords = new Set(allNames.flatMap(n => [...words(n)]))
+      const unrelated = unmatched && headers.every(h => [...words(h.norm)].every(w => !rowWords.has(w)))
       return {
         pickedRecs: picked,
         namedRecs: named.slice(0, CARDS_SHOWN),
         namedInProse: Math.min(named.length, CARDS_SHOWN),
         pickUnmatched: unmatched,
+        unrelatedToRows: unrelated,
       }
     })()
     // M5 (TAPPY_AGENT=2) without a ranking line: the cards are the venues Luna NAMED, in its order — never filler from the provider
@@ -2667,6 +2673,13 @@ export function applyPlaceEnrichmentStreamFilter(
     }
     // planTurn (CONSULTATIVE_IN_AGENT): the plan carries its own places — no standalone venue cards after it, even for names the prose repeats.
     if (collector?.planTurn) { recsForCard = []; namedOnlyCards = [] }
+    // The reply has bold section titles and NONE of them is a venue the search returned: the answer is not about those venues (owner UAT 26/11/2026: a question about
+    // a historical person, asked inside a Quy Nhơn nightlife chat, came back with three Quy Nhơn bar cards under it). Showing the engine's rows as if they answered
+    // it is the filler this file already refuses elsewhere: no cards.
+    if (pickUnmatched && unrelatedToRows && recsForCard.length > 0) {
+      console.log(JSON.stringify({ type: 'tappyai_cards', step: 'unmatched_no_cards', rows: recsForCard.length }))
+      recsForCard = []; namedOnlyCards = []
+    }
     // CONSULT_V3 task frame: a turn whose declared task does not use places (a recipe, an explanation, news) shows no venue cards, even when a
     // search ran before the declaration (UAT 17/10: restaurant cards under a cook-at-home answer).
     if (collector?.consultV3 === true && collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places && recsForCard.length) {
