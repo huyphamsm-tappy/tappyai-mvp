@@ -199,6 +199,12 @@ struct ChatView: View {
             router.chatSeed = nil
             vm.sendQuickPrompt(seed)
         }
+        // The home ask bar's "+" → Nghiên cứu sâu: the mode is set for the next question (picking it again goes back to Auto, as the menu does).
+        .onChange(of: router.chatWantsDeep) { wants in
+            guard wants else { return }
+            router.chatWantsDeep = false
+            if vm.mode != .deep { vm.selectMode(.deep) }
+        }
         // Signed in from the «sign in to continue» card: the held message goes out now, in place.
         .onChange(of: router.loginCompleted) { _ in vm.resumeAfterLogin() }
         .onChange(of: vm.error) { newError in

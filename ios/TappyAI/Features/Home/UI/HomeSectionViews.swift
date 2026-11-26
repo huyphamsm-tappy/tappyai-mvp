@@ -138,6 +138,9 @@ struct HomeGreetingSection: View {
 /// `onSend` — Home never answers in place. Attach and mic stay in Chat.
 struct HomeAskBar: View {
     let onSend: (String) -> Void
+    /// The "+" menu (web composer): Deep Research for the next question, or attaching a picture or file in the chat.
+    var onDeepResearch: () -> Void = {}
+    var onAttach: () -> Void = {}
     @State private var text = ""
 
     private var trimmed: String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -151,6 +154,17 @@ struct HomeAskBar: View {
 
     var body: some View {
         HStack(spacing: 12) {
+            Menu {
+                Button { onAttach() } label: { Label("Thêm ảnh & tệp", systemImage: "paperclip") }
+                    .accessibilityIdentifier("home-ask-attach")
+                Button { onDeepResearch() } label: { Label("Nghiên cứu sâu", systemImage: "magnifyingglass.circle") }
+                    .accessibilityIdentifier("home-ask-deep")
+            } label: {
+                Image(systemName: "plus").font(.system(size: 18, weight: .semibold)).foregroundStyle(HomeV3.onSurfaceVariant)
+                    .frame(width: 32, height: 32)
+            }
+            .accessibilityLabel(Text("Thêm"))
+            .accessibilityIdentifier("home-ask-plus")
             Image(systemName: "magnifyingglass").font(.system(size: 18)).foregroundStyle(HomeV3.onSurfaceVariant)
                 .accessibilityHidden(true)
             TextField(LocalizedStringKey("home.v3.askPlaceholder"), text: $text)

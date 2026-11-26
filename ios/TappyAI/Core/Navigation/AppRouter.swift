@@ -20,6 +20,8 @@ final class AppRouter: AppObservableObject {
     /// A message another screen wants the Chat tab to send (e.g. "Hỏi Tappy về chỗ này" on a
     /// recommendation). The chat view consumes it and clears it.
     @AppPublished var chatSeed: String?
+    /// The home ask bar's "+" → Deep Research: the chat view turns the mode on for the next question, then clears this.
+    @AppPublished var chatWantsDeep = false
 
     /// The ONE login screen. Every «sign in» entry (chat card, Profile, account icon, locked rows) calls
     /// `requestLogin()`; the shell presents it over whatever is on screen, so the person never changes tab.

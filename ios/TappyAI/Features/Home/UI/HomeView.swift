@@ -38,7 +38,9 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 28) {
                 VStack(alignment: .leading, spacing: 20) {
                     HomeGreetingSection(hero: hero)
-                    HomeAskBar { ask($0) }
+                    HomeAskBar(onSend: { ask($0) },
+                               onDeepResearch: { router.chatWantsDeep = true; router.switchTo(.chat) },
+                               onAttach: { router.switchTo(.chat) })
                 }
                 // Hidden as on the web (SHOW_RECOMMENDATIONS = false); the rail and its screen stay in place.
                 if ProductFlags.showRecommendations, case .loaded(let recs) = vm.recommendations {
