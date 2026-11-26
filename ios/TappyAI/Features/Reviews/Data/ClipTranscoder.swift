@@ -6,8 +6,9 @@ import AVFoundation
 ///
 /// Best effort, never a blocker: a small clip is sent as it is, and when the export fails, or the copy is not smaller, the original is used.
 enum ClipTranscoder {
-    /// A clip at or under this size is uploaded as it is: the upload is shorter than the export would be.
-    static let skipBelowBytes = 20 * 1024 * 1024
+    /// A clip at or under this size is uploaded as it is, untouched (owner 26/11: 50 MB, so an ordinary clip keeps the quality it was shot with
+    /// and only a very heavy file is exported).
+    static let skipBelowBytes = 50 * 1024 * 1024
 
     /// The rule, pure: whether a file of this size is worth exporting.
     static func shouldTranscode(fileSize: Int) -> Bool { fileSize > skipBelowBytes }
