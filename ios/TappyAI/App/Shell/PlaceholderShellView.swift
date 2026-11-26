@@ -147,6 +147,7 @@ struct PlaceholderShellView: View {
         .onReceive(NotificationCenter.default.publisher(for: AIConsentStore.didChange)) { _ in
             Task { await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated) }
         }
+        .modifier(AgeGateModifier(deps: deps, signedIn: session.state.isAuthenticated))
         .fullScreenCover(isPresented: $router.showLogin) {
             AuthFlowView(repo: deps.authRepository, config: deps.configService) { router.loginFinished(signedIn: session.state.isAuthenticated) }
         }
