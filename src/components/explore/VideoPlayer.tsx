@@ -91,6 +91,7 @@ function notifyAudio() { audioSubs.forEach(fn => { try { fn() } catch {} }) }
 /* ── Viewer's own mute choice, PER CLIP (owner 26/11/2026: "watch without sound", one clip at a time) ─────
    Separate from the browser's autoplay unlock above. Each player keeps its own `clipMuted` (below): while it is true THAT clip makes no
    sound (its own audio, an attached sound's companion track, a YouTube embed), whatever the unlock state. Other clips keep their sound. */
+const mutedClips = new Set<string>()
 if (typeof window !== 'undefined') {
   window.addEventListener('click', () => {
     unlockTapPending = !feedAudioUnlocked
@@ -111,11 +112,23 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   // For every other URL (old MP4 posts, YouTube) this hook does nothing at all and the <video> below keeps `src={url}` exactly as before.
   const hlsPlayback = useVideoPlayback({ url, videoRef })
   // This clip's own mute (the speaker button). A ref too, because the audio effects below read it without re-running.
-  const [clipMuted, setClipMuted] = useState(false)
-  const clipMutedRef = useRef(false)
+  // Remembered per clip for the whole visit (module-level set keyed by the clip's url): the player is unmounted when the viewer swipes away, and coming back must keep it muted.
+  const [clipMuted, setClipMuted] = useState(() => mutedClips.has(url))
+  const clipMutedRef = useRef(clipMuted)
+  // The browser keeps every clip silent until the first tap on the page (autoplay rule). Until then the button must SAY it is silent, and its tap turns the sound on.
+  const [audioUnlocked, setAudioUnlocked] = useState(feedAudioUnlocked)
+  useEffect(() => {
+    const sync = () => setAudioUnlocked(feedAudioUnlocked)
+    audioSubs.add(sync)
+    sync()
+    return () => { audioSubs.delete(sync) }
+  }, [])
+  const shownMuted = clipMuted || !audioUnlocked
   const toggleClipMuted = () => {
-    const next = !clipMutedRef.current
+    // What the button showed when it was tapped decides: silent -> sound on, sound -> silent.
+    const next = !shownMuted
     clipMutedRef.current = next
+    if (next) mutedClips.add(url); else mutedClips.delete(url)
     setClipMuted(next)
     notifyAudio() // every clip's audio hooks re-read their own flag; only this one changed
   }
@@ -477,7 +490,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-        <MuteButton muted={clipMuted} onToggle={toggleClipMuted} />
+        <MuteButton muted={shownMuted} onToggle={toggleClipMuted} />
       </div>
     )
   }
@@ -554,7 +567,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
           </div>
         </div>
       )}
-      <MuteButton muted={clipMuted} onToggle={toggleClipMuted} />
+      <MuteButton muted={shownMuted} onToggle={toggleClipMuted} />
     </div>
   )
 })
