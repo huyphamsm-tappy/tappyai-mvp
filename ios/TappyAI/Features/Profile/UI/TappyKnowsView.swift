@@ -31,6 +31,9 @@ struct TappyKnowsView: View {
         if let e = prefs.entertainment { n += min(e.count, 3) }
         if let sh = prefs.shopping { n += min(sh.count, 3) }
         if let a = prefs.avoid { n += min(a.count, 3) }
+        if let w = prefs.work { n += min(w.count, 3) }
+        if let p = prefs.projects { n += min(p.count, 3) }
+        if let g = prefs.goals { n += min(g.count, 3) }
         n += m.budget.count
         n += min(m.history.count, 5)
         return n
@@ -296,6 +299,23 @@ struct TappyKnowsView: View {
             if let avoid = m.preferences.avoid, !avoid.isEmpty {
                 memoryCard(icon: "xmark.circle", label: NSLocalizedString("memory.card.dislikes", comment: ""), iconColor: .red) {
                     tagList(avoid, color: .red) { idx in removeTag("avoid", idx) }
+                }
+            }
+
+            // About the person (web CONSULT_PERSON_MODEL): what they do, what they are building, what they want. Shown only when the person said it.
+            if let work = m.preferences.work, !work.isEmpty {
+                memoryCard(icon: "briefcase", label: "Công việc / lĩnh vực", iconColor: .indigo) {
+                    tagList(work, color: .indigo) { idx in removeTag("work", idx) }
+                }
+            }
+            if let projects = m.preferences.projects, !projects.isEmpty {
+                memoryCard(icon: "hammer", label: "Đang làm", iconColor: .teal) {
+                    tagList(projects, color: .teal) { idx in removeTag("projects", idx) }
+                }
+            }
+            if let goals = m.preferences.goals, !goals.isEmpty {
+                memoryCard(icon: "target", label: "Mục tiêu", iconColor: .orange) {
+                    tagList(goals, color: .orange) { idx in removeTag("goals", idx) }
                 }
             }
 
@@ -571,6 +591,9 @@ struct TappyKnowsView: View {
         case "entertainment": m.preferences.entertainment?.remove(at: idx)
         case "shopping": m.preferences.shopping?.remove(at: idx)
         case "avoid": m.preferences.avoid?.remove(at: idx)
+        case "work": m.preferences.work?.remove(at: idx)
+        case "projects": m.preferences.projects?.remove(at: idx)
+        case "goals": m.preferences.goals?.remove(at: idx)
         default: break
         }
         memory = m

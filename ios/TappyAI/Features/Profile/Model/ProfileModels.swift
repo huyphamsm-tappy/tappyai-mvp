@@ -48,13 +48,22 @@ struct MemoryPreferences: Codable {
     var entertainment: [String]?
     var shopping: [String]?
     var avoid: [String]?
+    /// What the person says about THEMSELVES (web `personFacts.ts`, CONSULT_PERSON_MODEL): their work, what they are building, what they want to achieve.
+    var work: [String]?
+    var projects: [String]?
+    var goals: [String]?
 
     /// The WHOLE preferences object for `PATCH /api/memory`. The server REPLACES the stored `preferences` with what it is sent
     /// (`src/app/api/memory/route.ts` keeps only the categories in the body, then `updateMemory` upserts the column), so a patch with one
-    /// category erases the other four. The web's "Tappy knows" page sends all of them; so does this.
+    /// category erases the other four. The web's "Tappy knows" page sends all of them; so does this. The three person groups are sent only
+    /// when the app holds them: the server keeps a stored person group the request does not carry.
     var wirePayload: [String: [String]] {
-        ["food": food ?? [], "spa": spa ?? [], "entertainment": entertainment ?? [],
-         "shopping": shopping ?? [], "avoid": avoid ?? []]
+        var payload: [String: [String]] = ["food": food ?? [], "spa": spa ?? [], "entertainment": entertainment ?? [],
+                                           "shopping": shopping ?? [], "avoid": avoid ?? []]
+        if let work { payload["work"] = work }
+        if let projects { payload["projects"] = projects }
+        if let goals { payload["goals"] = goals }
+        return payload
     }
 }
 
