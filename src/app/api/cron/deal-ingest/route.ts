@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
+import { accesstradeOffersRequest, isAccesstradeOffersConfigured } from '@/lib/ccp/tracking/accesstradeOffersApi'
 import { DEAL_SOURCES, rowsForSource, type DealRow, type DealSource } from '@/lib/deals/accesstradeOffers'
 
 export const runtime = 'nodejs'
@@ -13,15 +14,15 @@ export const dynamic = 'force-dynamic'
 // Per partner: fetch -> keep valid offers (accesstradeOffers.ts) -> INSERT the new rows -> only then delete the previous importer rows of that partner. A failed fetch, or one
 // with no valid offer, leaves what is on the page as it is (a partner is never emptied by a bad day). The rows expire by themselves (end_at, enforced by the table's RLS).
 //
-// Auth: CRON_SECRET (the same gate as every cron). Key: ACCESSTRADE_API_KEY, sent as `Authorization: Token <key>`; never logged, never returned.
+// Auth: CRON_SECRET (the same gate as every cron). The Accesstrade request (endpoint, token header, filters) is described by src/lib/ccp/tracking/accesstradeOffersApi.ts, which is
+// the only place that knows the key; it is never logged and never returned here.
 
-const ENDPOINT = 'https://api.accesstrade.vn/v1/offers_informations'
+type Outcome = { partner: string; kept: number; written: number; skipped?: string }
 
-type Outcome = { partner: string; fetched: number; kept: number; written: number; skipped?: string }
-
-async function fetchOffers(src: DealSource, key: string): Promise<unknown | null> {
-  const url = `${ENDPOINT}?${new URLSearchParams({ domain: src.domain, status: '1', limit: '50', page: '1' }).toString()}`
-  const res = await fetch(url, { headers: { Authorization: `Token ${key}`, Accept: 'application/json' }, cache: 'no-store', signal: AbortSignal.timeout(20_000) })
+async function fetchOffers(src: DealSource): Promise<unknown | null> {
+  const req = accesstradeOffersRequest(src.partnerId)
+  if (!req) return null
+  const res = await fetch(req.url, { headers: req.headers, cache: 'no-store', signal: AbortSignal.timeout(20_000) })
   if (!res.ok) {
     console.warn(JSON.stringify({ type: 'tappyai_deal_ingest', partner: src.partnerId, status: res.status }))
     return null
@@ -31,17 +32,16 @@ async function fetchOffers(src: DealSource, key: string): Promise<unknown | null
 
 export async function GET(req: Request) {
   if (!isAuthorizedCronRequest(req)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-  const key = process.env.ACCESSTRADE_API_KEY
-  if (!key) return NextResponse.json({ ok: false, reason: 'no_key' }, { status: 503 })
+  if (!isAccesstradeOffersConfigured()) return NextResponse.json({ ok: false, reason: 'no_key' }, { status: 503 })
 
   const admin = createAdminClient()
   const now = new Date()
   const outcomes: Outcome[] = []
 
   for (const src of DEAL_SOURCES) {
-    const out: Outcome = { partner: src.partnerId, fetched: 0, kept: 0, written: 0 }
+    const out: Outcome = { partner: src.partnerId, kept: 0, written: 0 }
     try {
-      const json = await fetchOffers(src, key)
+      const json = await fetchOffers(src)
       if (json === null) { out.skipped = 'fetch_failed'; outcomes.push(out); continue }
       const rows: DealRow[] = rowsForSource(json, src, now)
       out.kept = rows.length

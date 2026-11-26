@@ -10,24 +10,23 @@
 // Pure: no I/O. The cron route fetches and writes.
 
 import { DEAL_CATEGORY_SHOPPING, DEAL_CATEGORY_TRAVEL, DEAL_FALLBACK_TITLE } from '@/lib/i18n/dealsIngest'
+import { OFFER_ROUTES, type OfferRouteId } from '@/lib/ccp/tracking/accesstradeOffersApi'
 
-export type DealPartnerId = 'lazada' | 'vexere'
+export type DealPartnerId = OfferRouteId
 
 export interface DealSource {
   partnerId: DealPartnerId
   partnerName: string
   partnerType: 'ecommerce' | 'travel'
   category: string
-  /** the `domain` filter of the offers endpoint */
-  domain: string
-  /** hosts a tracked link may point to: the Accesstrade deep-link host and the merchant's own */
+  /** hosts a tracked link may point to (from the CCP route table: the Accesstrade deep-link host and the merchant's own) */
   linkHosts: readonly string[]
   displayOrder: number
 }
 
 export const DEAL_SOURCES: readonly DealSource[] = [
-  { partnerId: 'lazada', partnerName: 'Lazada', partnerType: 'ecommerce', category: DEAL_CATEGORY_SHOPPING, domain: 'lazada.vn', linkHosts: ['go.isclix.com', 'lazada.vn'], displayOrder: 20 },
-  { partnerId: 'vexere', partnerName: 'Vexere', partnerType: 'travel', category: DEAL_CATEGORY_TRAVEL, domain: 'vexere.com', linkHosts: ['go.isclix.com', 'vexere.com'], displayOrder: 21 },
+  { partnerId: 'lazada', partnerName: 'Lazada', partnerType: 'ecommerce', category: DEAL_CATEGORY_SHOPPING, linkHosts: OFFER_ROUTES.lazada.linkHosts, displayOrder: 20 },
+  { partnerId: 'vexere', partnerName: 'Vexere', partnerType: 'travel', category: DEAL_CATEGORY_TRAVEL, linkHosts: OFFER_ROUTES.vexere.linkHosts, displayOrder: 21 },
 ]
 
 /** At most this many deals per partner stay on the page. */
