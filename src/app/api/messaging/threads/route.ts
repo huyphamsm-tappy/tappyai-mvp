@@ -119,6 +119,13 @@ function rpcFailure(req: NextRequest, message: string, tag: string) {
       { status: 403 },
     )
   }
+  // A sender may open at most 10 new message requests in 24 hours (migration 20261210).
+  if (message.includes('request_daily_limit')) {
+    return NextResponse.json(
+      { error: 'request_daily_limit', message: serverMessage('messaging.requestDailyLimit', locale) },
+      { status: 429 },
+    )
+  }
   if (message.includes('invalid_target') || message.includes('invalid_members') || message.includes('too_many_members')) {
     return NextResponse.json(
       { error: 'invalid_input', message: serverMessage('validation.invalid', locale) },

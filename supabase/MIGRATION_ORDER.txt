@@ -180,3 +180,4 @@ supabase/migrations/20261206_group_bills.sql
 supabase/migrations/20261207_auto_hold_reported_posts.sql
 supabase/migrations/20261208_comment_hiding.sql
 supabase/migrations/20261209_authority_takedowns.sql
+supabase/migrations/20261210_message_requests.sql

@@ -25,8 +25,10 @@ import NewMessageSheet from './NewMessageSheet'
  */
 export default function MessagesTab({ signedIn, initialThreadId }: { signedIn: boolean; initialThreadId?: string }) {
   const { t } = useTranslation()
-  const { threads, loading, error, meId, refetch } = useMessages()
+  const { threads, requests = [], loading, error, meId, refetch } = useMessages()
   const [retrying, setRetrying] = useState(false)
+  // "Tin nhắn chờ": strangers who wrote first. Shown apart; the main list never contains them.
+  const [showRequests, setShowRequests] = useState(false)
 
   /**
    * Open a conversation by id. The list is re-read FIRST: a thread that was just created is not in `threads` yet, and the
@@ -39,13 +41,20 @@ export default function MessagesTab({ signedIn, initialThreadId }: { signedIn: b
   const [activeId, setActiveId] = useState<string | null>(null)
   const [composing, setComposing] = useState(false)
 
-  const active = threads.find(thread => thread.id === activeId) ?? null
+  const activeRequest = requests.find(thread => thread.id === activeId) ?? null
+  const active = threads.find(thread => thread.id === activeId) ?? activeRequest
 
   // A thread that disappears (signed out, or removed server-side) must not leave
   // an empty detail pane pointing at nothing.
   useEffect(() => {
-    if (activeId && !threads.some(thread => thread.id === activeId) && !loading) setActiveId(null)
-  }, [activeId, threads, loading])
+    if (activeId && !threads.some(thread => thread.id === activeId) && !requests.some(thread => thread.id === activeId) && !loading) setActiveId(null)
+  }, [activeId, threads, requests, loading])
+
+  const declineRequest = useCallback(async (id: string) => {
+    try { await fetch(`/api/messaging/threads/${id}/decline`, { method: 'POST' }) } catch { /* the next refetch shows the truth */ }
+    setActiveId(null)
+    await refetch()
+  }, [refetch])
 
   const opened = useRef(false)
   useEffect(() => {
@@ -98,8 +107,32 @@ export default function MessagesTab({ signedIn, initialThreadId }: { signedIn: b
               {t('v3.msg.new')}
             </button>
           </div>
+          {(requests.length > 0 || showRequests) && (
+            <div role="tablist" className="flex flex-shrink-0 gap-1 px-3 pt-2">
+              <button
+                type="button" role="tab" aria-selected={!showRequests} onClick={() => setShowRequests(false)}
+                className="min-h-[32px] flex-1 rounded-lg text-[12.5px] font-semibold"
+                style={!showRequests ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' } : { color: 'var(--v3-fg-muted)' }}
+              >
+                {t('v3.msg.tabAll')}
+              </button>
+              <button
+                type="button" role="tab" aria-selected={showRequests} onClick={() => setShowRequests(true)}
+                className="flex min-h-[32px] flex-1 items-center justify-center gap-1.5 rounded-lg text-[12.5px] font-semibold"
+                style={showRequests ? { background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' } : { color: 'var(--v3-fg-muted)' }}
+              >
+                {t('v3.msg.tabRequests')}
+                {requests.length > 0 && <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: 'var(--v3-accent-fill)' }} />}
+              </button>
+            </div>
+          )}
           <div className="min-h-0 flex-1 px-2 pt-2">
-            {(loading || retrying) && threads.length === 0 ? (
+            {showRequests ? (
+              <>
+                <p className="px-2 pb-2 text-[11.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.msg.requestsHint')}</p>
+                <ThreadList threads={requests} activeId={activeId} meId={meId} onSelect={setActiveId} />
+              </>
+            ) : (loading || retrying) && threads.length === 0 ? (
               <div className="flex justify-center py-10">
                 <Loader2 size={22} className="animate-spin" style={{ color: 'var(--v3-accent)' }} />
               </div>
@@ -125,7 +158,7 @@ export default function MessagesTab({ signedIn, initialThreadId }: { signedIn: b
         {/* ── Thread ── */}
         <div className={`min-w-0 flex-1 flex-col ${active ? 'flex' : 'hidden lg:flex'}`}>
           {active ? (
-            <ThreadView thread={active} onBack={() => setActiveId(null)} />
+            <ThreadView thread={active} onBack={() => setActiveId(null)} request={activeRequest !== null} onDecline={() => void declineRequest(active.id)} />
           ) : (
             // Desktop only: below `lg` this pane is not rendered at all, so
             // there is no empty right-hand column on a phone.

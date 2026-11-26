@@ -84,8 +84,9 @@ export default function NewMessageSheet({
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
       onStarted(d.threadId)
-    } catch {
-      setError(t('v3.msg.error'))
+    } catch (e) {
+      // 429 here is the daily ceiling on new message requests (10 per 24 hours).
+      setError(t(e instanceof Error && e.message === '429' ? 'v3.msg.requestDailyLimit' : 'v3.msg.error'))
     } finally {
       setStarting(false)
     }
