@@ -120,15 +120,27 @@ export const CorrectDateOfBirthSchema = z
   .strict()
 
 /**
- * Grant a paid plan to one account (owner 26/11/2026). Only the plans that are sold today (`SALE_PLAN_IDS`), for 1 to 365 days, with a reason
- * of at least 10 characters (a grant is worth money: the record has to say why; shorter than the 20 of a sanction because it is a favour, not a
- * punishment). The server picks the idempotency key; the caller cannot choose it.
+ * Grant a paid plan to one account (owner 26/11/2026). Only the plans that are sold today (`SALE_PLAN_IDS`); the length is 1 to 12 MONTHS, or no
+ * expiry at all (`lifetime`, stored as a date 100 years away so every rule that reads "paid until" keeps working); a reason of at least 10
+ * characters (a grant is worth money: the record has to say why; shorter than the 20 of a sanction because it is a favour, not a punishment).
+ * Exactly one of `months` / `lifetime`. The server picks the idempotency key; the caller cannot choose it.
  */
-export const GRANT_PLAN_MAX_DAYS = 365
+export const GRANT_PLAN_MAX_MONTHS = 12
+export const GRANT_LIFETIME_YEARS = 100
 export const GrantPlanSchema = z
   .object({
     plan: z.enum(['pip', 'momo', 'coco', 'promax1m', 'promax3m']),
-    days: z.coerce.number().int().min(1, 'days must be at least 1').max(GRANT_PLAN_MAX_DAYS, `days must be at most ${GRANT_PLAN_MAX_DAYS}`),
+    months: z.coerce.number().int().min(1, 'months must be at least 1').max(GRANT_PLAN_MAX_MONTHS, `months must be at most ${GRANT_PLAN_MAX_MONTHS}`).optional(),
+    lifetime: z.literal(true).optional(),
+    reason: z.string().trim().min(10, 'reason must be at least 10 characters').max(300, 'reason must be at most 300 characters'),
+  })
+  .strict()
+  .refine((v) => (v.months !== undefined) !== (v.lifetime === true), { message: 'give either months (1 to 12) or lifetime, not both and not neither' })
+
+/** Take back ONE manual grant (its unused part only). The grant is named by the reference the ledger holds, never by a caller-made key. */
+export const RevokePlanGrantSchema = z
+  .object({
+    grant_ref: z.string().trim().regex(/^admin:[0-9a-f-]{36}:[0-9a-f-]{36}$/, 'grant_ref is not a grant made from this screen'),
     reason: z.string().trim().min(10, 'reason must be at least 10 characters').max(300, 'reason must be at most 300 characters'),
   })
   .strict()

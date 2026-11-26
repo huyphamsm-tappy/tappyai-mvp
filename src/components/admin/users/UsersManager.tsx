@@ -75,6 +75,8 @@ export interface UsersCapabilities {
   correctDob: boolean
   /** `users.plan.grant` (owner 26/11/2026): may give this account a paid plan for N days. A WRITE of access value, never of authority. */
   grantPlan: boolean
+  /** `users.plan.revoke`: may take back a plan that was granted from the screen (its unused part only). */
+  revokePlan: boolean
 }
 
 const STANDING_BADGE: Record<Standing, BadgeProps['variant']> = {
@@ -454,7 +456,7 @@ export function UsersManager({ can }: { can: UsersCapabilities }) {
 
       {/* Owner 26/11/2026: give this person a paid plan for N days (no payment). Renders nothing without `users.plan.grant`. */}
       {detail && !detailLoading && (
-        <GuardedSurface><UserPlanGrantPanel userId={detail.id} can={can.grantPlan} /></GuardedSurface>
+        <GuardedSurface><UserPlanGrantPanel userId={detail.id} can={can.grantPlan} canRevoke={can.revokePlan} /></GuardedSurface>
       )}
     </div>
   )

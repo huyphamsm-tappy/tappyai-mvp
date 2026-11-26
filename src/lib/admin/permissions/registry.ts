@@ -801,7 +801,7 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     id: 'users.plan.grant',
     displayName: 'Grant a plan to a user',
     description:
-      'Give a consumer account a paid plan for a number of days, recorded with the actor and a reason (source "manual"). It stacks on a plan the person already holds. It grants ACCESS VALUE, never authority: no admin role, no permission.',
+      'Give a consumer account a paid plan for 1 to 12 months, or with no expiry, recorded with the actor and a reason (source "manual"). It stacks on a plan the person already holds. It grants ACCESS VALUE, never authority: no admin role, no permission. Also lets the holder SEE the grants made from the screen.',
     module: 'users',
     capability: 'users.manage',
     // `write`, not `security`: that category is reserved for permissions that change who holds POWER over the platform. A plan changes what one
@@ -809,6 +809,17 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     // and may hand it to a manager by giving them the `admin` role).
     category: 'write',
     riskLevel: 'critical',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'users.plan.revoke',
+    displayName: 'Take back a granted plan',
+    description:
+      'Take back one plan that was granted from the admin screen: only its unused part is removed, time the person bought stays. Recorded with the actor and a reason. Never touches a purchase or a store period.',
+    module: 'users',
+    capability: 'users.manage',
+    category: 'write',
+    riskLevel: 'high',
     defaultRoles: ['admin', 'super_admin'],
   }),
   def({
@@ -941,6 +952,7 @@ export const PERMISSIONS = {
   USERS_UNBAN: 'users.account.unban',
   USERS_DOB_CORRECT: 'users.date_of_birth.correct',
   USERS_PLAN_GRANT: 'users.plan.grant',
+  USERS_PLAN_REVOKE: 'users.plan.revoke',
 } as const
 
 export type KnownPermissionId = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
