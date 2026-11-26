@@ -132,15 +132,19 @@ export default function DealsView() {
       .then(async (list) => {
         if (cancelled) return
         setDeals(list)
-        // No managed deal: offer the booking partners that really have a tracked affiliate link.
+        // Always offer the booking partners that really have a tracked affiliate link, next to the managed deals (owner 26/11/2026: the page showed only the one managed
+        // Agoda row; Lazada and Vexere, which have tracked links, never appeared because the fallback ran only when the managed list was EMPTY). A partner the managed list
+        // already shows is not repeated.
         let found: PartnerCardItem[] = []
-        if (list.length === 0) {
-          try {
-            const r = await fetch(`/api/deals/partners?lang=${encodeURIComponent(locale)}`, { cache: 'no-store' })
-            const body = r.ok ? await r.json() : null
-            found = Array.isArray(body?.partners) ? onlyAllowedPartners(body.partners as PartnerCardItem[]) : []
-          } catch { found = [] }
-        }
+        try {
+          const r = await fetch(`/api/deals/partners?lang=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+          const body = r.ok ? await r.json() : null
+          const key = (s: unknown) => (typeof s === 'string' ? s.toLowerCase().replace(/[^a-z0-9]+/g, '') : '')
+          const have = new Set(list.map((d) => key(d.partnerName)))
+          found = Array.isArray(body?.partners)
+            ? onlyAllowedPartners(body.partners as PartnerCardItem[]).filter((p) => !have.has(key(p.partnerName)))
+            : []
+        } catch { found = [] }
         if (!cancelled) { setPartners(found); setLoading(false) }
       })
     return () => { cancelled = true }
@@ -261,7 +265,7 @@ export default function DealsView() {
           </div>
         )}
 
-        {!loading && deals.length === 0 && partners.length > 0 && (
+        {!loading && partners.length > 0 && (
           <section aria-label={t('deals.partnersTitle')} className="space-y-3" data-testid="deal-partners">
             <div>
               <h2 className="text-[14px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{t('deals.partnersTitle')}</h2>
