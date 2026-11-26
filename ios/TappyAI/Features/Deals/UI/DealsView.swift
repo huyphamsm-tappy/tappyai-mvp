@@ -1,7 +1,10 @@
 import SwiftUI
+import UIKit
 
 struct DealsView: View {
     @AppStateObject private var vm: DealsViewModel
+    /// The voucher code the person copied last, so its button can say so.
+    @State private var copiedCode: String?
     @AppEnvironmentState private var localization: LocalizationManager
     @AppEnvironmentState private var router: AppRouter
 
@@ -123,6 +126,13 @@ struct DealsView: View {
                 ForEach(vm.deals) { deal in
                     dealCard(deal)
                 }
+                // The web's footer: the deals are the platforms' own offers, not paid advertising.
+                Text("Đây không phải quảng cáo trả tiền; giá và ưu đãi theo công bố của nền tảng, có thể thay đổi.")
+                    .font(.system(size: 11)).foregroundStyle(TappyColor.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, Spacing.xs)
+                    .accessibilityIdentifier("deals-footer")
             }
             .padding(Spacing.md)
         }
@@ -188,8 +198,39 @@ struct DealsView: View {
         // exactly as it did the hub's guest sign-in button in the first run.
     }
 
+    /// "Còn 3 ngày" or "Hôm nay là ngày cuối" from the deal's `endAt`; nil when there is no usable date or it has passed.
+    static func endLabel(_ endAt: String?, now: Date = Date()) -> String? {
+        guard let endAt, let end = ISO8601Timestamp.date(from: endAt) else { return nil }
+        let secs = end.timeIntervalSince(now)
+        guard secs > 0 else { return nil }
+        let days = Int(min(secs / 86_400, 100_000))
+        return days >= 1 ? "Còn \(days) ngày" : "Hôm nay là ngày cuối"
+    }
+
+    /// The voucher code with its own copy button. A separate control, so the card's tap still opens the partner.
+    private func copyRow(_ code: String) -> some View {
+        HStack(spacing: Spacing.xs) {
+            Text(verbatim: code)
+                .font(.system(size: 13, weight: .bold, design: .monospaced))
+                .foregroundStyle(TappyColor.textPrimary)
+            Spacer()
+            Button {
+                UIPasteboard.general.string = code
+                copiedCode = code
+            } label: {
+                Text(copiedCode == code ? "Đã sao chép" : "Sao chép")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(TappyColor.primary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("deal-copy-code")
+        }
+        .padding(.horizontal, Spacing.md).padding(.bottom, Spacing.sm)
+    }
+
     @ViewBuilder
     private func dealCard(_ deal: PartnerDeal) -> some View {
+        VStack(spacing: 0) {
         Button { open(deal) } label: {
             HStack(spacing: Spacing.md) {
                 logo(deal)
@@ -219,10 +260,10 @@ struct DealsView: View {
                             .font(.system(size: 12, weight: .bold))
                             .foregroundStyle(TappyColor.danger)
                     }
-                    if let code = deal.voucherCode {
-                        Text("Mã: \(code)")
+                    if let left = Self.endLabel(deal.endAt) {
+                        Text(left)
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundStyle(TappyColor.primary)
+                            .foregroundStyle(TappyColor.textSecondary)
                     }
                 }
                 Spacer()
@@ -234,6 +275,8 @@ struct DealsView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        if let code = deal.voucherCode, !code.isEmpty { copyRow(code) }
+        }
         .background(TappyColor.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
         .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
