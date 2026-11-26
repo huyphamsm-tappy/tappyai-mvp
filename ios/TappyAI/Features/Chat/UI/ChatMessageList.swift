@@ -54,11 +54,18 @@ struct ChatMessageList: View {
     @State private var parseCache = ParsedContentCache()
     /// Bumped to draw again when a streaming reply's last words were held back by the parse throttle.
     @State private var parseTick = 0
+    /// Whether the first and the last row are on screen: they drive the up / down arrows (web: the same jump buttons).
+    @State private var atTop = true
+    @State private var atBottom = true
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: Spacing.lg) {
+                    Color.clear.frame(height: 1).id("top")
+                        .onAppear { atTop = true }
+                        .onDisappear { atTop = false }
+
                     // Memory indicator while chatting
                     if hasMemory && !messages.isEmpty {
                         HStack(spacing: 4) {
@@ -76,6 +83,10 @@ struct ChatMessageList: View {
                     ForEach(Array(messages.enumerated()), id: \.element.id) { index, msg in
                         if msg.isUser {
                             UserBubble(content: msg.content, attachment: msg.attachment)
+                        } else if isStreaming && index == messages.count - 1 && msg.content.isEmpty {
+                            // The reply being written has no text yet: the thinking indicator below stands for it. An empty bubble here
+                            // was the blank screen while Tappy thought (a second question showed nothing but an avatar).
+                            EmptyView()
                         } else {
                             let isLast = index == messages.count - 1
                             // Parsed once per finished reply; the reply being written at most every ~50 ms (`ParsedContentCache`), so a long
@@ -190,6 +201,8 @@ struct ChatMessageList: View {
                     }
 
                     Color.clear.frame(height: 1).id("bottom")
+                        .onAppear { atBottom = true }
+                        .onDisappear { atBottom = false }
                 }
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, Spacing.md)
@@ -216,7 +229,33 @@ struct ChatMessageList: View {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
             }
+            .overlay(alignment: .bottomTrailing) { jumpButtons(proxy: proxy) }
         }
+    }
+
+    /// The up / down arrows of the web chat: shown only when the first or the last row is off screen.
+    @ViewBuilder
+    private func jumpButtons(proxy: ScrollViewProxy) -> some View {
+        VStack(spacing: Spacing.xs) {
+            if !atTop { jumpButton("chevron.up", id: "top", anchor: .top, proxy: proxy) }
+            if !atBottom { jumpButton("chevron.down", id: "bottom", anchor: .bottom, proxy: proxy) }
+        }
+        .padding(Spacing.md)
+    }
+
+    private func jumpButton(_ symbol: String, id: String, anchor: UnitPoint, proxy: ScrollViewProxy) -> some View {
+        Button {
+            withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: anchor) }
+        } label: {
+            Image(systemName: symbol)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(TappyColor.primary)
+                .frame(width: 38, height: 38)
+                .background(TappyColor.surface, in: Circle())
+                .overlay(Circle().stroke(TappyColor.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("chat-jump-\(id)")
     }
 
     private var waitingForReply: Bool {
@@ -329,6 +368,8 @@ private struct AssistantBubble: View {
     @State private var showComparison = false
     /// The page of a tapped link that opens in the quick-read sheet (web LinkDrawer); nil when no sheet is open.
     @State private var readerLink: ReaderTarget?
+    /// The whole report of a finished Deep Research reply, opened from its summary card (web: the report card opens the full text).
+    @State private var showFullReport = false
     let followups: [String]
     /// The turn's news pictures / subject cards (`[TAPPY_MEDIA]`, already host-checked).
     var media: [MediaBlock] = []
@@ -352,6 +393,7 @@ private struct AssistantBubble: View {
                 // The quick-read sheet of a tapped link, anchored here (outside the link scope, so the sheet's own "open the original" link is a
                 // plain link, never read again; and no extra row in the bubble).
                 .background(Color.clear.sheet(item: $readerLink) { LinkReaderSheet(target: $0).presentationDetents([.medium, .large]) })
+                .background(Color.clear.sheet(isPresented: $showFullReport) { fullReportSheet })
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 // Deep Research: the card above its report (web: the card before the message content)
@@ -360,7 +402,10 @@ private struct AssistantBubble: View {
                                      onOpenLink: { UIApplication.shared.open($0) })
                 }
 
-                if let parts = articleParts {
+                if research != nil, !isStreaming, !content.isEmpty {
+                    // web: a finished research report shows as a summary card; the full text opens from it
+                    ReportSummaryCard(title: research?.title ?? "", sourceCount: research?.sources ?? 0) { showFullReport = true }
+                } else if let parts = articleParts {
                     // An answer with structure (heading, list, table, ...), charts or section pictures, or a picture in the middle of its text:
                     // drawn block by block, each chart / picture right under the section it names (web ArticleAnswer, Android ArticleViews)
                     ForEach(Array(parts.enumerated()), id: \.offset) { _, part in
@@ -556,6 +601,65 @@ private struct AssistantBubble: View {
         case .images(let pictures):
             ChatImageStrip(images: pictures, onZoom: onZoomImage)
         }
+    }
+}
+
+extension AssistantBubble {
+    /// The full report: the same article blocks as the bubble draws, in a sheet of its own.
+    fileprivate var fullReportSheet: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: Spacing.sm) {
+                    if let parts = articleParts {
+                        ForEach(Array(parts.enumerated()), id: \.offset) { _, part in
+                            articlePartView(part).readerLinks { readerLink = $0 }
+                        }
+                    } else {
+                        Text(attributedContent)
+                            .font(TappyFont.body)
+                            .foregroundStyle(ChatTheme.text)
+                            .textSelection(.enabled)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(Spacing.md)
+            }
+            .background(TappyColor.background)
+            .navigationTitle(Text(verbatim: research?.title ?? ""))
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .presentationDetents([.large])
+    }
+}
+
+/// The report's summary card: its title, how many sources it used, and the button that opens the full text.
+private struct ReportSummaryCard: View {
+    let title: String
+    let sourceCount: Int
+    let onOpen: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            Text(verbatim: title.isEmpty ? "Báo cáo nghiên cứu" : title)
+                .font(TappyFont.bodyEmphasis)
+                .foregroundStyle(TappyColor.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(verbatim: "\(sourceCount) nguồn")
+                .font(TappyFont.caption)
+                .foregroundStyle(TappyColor.textSecondary)
+            Button(action: onOpen) {
+                Label("Xem báo cáo", systemImage: "doc.text")
+                    .font(TappyFont.caption.weight(.semibold))
+                    .foregroundStyle(TappyColor.primary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("report-open")
+        }
+        .padding(Spacing.md)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(TappyColor.surface, in: RoundedRectangle(cornerRadius: Radius.lg))
+        .overlay(RoundedRectangle(cornerRadius: Radius.lg).stroke(TappyColor.border, lineWidth: 1))
+        .accessibilityIdentifier("report-summary")
     }
 }
 
