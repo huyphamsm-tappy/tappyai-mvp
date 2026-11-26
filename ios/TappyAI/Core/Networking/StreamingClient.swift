@@ -186,7 +186,8 @@ enum DataStreamLineParser {
 /// The silence a chat stream may have once its first words arrived (see `URLSessionStreamingClient.stream`).
 enum StreamWatchdog {
     /// Seconds with no byte after the first text frame before the stream is ended as stalled.
-    static let idleAfterText: TimeInterval = 25
+    /// Mutable only so a test can shorten it; nothing else changes it.
+    static var idleAfterText: TimeInterval = 25
     /// The `AppError.network` code of a stream the watchdog ended.
     static let stalledCode = "stream_stalled"
 }
