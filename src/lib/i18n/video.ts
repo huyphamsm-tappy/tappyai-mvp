@@ -59,8 +59,8 @@ const T: Record<string, [string, string]> = {
   // ── AI consent dialog (owner-approved wording) ──
   'video.consent.title': ['Đồng ý kiểm duyệt bằng AI', 'Agree to AI review'],
   'video.consent.body': [
-    'Để đăng clip lên Khám phá, TappyAI sẽ gửi hình ảnh (một số khung hình), lời nói và chữ trong clip đến nhà cung cấp trí tuệ nhân tạo (hiện là OpenAI) chỉ để kiểm duyệt trước khi đăng. Nếu không đồng ý, bạn vẫn xem được video nhưng không đăng được clip. Video gốc được lưu riêng tư; bạn có thể xoá bài hoặc tài khoản bất cứ lúc nào để xoá video.',
-    'To post a clip to Explore, TappyAI sends some frames, the speech and the on-screen text of your clip to an AI provider (currently OpenAI) solely to review it before it is published. If you decline you can still watch videos but cannot post a clip. Your original video is stored privately; you can delete the post or your account at any time to remove the video.',
+    'Để đăng clip lên Khám phá, TappyAI sẽ gửi hình ảnh (một số khung hình), lời nói và chữ trong clip đến nhà cung cấp trí tuệ nhân tạo bên thứ ba chỉ để kiểm duyệt trước khi đăng. Nếu không đồng ý, bạn vẫn xem được video nhưng không đăng được clip. Video gốc được lưu riêng tư; bạn có thể xoá bài hoặc tài khoản bất cứ lúc nào để xoá video.',
+    'To post a clip to Explore, TappyAI sends some frames, the speech and the on-screen text of your clip to a third-party AI provider solely to review it before it is published. If you decline you can still watch videos but cannot post a clip. Your original video is stored privately; you can delete the post or your account at any time to remove the video.',
   ],
   'video.consent.accept': ['Đồng ý và tiếp tục', 'Agree and continue'],
   'video.consent.decline': ['Không đồng ý', 'Decline'],

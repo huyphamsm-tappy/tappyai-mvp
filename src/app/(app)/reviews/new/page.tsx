@@ -517,16 +517,10 @@ export default function NewReviewPage() {
     clearNewFlow()
     setVideoDuration(duration) // keep the measured length for the original-sound track
 
-    // Explore video pipeline first: 404 means the feature is off and the old path below runs untouched.
-    if ((await videoFlow.start(file)) === 'new') {
-      setLocalVideoUrl(URL.createObjectURL(file))
-      setNewFlow(true)
-      return
-    }
-
-    /* 1. Generate + upload thumbnail — best-effort. A poster frame is nice-to-have;
-       if the browser can't decode one, the video must still upload and play. */
-    setUploadStep('thumb')
+    // Generate + upload the poster frame — best-effort. A poster frame is nice-to-have; if the browser can't decode one,
+    // the video must still upload and play. Shared by the old path and the Explore pipeline (which had NO poster at all: 26/11/2026,
+    // the first real clip showed a broken tile in the profile because the post carried no thumbnail).
+    const makePoster = async (): Promise<string> => {
     let thumbUrl = ''
     const tThumbGen = vstart('thumbnail-generate')
     try {
@@ -560,6 +554,20 @@ export default function NewReviewPage() {
       // Non-fatal: log and continue to the video upload without a poster thumbnail.
       vfail('thumbnail-generate', tThumbGen, e, { note: 'continuing without thumbnail' })
     }
+    return thumbUrl
+    }
+
+    // Explore video pipeline first: 404 means the feature is off and the old path below runs untouched.
+    if ((await videoFlow.start(file)) === 'new') {
+      setLocalVideoUrl(URL.createObjectURL(file))
+      setNewFlow(true)
+      void makePoster() // the server processes the clip for about a minute meanwhile; the poster is ready long before the post is sent
+      return
+    }
+
+    /* 1. Poster frame (best-effort) */
+    setUploadStep('thumb')
+    const thumbUrl = await makePoster()
 
     /* 2. Upload video with progress */
     const controller = new AbortController()
@@ -798,6 +806,8 @@ export default function NewReviewPage() {
         // The server replaces media_url / type / length with its own facts for a processed video.
         payload.content_type = 'video'
         payload.videoAssetId = flowAssetId
+        // Never an empty poster (same rule as the old path): the generated frame, else the generic placeholder.
+        payload.thumbnail = thumbnail || placeholderFor('upload')
         payload.source_type = 'upload'
         payload.duration = videoDuration
         if (allTags.length > 0) payload.hashtags = allTags

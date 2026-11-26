@@ -112,6 +112,17 @@ describe('POST /api/reviews — Explore video post', () => {
     expect(r.body).toMatchObject({ ok: true, review_id: POST })
   })
 
+  // 26/11/2026: the first real clip was approved by the pipeline in 70 s, then parked as RESTRICTED / LEGAL_REVIEW_REQUIRED because the older publication
+  // gate cannot examine a video. A clip that came through the pipeline was examined there, so the older gate judges only its text.
+  it('🚨 with the content-safety gate ON, a pipeline-approved clip is PUBLISHED (not parked)', async () => {
+    on()
+    vi.stubEnv('CONTENT_SAFETY_SCHEMA_MIGRATED', 'true')
+    vi.stubEnv('CONTENT_SAFETY_GATE_ENABLED', 'true')
+    const r = await post({ ...base, videoAssetId: VIDEO })
+    expect(r.status).toBe(200)
+    expect(h.s.inserted[0]).toMatchObject({ id: POST, content_type: 'video', publication_state: 'PUBLISHED' })
+  })
+
   it('flag ON: a video-only post (no text) is allowed', async () => {
     on()
     expect((await post({ placeId: 'p', placeName: 'n', body: '', videoAssetId: VIDEO })).status).toBe(200)
