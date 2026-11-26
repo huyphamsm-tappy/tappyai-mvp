@@ -347,9 +347,11 @@ export default function ThreadView({
                     {meta.name}
                   </span>
                 )}
-                <div className={`flex max-w-full items-center gap-1 ${mine ? 'justify-end' : 'justify-start'}`}>
+                {/* The 78% cap sits on THIS wrapper, whose parent is the full-width column. On the bubble itself a percentage of an auto-width wrapper is circular: the
+                    bubble collapsed to its narrowest width and broke "hello" into one letter per line (owner, 26/11/2026). */}
+                <div className={`flex max-w-[78%] items-center gap-1 ${mine ? 'justify-end' : 'justify-start'}`}>
                   <div
-                    className="max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"
+                    className="min-w-0 rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"
                     style={mine
                       ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
                       : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
