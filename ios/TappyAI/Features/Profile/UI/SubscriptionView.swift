@@ -449,6 +449,10 @@ struct SubscriptionView: View {
                 }
             }
             .padding(.top, 2)
+            // Always here (it was shown only when the store product failed to load): the owner copies the diagnostics from this footer after
+            // a stuck chat, on any state of this screen.
+            diagnosticsButton(tint: TappyColor.textSecondary)
+                .padding(.top, Spacing.xs)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, Spacing.xs)
