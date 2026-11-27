@@ -139,22 +139,39 @@ private struct MarkdownBlockView: View {
 private struct MarkdownTableView: View {
     let rows: [[String]]
 
+    /// The first column stays on the left while the others scroll; every column of a row shares the row's height, measured from the cells.
+    private let pinnedWidth: CGFloat = 120
     private let columnWidth: CGFloat = 150
+
+    /// The height each row needs: the tallest of its cells, reported by the cells themselves (both halves report into the same key).
+    @State private var rowHeights: [Int: CGFloat] = [:]
 
     private var columnCount: Int { rows.first?.count ?? 0 }
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: true) {
-            Grid(alignment: .topLeading, horizontalSpacing: 0, verticalSpacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
+            // The pinned column: the first cell of every row.
+            VStack(alignment: .leading, spacing: 0) {
                 ForEach(Array(rows.enumerated()), id: \.offset) { r, row in
-                    GridRow {
-                        ForEach(Array(row.enumerated()), id: \.offset) { _, cell in
-                            cellView(cell, isHeader: r == 0)
+                    cellView(row.first ?? "", isHeader: r == 0, width: pinnedWidth, row: r)
+                }
+            }
+            .background(TappyColor.background)
+            if columnCount > 1 {
+                ScrollView(.horizontal, showsIndicators: true) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(rows.enumerated()), id: \.offset) { r, row in
+                            HStack(alignment: .top, spacing: 0) {
+                                ForEach(Array(row.dropFirst().enumerated()), id: \.offset) { _, cell in
+                                    cellView(cell, isHeader: r == 0, width: columnWidth, row: r)
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+        .onPreferenceChange(MarkdownRowHeightKey.self) { rowHeights = $0 }
         .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
         .accessibilityElement(children: .contain)
@@ -162,16 +179,27 @@ private struct MarkdownTableView: View {
         .accessibilityValue(Text("chat.table.size \(rows.count) \(columnCount)"))
     }
 
-    private func cellView(_ cell: String, isHeader: Bool) -> some View {
+    private func cellView(_ cell: String, isHeader: Bool, width: CGFloat, row: Int) -> some View {
         Text(ContentParser.renderMarkdown(cell))
             .font(TappyFont.footnote.weight(isHeader ? .semibold : .regular))
             .foregroundStyle(TappyColor.textPrimary)
             .fixedSize(horizontal: false, vertical: true)
             .padding(Spacing.xs)
-            .frame(width: columnWidth, alignment: .topLeading)
-            .frame(maxHeight: .infinity, alignment: .topLeading)
+            // The cell reports its NATURAL height (measured before the row height is applied, so a row can grow when its text does).
+            .background(GeometryReader { proxy in
+                Color.clear.preference(key: MarkdownRowHeightKey.self, value: [row: proxy.size.height])
+            })
+            .frame(width: width, height: rowHeights[row], alignment: .topLeading)
             .background(isHeader ? TappyColor.surface : Color.clear)
             .border(TappyColor.border, width: 0.5)
+    }
+}
+
+/// Each row's natural height, reported by its cells; the largest of a row's cells wins.
+struct MarkdownRowHeightKey: PreferenceKey {
+    static var defaultValue: [Int: CGFloat] = [:]
+    static func reduce(value: inout [Int: CGFloat], nextValue: () -> [Int: CGFloat]) {
+        for (row, height) in nextValue() { value[row] = max(value[row] ?? 0, height) }
     }
 }
 

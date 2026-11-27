@@ -63,6 +63,11 @@ final class MarkdownPresentationTests: XCTestCase {
         XCTAssertEqual(items("> Lưu ý: số liệu chưa xác minh."), [.block(.quote("Lưu ý: số liệu chưa xác minh."))])
     }
 
+    func testTheAnswerDocumentEntryGivesTheSameItemsAsTheParserAndThePresentation() {
+        let markdown = "Doanh số:\n| Năm | Số |\n|---|---|\n| 2024 | 10 |\nNguồn: nội bộ\n## Một\nĐoạn.\n## Hai\nĐoạn."
+        XCTAssertEqual(AnswerDocument.items(markdown), MarkdownPresentation.items(MarkdownBlocks.parse(markdown)))
+    }
+
     func testTheOrderOfBlocksIsKept() {
         let result = items("# Tiêu đề\nĐoạn đầu.\n- một\n- hai")
         XCTAssertEqual(result, [.block(.heading(level: 1, text: "Tiêu đề")), .block(.paragraph("Đoạn đầu.")),
