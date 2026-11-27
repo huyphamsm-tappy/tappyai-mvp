@@ -54,6 +54,7 @@ export default function AccountView({ userInfo, firstName: rawFirstName, joinDat
     <V3Shell
       title={t('account.title')}
       subtitle={userInfo.email ?? undefined}
+      backFallbackHref="/profile"
       activeTab="/profile"
       user={{ name: userInfo.full_name ?? firstName, avatarUrl: userInfo.avatar_url ?? null }}
     >

@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import ShareMenu from '@/components/share/ShareMenu'
+import EmojiInsertButton from '@/components/EmojiInsertButton'
 import { recordReviewShare } from '@/lib/share/recordReviewShare'
 import { reviewShareVideoUrl } from '@/lib/share/reviewShareMedia'
 import { REPORT_REASONS } from '@/lib/reviews/reportReasons'
@@ -330,6 +331,7 @@ export function CommentDrawer({ review, me, onClose, onAdded, onNavigate }: {
           </div>
         )}
         <div className="flex gap-2 px-4 py-3 border-t border-gray-800 flex-shrink-0">
+          <EmojiInsertButton inputRef={inputRef} value={text} onChange={setText} maxLength={300} />
           <input ref={inputRef} value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder={replyTo ? t('reviews.commentReplyingTo', { name: replyName(replyTo) }) : t('reviews.commentPlaceholder')} maxLength={300}
             className="flex-1 bg-gray-800 text-white placeholder-gray-500 text-sm px-4 py-2 rounded-full focus:outline-none" />
           <button onClick={send} disabled={!text.trim() || sending} className="text-pink-500 font-semibold text-sm disabled:opacity-40">{sending ? <Loader2 size={16} className="animate-spin" /> : t('reviews.commentSend')}</button>

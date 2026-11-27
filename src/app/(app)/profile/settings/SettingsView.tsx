@@ -36,6 +36,7 @@ export default function SettingsView({ user, selfDelete = false }: {
   return (
     <V3Shell
       title={t('settings.title')}
+      backFallbackHref="/profile"
       activeTab="/profile"
       user={user ? { name: user.full_name, avatarUrl: user.avatar_url } : null}
     >

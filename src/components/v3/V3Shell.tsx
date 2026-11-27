@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC, SHOW_FORTUNE, SHOW_RECOMMENDATIONS, SHOW_VIET_CONTENT } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
+import V3BackButton from '@/components/v3/V3BackButton'
 import { useNotifications } from '@/components/NotificationProvider'
 import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
@@ -300,6 +301,9 @@ const TABS: { href: string; labelKey: string; icon: typeof Home; badge?: boolean
 export interface V3ShellProps {
   title: string
   subtitle?: string
+  /** A page under a parent (Account, Settings under /profile) names it here and the bar shows a Back button:
+   *  it pops the app's own history, or goes to this parent when there is none. */
+  backFallbackHref?: string
   /** Brand tagline under the wordmark. Defaults to the SHARED string; Home overrides it with the
    *  approved reference's wording so that wording cannot leak to the other destinations. */
   brandTagline?: string
@@ -350,7 +354,7 @@ function ownChipProfile(): Promise<{ name: string; avatarUrl: string | null } | 
   return p
 }
 
-export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, header, flush = false, children }: V3ShellProps) {
+export default function V3Shell({ title, subtitle, backFallbackHref, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, header, flush = false, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
@@ -571,6 +575,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
                   what it is in its own content. */}
               {/* 21/11/2026 (owner): on Home the title ("Trang chủ / Hỏi Tappy bất cứ điều gì") and the "Hỏi Tappy" pill are gone — the hero is the way in.
                   The <h1> stays for screen readers (sr-only). */}
+              {backFallbackHref && <V3BackButton fallbackHref={backFallbackHref} />}
               <div className={onHome ? 'sr-only' : 'min-w-0 flex-shrink-0 lg:w-[150px] xl:w-[176px]'}>
                 <h1 className="truncate text-[15px] font-medium tracking-[-0.01em] lg:text-[16px]" style={{ color: 'var(--v3-fg)' }}>{title}</h1>
                 {subtitle && (
