@@ -67,6 +67,10 @@ final class ExternalPurchaseGuardTests: XCTestCase {
             // stay's booking page and a stop's Maps / booking page, `https` links the server wrote into the plan (`PlanCardModel` / `PlanCardContent.link`
             // keep only http(s), never another AI product's page): goods and services bought outside the app, nothing digital to unlock.
             "TappyAI/Features/Chat/UI/TripAnswerView.swift",
+            // 27/11 review for 3.1.1 (owner UAT): the partner links the server wrote under an answer («🔗 Liên kết đối tác», web `systemLinkLines`) were
+            // blue words inside the text and are now tiles. Same links, same `https` addresses through `safeWebURL`: hotels (Agoda), bus and train
+            // tickets (Vexere) and goods (Lazada) bought on the partner's page. Physical goods and services, nothing digital to unlock in the app.
+            "TappyAI/Features/Chat/UI/PartnerLinkTiles.swift",
             "TappyAI/Features/Chat/UI/VoiceListeningView.swift",
             "TappyAI/Features/Deals/UI/DealsView.swift",
             "TappyAI/Features/Discovery/UI/ServiceDetailView.swift",
