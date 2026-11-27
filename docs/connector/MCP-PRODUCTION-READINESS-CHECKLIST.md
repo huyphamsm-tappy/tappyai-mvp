@@ -1,4 +1,4 @@
-# Tappy MCP gateway — production readiness checklist (PREPARED 23/11/2026, NOTHING APPLIED)
+# Tappy MCP gateway — production readiness checklist (PREPARED 23/11/2026; APPLIED ON PRODUCTION 27/11/2026: steps 2–6 of section 5 are done, steps 7–8 are open; D1 is DECIDED as `https://www.tappyai.com/api/mcp` with `www`, and the launch catalog is the nine read-only tools of v1.4, not five)
 
 Purpose: everything that must be true before `https://<production domain>/api/mcp` can be submitted to the Anthropic connector directory (and later OpenAI's). This file only lists and orders the work. No production change, deploy, migration or env edit has been made. Every step marked OWNER needs the owner's explicit go-ahead at that moment.
 
