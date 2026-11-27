@@ -67,7 +67,7 @@ struct ChatMessageList: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: Spacing.lg) {
+                ChatRowsContainer(eager: ChatRowsContainer.eagerRows) {
                     Color.clear.frame(height: 1).id("top")
                         .onAppear { atTop = true }
                         .onDisappear { atTop = false }
@@ -971,6 +971,31 @@ private struct StreamingCursor: View {
                     visible.toggle()
                 }
             }
+    }
+}
+
+// MARK: - Rows container
+
+/// The conversation's rows: lazy (the original) or eager. 27/11: on the simulator the main thread hung for over a minute inside
+/// `LazyStack.measureEstimates` after a reply had been drawn (CI freeze hunt), so the freeze hunt runs both and the launch argument
+/// `-uitest-eager-list` picks the eager one for that comparison.
+struct ChatRowsContainer<Content: View>: View {
+    static var eagerRows: Bool { ProcessInfo.processInfo.arguments.contains("-uitest-eager-list") }
+
+    let eager: Bool
+    let content: Content
+
+    init(eager: Bool, @ViewBuilder content: () -> Content) {
+        self.eager = eager
+        self.content = content()
+    }
+
+    var body: some View {
+        if eager {
+            VStack(alignment: .leading, spacing: Spacing.lg) { content }
+        } else {
+            LazyVStack(alignment: .leading, spacing: Spacing.lg) { content }
+        }
     }
 }
 
