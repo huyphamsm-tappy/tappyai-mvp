@@ -676,8 +676,13 @@ private final class ScrollClock {
 
 private extension View {
     /// Text selection adds layout work to every update of the text; it is on once the reply has finished, off while the words are arriving.
+    ///
+    /// 27/11: NOT toggled any more. The switch from disabled to enabled happened at the exact moment a reply finished, and that is where the screen
+    /// froze for the owner (diagnostics: the stream finished, the answer was drawn, then silence; also a stall when the next turn began). Switching
+    /// changes the view's identity, so the whole reply text is rebuilt with selection on, and selection on a long text with links is heavy. The text
+    /// stays unselectable in this plain-text path (Copy under the reply copies it); a suspect change until the stall stack says otherwise.
     @ViewBuilder func selectable(_ on: Bool) -> some View {
-        if on { self.textSelection(.enabled) } else { self.textSelection(.disabled) }
+        self.textSelection(.disabled)
     }
 }
 
