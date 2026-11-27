@@ -68,6 +68,28 @@ final class MarkdownPresentationTests: XCTestCase {
         XCTAssertEqual(AnswerDocument.items(markdown), MarkdownPresentation.items(MarkdownBlocks.parse(markdown)))
     }
 
+    // MARK: Glued heading repair (AnswerDocument)
+
+    func testAHeadingStuckToTheEndOfASentenceIsBrokenOntoItsOwnLine() {
+        XCTAssertEqual(AnswerDocument.repaired("Đoạn đầu nhé.## Tiêu đề\nNội dung."), "Đoạn đầu nhé.\n## Tiêu đề\nNội dung.")
+        XCTAssertEqual(AnswerDocument.items("Đoạn đầu nhé.## Tiêu đề\nNội dung."),
+                       [.block(.paragraph("Đoạn đầu nhé.")), .block(.heading(level: 2, text: "Tiêu đề")), .block(.paragraph("Nội dung."))])
+    }
+
+    func testAHashInsideAWordIsNotAHeading() {
+        XCTAssertEqual(AnswerDocument.repaired("Ngôn ngữ C# rất phổ biến."), "Ngôn ngữ C# rất phổ biến.")
+        XCTAssertEqual(AnswerDocument.repaired("Xem #hashtag nhé."), "Xem #hashtag nhé.")
+    }
+
+    func testACodeBlockIsNeverChanged() {
+        let code = "```\nvalue.## not a heading\n```"
+        XCTAssertEqual(AnswerDocument.repaired(code), code)
+    }
+
+    func testAHeadingAtTheStartOfALineIsLeftAlone() {
+        XCTAssertEqual(AnswerDocument.repaired("## Đã đúng\nNội dung."), "## Đã đúng\nNội dung.")
+    }
+
     func testTheOrderOfBlocksIsKept() {
         let result = items("# Tiêu đề\nĐoạn đầu.\n- một\n- hai")
         XCTAssertEqual(result, [.block(.heading(level: 1, text: "Tiêu đề")), .block(.paragraph("Đoạn đầu.")),
