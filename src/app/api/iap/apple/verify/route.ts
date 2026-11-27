@@ -17,6 +17,8 @@ import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws
 import { checkAppleTransaction, APPLE_PRO_PRODUCT_IDS, applePlanForProduct, keepsLongerExternalPlan } from '@/lib/apple-iap/transactionPolicy'
 import { type PaidPlanId } from '@/lib/plans/planConfig'
 import { applyEntitlement } from '@/lib/payments/grantPlan'
+import { isNonRenewingProduct } from '@/lib/apple-iap/nonRenewing'
+import { verifyNonRenewing } from './nonRenewing'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -48,6 +50,11 @@ export async function POST(req: Request) {
     // written into subscriptions.stripe_sub_id as `apple_<whatever was sent>`.
     if (!/^\d{1,32}$/.test(String(originalTransactionId))) {
       return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+    }
+
+    // A non-renewing product (the 7-day Pip pack) has no Apple expiry and no subscription status: its own path.
+    if (isNonRenewingProduct(productId)) {
+      return await verifyNonRenewing({ req, user, originalTransactionId: String(originalTransactionId), productId, signedTransactionInfo })
     }
 
     // ── Determine authoritative expiry and verified product ───────────────
