@@ -55,6 +55,9 @@ final class ExternalPurchaseGuardTests: XCTestCase {
             // outside the app, like the place and plan cards above). It is drawn only for an `https` link the server attached to that booking
             // (`PresentationFrames.bookingLink`); the app writes no address, and there is nothing digital to unlock.
             "TappyAI/Features/Chat/UI/PresentationBlocksView.swift",
+            // 27/11 review for 3.1.1 (layout step 4): the research report page opens only the sources the report cites, through
+            // `ResearchCardModel.openableURL` (https, never another AI product's page, as the research card already does). Nothing is sold here.
+            "TappyAI/Features/Chat/UI/ReportPage.swift",
             "TappyAI/Features/Chat/UI/PlaceCardView.swift",
             // 26/11 review for 3.1.1 (layout rework, step 1): the carousel's «Xem tất cả trên bản đồ» opens a Maps search link the server sent (through
             // `safeWebURL`), exactly what the footer of `PlaceCardView.swift` did; it replaces that footer. Nothing is sold or unlocked here.

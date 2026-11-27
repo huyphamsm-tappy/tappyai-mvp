@@ -14,20 +14,23 @@ enum ResearchReportModel {
         var section: [String] = []
         var started = false
         for line in lines {
-            if isHeading(line) {
+            // The report's own «# » title is not a section; sections are the «## » headings.
+            if isSectionHeading(line) {
                 if started { break }   // the first section ends at the next heading
                 if isSourcesHeading(line) { continue }
                 started = true
                 continue
             }
+            if isTitleLine(line) { continue }
             if !started && section.isEmpty && line.trimmingCharacters(in: .whitespaces).isEmpty { continue }
             section.append(line)
         }
         if !started {
-            // No heading at all: the report's opening lines, up to the first sources heading.
+            // No section heading: the report's opening lines, up to a sources line.
             section = []
             for line in lines {
-                if isSourcesHeading(line) { break }
+                if isSourcesHeading(line) || isSourcesLabel(line) { break }
+                if isTitleLine(line) { continue }
                 section.append(line)
             }
         }
@@ -87,6 +90,23 @@ enum ResearchReportModel {
     private static func isHeading(_ line: String) -> Bool {
         let t = line.trimmingCharacters(in: .whitespaces)
         return t.hasPrefix("## ") || t.hasPrefix("# ")
+    }
+
+    /// A section: a «## » heading (the report's sections).
+    private static func isSectionHeading(_ line: String) -> Bool {
+        line.trimmingCharacters(in: .whitespaces).hasPrefix("## ")
+    }
+
+    /// The report's own title: a «# » line.
+    private static func isTitleLine(_ line: String) -> Bool {
+        let t = line.trimmingCharacters(in: .whitespaces)
+        return t.hasPrefix("# ") && !t.hasPrefix("## ")
+    }
+
+    /// A plain line that starts the sources list («Nguồn:», «Sources:») when the report has no heading for it.
+    private static func isSourcesLabel(_ line: String) -> Bool {
+        let t = line.trimmingCharacters(in: .whitespaces).lowercased()
+        return t.hasPrefix("nguồn:") || t.hasPrefix("sources:")
     }
 
     private static func isSourcesHeading(_ line: String) -> Bool {
