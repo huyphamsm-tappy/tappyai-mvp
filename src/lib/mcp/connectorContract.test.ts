@@ -6,8 +6,8 @@ const claims = (o: Partial<VerifiedClaims> = {}): VerifiedClaims => ({ audience:
 const call = (o: Partial<CallContext> = {}): CallContext => ({ claims: claims(), expectedAudience: 'https://mcp.example.invalid', now: NOW, toolName: 'search_places', spendPoolOk: true, ...o })
 
 describe('the tool registry', () => {
-  it('has exactly the six initial tools plus check_scam (27/11/2026), all read-only except job creation which declares itself stateful and never destructive', () => {
-    expect(Object.keys(CONNECTOR_TOOLS).sort()).toEqual(['check_scam', 'create_itinerary', 'search_attractions', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
+  it('has exactly the six initial tools plus check_scam, search_deals, search_clips and search_coach (27/11/2026), all read-only except job creation which declares itself stateful and never destructive', () => {
+    expect(Object.keys(CONNECTOR_TOOLS).sort()).toEqual(['check_scam', 'create_itinerary', 'search_attractions', 'search_clips', 'search_coach', 'search_deals', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
     for (const t of Object.values(CONNECTOR_TOOLS)) {
       expect(t.annotations.destructiveHint).toBe(false)
       if (t.name === 'create_itinerary') { expect(t.stateful).toBe(true); expect(t.annotations.readOnlyHint).toBe(false) } else { expect(t.stateful).toBe(false); expect(t.annotations.readOnlyHint).toBe(true) }

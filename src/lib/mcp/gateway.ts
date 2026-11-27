@@ -251,7 +251,9 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     const adapter = entry ? deps.adapters[entry.service] : null
     if (!entry || !adapter) return fail('PROVIDER_UNAVAILABLE') // unwired: no key, no integration yet. Nothing is reserved.
 
-    const ctx = resolveContext(args, entry.needsLocation)
+    // search_coach names two PLACES (origin, destination): they are the question, not a market to look up, and Vexere's coaches are Vietnamese by construction. Reading `destination` as a location would refuse
+    // every place the city list does not know (a small town, a district); the other tools keep resolving their market from what the person named.
+    const ctx = resolveContext(t.name === 'search_coach' ? {} : args, entry.needsLocation)
     meta.market = ctx.marketId; meta.contextSource = ctx.source
     const gate = deps.market ?? ((q: GateQuery) => evaluateGate(q, DEFAULT_REGISTRY))
     const mErr = marketError(ctx, entry.vertical, gate)
@@ -259,7 +261,8 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
 
     const lat = typeof args.latitude === 'number' ? args.latitude : undefined
     const lng = typeof args.longitude === 'number' ? args.longitude : undefined
-    const verdict = deps.abuse.observe(claims.principalId, { lat, lng, tool: t.name, query: typeof args.query === 'string' ? args.query : undefined })
+    const askText = typeof args.query === 'string' ? args.query : [args.origin, args.destination].filter((x): x is string => typeof x === 'string').join(' ') || undefined
+    const verdict = deps.abuse.observe(claims.principalId, { lat, lng, tool: t.name, query: askText })
     if (verdict.level === 'high') return fail('ABUSE_RESTRICTED', { retryable: true })
 
     const requested = Math.min(typeof args.limit === 'number' ? args.limit : DEFAULT_LIMIT, 100)
@@ -268,7 +271,8 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
 
     const estimate = TOOL_RESERVE_USD[t.contract]
     const limits = (deps.profileLimits ?? limitsFor)(claims.host)
-    const call = { query: args.query as string, location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined }
+    // search_coach has no free-text query: its two places are the ask (and the abuse key above); every other field is optional and only copied when it is a string
+    const call = { origin: typeof args.origin === 'string' ? args.origin : undefined, destination: typeof args.destination === 'string' ? args.destination : undefined, departDate: typeof args.depart_date === 'string' ? args.depart_date : undefined, query: askText ?? '', location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined }
     const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call, deadlineMs: Math.min(deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, limits.serverDeadlineMs), signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
     if (r.kind === 'refused') return (r.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: r.reason === 'budget_exceeded' }))
     meta.estimatedCostUsd = estimate

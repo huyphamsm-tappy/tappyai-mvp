@@ -13,7 +13,7 @@ import type { TokenVerifier } from './gateway'
 
 type Env = Record<string, string | undefined>
 
-export const MCP_SCOPES = ['places:read', 'hotels:read', 'shopping:read', 'scam:check', 'itinerary:create'] as const
+export const MCP_SCOPES = ['places:read', 'hotels:read', 'shopping:read', 'scam:check', 'deals:read', 'clips:read', 'transport:read', 'itinerary:create'] as const
 const SCOPE_SET: ReadonlySet<string> = new Set(MCP_SCOPES)
 const HOSTS: ReadonlySet<string> = new Set<string>(HOST_PLATFORMS)
 const SUPABASE_AUDIENCE = 'authenticated'

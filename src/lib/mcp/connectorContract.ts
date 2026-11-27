@@ -12,7 +12,7 @@ export const CONNECTOR_CONTRACT_VERSION = 'connector-contract.v1'
 /** The ONE list of Hosts a connector can be registered for (22/11/2026: Cursor, Grok, DeepSeek and Meta added by the owner). Everything that names a Host derives from it. */
 export const HOST_PLATFORMS = ['claude', 'chatgpt', 'gemini', 'cursor', 'grok', 'deepseek', 'meta'] as const
 export type HostPlatform = typeof HOST_PLATFORMS[number]
-export type ToolName = 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions' | 'check_scam' | 'create_itinerary'
+export type ToolName = 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions' | 'check_scam' | 'search_deals' | 'search_clips' | 'search_coach' | 'create_itinerary'
 
 export interface ToolContract {
   name: ToolName
@@ -41,6 +41,12 @@ export const CONNECTOR_TOOLS: Readonly<Record<ToolName, ToolContract>> = {
   search_attractions: read('search_attractions', 'places:read', [...ROW_PLACE, 'ticketPrice', 'openingHours']),
   // Scam Shield's link check (27/11/2026). `target` is the HOST that was checked, never the full link: no path, no query, no tracked redirect is ever built for it.
   check_scam: read('check_scam', 'scam:check', ['target', 'verdict', 'verdictTitle', 'summary', 'signals', 'resemblesBrand', 'officialSite', 'officialHotline', 'nextSteps'], 1),
+  // Partner offers shown on the Deal page (27/11/2026). Database read of public rows; no author, no click or affiliate internals.
+  search_deals: read('search_deals', 'deals:read', ['id', 'title', 'partner', 'category', 'description', 'discount', 'voucherCode', 'endsAt', 'url']),
+  // Public Explore clips (27/11/2026): metadata and a link back to Tappy, never the video file and NEVER the author (no user id, name or avatar).
+  search_clips: read('search_clips', 'clips:read', ['id', 'title', 'address', 'caption', 'thumbnail', 'likes', 'comments', 'createdAt', 'url']),
+  // The dated Vexere route page for a coach route (27/11/2026). No timetable, price or seat data exists on our side: one link or nothing.
+  search_coach: read('search_coach', 'transport:read', ['id', 'title', 'route', 'departDate', 'merchant', 'url'], 1),
   create_itinerary: {
     name: 'create_itinerary', scope: 'itinerary:create', stateful: true, maxResults: 1, maxResponseBytes: 24_000,
     // honest annotation: it creates a durable job, so it is NOT read-only; it is still never destructive and never a purchase

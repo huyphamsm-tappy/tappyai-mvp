@@ -22,6 +22,10 @@ export const TOOL_RESERVE_USD: Readonly<Record<ToolName, number>> = {
   search_places: 0.01, search_restaurants: 0.01, search_attractions: 0.01, search_shopping: 0.01, search_hotels: 0.03, create_itinerary: 0.15,
   // a link check asks a few providers (threat list, whois, DNS, certificate, redirects); no LLM. PLACEHOLDER like the rest: measure after launch.
   check_scam: 0.01,
+  // database reads of public data: no paid provider. A tiny reserve keeps them inside the same per-person and per-host caps.
+  search_deals: 0.001, search_clips: 0.001,
+  // a coach link makes at most one scoped web search (cached 24 h, the chat's own Serper budget) and builds the link in code; no LLM
+  search_coach: 0.01,
 }
 
 export const POOL_CAP_ENV = ['MCP_POOL_DAILY_USD', 'MCP_POOL_HOST_USD', 'MCP_POOL_INSTALL_USD', 'MCP_POOL_PRINCIPAL_USD', 'MCP_POOL_TOOL_USD'] as const

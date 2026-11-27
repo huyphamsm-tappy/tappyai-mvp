@@ -24,6 +24,9 @@ export const SCOPE_TEXT: Readonly<Record<string, Record<ConsentLocale, string>>>
   'hotels:read': { vi: 'Tìm khách sạn và giá phòng', en: 'Search hotels and prices' },
   'shopping:read': { vi: 'Tìm sản phẩm và giá', en: 'Search products and prices' },
   'scam:check': { vi: 'Kiểm tra đường link có dấu hiệu lừa đảo (chỉ đọc, không mở link thay bạn)', en: 'Check a link for signs of a scam (read-only; it does not open the link for you)' },
+  'deals:read': { vi: 'Xem ưu đãi của các đối tác trên trang Deal', en: 'See partner offers from the Deal page' },
+  'clips:read': { vi: 'Tìm clip công khai của người dùng Tappy (không hiện tác giả)', en: 'Find public clips by Tappy users (the author is not shown)' },
+  'transport:read': { vi: 'Tìm trang đặt vé xe khách trên Vexere (không đặt vé thay bạn)', en: 'Find a coach booking page on Vexere (it does not book for you)' },
   'itinerary:create': { vi: 'Lập lịch trình du lịch (chỉ soạn kế hoạch: không đặt chỗ, không thanh toán)', en: 'Plan a trip itinerary (a plan only: no booking, no payment)' },
 }
 export const UNKNOWN_SCOPE: Record<ConsentLocale, string> = { vi: 'Quyền không xác định:', en: 'Unknown permission:' }

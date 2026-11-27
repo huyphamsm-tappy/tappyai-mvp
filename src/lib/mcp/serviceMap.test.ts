@@ -72,6 +72,6 @@ describe('mapHotelRow / mapProductRow', () => {
 
 describe('adapters', () => {
   it('start unwired: nothing real is called until a deployment injects the adapters', () => {
-    expect(NO_ADAPTERS).toEqual({ 'places.search': null, 'shopping.search': null, 'hotels.prices': null, 'scam.check': null })
+    expect(NO_ADAPTERS).toEqual({ 'places.search': null, 'shopping.search': null, 'hotels.prices': null, 'scam.check': null, 'deals.search': null, 'clips.search': null, 'coach.link': null })
   })
 })

@@ -6,8 +6,8 @@
 // then enforces the per-tool allowlist, Top-K and byte ceiling a second time. Text from a row is DATA: it is stripped of control/bidi characters and length-bounded, never interpreted.
 import type { ToolName } from './connectorContract'
 
-export type SearchToolName = Extract<ToolName, 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions'>
-export type ServiceId = 'places.search' | 'shopping.search' | 'hotels.prices' | 'scam.check'
+export type SearchToolName = Extract<ToolName, 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions' | 'search_deals' | 'search_clips' | 'search_coach'>
+export type ServiceId = 'places.search' | 'shopping.search' | 'hotels.prices' | 'scam.check' | 'deals.search' | 'clips.search' | 'coach.link'
 
 export interface ServiceCall {
   query: string
@@ -21,13 +21,17 @@ export interface ServiceCall {
   placeType?: string
   checkIn?: string
   checkOut?: string
+  /** coach route (search_coach): the two places the person named and the day (YYYY-MM-DD) */
+  origin?: string
+  destination?: string
+  departDate?: string
   signal?: AbortSignal
 }
 export interface ServiceOutput { rows: ReadonlyArray<Record<string, unknown>>; /** the real cost when the adapter knows it; otherwise the reservation stands as the cost */ costUsd?: number }
 export type ServiceAdapter = (c: ServiceCall) => Promise<ServiceOutput>
 export type ServiceAdapters = Record<ServiceId, ServiceAdapter | null>
 
-export const NO_ADAPTERS: ServiceAdapters = Object.freeze({ 'places.search': null, 'shopping.search': null, 'hotels.prices': null, 'scam.check': null })
+export const NO_ADAPTERS: ServiceAdapters = Object.freeze({ 'places.search': null, 'shopping.search': null, 'hotels.prices': null, 'scam.check': null, 'deals.search': null, 'clips.search': null, 'coach.link': null })
 
 export interface ToolServiceEntry { readonly service: ServiceId; readonly placeType?: string; /** the Market Capability Gate vertical */ readonly vertical: string; /** needs a destination (coordinates or a named Vietnamese place) */ readonly needsLocation: boolean }
 
@@ -38,6 +42,10 @@ export const TOOL_SERVICE: Readonly<Record<SearchToolName, ToolServiceEntry>> = 
   search_attractions: entry({ service: 'places.search', placeType: 'attraction', vertical: 'attractions', needsLocation: true }),
   search_shopping: entry({ service: 'shopping.search', vertical: 'shopping', needsLocation: false }),
   search_hotels: entry({ service: 'hotels.prices', vertical: 'hotels', needsLocation: true }),
+  // Vietnamese partner offers and public clips: market-wide data, no destination needed.
+  search_deals: entry({ service: 'deals.search', vertical: 'shopping', needsLocation: false }),
+  search_clips: entry({ service: 'clips.search', vertical: 'general', needsLocation: false }),
+  search_coach: entry({ service: 'coach.link', vertical: 'travel', needsLocation: false }),
 })
 
 // ── text and URL hygiene ─────────────────────────────────────────────────────────────────────────────────────────────
@@ -136,6 +144,45 @@ export function mapScamRow(r: Record<string, unknown>): Record<string, unknown> 
   }
 }
 
+const httpsUrl = (v: unknown): string | undefined => { const u = safeUrl(v); return u && u.startsWith('https://') ? u : undefined }
+
+/** getActiveDeals rows (PartnerDeal: what the Deal page shows) → deal DTO. Click counts, affiliate codes and images are not copied; the link must be https. A deal without a title is dropped. */
+export function mapDealRow(r: Record<string, unknown>): Record<string, unknown> | null {
+  if (!isRow(r)) return null
+  const title = cleanText(r.title, 200)
+  if (!title) return null
+  return {
+    id: cleanText(r.id, 100), title, partner: cleanText(r.partnerName, 80), category: cleanText(r.category, 60), description: cleanText(r.description, 300),
+    discount: cleanText(r.discountLabel, 60), voucherCode: cleanText(r.voucherCode, 40), endsAt: cleanText(r.endAt, 40), url: httpsUrl(r.officialUrl),
+  }
+}
+
+const CLIP_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+/**
+ * A public `reviews` row (clip) → clip DTO. 🚨 The AUTHOR never leaves: no user id, no name, no avatar, no source link, no media file URL. The link is BUILT from the clip id (a uuid, anything else is refused)
+ * on Tappy's own address, so a row cannot carry a link to anywhere else. A clip without a place name is dropped. Caption is text data, bounded and cleaned.
+ */
+export function mapClipRow(r: Record<string, unknown>): Record<string, unknown> | null {
+  if (!isRow(r)) return null
+  const id = typeof r.id === 'string' && CLIP_ID.test(r.id) ? r.id.toLowerCase() : null
+  const title = cleanText(r.place_name, 200)
+  if (!id || !title) return null
+  return {
+    id, title, address: cleanText(r.place_address, 250), caption: cleanText(r.body, 300), thumbnail: httpsUrl(r.thumbnail),
+    likes: num(r.like_count, 0, 1e9), comments: num(r.comment_count, 0, 1e9), createdAt: cleanText(r.created_at, 40), url: `https://www.tappyai.com/reviews/${id}`,
+  }
+}
+
+/** The coach link row (adapter) → DTO: the Vexere route page, the route, the day. https only; a row without a link is dropped. */
+export function mapCoachRow(r: Record<string, unknown>): Record<string, unknown> | null {
+  if (!isRow(r)) return null
+  const url = httpsUrl(r.url)
+  const route = cleanText(r.route, 160)
+  if (!url || !route) return null
+  return { id: cleanText(r.id, 100), title: cleanText(r.title, 200) ?? route, route, departDate: cleanText(r.departDate, 10), merchant: cleanText(r.merchant, 40), url }
+}
+
 export const ROW_MAPPER: Readonly<Record<ServiceId, (r: Record<string, unknown>) => Record<string, unknown> | null>> = Object.freeze({
-  'places.search': mapPlaceRow, 'shopping.search': mapProductRow, 'hotels.prices': mapHotelRow, 'scam.check': mapScamRow,
+  'places.search': mapPlaceRow, 'shopping.search': mapProductRow, 'hotels.prices': mapHotelRow, 'scam.check': mapScamRow, 'deals.search': mapDealRow, 'clips.search': mapClipRow, 'coach.link': mapCoachRow,
 })

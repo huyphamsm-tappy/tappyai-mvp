@@ -6,15 +6,15 @@ import { TOOL_SERVICE } from './serviceMap'
 const SEARCH = ['search_places', 'search_restaurants', 'search_shopping', 'search_hotels', 'search_attractions'] as const
 
 describe('tool catalog (schemas v1.1)', () => {
-  it('publishes the six initial tools, check_scam and the four fallback job tools, and nothing else', () => {
-    expect(Object.keys(CATALOG).sort()).toEqual([...SEARCH, 'check_scam', 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job'].sort())
-    expect(listTools().length).toBe(11)
+  it('publishes the six initial tools, check_scam, search_deals, search_clips, search_coach and the four fallback job tools, and nothing else', () => {
+    expect(Object.keys(CATALOG).sort()).toEqual([...SEARCH, 'check_scam', 'search_deals', 'search_clips', 'search_coach', 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job'].sort())
+    expect(listTools().length).toBe(14)
     expect(TOOL_CATALOG_VERSION).toBe('mcp-tools.v1.3')
   })
-  it('jobs off: the five searches and check_scam are listed; every job-dependent tool (create_itinerary included) is hidden', () => {
-    expect(listTools({ jobs: false }).map(t => t.name).sort()).toEqual([...SEARCH, 'check_scam'].sort())
-    expect(listTools({ jobs: true }).length).toBe(11)
-    expect(listTools().length).toBe(11)
+  it('jobs off: the five searches, check_scam, search_deals, search_clips and search_coach are listed; every job-dependent tool (create_itinerary included) is hidden', () => {
+    expect(listTools({ jobs: false }).map(t => t.name).sort()).toEqual([...SEARCH, 'check_scam', 'search_deals', 'search_clips', 'search_coach'].sort())
+    expect(listTools({ jobs: true }).length).toBe(14)
+    expect(listTools().length).toBe(14)
     expect([...JOB_TOOLS].sort()).toEqual(['cancel_itinerary_job', 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_result', 'get_itinerary_job_status'])
     for (const n of JOB_TOOLS) expect(isJobTool(n)).toBe(true)
     for (const n of SEARCH) expect(isJobTool(n)).toBe(false)
@@ -90,9 +90,12 @@ describe('tool catalog (schemas v1.1)', () => {
 })
 
 describe('service allowlist: each search tool maps to one fixed internal service', () => {
-  it('is frozen and covers exactly the five search tools', () => {
-    expect(Object.keys(TOOL_SERVICE).sort()).toEqual([...SEARCH].sort())
+  it('is frozen and covers exactly the five search tools plus search_deals, search_clips and search_coach (27/11/2026: market-wide data, no destination needed)', () => {
+    expect(Object.keys(TOOL_SERVICE).sort()).toEqual([...SEARCH, 'search_deals', 'search_clips', 'search_coach'].sort())
+    expect(TOOL_SERVICE.search_coach).toMatchObject({ service: 'coach.link', needsLocation: false })
     expect(Object.isFrozen(TOOL_SERVICE)).toBe(true)
+    expect(TOOL_SERVICE.search_deals).toMatchObject({ service: 'deals.search', needsLocation: false })
+    expect(TOOL_SERVICE.search_clips).toMatchObject({ service: 'clips.search', needsLocation: false })
     expect(TOOL_SERVICE.search_restaurants).toMatchObject({ service: 'places.search', placeType: 'restaurant' })
     expect(TOOL_SERVICE.search_attractions).toMatchObject({ service: 'places.search', placeType: 'attraction' })
     expect(TOOL_SERVICE.search_shopping.service).toBe('shopping.search')
