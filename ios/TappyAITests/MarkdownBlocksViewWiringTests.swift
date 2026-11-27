@@ -31,7 +31,9 @@ final class MarkdownBlocksViewWiringTests: XCTestCase {
     func testTheBlocksAreNamedForVoiceOverAndOpenNoAddressThemselves() throws {
         let view = try source("TappyAI/Features/Chat/UI/MarkdownBlocksView.swift")
         XCTAssertTrue(view.contains(".isHeader"), "a heading is a heading to VoiceOver")
-        XCTAssertTrue(view.contains("Grid("), "the table is a grid")
+        // Layout step 2: the table is no longer one Grid (the first column is pinned, the rest scroll); its rows stay aligned through the shared
+        // row height measured by `MarkdownRowHeightKey`.
+        XCTAssertTrue(view.contains("MarkdownRowHeightKey"), "the table's rows share one measured height (pinned first column)")
         XCTAssertTrue(view.contains("chat.table.label"))
         XCTAssertTrue(view.contains("chat.table.size"))
         XCTAssertTrue(view.contains("ContentParser.renderMarkdown("), "one inline reader")
