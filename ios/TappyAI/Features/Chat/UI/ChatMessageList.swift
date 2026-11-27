@@ -58,6 +58,8 @@ struct ChatMessageList: View {
     @State private var parseCache = ParsedContentCache()
     /// Bumped to draw again when a streaming reply's last words were held back by the parse throttle.
     @State private var parseTick = 0
+    /// How many of the latest messages the list draws; «Xem tin cũ hơn» adds `ChatListMode.window` more.
+    @State private var shownRows = ChatListMode.window
     /// Whether the first and the last row are on screen: they drive the up / down arrows (web: the same jump buttons).
     @State private var atTop = true
     @State private var atBottom = true
@@ -86,7 +88,23 @@ struct ChatMessageList: View {
                         .padding(.bottom, Spacing.xs)
                     }
 
-                    ForEach(Array(messages.enumerated()), id: \.element.id) { index, msg in
+                    // A long conversation: only the latest rows are on the screen's list (all of them laid out, none lazily); the older ones
+                    // come back with one tap. The list never has to estimate rows it has not drawn (the lazy list hung on that, 27/11).
+                    if messages.count > shownRows {
+                        Button {
+                            shownRows += ChatListMode.window
+                        } label: {
+                            Text(verbatim: LocalizationManager.currentLanguageCode == "en" ? "Show earlier messages" : "Xem tin cũ hơn")
+                                .font(TappyFont.footnote.weight(.medium))
+                                .foregroundStyle(TappyColor.primary)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, Spacing.xs)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-show-earlier")
+                    }
+
+                    ForEach(Array(messages.enumerated()).suffix(shownRows), id: \.element.id) { index, msg in
                         if msg.isUser {
                             UserBubble(content: msg.content, attachment: msg.attachment)
                         } else if isStreaming && index == messages.count - 1 && msg.content.isEmpty {
@@ -984,11 +1002,13 @@ enum ChatListMode {
     /// `LazyStack.measureEstimates` after a reply was drawn (plain prose and an article, no place cards needed); with the eager list the same
     /// replies, two turns each, did not hang. So the conversation is held eagerly, up to `maxEagerMessages` rows; a very long conversation falls
     /// back to the lazy list (laying out hundreds of replies at once would be slow). `-uitest-lazy-list` forces the old behaviour for comparison.
-    static let maxEagerMessages = 60
+    ///
+    /// Owner 27/11: «a dùng cả 100 câu một ngày vẫn phải chạy». So the list is never lazy; instead it draws a WINDOW of the latest `window`
+    /// messages (a message is one turn: a question or an answer) and the older ones come back with «Xem tin cũ hơn», `window` at a time.
+    static let window = 60
 
     static func eagerRows(messageCount: Int) -> Bool {
-        if ProcessInfo.processInfo.arguments.contains("-uitest-lazy-list") { return false }
-        return messageCount <= maxEagerMessages
+        !ProcessInfo.processInfo.arguments.contains("-uitest-lazy-list")
     }
 }
 
