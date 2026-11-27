@@ -8,8 +8,6 @@ struct SubscriptionView: View {
     @State private var status: SubscriptionStatusResponse?
     /// The plans the App Store served, in the catalog's order.
     @State private var plans: [AppProduct] = []
-    /// The server says this account already had its one Pip (`/api/payments/me`); absent until read, and then Pip is offered (the server still refuses).
-    @State private var pipUsed = false
     @State private var buyingProductId: String?
     @State private var loading = true
     @State private var errorMessage: String?
@@ -64,14 +62,14 @@ struct SubscriptionView: View {
         .task {
             async let a: () = loadStatus()
             async let b: () = loadProduct()
-            async let c: () = loadPipUsed()
-            await a; await b; await c
+            await a; await b
         }
     }
 
-    /// The plans offered now: Pip is left out once the account has had its one Pip.
+    /// The plans offered now: the 7-day pack only when the server said the account has not used it (absent answer = not offered).
     private var visiblePlans: [AppProduct] {
-        plans.filter { !($0.id == ProductCatalog.pipId && pipUsed) }
+        let offersPip = status?.offersPipPack ?? false
+        return plans.filter { $0.id != ProductCatalog.pipId || offersPip }
     }
 
     @ViewBuilder
@@ -643,18 +641,6 @@ struct SubscriptionView: View {
         productLoading = false
         let ms = Int(Date().timeIntervalSince(started) * 1000)
         DiagnosticSnapshot.shared.record("Product load result=\(result) ms=\(ms)", isError: result.hasPrefix("error"))
-    }
-
-    /// Whether this account already had its one Pip (the server's own rule: any source, ledger plus paid orders). Any failure leaves it false:
-    /// Pip is then shown and the server still refuses a second one.
-    private func loadPipUsed() async {
-        struct Me: Decodable { let pipUsed: Bool? }
-        do {
-            let data = try await deps.api.send(Endpoint(path: "/api/payments/me", method: .get, requiresAuth: true))
-            pipUsed = (try ResponseDecoder.json.decode(Me.self, from: data)).pipUsed ?? false
-        } catch {
-            pipUsed = false
-        }
     }
 
     /// Snapshot category for a thrown error: cancellation is its own outcome, anything else is a safe tag.

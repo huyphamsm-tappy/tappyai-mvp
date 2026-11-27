@@ -22,8 +22,9 @@ enum ProductCatalog {
     }
 
     static let salePlans: [SalePlan] = [
-        SalePlan(productId: pipId, name: "Pip", periodLabel: "7 ngày", isOneTime: true),
-        SalePlan(productId: momoMonthlyId, name: "MoMo", periodLabel: "1 tháng", isOneTime: false),
+        // The names are the ones the web shows (planConfig labels): the stored id `pip` is the 7-day «MoMo» trial; «Pip» is the Free plan.
+        SalePlan(productId: pipId, name: "MoMo", periodLabel: "7 ngày", isOneTime: true),
+        SalePlan(productId: momoMonthlyId, name: "Coco", periodLabel: "1 tháng", isOneTime: false),
         SalePlan(productId: "tappy_coco_3m", name: "Coco", periodLabel: "3 tháng", isOneTime: false),
         SalePlan(productId: "tappy_promax_1m", name: "Tappy", periodLabel: "1 tháng", isOneTime: false),
         SalePlan(productId: "tappy_promax_3m", name: "Tappy", periodLabel: "3 tháng", isOneTime: false),

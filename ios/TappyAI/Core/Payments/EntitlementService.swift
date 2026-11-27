@@ -24,6 +24,12 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
     /// Where the paid plan came from: `"apple"` (an App Store subscription) or `"external"` (anything else, e.g. a
     /// plan bought outside the app). Absent for Free/guest and from a server that predates the field.
     let source: String?
+    /// Whether this account already had its one 7-day pack. The server's own answer (any source: App Store, web, hand-granted). Absent from a server
+    /// that does not send it yet; the screen then does NOT offer the pack (a purchase the server would refuse after Apple took the money).
+    let pipUsed: Bool?
+
+    /// The 7-day pack is offered only when the server said the account has not used it.
+    var offersPipPack: Bool { pipUsed == false }
 
     /// Only an App Store subscription has a renewal date the app may state and a «Manage» screen at Apple.
     /// A plan the server says is `"external"` is shown plainly (Guideline 3.1.3(b): honest about what it is).
@@ -43,7 +49,7 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
     // screen shows, so a response without them fails and the caller falls back to `.free` —
     // inventing "0 / 0" would state a quota the server never sent. `isPro` absent = not Pro,
     // the most restrictive reading.
-    enum CodingKeys: String, CodingKey { case isPro, status, currentPeriodEnd, freeDailyLimit, todayMessageCount, remaining, source }
+    enum CodingKeys: String, CodingKey { case isPro, status, currentPeriodEnd, freeDailyLimit, todayMessageCount, remaining, source, pipUsed }
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         func number(_ key: CodingKeys) throws -> Int {
@@ -59,6 +65,7 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
         todayMessageCount = try number(.todayMessageCount)
         remaining = try number(.remaining)
         source = c.lenient(String.self, forKey: .source)
+        pipUsed = c.lenient(Bool.self, forKey: .pipUsed)
     }
 }
 

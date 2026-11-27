@@ -39,6 +39,17 @@ final class SubscriptionPriceTests: XCTestCase {
         XCTAssertTrue(ProductCatalog.allProductIds.contains(ProductCatalog.proMonthlyId), "the first product keeps working for those who hold it")
     }
 
+    func testSevenDayPackIsOfferedOnlyWhenTheServerSaysNotUsed() throws {
+        func status(_ extra: String) throws -> SubscriptionStatusResponse {
+            let json = "{\"isPro\":false,\"freeDailyLimit\":10,\"todayMessageCount\":0,\"remaining\":10\(extra)}"
+            return try ResponseDecoder.json.decode(SubscriptionStatusResponse.self, from: Data(json.utf8))
+        }
+        XCTAssertTrue(try status(",\"pipUsed\":false").offersPipPack)
+        XCTAssertFalse(try status(",\"pipUsed\":true").offersPipPack)
+        // A server that does not send the field yet: the pack is NOT offered (no purchase the server would refuse after Apple took the money).
+        XCTAssertFalse(try status("").offersPipPack)
+    }
+
     func testBuyingASoldPlanPassesItsOwnProductId() async throws {
         let mock = MockPaymentProvider()
         _ = try await mock.purchase(productId: "tappy_coco_3m")
