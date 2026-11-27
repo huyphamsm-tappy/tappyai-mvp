@@ -150,6 +150,10 @@ struct ChatMessageList: View {
                                 onSavePlaceFavorite: onSavePlaceFavorite,
                                 onZoomImage: onZoomImage
                             )
+                            // Drawing marks for the diagnostics (lengths only): a frozen screen leaves the last mark it reached.
+                            .onAppear {
+                                DiagnosticSnapshot.shared.record("chat list: reply drawn index=\(index) chars=\(msg.content.count) streaming=\(isStreaming && isLast)")
+                            }
                         }
                     }
 
