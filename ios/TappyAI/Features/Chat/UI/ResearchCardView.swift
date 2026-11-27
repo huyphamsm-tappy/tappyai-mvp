@@ -3,6 +3,11 @@ import SwiftUI
 /// The Deep Research card (web `ResearchCard.tsx`, Android `ResearchCard.kt`): the plan, each step's progress and the cited sources, drawn
 /// from the server's `tappy.research.v1` frame (re-checked in `OneBrainFrames`). The report is the reply under it. The card never opens an
 /// address itself: a tap on a source goes to `onOpenLink`, and only an address `safeWebURL` accepts is a tap target.
+extension Notification.Name {
+    /// Asks the question box to take the keyboard (posted by «Hỏi cụ thể hơn» on a research that did not finish).
+    static let chatFocusComposer = Notification.Name("tappy.chat.focusComposer")
+}
+
 struct ResearchCardView: View {
     let status: ResearchStatus
     /// The reply's finished text: the report the card offers to keep once the research is done (nil while it is still being written).
@@ -48,12 +53,20 @@ struct ResearchCardView: View {
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
-                if let onRetry {
-                    Button(action: onRetry) {
-                        AnswerChip(text: NSLocalizedString("chat.research.retry", comment: ""), symbol: "arrow.counterclockwise")
+                HStack(spacing: Spacing.xs) {
+                    if let onRetry {
+                        Button(action: onRetry) {
+                            AnswerChip(text: NSLocalizedString("chat.research.retry", comment: ""), symbol: "arrow.counterclockwise")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("research-retry")
+                    }
+                    // «Hỏi cụ thể hơn»: puts the cursor in the question box so the person can narrow the question (nothing is sent for them).
+                    Button { NotificationCenter.default.post(name: .chatFocusComposer, object: nil) } label: {
+                        AnswerChip(text: NSLocalizedString("chat.research.refine", comment: ""), symbol: "text.cursor")
                     }
                     .buttonStyle(.plain)
-                    .accessibilityIdentifier("research-retry")
+                    .accessibilityIdentifier("research-refine")
                 }
             }
 

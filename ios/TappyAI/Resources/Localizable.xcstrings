@@ -33121,6 +33121,20 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Thử lại" } }
       }
     },
+    "chat.research.refine": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Ask more specifically" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hỏi cụ thể hơn" } }
+      }
+    },
+    "chat.report.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Introduction" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mở đầu" } }
+      }
+    },
     "chat.report.toc": {
       "extractionState": "manual",
       "localizations": {

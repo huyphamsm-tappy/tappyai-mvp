@@ -142,6 +142,11 @@ struct ReportPageSheet: View {
             .font(TappyFont.body).foregroundStyle(AnswerStyle.text).fixedSize(horizontal: false, vertical: true)
     }
 
+    /// The section the model gave no heading for is keyed «Mở đầu» in the model (tests and the split depend on it); it is shown in the app's language.
+    private static func displayTitle(_ title: String) -> String {
+        title == ResearchReportModel.introTitle ? NSLocalizedString("chat.report.intro", comment: "") : title
+    }
+
     /// Each `##` section as a closed accordion, under a contents line of the section titles.
     private var contentTab: some View {
         let sections = ResearchReportModel.sections(report)
@@ -151,7 +156,7 @@ struct ReportPageSheet: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("chat.report.toc").font(TappyFont.footnote.weight(.semibold)).foregroundStyle(AnswerStyle.secondary)
                     ForEach(Array(sections.enumerated()), id: \.offset) { i, section in
-                        Text(verbatim: "\(i + 1). \(section.title)").font(TappyFont.footnote).foregroundStyle(AnswerStyle.text)
+                        Text(verbatim: "\(i + 1). \(Self.displayTitle(section.title))").font(TappyFont.footnote).foregroundStyle(AnswerStyle.text)
                     }
                 }
                 .padding(Spacing.sm)
@@ -159,7 +164,7 @@ struct ReportPageSheet: View {
                 .answerSurface(radius: AnswerStyle.chipRadius)
             }
             ForEach(Array(sections.enumerated()), id: \.offset) { _, section in
-                AnswerAccordion(title: section.title, symbol: "text.alignleft") {
+                AnswerAccordion(title: Self.displayTitle(section.title), symbol: "text.alignleft") {
                     MarkdownBlocksView(blocks: MarkdownBlocks.parse(section.body))
                 }
             }

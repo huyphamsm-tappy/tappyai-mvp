@@ -38,6 +38,21 @@ enum EntityFacts {
         return (decoded, host.hasPrefix("vi") ? "vi" : "en")
     }
 
+    /// The pictures of a batch answer of `GET /api/entity-profile?t=&t=` (web `lib/chat/entityProfiles.ts`): name the answer used → a Wikimedia picture.
+    /// A profile without a picture, or whose picture is not on a Wikimedia host, is left out.
+    static func profileImages(_ data: Data) -> [String: URL] {
+        guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let list = object["profiles"] as? [Any] else { return [:] }
+        var out: [String: URL] = [:]
+        for item in list.prefix(6) {
+            guard let o = item as? [String: Any], let name = o["name"] as? String,
+                  let image = o["image"] as? String, MediaBlocks.isAllowedImage(image),
+                  let url = safeWebURL(image) else { continue }
+            out[SubjectImages.key(name)] = url
+        }
+        return out
+    }
+
     private static func clean(_ raw: Any?, _ max: Int) -> String {
         guard let s = raw as? String else { return "" }
         let spaced = String(s.unicodeScalars.map { $0.value < 0x20 || $0.value == 0x7f ? " " : Character($0) })

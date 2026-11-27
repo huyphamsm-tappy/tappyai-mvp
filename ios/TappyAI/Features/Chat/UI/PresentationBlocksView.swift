@@ -133,6 +133,25 @@ private struct ProfileCardsView: View {
     let title: String?
     let items: [PresentationBlock.ProfileItem]
     let images: [String: URL]
+    @EnvironmentObject private var deps: AppDependencies
+    /// Wikipedia's picture of each subject, asked once for the whole block (`/api/entity-profile`); empty until it answers or when none is found.
+    @State private var wikiImages: [String: URL] = [:]
+
+    /// The picture order of the spec: Wikipedia's, then the server's subject picture, else none (the card then shows the initial tile).
+    private func picture(for name: String) -> URL? {
+        let key = SubjectImages.key(name)
+        return wikiImages[key] ?? images[key]
+    }
+
+    private func loadWikiImages() async {
+        guard !PresentationRules.profilesAsTable(items) else { return }
+        let names = items.map(\.name).filter { !$0.isEmpty }
+        guard !names.isEmpty else { return }
+        let endpoint = Endpoint(path: "/api/entity-profile", method: .get,
+                                query: names.prefix(6).map { URLQueryItem(name: "t", value: $0) }, requiresAuth: false, timeout: 8)
+        guard let data = try? await deps.api.send(endpoint) else { return }
+        wikiImages = EntityFacts.profileImages(data)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
@@ -150,6 +169,7 @@ private struct ProfileCardsView: View {
             }
         }
         .accessibilityIdentifier("present-profiles")
+        .task(id: items.map(\.name)) { await loadWikiImages() }
     }
 
     private var profileTable: some View {
@@ -176,13 +196,22 @@ private struct ProfileCardsView: View {
     /// One subject: the picture 104 pt on the left when the server found one (none when it did not), the name and the rest on the right.
     private func card(_ item: PresentationBlock.ProfileItem) -> some View {
         HStack(alignment: .top, spacing: Spacing.sm) {
-            if let url = images[SubjectImages.key(item.name)] {
+            if let url = picture(for: item.name) {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image { image.resizable().scaledToFill() } else { Rectangle().fill(TappyColor.textSecondary.opacity(0.15)) }
                 }
                 .frame(width: 104, height: 104).clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .accessibilityHidden(true)
+            } else if let initial = item.name.trimmingCharacters(in: .whitespaces).first {
+                // No picture found anywhere: the subject's initial on a quiet tile, never an invented picture.
+                Text(verbatim: String(initial).uppercased())
+                    .font(.system(size: 36, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 104, height: 104)
+                    .background(LinearGradient(colors: [TappyColor.primary, Color(red: 99/255, green: 102/255, blue: 241/255)],
+                                               startPoint: .topLeading, endPoint: .bottomTrailing),
+                                in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityHidden(true)
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text(item.name).font(TappyFont.headline).foregroundStyle(TappyColor.textPrimary)

@@ -35,6 +35,26 @@ final class EntityFactsAndOptionsTests: XCTestCase {
         XCTAssertNil(EntityFacts.wikiTitle(fromHref: "https://vi.wikipedia.org/w/index.php?title=X"))
     }
 
+    // MARK: - Subject pictures from Wikipedia
+
+    func testProfilePicturesKeepOnlyWikimediaPicturesByNormalizedName() {
+        let json = """
+        {"profiles":[
+          {"name":"Elon Musk","title":"Elon Musk","image":"https://upload.wikimedia.org/wikipedia/commons/a/a1/x.jpg"},
+          {"name":"Tesla","image":"https://evil.example.com/x.jpg"},
+          {"name":"SpaceX","image":null}]}
+        """
+        let images = EntityFacts.profileImages(Data(json.utf8))
+        XCTAssertEqual(Array(images.keys), [SubjectImages.key("Elon Musk")], "a picture off the Wikimedia hosts, or none, is left out")
+        XCTAssertTrue(EntityFacts.profileImages(Data("nope".utf8)).isEmpty)
+    }
+
+    func testReportIntroSectionIsKeyedByOneConstant() {
+        let sections = ResearchReportModel.sections("Dẫn nhập\n\n## Mục A\nnội dung")
+        XCTAssertEqual(sections.first?.title, ResearchReportModel.introTitle)
+        XCTAssertEqual(sections.dropFirst().first?.title, "Mục A")
+    }
+
     // MARK: - Options
 
     private func parsed(_ json: String) -> [MediaBlock] {

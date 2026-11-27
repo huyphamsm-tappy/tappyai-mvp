@@ -170,6 +170,10 @@ struct ChatInputBar: View {
                         .onChange(of: isStreaming) { streaming in
                             if streaming { isFocused = false }
                         }
+                        // «Hỏi cụ thể hơn» on a research that did not finish: the person types the narrower question (research card, step 4).
+                        .onReceive(NotificationCenter.default.publisher(for: .chatFocusComposer)) { _ in
+                            if !isStreaming { isFocused = true }
+                        }
 
                     // The emoji button and its panel are gone (owner UAT 25/11: «thừa», and tapping elsewhere did not close the
                     // panel). The phone keyboard has its own emoji key.

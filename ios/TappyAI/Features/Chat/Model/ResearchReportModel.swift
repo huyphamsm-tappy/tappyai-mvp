@@ -64,13 +64,15 @@ enum ResearchReportModel {
 
     /// The report's `##` sections, in order: the title (without the marks) and the body under it. Text before the first heading is the first
     /// section, titled «Mở đầu». The sources section is kept (the page's «Nguồn» tab names the same links).
+    static let introTitle = "Mở đầu"
+
     static func sections(_ report: String) -> [(title: String, body: String)] {
         var out: [(title: String, body: String)] = []
-        var title = "Mở đầu"
+        var title = introTitle
         var body: [String] = []
         func flush() {
             let text = body.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
-            if !text.isEmpty || title != "Mở đầu" { out.append((title, text)) }
+            if !text.isEmpty || title != introTitle { out.append((title, text)) }
         }
         for line in report.components(separatedBy: "\n") {
             if line.trimmingCharacters(in: .whitespaces).hasPrefix("## ") {
