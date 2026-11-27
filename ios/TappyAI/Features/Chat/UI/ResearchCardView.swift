@@ -88,6 +88,9 @@ struct ResearchCardView: View {
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("research-sources-toggle")
                 if sourcesOpen {
+                    Text("chat.research.sources")
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.textSecondary)
                     ForEach(status.links) { link in
                         sourceRow(link)
                     }
