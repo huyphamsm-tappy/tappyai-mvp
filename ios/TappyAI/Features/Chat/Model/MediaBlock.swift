@@ -25,9 +25,26 @@ enum MediaBlock: Equatable, Sendable {
         let href: String
     }
 
+    /// One option of a recommendation that has no place or product card of its own (a tour, a service, a plan, a course): text only, no picture.
+    /// Fields are the web's `MediaOption` (`lib/media/mediaHosts.ts`), with the same limits.
+    struct Option: Equatable, Sendable {
+        let name: String
+        let badge: String?
+        let figure: String?
+        let figureNote: String?
+        let verdict: String?
+        let highlights: [String]
+        let extras: [String]
+        let caveat: String?
+        let href: String?
+        let linkLabel: String?
+    }
+
     case news([NewsItem])
     /// One card, or 2–3 side by side for a comparison.
     case entities([Entity])
+    /// The option cards of a recommendation (title optional), at most 6.
+    case options(title: String?, options: [Option])
 }
 
 enum MediaBlocks {
@@ -90,6 +107,26 @@ enum MediaBlocks {
         return MediaBlock.Entity(name: name, summary: summary, image: image, href: href)
     }
 
+    private static let maxOptions = 6
+
+    private static func cleanList(_ raw: Any?, _ maxItems: Int, _ maxLength: Int) -> [String] {
+        guard let list = raw as? [Any] else { return [] }
+        return Array(list.map { clean($0, maxLength) }.filter { !$0.isEmpty }.prefix(maxItems))
+    }
+
+    private static func option(from raw: Any?) -> MediaBlock.Option? {
+        guard let o = raw as? [String: Any] else { return nil }
+        let name = clean(o["name"], 90)
+        guard !name.isEmpty else { return nil }
+        func opt(_ key: String, _ max: Int) -> String? { let s = clean(o[key], max); return s.isEmpty ? nil : s }
+        // The link is one the server's tools returned, re-checked here as safe https (the web's `isSafeHttpsUrl`).
+        let href: String? = (o["href"] as? String).flatMap { $0.count <= maxURLLength && safeHTTPSHost($0) != nil && !AiSourcePolicy.isAiProductSource($0) ? $0 : nil }
+        return MediaBlock.Option(
+            name: name, badge: opt("badge", 40), figure: opt("figure", 40), figureNote: opt("figureNote", 120),
+            verdict: opt("verdict", 220), highlights: cleanList(o["highlights"], 5, 180), extras: cleanList(o["extras"], 4, 140),
+            caveat: opt("caveat", 220), href: href, linkLabel: href == nil ? nil : opt("linkLabel", 40))
+    }
+
     /// Re-validates one decoded block. Anything not allowed is dropped; nothing valid left → nil.
     static func sanitize(_ raw: Any) -> MediaBlock? {
         guard let r = raw as? [String: Any], (r["v"] as? Int) == 1 else { return nil }
@@ -115,6 +152,12 @@ enum MediaBlocks {
             let list = ((r["entities"] as? [Any]) ?? []).compactMap(entity(from:)).filter { seen.insert($0.href).inserted }
             let kept = Array(list.prefix(maxEntities))
             return kept.isEmpty ? nil : MediaBlock.entities(kept)
+        case "options":
+            let list = ((r["options"] as? [Any]) ?? []).compactMap(option(from:))
+            let kept = Array(list.prefix(maxOptions))
+            guard !kept.isEmpty else { return nil }
+            let title = clean(r["title"], 90)
+            return MediaBlock.options(title: title.isEmpty ? nil : title, options: kept)
         default:
             return nil
         }
