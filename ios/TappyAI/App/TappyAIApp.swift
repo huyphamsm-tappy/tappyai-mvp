@@ -18,6 +18,7 @@ struct TappyAIApp: App {
                 .environmentObject(deps.notificationCenter)
                 .overlay { UITestOverlay() }
                 .task {
+                    StallStackSampler.install() // on the main thread: lets the stall watch read where a frozen main thread is stuck
                     deps.bootstrap()
                     #if DEBUG
                     UITestLaunch.apply(deps)

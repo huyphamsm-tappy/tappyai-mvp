@@ -24,6 +24,10 @@ final class MainThreadStallWatch: @unchecked Sendable {
                 if Task.isCancelled { return }
                 if !flag.isSet {
                     DiagnosticSnapshot.shared.record("main thread stalled over 1.5 s while a chat turn streams \(context())", isError: true)
+                    // WHERE it is stuck: the main thread's own stack, read from here (names for system frames, image offsets for the app's).
+                    for line in StallStackSampler.sample().prefix(28) {
+                        DiagnosticSnapshot.shared.record("stall stack: \(line)", isError: true)
+                    }
                     while !flag.isSet, !Task.isCancelled { try? await Task.sleep(nanoseconds: 250_000_000) }
                     if flag.isSet {
                         DiagnosticSnapshot.shared.record("main thread answered again after \(String(format: "%.1f", Date().timeIntervalSince(sent))) s")

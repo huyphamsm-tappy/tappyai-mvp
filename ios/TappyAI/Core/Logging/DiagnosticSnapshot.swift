@@ -9,7 +9,7 @@ import Foundation
 /// one that must get written while the main thread is blocked.
 final class DiagnosticSnapshot: @unchecked Sendable {
     static let shared = DiagnosticSnapshot()
-    static let capacity = 60
+    static let capacity = 120
 
     private let lock = NSLock()
     private var lines: [String] = []
