@@ -29,7 +29,8 @@ final class MainThreadStallWatch: @unchecked Sendable {
                     // the app frames after them, so the diagnostics (120 lines) keep the part that matters.
                     let frames = StallStackSampler.sample()
                     var kept: [String] = []
-                    for (i, line) in frames.enumerated() where i < 18 || line.contains(" TappyAI+") || line.contains("\(i) TappyAI+") { kept.append(line) }
+                    // The app's image is «TappyAI» in a release build and «TappyAI.debug.dylib» in a debug one.
+                    for (i, line) in frames.enumerated() where i < 18 || line.contains(" TappyAI") { kept.append(line) }
                     for line in kept.prefix(70) {
                         DiagnosticSnapshot.shared.record("stall stack: \(line)", isError: true)
                     }

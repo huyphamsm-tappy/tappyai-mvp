@@ -1,50 +1,54 @@
 import XCTest
 
 /// Freeze hunt (owner diagnostics 27/11: after a reply the screen stops answering and the app has to be quit). Drives the REAL chat screen on the
-/// simulator against the fixture backend's `chat: stream` mode (`ios/scripts/ui_stub_server.py`): replies shaped like the production ones that froze
-/// (a ~12 KB annotation line, bold text and a link, then an article with headings, a list and a table). After EVERY reply the test checks that the
-/// app still answers — the question box is usable again, a swipe returns quickly — and fails with a clear message when it does not.
-/// The workflow `ios-freeze-hunt.yml` then prints the app's own diagnostics (`tappy-diagnostics.log`, which carries the main thread's call stack
-/// when it stalls) and uploads it with the result bundle.
+/// simulator against the fixture backend's `chat: stream` mode (`ios/scripts/ui_stub_server.py`). The first CI run REPRODUCED the freeze with the
+/// full shape (14 place cards with chips, then prose): the main thread stalled four seconds after the first reply finished. So each test here is
+/// one SHAPE of reply, to find which part of it freezes the screen:
+///   full       — 14 places (3 shown + «Xem thêm»), chips on every card, prose
+///   places3    — 3 places with chips, prose
+///   noactions  — 14 places WITHOUT chips, prose
+///   none       — no places at all, prose
+///   article    — no places, an article (headings, list, table)
+/// After each reply the test checks that the app still answers (a plain query and one swipe, each with a short deadline) and fails with a clear
+/// message when it does not. The workflow `ios-freeze-hunt.yml` prints the app's own diagnostics (with the main thread's call stack when it stalls).
 final class ChatFreezeUITests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
     }
 
-    func testChatStaysResponsiveAfterEveryAnswer() {
-        setStub(["chat": "stream"])
-        defer { setStub(["chat": "off"]) }
+    func testShapeFull() { scenario(shape: "full", kind: "plain") }
+    func testShapePlaces3() { scenario(shape: "places3", kind: "plain") }
+    func testShapeNoActions() { scenario(shape: "noactions", kind: "plain") }
+    func testShapeNoPlaces() { scenario(shape: "none", kind: "plain") }
+    func testShapeArticle() { scenario(shape: "none", kind: "article") }
+
+    private func scenario(shape: String, kind: String) {
+        setStub(["chat": "stream", "shape": shape, "kind": kind])
+        defer { setStub(["chat": "off", "shape": "full", "kind": "alt"]) }
         let app = XCUIApplication()
         app.launchArguments = ["-uitest-route", "chat", "-uitest-lang", "vi", "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN",
                                "-uitest-theme", "dark"]
         app.launch()
         let input = any(app, "chat-input")
-        XCTAssertTrue(input.waitForExistence(timeout: 60), "the chat opens")
+        XCTAssertTrue(input.waitForExistence(timeout: 60), "[\(shape)/\(kind)] the chat opens")
 
-        for turn in 1...6 {
-            let asked = Date()
+        for turn in 1...2 {
             input.tap()
             input.typeText("Cau hoi so \(turn)")
             any(app, "chat-send").tap()
-
-            // The reply streams for about three seconds; the box is disabled meanwhile. Wait until it is usable again.
-            var usable = false
-            while Date().timeIntervalSince(asked) < 90 {
-                if Date().timeIntervalSince(asked) > 2.0, input.isEnabled { usable = true; break }
-                Thread.sleep(forTimeInterval: 0.5)
-            }
-            attach(app, "turn-\(turn)-after-reply")
-            XCTAssertTrue(usable, "turn \(turn): the question box did not become usable again within 90 s of sending — the screen is frozen or the turn never ended")
-            XCTAssertEqual(app.state, .runningForeground, "turn \(turn): the app is no longer running (crash)")
-
-            // The screen must answer touches quickly: scroll both ways, then the box again.
-            let started = Date()
+            // The reply streams for about three seconds, and its drawing follows. Give it time, then ask the app something simple.
+            Thread.sleep(forTimeInterval: 9)
+            let asked = Date()
+            let alive = input.waitForExistence(timeout: 25)
+            let took = Date().timeIntervalSince(asked)
+            XCTAssertTrue(alive, "[\(shape)/\(kind)] turn \(turn): the screen no longer answers (a plain query timed out after \(took) s) — FROZEN")
+            XCTAssertEqual(app.state, .runningForeground, "[\(shape)/\(kind)] turn \(turn): the app is no longer running (crash)")
+            let swipeStart = Date()
             app.swipeUp()
-            app.swipeDown()
-            let took = Date().timeIntervalSince(started)
-            XCTAssertLessThan(took, 20, "turn \(turn): two swipes took \(took) s — the main thread is stuck or very slow after the reply")
-            XCTAssertTrue(input.waitForExistence(timeout: 20), "turn \(turn): the question box is gone after the reply")
+            let swipeTook = Date().timeIntervalSince(swipeStart)
+            XCTAssertLessThan(swipeTook, 20, "[\(shape)/\(kind)] turn \(turn): a swipe took \(swipeTook) s — the main thread is stuck or very slow")
+            attach("\(shape)-\(kind)-turn-\(turn)")
         }
     }
 
@@ -54,7 +58,7 @@ final class ChatFreezeUITests: XCTestCase {
         app.descendants(matching: .any)[id].firstMatch
     }
 
-    private func attach(_ app: XCUIApplication, _ name: String) {
+    private func attach(_ name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name
         attachment.lifetime = .keepAlways

@@ -65,54 +65,64 @@ jobs:
           xcrun simctl boot "${{ steps.sim.outputs.udid }}" || true
           xcrun simctl bootstatus "${{ steps.sim.outputs.udid }}" -b
 
-      - name: Chat freeze UI test
-        id: test
-        continue-on-error: true
+      - name: Build for testing
         run: |
           set -o pipefail
-          rm -rf build/hunt.xcresult
-          xcodebuild test \
+          xcodebuild build-for-testing \
             -project TappyAI.xcodeproj \
             -scheme TappyAI \
             -configuration Debug \
             -destination "id=${{ steps.sim.outputs.udid }}" \
             -derivedDataPath build/DerivedData \
             -skipPackagePluginValidation \
-            -only-testing:TappyAIUITests/ChatFreezeUITests \
-            -resultBundlePath build/hunt.xcresult \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            | tee build/xcodebuild-hunt.log
+            2>&1 | tail -n 5
 
-      # The app's own record of the run: stream marks, drawing marks and, when the main thread stalled, its call stack.
-      - name: Print the app's diagnostics
-        if: always()
+      # One xcodebuild per SHAPE of reply, so the app's own diagnostics (which a new launch overwrites) are copied after each one.
+      - name: Chat freeze UI tests, one shape at a time
+        id: test
+        continue-on-error: true
         run: |
-          container=$(xcrun simctl get_app_container "${{ steps.sim.outputs.udid }}" com.tappyai.ios.debug data 2>/dev/null || true)
-          echo "app data container: ${container:-none}"
-          log="$container/Library/Caches/tappy-diagnostics.log"
-          if [ -f "$log" ]; then
-            cp "$log" build/tappy-diagnostics.log
-            echo "### App diagnostics (last session)" >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            tail -n 120 build/tappy-diagnostics.log >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            echo "---- tappy-diagnostics.log ----"
-            cat build/tappy-diagnostics.log
-          else
-            echo "no diagnostics file at $log"
-          fi
-          echo "---- stall lines ----"
-          grep -n "stalled\|stall stack\|answered again" build/tappy-diagnostics.log 2>/dev/null || echo "none recorded"
-          echo "---- crash / hang reports ----"
-          ls -la ~/Library/Logs/DiagnosticReports 2>/dev/null | head -20 || true
-          cp ~/Library/Logs/DiagnosticReports/*TappyAI* build/ 2>/dev/null || true
-
-      - name: Test outcome
-        run: |
-          echo "ui test outcome: ${{ steps.test.outcome }}"
-          grep -E "error:|Test Case .* (passed|failed)|\*\* TEST" build/xcodebuild-hunt.log | tail -20 || true
+          failed=0
+          for t in testShapeFull testShapePlaces3 testShapeNoActions testShapeNoPlaces testShapeArticle; do
+            echo "=================== $t ==================="
+            set +e
+            xcodebuild test-without-building \
+              -project TappyAI.xcodeproj \
+              -scheme TappyAI \
+              -configuration Debug \
+              -destination "id=${{ steps.sim.outputs.udid }}" \
+              -derivedDataPath build/DerivedData \
+              -skipPackagePluginValidation \
+              -only-testing:TappyAIUITests/ChatFreezeUITests/$t \
+              -resultBundlePath build/hunt-$t.xcresult \
+              CODE_SIGNING_ALLOWED=NO \
+              CODE_SIGNING_REQUIRED=NO \
+              CODE_SIGN_IDENTITY="" > build/xcodebuild-$t.log 2>&1
+            code=$?
+            set -e
+            grep -E "ChatFreezeUITests.*(error|failed|passed)|Test Case .* (passed|failed)" build/xcodebuild-$t.log | cut -c1-400 || true
+            [ $code -eq 0 ] && echo "RESULT $t: PASSED" || { echo "RESULT $t: FAILED"; failed=1; }
+            # The app's own record of this run: stream marks, drawing marks and, when the main thread stalled, its call stack.
+            container=$(xcrun simctl get_app_container "${{ steps.sim.outputs.udid }}" com.tappyai.ios.debug data 2>/dev/null || true)
+            log="$container/Library/Caches/tappy-diagnostics.log"
+            if [ -f "$log" ]; then
+              cp "$log" build/diag-$t.log
+              echo "---- diagnostics of $t ----"
+              cat build/diag-$t.log
+              {
+                echo "### $t"
+                echo '```'
+                tail -n 120 build/diag-$t.log
+                echo '```'
+              } >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "no diagnostics file for $t"
+            fi
+          done
+          exit $failed
 
       - name: Upload evidence
         if: always()
@@ -120,12 +130,10 @@ jobs:
         with:
           name: ios-freeze-hunt
           path: |
-            ios/build/hunt.xcresult
-            ios/build/tappy-diagnostics.log
-            ios/build/xcodebuild-hunt.log
+            ios/build/hunt-*.xcresult
+            ios/build/diag-*.log
+            ios/build/xcodebuild-test*.log
             ios/build/stub.log
-            ios/build/*.ips
-            ios/build/*.crash
 
       - name: Fail when the freeze reproduced
         if: steps.test.outcome == 'failure'

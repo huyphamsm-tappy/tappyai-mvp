@@ -483,17 +483,22 @@ class Handler(BaseHTTPRequestHandler):
 
         line("8:" + json.dumps([{"kind": "tappy.progress.v1", "v": 1, "stage": "searching", "text": "Đang tìm quán gần bạn…"}], ensure_ascii=False))
         time.sleep(0.4)
+        shape = MODE.get("shape", "full")
+        count = {"full": 14, "places3": 3, "none": 0, "noactions": 14}.get(shape, 14)
         items = [{"id": "place:%d" % i, "domain": "food", "kind": "place", "rank": i,
                   "name": "Quán số %d với một cái tên khá dài để dòng dữ liệu to ra" % i,
                   "address": "%d Đường Nguyễn Văn Đậu, Phường %d, Quận Bình Thạnh, Thành phố Hồ Chí Minh" % (i, i % 9 + 1),
                   "rating": 4.0 + (i % 10) / 10.0, "ratingCount": 100 + i * 17, "image": "http://127.0.0.1:3000/img/a.png",
-                  "actions": [{"kind": "maps", "urlKind": "direct", "url": "https://maps.example/%d" % i, "labelKey": "v3.action.maps"},
-                              {"kind": "review", "urlKind": "search", "url": "https://www.google.com/search?q=quan+%d+review" % i, "labelKey": "v3.action.reviewSearch"}],
-                  "summary": "Mô tả dài để mỗi thẻ nặng thêm. " * 8} for i in range(14)]
-        line("8:" + json.dumps([{"kind": "tappy.places.v1", "v": 1, "domain": "food", "ranked": True, "items": items,
-                                  "mapsSearchUrl": "https://maps.example/q", "shown": 3}], ensure_ascii=False))
+                  "actions": [] if shape == "noactions" else [
+                      {"kind": "maps", "urlKind": "direct", "url": "https://maps.example/%d" % i, "labelKey": "v3.action.maps"},
+                      {"kind": "review", "urlKind": "search", "url": "https://www.google.com/search?q=quan+%d+review" % i, "labelKey": "v3.action.reviewSearch"}],
+                  "summary": "Mô tả dài để mỗi thẻ nặng thêm. " * 8} for i in range(count)]
+        if count:
+            line("8:" + json.dumps([{"kind": "tappy.places.v1", "v": 1, "domain": "food", "ranked": True, "items": items,
+                                      "mapsSearchUrl": "https://maps.example/q", "shown": 3}], ensure_ascii=False))
         time.sleep(1.0)
-        if turn % 2 == 1:
+        kind = MODE.get("kind", "alt")
+        if kind == "plain" or (kind == "alt" and turn % 2 == 1):
             body = ("Có, **Bánh canh Bình Định trong hẻm 54 Đào Duy Anh, Phú Nhuận** là lựa chọn khớp nhất mình tìm được: bài tổng hợp cập nhật "
                     "tháng 3/2026 ghi quán bán **06:00–10:00**, tô nhiều chả cá, nước dùng thanh ngọt. [HCMtoplist](https://hcmtoplist.example/banh-canh)\n\n"
                     "Mình cũng thấy **Bánh Canh Chả Tôm Quy Nhơn ở 1B Lê Quý Đôn**, nhưng trang ShopeeFood hiện ghi quán **đã đóng**, nên chưa dám đề xuất.\n\n"
