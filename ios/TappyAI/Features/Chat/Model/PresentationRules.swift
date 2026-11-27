@@ -22,6 +22,22 @@ enum PresentationRules {
         return PresentationFrame(blocks: blocks, links: frame.links)
     }
 
+    /// The reply's action buttons, minus the ones a place card already offers (the same address, ignoring its query and fragment): a card with its
+    /// own «Bản đồ» or «Đặt» is enough (spec §5.1: no button repeated under the answer).
+    static func ctaButtonsNotOnPlaces(_ buttons: [CTAButton], placeURLs: [String]) -> [CTAButton] {
+        let onCards = Set(placeURLs.map(addressKey))
+        return buttons.filter { !onCards.contains(addressKey($0.url)) }
+    }
+
+    /// An address without its query and fragment, lowercased; two addresses that name the same page compare equal.
+    static func addressKey(_ raw: String) -> String {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard var parts = URLComponents(string: trimmed) else { return trimmed.lowercased() }
+        parts.query = nil
+        parts.fragment = nil
+        return (parts.string ?? trimmed).lowercased()
+    }
+
     /// Whether the answer's text already holds a markdown table (a header row, a separator row of dashes, then a row).
     static func textHasTable(_ markdown: String) -> Bool {
         MarkdownBlocks.parse(markdown).contains { if case .table = $0 { return true } else { return false } }

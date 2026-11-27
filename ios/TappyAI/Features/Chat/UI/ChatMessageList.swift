@@ -368,6 +368,11 @@ private struct AssistantBubble: View {
     let isStreaming: Bool
     let status: MessageStatus
     let ctaButtons: [CTAButton]
+
+    /// The reply's buttons without the ones the place cards of this reply already carry.
+    private var shownCTAButtons: [CTAButton] {
+        PresentationRules.ctaButtonsNotOnPlaces(ctaButtons, placeURLs: places.flatMap { $0.actions.map(\.url) })
+    }
     let plan: TappyPlan?
     /// The `[TAPPY_PLAN]` block verbatim and the publisher, for the plan card's full-plan button.
     var planJSON: String? = nil
@@ -566,9 +571,10 @@ private struct AssistantBubble: View {
                 }
 
                 // CTA buttons with favorite toggle
-                if !ctaButtons.isEmpty {
+                // Buttons a place card already offers are not repeated under the answer (layout step 5, spec §5.1).
+                if !shownCTAButtons.isEmpty {
                     ChatFlowLayout(spacing: Spacing.xs) {
-                        ForEach(ctaButtons) { btn in
+                        ForEach(shownCTAButtons) { btn in
                             HStack(spacing: 4) {
                                 CTAButtonView(button: btn)
                                 if btn.type == "internal_booking",
