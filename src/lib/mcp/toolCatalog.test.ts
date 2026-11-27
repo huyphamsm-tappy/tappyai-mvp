@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { CATALOG, catalogTool, listTools, parseArgs, TOOL_CATALOG_VERSION } from './toolCatalog'
+import { CATALOG, catalogFingerprint, catalogTool, isJobTool, JOB_TOOLS, listTools, parseArgs, TOOL_CATALOG_VERSION } from './toolCatalog'
 import { CONNECTOR_TOOLS } from './connectorContract'
 import { TOOL_SERVICE } from './serviceMap'
 
@@ -10,6 +10,19 @@ describe('tool catalog (schemas v1.1)', () => {
     expect(Object.keys(CATALOG).sort()).toEqual([...SEARCH, 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job'].sort())
     expect(listTools().length).toBe(10)
     expect(TOOL_CATALOG_VERSION).toBe('mcp-tools.v1.2')
+  })
+  it('jobs off: only the five searches are listed; every job-dependent tool (create_itinerary included) is hidden', () => {
+    expect(listTools({ jobs: false }).map(t => t.name).sort()).toEqual([...SEARCH].sort())
+    expect(listTools({ jobs: true }).length).toBe(10)
+    expect(listTools().length).toBe(10)
+    expect([...JOB_TOOLS].sort()).toEqual(['cancel_itinerary_job', 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_result', 'get_itinerary_job_status'])
+    for (const n of JOB_TOOLS) expect(isJobTool(n)).toBe(true)
+    for (const n of SEARCH) expect(isJobTool(n)).toBe(false)
+    for (const n of ['__proto__', 'toString', 42, null, undefined]) expect(isJobTool(n)).toBe(false)
+  })
+  it('the job tool definitions are kept byte for byte: hiding them does not change the full catalog', () => {
+    expect(catalogFingerprint()).toBe(catalogFingerprint({ jobs: true }))
+    expect(catalogFingerprint({ jobs: false })).not.toBe(catalogFingerprint({ jobs: true }))
   })
   it('SYNC for the five searches, ASYNC for create_itinerary, JOB_CONTROL for the job tools', () => {
     for (const n of SEARCH) expect(CATALOG[n].mode).toBe('SYNC')

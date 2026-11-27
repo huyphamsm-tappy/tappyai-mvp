@@ -173,8 +173,19 @@ export const CATALOG: Readonly<Record<CatalogToolName, CatalogTool>> = Object.fr
 /** The catalog entry for a name, or null. Own properties only: '__proto__', 'constructor' and the like are not tools. Pure. */
 export const catalogTool = (n: unknown): CatalogTool | null => (typeof n === 'string' && Object.prototype.hasOwnProperty.call(CATALOG, n) ? CATALOG[n as CatalogToolName] : null)
 
-export function listTools(): Array<{ name: string; title: string; description: string; inputSchema: Record<string, unknown>; outputSchema: Record<string, unknown>; annotations: ToolAnnotations }> {
-  return Object.values(CATALOG).map(t => ({ name: t.name, title: t.title, description: t.description, inputSchema: t.inputSchema, outputSchema: t.outputSchema, annotations: { ...t.annotations, title: t.title } as ToolAnnotations }))
+/**
+ * Every tool that needs the persisted job store: create_itinerary starts a job exactly as create_itinerary_job does, so it goes with the four fallback job tools (a create tool whose status, result
+ * and cancel tools are hidden would be a dead end). Owner decision D2 (27/11/2026): the long-running tools do not ship at launch. They are hidden, not deleted: the definitions below stay byte for byte. Pure.
+ */
+export const JOB_TOOLS: readonly CatalogToolName[] = Object.freeze(['create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job'] as const)
+export const isJobTool = (n: unknown): boolean => typeof n === 'string' && (JOB_TOOLS as readonly string[]).includes(n)
+
+/** `jobs` (default true: the whole catalog) is false when the job store is not available: then no job-dependent tool is listed. Pure. */
+export interface ListOptions { jobs?: boolean }
+
+export function listTools(opts: ListOptions = {}): Array<{ name: string; title: string; description: string; inputSchema: Record<string, unknown>; outputSchema: Record<string, unknown>; annotations: ToolAnnotations }> {
+  const jobs = opts.jobs !== false
+  return Object.values(CATALOG).filter(t => jobs || !isJobTool(t.name)).map(t => ({ name: t.name, title: t.title, description: t.description, inputSchema: t.inputSchema, outputSchema: t.outputSchema, annotations: { ...t.annotations, title: t.title } as ToolAnnotations }))
 }
 
 export type ParsedArgs = { ok: true; value: Record<string, unknown> } | { ok: false }
@@ -207,6 +218,6 @@ function validStay(checkIn: unknown, checkOut: unknown): boolean {
 }
 
 /** A stable fingerprint of everything a Host can see of the catalog (names, descriptions, schemas, annotations, version). Pinned by a test: change the catalog on purpose, then change both together. */
-export function catalogFingerprint(): string {
-  return createHash('sha256').update(JSON.stringify({ v: TOOL_CATALOG_VERSION, tools: listTools() })).digest('hex')
+export function catalogFingerprint(opts: ListOptions = {}): string {
+  return createHash('sha256').update(JSON.stringify({ v: TOOL_CATALOG_VERSION, tools: listTools(opts) })).digest('hex')
 }
