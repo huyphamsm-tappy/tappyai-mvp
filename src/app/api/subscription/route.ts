@@ -48,8 +48,9 @@ export async function GET(req: Request) {
     const todayMessageCount = acct.exempt ? 0 : (quota.used ?? quota.limit)
     const remaining = acct.exempt ? dailyLimit : Math.max(0, dailyLimit - todayMessageCount)
     // Pip is one per account for life (store, web or staff grant): the database rule's own answer, so the iOS app can hide the pack before offering it.
-    // A guest has no Pip to have used; if the rule cannot be read, an account that holds Pip right now still counts as used.
-    const pipUsed = isAnonymous ? false : await pipUsedFor(user.id, (sub as { plan?: string | null } | null)?.plan === 'pip')
+    // A guest is reported as "used" so the iOS app never offers the 7-day pack to a guest (it needs an account first); the database is not asked.
+    // If the rule cannot be read, an account that holds Pip right now still counts as used.
+    const pipUsed = isAnonymous ? true : await pipUsedFor(user.id, (sub as { plan?: string | null } | null)?.plan === 'pip')
 
     return NextResponse.json({
       isPro,
@@ -74,7 +75,7 @@ export async function GET(req: Request) {
       /** Questions spent in the current period (field name kept for existing clients). */
       todayMessageCount,
       remaining,
-      /** True once this account has used its one-time Pip (any source). Additive. */
+      /** True once this account has used its one-time Pip (any source), and for a guest (no Pip pack is sold to a guest). Additive. */
       pipUsed,
     })
   } catch (e) {

@@ -57,11 +57,11 @@ describe('GET /api/subscription: pipUsed', () => {
     expect((await get()).body.pipUsed).toBe(true)
   })
 
-  it('a guest has no Pip to have used: false, and the database is not asked', async () => {
+  it('a guest is reported as used (true), so the app never offers the 7-day pack to a guest; the database is not asked', async () => {
     h.state.user = { id: 'g1', is_anonymous: true }
-    h.state.rpc = { data: true, error: null }
+    h.state.rpc = { data: false, error: null }
     const r = await get()
-    expect(r.body.pipUsed).toBe(false)
+    expect(r.body.pipUsed).toBe(true)
     expect(h.state.rpcCalls).toHaveLength(0)
   })
 
