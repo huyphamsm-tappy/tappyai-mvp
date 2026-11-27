@@ -342,10 +342,18 @@ describe('itinerary jobs (fallback job tools; durable store not chosen yet)', ()
     await jobs.claim('w1', 60_000); await jobs.complete(id2, 'w1', { days: 'nope' })
     expect(structured(await run(call('get_itinerary_job_result', { job_id: id2 }), deps)).result).toBeNull()
   })
-  it('the default (unavailable) job store fails closed with PROVIDER_UNAVAILABLE', async () => {
+  it('the default (unavailable) job store hides every job tool: not listed, and a call is an unknown tool (invalid params), never a job error', async () => {
     const { deps } = mk({ jobs: unavailableJobStore })
-    expect(errCode(await run(call('create_itinerary', { destination: 'Huế', days: 2 }), deps))).toBe('PROVIDER_UNAVAILABLE')
-    expect(errCode(await run(call('get_itinerary_job_status', { job_id: 'job_00000000-0000-4000-8000-000000000000' }), deps))).toBe('PROVIDER_UNAVAILABLE')
+    const tools = ((result(await run(rpc('tools/list'), deps)) as any).tools as Array<any>).map(t => t.name).sort()
+    expect(tools).toEqual(['search_attractions', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
+    for (const n of ['create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job']) {
+      const r = await run(call(n, { destination: 'Huế', days: 2, job_id: 'job_00000000-0000-4000-8000-000000000000' }), deps)
+      expect((r.body as any).error).toMatchObject({ code: -32602, message: 'Unknown tool' })
+    }
+  })
+  it('the search tools keep working when the job tools are hidden', async () => {
+    const { deps } = mk({ jobs: unavailableJobStore })
+    expect(structured(await run(call('search_places', { query: 'pho', ...HCMC }), deps)).status).toBe('success')
   })
   it('job tools are scope-checked like any other tool', async () => {
     const { deps } = mk({ verify: vi.fn(async () => claims({ scopes: ['places:read'] })) })

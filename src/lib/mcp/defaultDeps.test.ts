@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { buildVerifier, buildGatewayDeps, denyAllVerifier, rpcJobStore } from './defaultDeps'
+import { unavailableJobStore } from './jobs'
 
 const AUD = 'https://mcp.test/api/mcp'
 const SUB = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
@@ -30,6 +31,11 @@ describe('default wiring is inert until fully configured', () => {
     expect(rpcJobStore({})).toBeNull(); expect(rpcJobStore({ MCP_JOBS_ENABLED: 'true' })).toBeNull()
     expect(rpcJobStore({ MCP_JOBS_ENABLED: '1' })).not.toBeNull()
     await expect(buildGatewayDeps({}).jobs.get('x', 'p')).rejects.toThrow('job_store_unavailable')
+  })
+  it('the gateway hides the job tools exactly when this wiring yields the unavailable store (identity, not a copy)', () => {
+    expect(buildGatewayDeps({}).jobs).toBe(unavailableJobStore)
+    expect(buildGatewayDeps({ MCP_JOBS_ENABLED: 'true' }).jobs).toBe(unavailableJobStore)
+    expect(buildGatewayDeps({ MCP_JOBS_ENABLED: '1' }).jobs).not.toBe(unavailableJobStore)
   })
   it('attribution links exist only with a long secret and an https resource URL; metrics are wired', () => {
     expect(buildGatewayDeps({}).attribution).toBeNull()

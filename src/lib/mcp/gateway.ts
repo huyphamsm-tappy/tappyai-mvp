@@ -11,13 +11,13 @@ import { evaluateGate, DEFAULT_REGISTRY, type GateDecision, type GateQuery } fro
 import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
 import { admitToolCall, connectorLocation, shapeResult, type VerifiedClaims } from './connectorContract'
 import { admissionToCode, toolError, RPC, type GatewayErrorCode } from './gatewayErrors'
-import { catalogTool, listTools, parseArgs, type CatalogTool } from './toolCatalog'
+import { catalogTool, isJobTool, listTools, parseArgs, type CatalogTool } from './toolCatalog'
 import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, type SearchToolName, type ServiceAdapters } from './serviceMap'
 import { TOOL_RESERVE_USD, type SpendPool } from './spendPool'
 import { dispatchPaid } from './dispatch'
 import { buildTrackedLink } from './attribution'
 import { limitsFor } from './hostProfiles'
-import { jobView, type JobStore, JobStoreUnavailable } from './jobs'
+import { jobView, type JobStore, JobStoreUnavailable, unavailableJobStore } from './jobs'
 import type { AbuseMonitor } from './abuseGuard'
 import { TAPPY_INSTRUCTIONS } from './tappyProfile'
 
@@ -69,6 +69,8 @@ export function serverInfo(resourceUrl: string): Record<string, unknown> {
   } catch { /* no usable origin: no icon */ }
   return base
 }
+/** The job tools exist only when a real job store is wired (MCP_JOBS_ENABLED=1 plus the migration). The default unavailable store means they are neither listed nor callable: fail closed, no new switch to forget. */
+const jobsAvailable = (deps: GatewayDeps): boolean => deps.jobs !== unavailableJobStore
 const DEFAULT_LIMIT = 5
 const JSON_HEADERS = { 'content-type': 'application/json' } as const
 
@@ -162,7 +164,7 @@ export async function handleMcpRequest(input: GatewayRequest, deps: GatewayDeps)
   switch (msg.method) {
     case 'initialize': return ok(msg.id, { protocolVersion: PROTOCOL_VERSION, capabilities: { tools: { listChanged: false } }, serverInfo: serverInfo(deps.expectedAudience), instructions: INSTRUCTIONS })
     case 'ping': return ok(msg.id, {})
-    case 'tools/list': return ok(msg.id, { tools: listTools() })
+    case 'tools/list': return ok(msg.id, { tools: listTools({ jobs: jobsAvailable(deps) }) })
     case 'tools/call': return callTool(msg.id, msg.params, claims, input, deps, now)
     default: return rpcError(msg.id, RPC.METHOD_NOT_FOUND, 'Method not found')
   }
@@ -174,7 +176,7 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
   const p = params && typeof params === 'object' && !Array.isArray(params) ? params as { name?: unknown; arguments?: unknown } : null
   if (!p || typeof p.name !== 'string') return rpcError(id, RPC.INVALID_PARAMS, 'Invalid params')
   const tool = catalogTool(p.name)
-  if (!tool) return rpcError(id, RPC.INVALID_PARAMS, 'Unknown tool')
+  if (!tool || (isJobTool(tool.name) && !jobsAvailable(deps))) return rpcError(id, RPC.INVALID_PARAMS, 'Unknown tool')
 
   const requestId = input.requestId ?? randomUUID()
   const started = Date.now()

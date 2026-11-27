@@ -44,7 +44,7 @@ Rollback for all of the above: unset `MCP_GATEWAY` (the route answers 404 again)
 
 ## 3. Database
 
-- `supabase/migrations/20261121_mcp_jobs.sql` is NOT applied on production. It is only needed if D2 = ship jobs (and then also the `mcp-jobs` cron and `MCP_JOBS_ENABLED=1`). If D2 = no jobs, the four job tools must be removed from the catalog and the tool fingerprint pin in `schemaConformance.test.ts` updated deliberately before submission.
+- `supabase/migrations/20261121_mcp_jobs.sql` is NOT applied on production. It is only needed if D2 = ship jobs (and then also the `mcp-jobs` cron and `MCP_JOBS_ENABLED=1`). If D2 = no jobs (DECIDED 27/11/2026: no jobs at launch), the job-dependent tools are HIDDEN, not deleted: `create_itinerary` AND the four job tools (five in all, since `create_itinerary` also creates a job) are neither listed nor callable while the job store is the unavailable default (`MCP_JOBS_ENABLED` unset). The definitions are unchanged, so the pinned full-catalog fingerprint in `schemaConformance.test.ts` still holds; turning jobs on later needs only `MCP_JOBS_ENABLED=1` plus the migration. Launch catalog = the five search tools.
 - If applied: named-file apply only, per `KE-HOACH-AP-MIGRATION-PRODUCTION-20261122.md`; backup first; `20261001e` stays out.
 
 ## 4. Code and tests (do before the PR)
