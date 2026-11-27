@@ -5,11 +5,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const h = vi.hoisted(() => ({
   getActiveDeals: vi.fn(),
+  cards: vi.fn(() => [] as Array<Record<string, unknown>>),
+  refresh: vi.fn(async () => undefined),
   calls: [] as Array<[string, ...unknown[]]>,
   result: { data: [] as unknown[], error: null as unknown },
   created: [] as Array<{ url: string; key: string; opts: unknown }>,
 }))
 vi.mock('@/lib/deals/partnerDeals', () => ({ getActiveDeals: h.getActiveDeals }))
+// the tracked partner cards the Deal page shows (Lazada, Vexere, ...): the same resolver, the same provider config refresh
+vi.mock('@/lib/deals/affiliatePartners', () => ({ affiliatePartnerCards: h.cards }))
+vi.mock('@/lib/ccp', () => ({ hasProviderConfigSource: () => true, refreshProviderConfig: h.refresh }))
+vi.mock('@/lib/commerce/providerConfigSource', () => ({ installProviderConfigSource: () => undefined }))
 vi.mock('@supabase/supabase-js', () => ({
   createClient: (url: string, key: string, opts: unknown) => {
     h.created.push({ url, key, opts })
@@ -27,7 +33,7 @@ const deal = (over: Record<string, unknown> = {}) => ({ id: 'd', partnerSlug: 'p
 const ENV = { NEXT_PUBLIC_SUPABASE_URL: 'https://p.supabase.co', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'anon-key' }
 const callsOf = (m: string) => h.calls.filter(c => c[0] === m)
 
-beforeEach(() => { h.getActiveDeals.mockReset(); h.calls.length = 0; h.created.length = 0; h.result = { data: [], error: null } })
+beforeEach(() => { h.getActiveDeals.mockReset(); h.cards.mockReset(); h.cards.mockReturnValue([]); h.refresh.mockClear(); h.calls.length = 0; h.created.length = 0; h.result = { data: [], error: null } })
 
 describe('dealsAdapter', () => {
   const list = [
@@ -60,6 +66,73 @@ describe('dealsAdapter', () => {
     expect(await ids('ưu đãi', 2)).toHaveLength(2)
     h.getActiveDeals.mockRejectedValue(new Error('db'))
     expect(await ids('lazada')).toEqual([])
+  })
+})
+
+describe('dealsAdapter: the tracked partner cards (Lazada, Vexere, ...) are part of the answer', () => {
+  const CARDS = [
+    { providerId: 'vexere', partnerName: 'Vexere', descriptionKey: 'deals.partner.vexere', url: 'https://go.isclix.com/deep_link/1/2?url=https%3A%2F%2Fvexere.com' },
+    { providerId: 'agoda', partnerName: 'Agoda', descriptionKey: 'deals.partner.agoda', url: 'https://www.agoda.com/?cid=1' },
+    { providerId: 'lazada', partnerName: 'Lazada', descriptionKey: 'deals.partner.lazada', url: 'https://go.isclix.com/deep_link/1/3?url=https%3A%2F%2Fwww.lazada.vn' },
+  ]
+  const rows = async (q: string, lang: 'vi' | 'en' = 'vi', limit = 10) => (await dealsAdapter({ query: q, lang, limit })).rows as Array<Record<string, unknown>>
+  const names = async (q: string, lang: 'vi' | 'en' = 'vi', limit = 10) => (await rows(q, lang, limit)).map(r => r.partnerName)
+
+  it('🚨 Lazada and Vexere appear even when the offers table has nothing about them, FIRST (the Deal page puts them first), then the managed deals', async () => {
+    h.getActiveDeals.mockResolvedValue([deal({ id: 'a', partnerName: 'Shopee', title: 'Freeship' })])
+    h.cards.mockReturnValue(CARDS)
+    expect(await names('ưu đãi')).toEqual(['Vexere', 'Agoda', 'Lazada', 'Shopee'])
+  })
+  it('the same provider-config refresh the Deal page uses runs first; the cards come out in the caller\'s language and carry the tracked link', async () => {
+    h.getActiveDeals.mockResolvedValue([])
+    h.cards.mockReturnValue(CARDS)
+    const r = (await rows('lazada', 'en'))[0]
+    expect(h.refresh).toHaveBeenCalled()
+    expect(h.cards.mock.calls[0]).toEqual([{ locale: 'en' }])
+    expect(r).toMatchObject({ partnerName: 'Lazada', title: 'Lazada: Shop on Lazada.', description: 'Shop on Lazada.', officialUrl: CARDS[2].url })
+    expect(String(r.id)).toBe('partner:lazada')
+  })
+  it('a card makes no claim of a price, a discount or a voucher (the Deal page\'s own rule)', async () => {
+    h.getActiveDeals.mockResolvedValue([])
+    h.cards.mockReturnValue(CARDS)
+    for (const r of await rows('ưu đãi')) { expect(r.discountLabel ?? null).toBeNull(); expect(r.voucherCode ?? null).toBeNull(); expect(r.endAt ?? null).toBeNull() }
+  })
+  it('a question narrows the cards like the deals: "lazada" → Lazada; "xe khách" → Vexere; "khách sạn" → Agoda', async () => {
+    h.getActiveDeals.mockResolvedValue([])
+    h.cards.mockReturnValue(CARDS)
+    expect(await names('lazada')).toEqual(['Lazada'])
+    expect(await names('xe khách')).toEqual(['Vexere'])
+    expect(await names('khách sạn')).toEqual(['Agoda'])
+  })
+  it('a partner that already has a managed deal is not listed twice', async () => {
+    h.getActiveDeals.mockResolvedValue([deal({ id: 'z', partnerName: 'Lazada', title: 'Giảm 50% đơn đầu', discountLabel: '50%' })])
+    h.cards.mockReturnValue(CARDS)
+    const lazada = (await rows('lazada')).filter(r => r.partnerName === 'Lazada')
+    expect(lazada).toHaveLength(1)
+    expect(lazada[0].discountLabel).toBe('50%')
+  })
+  it('a card source that fails (config table down, resolver error) never takes the managed deals with it', async () => {
+    h.getActiveDeals.mockResolvedValue([deal({ id: 'a', partnerName: 'Shopee', title: 'Freeship' })])
+    h.refresh.mockRejectedValueOnce(new Error('db'))
+    h.cards.mockReturnValue(CARDS)
+    expect(await names('ưu đãi')).toEqual(['Shopee'])
+    h.refresh.mockResolvedValue(undefined)
+    h.cards.mockImplementation(() => { throw new Error('resolver') })
+    expect(await names('ưu đãi')).toEqual(['Shopee'])
+  })
+  it('a deal that states a discount or a voucher leads; then the cards; then the deals that only name the partner', async () => {
+    h.getActiveDeals.mockResolvedValue([
+      deal({ id: 'a', partnerName: 'Shopee', title: 'Freeship' }),
+      deal({ id: 'g', partnerName: 'Grab', title: 'Giảm 30K', voucherCode: 'GRAB30' }),
+      deal({ id: 'k', partnerName: 'Klook', title: 'Giảm 10%', discountLabel: '10%' }),
+    ])
+    h.cards.mockReturnValue(CARDS)
+    expect(await names('ưu đãi')).toEqual(['Grab', 'Klook', 'Vexere', 'Agoda', 'Lazada', 'Shopee'])
+  })
+  it('the limit counts the cards too', async () => {
+    h.getActiveDeals.mockResolvedValue([deal({ id: 'a', partnerName: 'Shopee' })])
+    h.cards.mockReturnValue(CARDS)
+    expect(await names('ưu đãi', 'vi', 2)).toEqual(['Vexere', 'Agoda'])
   })
 })
 

@@ -46,8 +46,8 @@ describe('catalog v1.0 follows the connector doc', () => {
     }
   })
   it('the published catalog is pinned: any change to what a Host sees must change the version and this value together', () => {
-    expect(TOOL_CATALOG_VERSION).toBe('mcp-tools.v1.3')
-    expect(catalogFingerprint()).toBe('2e5c766f2ae37a0135bc38b6c7d0a0540786e53e058306740ca412b7e1cc32b2')
+    expect(TOOL_CATALOG_VERSION).toBe('mcp-tools.v1.4')
+    expect(catalogFingerprint()).toBe('446b545fb950bb36223608f6072c2fb23585e79b4f39322f4966d1c91cabf493')
   })
   it('the fingerprint is sensitive to a schema change (so the pin cannot pass by accident)', () => {
     const before = catalogFingerprint()

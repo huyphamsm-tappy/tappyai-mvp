@@ -107,11 +107,61 @@ export const en: Record<string, string> = {
   'legal.privacy.s8.p2': 'If we take action on your content or account, you receive a notice that names the rule, the action and how to appeal. You can appeal each decision once within 30 days, on the web at tappyai.com/profile/notices or by email to support@tappyai.com.',
   'legal.privacy.s8.p3': 'The person you report is never told who reported them. Your block list is visible only to you.',
 
-  'legal.privacy.s6.heading': '7. Changes to This Policy',
+  'legal.privacy.s9.heading': '7. AI Assistant Connectors (Claude, ChatGPT and others)',
+  'legal.privacy.s9.lead': 'If you connect TappyAI to an AI assistant such as Claude or ChatGPT, that assistant can call TappyAI on your behalf. This is what happens:',
+  'legal.privacy.s9.b1': 'You sign in to TappyAI and approve the connection on a screen that names the assistant. TappyAI then knows which TappyAI account the assistant is acting for. You can remove the connector in the assistant at any time.',
+  'legal.privacy.s9.b2': 'TappyAI receives only the request the assistant sends (for example search text, a destination, dates, a partner you ask about, or a link you ask us to check), not your whole conversation with the assistant.',
+  'legal.privacy.s9.b3': 'TappyAI does not send your TappyAI chat history, memories, messages or personal details to the assistant. What comes back is search results, partner links, public clips and link-check results.',
+  'legal.privacy.s9.b4': 'To answer, TappyAI may pass the search text to the providers described in section 3 (for example Serper and Google for places, Agoda for hotel rates). A link you ask us to check is examined from our servers with security, domain-registration, DNS, certificate and redirect checks.',
+  'legal.privacy.s9.b5': 'Some partner links in the results are tracked so that TappyAI can earn a commission.',
+  'legal.privacy.s9.b6': 'Clips returned by the connector are posts their authors already made public in TappyAI. The connector does not return the author’s name or account, and it does not return the video file.',
+  'legal.privacy.s9.b7': 'We keep technical logs of connector use: which tool was called, when, how long it took, how many results it returned, and pseudonymous identifiers of the connection and the account. We also keep counters to limit abuse and cost. These logs do not include the text of your request.',
+  'legal.privacy.s9.b8': 'The connector is read-only: it does not book, pay or buy anything, and it does not change your account.',
+  'legal.privacy.s9.note': 'What the assistant does with the results is governed by that assistant’s own terms and privacy policy.',
+
+  'legal.privacy.s6.heading': '8. Changes to This Policy',
   'legal.privacy.s6.p1': 'We may update this Privacy Policy from time to time.',
   'legal.privacy.s6.p2': 'The latest version will always be available on this page.',
 
-  'legal.privacy.s7.heading': '8. Contact',
+  'legal.privacy.s7.heading': '9. Contact',
+
+  // ------------------------------------------------------------------ connector guide (/connector)
+  'legal.connector.title': 'Connect TappyAI to Claude, ChatGPT and other AI assistants',
+  'legal.connector.effective': 'Last updated: 27 November 2026',
+
+  'legal.connector.s1.heading': '1. What the connector is',
+  'legal.connector.s1.p1': 'The TappyAI connector lets an AI assistant look things up in Vietnam through TappyAI: places and restaurants, hotel rates, product prices, partner offers, public clips, coach booking pages and a link check for scams.',
+  'legal.connector.s1.p2': 'It is read-only: it never books, pays or buys anything, and it never changes your account.',
+
+  'legal.connector.s2.heading': '2. Server address and sign-in',
+  'legal.connector.s2.p1': 'Server address (remote MCP over HTTPS): https://www.tappyai.com/api/mcp',
+  'legal.connector.s2.p2': 'Sign-in uses OAuth: you sign in to TappyAI and approve the connection, and no API key is needed.',
+  'legal.connector.s2.p3': 'The assistants approved at launch are Claude, ChatGPT and Cursor. Others are not supported yet.',
+
+  'legal.connector.s3.heading': '3. How to connect (Claude)',
+  'legal.connector.s3.step1': 'In Claude, open Customize, then Connectors, and add a custom connector. On Team and Enterprise organizations an owner adds it first, under Organization settings, Connectors, Add, Custom, Web.',
+  'legal.connector.s3.step2': 'Enter the name TappyAI and the server address above. Leave the advanced settings as they are.',
+  'legal.connector.s3.step3': 'Choose Connect, sign in to TappyAI, and approve the connection on the screen that names the assistant.',
+  'legal.connector.s3.step4': 'Start a conversation, turn on TappyAI in the tools menu and ask, for example: “Use Tappy to find pho restaurants in District 1”.',
+  'legal.connector.s3.p1': 'In ChatGPT, where your account allows custom connectors, add the same address.',
+
+  'legal.connector.s4.heading': '4. What it can do',
+  'legal.connector.s4.b1': 'Places: places in Vietnam with address, district, rating, price level and opening status.',
+  'legal.connector.s4.b2': 'Restaurants: food places with the same details and cuisine.',
+  'legal.connector.s4.b3': 'Attractions: attractions and activities with address, rating and opening status.',
+  'legal.connector.s4.b4': 'Hotels: nightly rates asked from Agoda for the dates you give, with Agoda’s tracked booking link. The rate is per night before taxes and fees and does not confirm that a room is free.',
+  'legal.connector.s4.b5': 'Shopping: products with listed prices from Vietnamese shops. Prices are indicative; the shop’s page is the source of truth.',
+  'legal.connector.s4.b6': 'Link check: whether a website link looks like a scam or a fake of a Vietnamese brand. It answers familiar, suspicious or unrecognized, with the signs found and the official site and hotline when the link resembles a known brand. Unrecognized does not mean the link is safe.',
+  'legal.connector.s4.b7': 'Deals: what TappyAI shows on its Deal page, and tracked links to partners such as Lazada, Vexere, Agoda and Traveloka. Links only: no price or discount is claimed for the partner links.',
+  'legal.connector.s4.b8': 'Clips: public clips by TappyAI users about places and food, with a link to watch on TappyAI. The author is not shown and the video file is not returned.',
+  'legal.connector.s4.b9': 'Coach booking page: the Vexere page for a coach route and day, with TappyAI’s link. There is no timetable, price or seat information.',
+
+  'legal.connector.s5.heading': '5. Your data',
+  'legal.connector.s5.p1': 'How the connector handles data is described in the Privacy Policy, section 7.',
+  'legal.connector.s5.link': 'Privacy Policy',
+
+  'legal.connector.s6.heading': '6. Help',
+  'legal.connector.s6.p1': 'For help with the connector, contact TappyAI support.',
 
   // ------------------------------------------------------------------ terms
   'legal.terms.title': 'Terms of Service',
@@ -399,11 +449,61 @@ export const vi: Record<string, string> = {
   'legal.privacy.s8.p2': 'Nếu chúng tôi xử lý nội dung hoặc tài khoản của bạn, bạn nhận được thông báo nêu rõ quy tắc, hành động và cách kháng nghị. Mỗi quyết định được kháng nghị một lần trong 30 ngày, trên web tại tappyai.com/profile/notices hoặc qua email support@tappyai.com.',
   'legal.privacy.s8.p3': 'Người bị báo cáo không bao giờ được biết ai đã báo cáo. Danh sách chặn của bạn chỉ mình bạn nhìn thấy.',
 
-  'legal.privacy.s6.heading': '7. Thay đổi chính sách',
+  'legal.privacy.s9.heading': '7. Trợ lý AI kết nối với TappyAI (Claude, ChatGPT và các trợ lý khác)',
+  'legal.privacy.s9.lead': 'Nếu bạn kết nối TappyAI với một trợ lý AI như Claude hoặc ChatGPT, trợ lý đó có thể gọi TappyAI thay bạn. Cụ thể:',
+  'legal.privacy.s9.b1': 'Bạn đăng nhập TappyAI và đồng ý kết nối ở một màn hình nêu tên trợ lý. TappyAI khi đó biết trợ lý đang làm việc cho tài khoản TappyAI nào. Bạn có thể gỡ kết nối trong trợ lý bất cứ lúc nào.',
+  'legal.privacy.s9.b2': 'TappyAI chỉ nhận yêu cầu mà trợ lý gửi (ví dụ nội dung tìm kiếm, điểm đến, ngày, đối tác bạn hỏi, hoặc đường link bạn nhờ kiểm tra), không nhận toàn bộ cuộc trò chuyện của bạn với trợ lý.',
+  'legal.privacy.s9.b3': 'TappyAI không gửi cho trợ lý lịch sử chat, bộ nhớ, tin nhắn hay thông tin cá nhân của bạn trên TappyAI. Những gì trả về là kết quả tìm kiếm, link đối tác, clip công khai và kết quả kiểm tra link.',
+  'legal.privacy.s9.b4': 'Để trả lời, TappyAI có thể chuyển nội dung tìm kiếm cho các nhà cung cấp nêu ở mục 3 (ví dụ Serper và Google cho địa điểm, Agoda cho giá khách sạn). Đường link bạn nhờ kiểm tra được kiểm từ máy chủ của chúng tôi bằng các bước kiểm tra bảo mật, đăng ký tên miền, DNS, chứng chỉ và chuyển hướng.',
+  'legal.privacy.s9.b5': 'Một số link đối tác trong kết quả có gắn theo dõi để TappyAI có thể nhận hoa hồng.',
+  'legal.privacy.s9.b6': 'Clip mà kết nối trả về là các bài tác giả đã đăng công khai trên TappyAI. Kết nối không trả về tên hay tài khoản của tác giả, và không trả về tệp video.',
+  'legal.privacy.s9.b7': 'Chúng tôi lưu nhật ký kỹ thuật về việc dùng kết nối: công cụ nào được gọi, khi nào, mất bao lâu, trả về bao nhiêu kết quả, và mã định danh ẩn danh của kết nối và tài khoản. Chúng tôi cũng giữ bộ đếm để hạn chế lạm dụng và chi phí. Các nhật ký này không bao gồm nội dung yêu cầu của bạn.',
+  'legal.privacy.s9.b8': 'Kết nối chỉ để đọc: không đặt chỗ, không thanh toán, không mua gì và không thay đổi tài khoản của bạn.',
+  'legal.privacy.s9.note': 'Việc trợ lý làm gì với kết quả tuân theo điều khoản và chính sách bảo mật của chính trợ lý đó.',
+
+  'legal.privacy.s6.heading': '8. Thay đổi chính sách',
   'legal.privacy.s6.p1': 'Chúng tôi có thể cập nhật Chính sách bảo mật này theo thời gian.',
   'legal.privacy.s6.p2': 'Phiên bản mới nhất sẽ luôn có trên trang này.',
 
-  'legal.privacy.s7.heading': '8. Liên hệ',
+  'legal.privacy.s7.heading': '9. Liên hệ',
+
+  // ------------------------------------------------------------------ connector guide (/connector)
+  'legal.connector.title': 'Kết nối TappyAI với Claude, ChatGPT và các trợ lý AI khác',
+  'legal.connector.effective': 'Cập nhật: 27 tháng 11 năm 2026',
+
+  'legal.connector.s1.heading': '1. Kết nối này là gì',
+  'legal.connector.s1.p1': 'Kết nối TappyAI cho phép một trợ lý AI tra cứu về Việt Nam thông qua TappyAI: địa điểm và quán ăn, giá khách sạn, giá sản phẩm, ưu đãi của đối tác, clip công khai, trang đặt vé xe khách và kiểm tra link lừa đảo.',
+  'legal.connector.s1.p2': 'Kết nối chỉ để đọc: không bao giờ đặt chỗ, thanh toán hay mua thay bạn, và không thay đổi tài khoản của bạn.',
+
+  'legal.connector.s2.heading': '2. Địa chỉ máy chủ và đăng nhập',
+  'legal.connector.s2.p1': 'Địa chỉ máy chủ (MCP từ xa qua HTTPS): https://www.tappyai.com/api/mcp',
+  'legal.connector.s2.p2': 'Đăng nhập bằng OAuth: bạn đăng nhập TappyAI và đồng ý kết nối, không cần khóa API.',
+  'legal.connector.s2.p3': 'Các trợ lý được duyệt lúc ra mắt là Claude, ChatGPT và Cursor. Các trợ lý khác chưa được hỗ trợ.',
+
+  'legal.connector.s3.heading': '3. Cách kết nối (Claude)',
+  'legal.connector.s3.step1': 'Trong Claude, mở Customize, rồi Connectors và thêm một connector tùy chỉnh. Với tổ chức dùng gói Team hoặc Enterprise, chủ sở hữu thêm trước, tại Organization settings, Connectors, Add, Custom, Web.',
+  'legal.connector.s3.step2': 'Nhập tên TappyAI và địa chỉ máy chủ ở trên. Giữ nguyên phần cài đặt nâng cao.',
+  'legal.connector.s3.step3': 'Chọn Connect, đăng nhập TappyAI và đồng ý kết nối ở màn hình nêu tên trợ lý.',
+  'legal.connector.s3.step4': 'Bắt đầu một cuộc trò chuyện, bật TappyAI trong menu công cụ và hỏi, ví dụ: “Dùng Tappy tìm quán phở ở quận 1”.',
+  'legal.connector.s3.p1': 'Với ChatGPT, nếu tài khoản của bạn cho phép connector tùy chỉnh, hãy thêm cùng địa chỉ này.',
+
+  'legal.connector.s4.heading': '4. Kết nối làm được gì',
+  'legal.connector.s4.b1': 'Địa điểm: địa điểm ở Việt Nam kèm địa chỉ, quận, đánh giá, mức giá và tình trạng mở cửa.',
+  'legal.connector.s4.b2': 'Quán ăn: quán ăn với các thông tin tương tự và loại món.',
+  'legal.connector.s4.b3': 'Điểm tham quan: điểm tham quan và hoạt động kèm địa chỉ, đánh giá và tình trạng mở cửa.',
+  'legal.connector.s4.b4': 'Khách sạn: giá mỗi đêm hỏi từ Agoda cho ngày bạn đưa, kèm link đặt phòng có theo dõi của Agoda. Giá là mỗi đêm, chưa gồm thuế phí, và không xác nhận còn phòng.',
+  'legal.connector.s4.b5': 'Mua sắm: sản phẩm kèm giá niêm yết từ các cửa hàng Việt Nam. Giá chỉ mang tính tham khảo; trang của cửa hàng là nguồn chính xác.',
+  'legal.connector.s4.b6': 'Kiểm tra link: link website có giống lừa đảo hoặc giả mạo một thương hiệu Việt Nam không. Kết quả là giống link giả mạo, đáng ngờ hoặc chưa nhận ra, kèm các dấu hiệu tìm thấy, trang chính thức và đường dây nóng nếu link giống một thương hiệu quen thuộc. “Chưa nhận ra” không có nghĩa là link an toàn.',
+  'legal.connector.s4.b7': 'Ưu đãi: những gì TappyAI hiển thị ở trang Deal và link có theo dõi tới các đối tác như Lazada, Vexere, Agoda, Traveloka. Chỉ là link: không khẳng định giá hay mức giảm cho các link đối tác.',
+  'legal.connector.s4.b8': 'Clip: clip công khai của người dùng TappyAI về địa điểm và món ăn, kèm link xem trên TappyAI. Không hiện tác giả và không trả về tệp video.',
+  'legal.connector.s4.b9': 'Trang đặt vé xe khách: trang Vexere của một tuyến xe khách và ngày đi, kèm link của TappyAI. Không có thông tin giờ chạy, giá hay số ghế.',
+
+  'legal.connector.s5.heading': '5. Dữ liệu của bạn',
+  'legal.connector.s5.p1': 'Cách kết nối xử lý dữ liệu được mô tả trong Chính sách bảo mật, mục 7.',
+  'legal.connector.s5.link': 'Chính sách bảo mật',
+
+  'legal.connector.s6.heading': '6. Trợ giúp',
+  'legal.connector.s6.p1': 'Cần trợ giúp về kết nối, hãy liên hệ hỗ trợ TappyAI.',
 
   // ------------------------------------------------------------------ terms
   'legal.terms.title': 'Điều khoản dịch vụ',

@@ -16,7 +16,8 @@ import { TOOL_TEXT } from './tappyProfile'
 
 // v1.2 (22/11/2026): DESCRIPTIONS ONLY (what Tappy has that a general AI does not: tappyProfile.ts). No field, bound or type changed, so it stays within major version 1.
 // v1.3 (27/11/2026): ADDS the check_scam tool (Scam Shield's link check). A new tool changes no existing field, bound or type, so it stays within major version 1.
-export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.3'
+// v1.4 (27/11/2026): DESCRIPTION ONLY: search_deals says it also returns Tappy's tracked partner links (Lazada, Vexere, Agoda, Traveloka), links only. No field, bound or type changed.
+export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.4'
 
 export type CatalogToolName = ToolName | 'create_itinerary_job' | 'get_itinerary_job_status' | 'get_itinerary_job_result' | 'cancel_itinerary_job'
 export type ExecutionMode = 'SYNC' | 'ASYNC' | 'JOB_CONTROL'
