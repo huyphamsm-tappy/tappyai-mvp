@@ -17,6 +17,8 @@ struct MediaBlocksView: View {
                     ForEach(entities, id: \.href) { MediaEntityCard(entity: $0) }
                 case .options(let title, let options):
                     MediaOptionsGrid(title: title, options: options)
+                case .topic(let key, let variant):
+                    MediaTopicBanner(url: MediaBlocks.topicImageURL(key: key, variant: variant))
                 }
             }
         }
@@ -38,6 +40,27 @@ private struct MediaPicture: View {
         }
         .frame(height: height)
         .clipped()
+    }
+}
+
+/// The fixed picture of a live-information topic (1536 × 512 on the web, so 3:1). A picture that does not load takes no room.
+private struct MediaTopicBanner: View {
+    let url: URL?
+
+    var body: some View {
+        if let url {
+            AsyncImage(url: url) { phase in
+                if let image = phase.image {
+                    image.resizable().aspectRatio(3, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: AnswerStyle.cardRadius, style: .continuous))
+                } else if phase.error == nil {
+                    RoundedRectangle(cornerRadius: AnswerStyle.cardRadius, style: .continuous)
+                        .fill(TappyColor.textSecondary.opacity(0.12)).aspectRatio(3, contentMode: .fit)
+                }
+            }
+            .accessibilityHidden(true)
+            .accessibilityIdentifier("media-topic-banner")
+        }
     }
 }
 

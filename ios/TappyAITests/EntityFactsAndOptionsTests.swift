@@ -55,6 +55,20 @@ final class EntityFactsAndOptionsTests: XCTestCase {
         XCTAssertEqual(sections.dropFirst().first?.title, "Mục A")
     }
 
+    // MARK: - Topic banner
+
+    func testTopicBannerIsAClosedListWithItsOwnPictureCount() {
+        guard case .topic(let key, let variant)? = parsed("{\"v\":1,\"kind\":\"topic\",\"topic\":\"currency\",\"variant\":2}").first else { return XCTFail("expected a topic") }
+        XCTAssertEqual(key, "currency"); XCTAssertEqual(variant, 2)
+        // A picture number that does not exist falls back to the first; a topic outside the list is nothing.
+        guard case .topic(_, let fallback)? = parsed("{\"v\":1,\"kind\":\"topic\",\"topic\":\"gold\",\"variant\":9}").first else { return XCTFail("expected a topic") }
+        XCTAssertEqual(fallback, 0)
+        XCTAssertTrue(parsed("{\"v\":1,\"kind\":\"topic\",\"topic\":\"weather\"}").isEmpty)
+        XCTAssertEqual(MediaBlocks.topicImageURL(key: "gold", variant: 0)?.lastPathComponent, "topic-gold.webp")
+        XCTAssertEqual(MediaBlocks.topicImageURL(key: "gold", variant: 1)?.lastPathComponent, "topic-gold-1.webp")
+        XCTAssertNil(MediaBlocks.topicImageURL(key: "gold", variant: 2))
+    }
+
     // MARK: - Options
 
     private func parsed(_ json: String) -> [MediaBlock] {

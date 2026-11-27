@@ -45,6 +45,8 @@ enum MediaBlock: Equatable, Sendable {
     case entities([Entity])
     /// The option cards of a recommendation (title optional), at most 6.
     case options(title: String?, options: [Option])
+    /// The fixed banner of a live-information topic (gold, oil, exchange rate, …): a closed list, picture `variant` of the topic.
+    case topic(key: String, variant: Int)
 }
 
 enum MediaBlocks {
@@ -109,6 +111,16 @@ enum MediaBlocks {
 
     private static let maxOptions = 6
 
+    /// The topic banners the web ships (`lib/media/topicImages.ts`, files in `public/topics/`): how many pictures each topic has. A closed list.
+    static let topicVariants: [String: Int] = ["gold": 2, "oil": 2, "currency": 3, "stocks": 2, "crypto": 2, "growth": 1, "rates": 1, "markets": 2]
+
+    /// The picture of a topic banner on the web host (`topic-<key>.webp`, then `topic-<key>-<n>.webp`).
+    static func topicImageURL(key: String, variant: Int) -> URL? {
+        guard let count = topicVariants[key], variant >= 0, variant < count else { return nil }
+        let file = variant == 0 ? "topic-\(key).webp" : "topic-\(key)-\(variant).webp"
+        return URL(string: "\(TappyShare.canonicalOrigin)/topics/\(file)")
+    }
+
     private static func cleanList(_ raw: Any?, _ maxItems: Int, _ maxLength: Int) -> [String] {
         guard let list = raw as? [Any] else { return [] }
         return Array(list.map { clean($0, maxLength) }.filter { !$0.isEmpty }.prefix(maxItems))
@@ -152,6 +164,10 @@ enum MediaBlocks {
             let list = ((r["entities"] as? [Any]) ?? []).compactMap(entity(from:)).filter { seen.insert($0.href).inserted }
             let kept = Array(list.prefix(maxEntities))
             return kept.isEmpty ? nil : MediaBlock.entities(kept)
+        case "topic":
+            guard let key = r["topic"] as? String, let count = topicVariants[key], count > 0 else { return nil }
+            let raw = r["variant"] as? Int ?? 0
+            return MediaBlock.topic(key: key, variant: raw >= 0 && raw < count ? raw : 0)
         case "options":
             let list = ((r["options"] as? [Any]) ?? []).compactMap(option(from:))
             let kept = Array(list.prefix(maxOptions))
