@@ -389,7 +389,6 @@ private struct AssistantBubble: View {
     /// The page of a tapped link that opens in the quick-read sheet (web LinkDrawer); nil when no sheet is open.
     @State private var readerLink: ReaderTarget?
     /// The whole report of a finished Deep Research reply, opened from its summary card (web: the report card opens the full text).
-    @State private var showFullReport = false
     let followups: [String]
     /// The turn's news pictures / subject cards (`[TAPPY_MEDIA]`, already host-checked).
     var media: [MediaBlock] = []
@@ -413,7 +412,6 @@ private struct AssistantBubble: View {
                 // The quick-read sheet of a tapped link, anchored here (outside the link scope, so the sheet's own "open the original" link is a
                 // plain link, never read again; and no extra row in the bubble).
                 .background(Color.clear.sheet(item: $readerLink) { LinkReaderSheet(target: $0).presentationDetents([.medium, .large]) })
-                .background(Color.clear.sheet(isPresented: $showFullReport) { fullReportSheet })
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 // Deep Research: the card above its report (web: the card before the message content)
@@ -426,7 +424,8 @@ private struct AssistantBubble: View {
                     UnreadableMessageView(onRetry: onRegenerate, onCopy: onCopy)
                 } else if research != nil, !isStreaming, !content.isEmpty {
                     // web: a finished research report shows as a summary card; the full text opens from it
-                    ReportSummaryCard(title: research?.title ?? "", sourceCount: research?.sources ?? 0) { showFullReport = true }
+                    ReportSummaryCard(report: content, title: research?.title ?? "", links: research?.links ?? [],
+                                      charts: charts, lang: chartLang)
                 } else if let parts = articleParts {
                     // An answer with structure (heading, list, table, ...), charts or section pictures, or a picture in the middle of its text:
                     // drawn block by block, each chart / picture right under the section it names (web ArticleAnswer, Android ArticleViews)
@@ -649,64 +648,6 @@ private struct AssistantBubble: View {
     }
 }
 
-extension AssistantBubble {
-    /// The full report: the same article blocks as the bubble draws, in a sheet of its own.
-    fileprivate var fullReportSheet: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: Spacing.sm) {
-                    if let parts = articleParts {
-                        ForEach(Array(parts.enumerated()), id: \.offset) { _, part in
-                            articlePartView(part).readerLinks { readerLink = $0 }
-                        }
-                    } else {
-                        Text(attributedContent)
-                            .font(TappyFont.body)
-                            .foregroundStyle(ChatTheme.text)
-                            .textSelection(.enabled)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .padding(Spacing.md)
-            }
-            .background(TappyColor.background)
-            .navigationTitle(Text(verbatim: research?.title ?? ""))
-            .navigationBarTitleDisplayMode(.inline)
-        }
-        .presentationDetents([.large])
-    }
-}
-
-/// The report's summary card: its title, how many sources it used, and the button that opens the full text.
-private struct ReportSummaryCard: View {
-    let title: String
-    let sourceCount: Int
-    let onOpen: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text(verbatim: title.isEmpty ? "Báo cáo nghiên cứu" : title)
-                .font(TappyFont.bodyEmphasis)
-                .foregroundStyle(TappyColor.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(verbatim: "\(sourceCount) nguồn")
-                .font(TappyFont.caption)
-                .foregroundStyle(TappyColor.textSecondary)
-            Button(action: onOpen) {
-                Label("Xem báo cáo", systemImage: "doc.text")
-                    .font(TappyFont.caption.weight(.semibold))
-                    .foregroundStyle(TappyColor.primary)
-            }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("report-open")
-        }
-        .padding(Spacing.md)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(TappyColor.surface, in: RoundedRectangle(cornerRadius: Radius.lg))
-        .overlay(RoundedRectangle(cornerRadius: Radius.lg).stroke(TappyColor.border, lineWidth: 1))
-        .accessibilityIdentifier("report-summary")
-    }
-}
 
 /// Timestamps the message list reads while a reply streams (see `ChatMessageList.body`). Not published: changing them draws nothing.
 private final class ScrollClock {

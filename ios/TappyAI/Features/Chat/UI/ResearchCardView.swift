@@ -35,8 +35,17 @@ struct ResearchCardView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            ForEach(Array(status.steps.enumerated()), id: \.offset) { _, step in
+            // While the report is written, only the finished steps and the one being written are drawn (spec §1): no waiting list, no percentage.
+            ForEach(Array(ResearchReportModel.visibleSteps(status.steps, phase: status.phase, status: { $0.status }).enumerated()), id: \.offset) { _, step in
                 stepRow(step)
+            }
+
+            if status.phase == .failed {
+                // The server has written the sentence that says the research did not finish; the turn's question is given back (spec §4).
+                Text("chat.research.refunded")
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             if !status.links.isEmpty {

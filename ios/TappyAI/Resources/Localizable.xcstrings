@@ -33114,6 +33114,83 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Sao chép" } }
       }
     },
+    "chat.report.fallbackTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Research report" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Báo cáo nghiên cứu" } }
+      }
+    },
+    "chat.report.sourceCount": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sources: %d" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nguồn: %d" } }
+      }
+    },
+    "chat.report.openFull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Read the full report" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem báo cáo đầy đủ" } }
+      }
+    },
+    "chat.report.pdf": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Download PDF" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tải PDF" } }
+      }
+    },
+    "chat.report.share": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Share" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ" } }
+      }
+    },
+    "chat.report.tab.summary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Summary" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tóm tắt" } }
+      }
+    },
+    "chat.report.tab.content": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Content" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nội dung" } }
+      }
+    },
+    "chat.report.tab.data": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Data" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Dữ liệu" } }
+      }
+    },
+    "chat.report.tab.sources": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sources" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nguồn" } }
+      }
+    },
+    "chat.report.noData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This report has no tables or charts." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Báo cáo này không có bảng hay biểu đồ." } }
+      }
+    },
+    "chat.research.refunded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This question was given back to you. You can ask it again, or ask something more specific." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Lượt hỏi này đã được hoàn lại. Bạn hỏi lại hoặc hỏi cụ thể hơn nhé." } }
+      }
+    },
     "trip.seeMore": {
       "extractionState": "manual",
       "localizations": {
