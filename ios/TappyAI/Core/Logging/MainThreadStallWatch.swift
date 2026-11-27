@@ -25,7 +25,12 @@ final class MainThreadStallWatch: @unchecked Sendable {
                 if !flag.isSet {
                     DiagnosticSnapshot.shared.record("main thread stalled over 1.5 s while a chat turn streams \(context())", isError: true)
                     // WHERE it is stuck: the main thread's own stack, read from here (names for system frames, image offsets for the app's).
-                    for line in StallStackSampler.sample().prefix(28) {
+                    // Every frame of the app's own image is kept (they name the view); the long runs of SwiftUI frames are thinned to the first 18 and
+                    // the app frames after them, so the diagnostics (120 lines) keep the part that matters.
+                    let frames = StallStackSampler.sample()
+                    var kept: [String] = []
+                    for (i, line) in frames.enumerated() where i < 18 || line.contains(" TappyAI+") || line.contains("\(i) TappyAI+") { kept.append(line) }
+                    for line in kept.prefix(70) {
                         DiagnosticSnapshot.shared.record("stall stack: \(line)", isError: true)
                     }
                     while !flag.isSet, !Task.isCancelled { try? await Task.sleep(nanoseconds: 250_000_000) }

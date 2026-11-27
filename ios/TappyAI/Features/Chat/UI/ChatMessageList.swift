@@ -979,14 +979,26 @@ private struct StreamingCursor: View {
 struct ChatFlowLayout: Layout {
     var spacing: CGFloat = 8
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let result = arrangeSubviews(proposal: proposal, subviews: subviews)
+    /// The measured size of every chip, taken ONCE per update of the subviews. 27/11: the main thread's own call stack, read while the screen was
+    /// frozen after a reply with place cards, was inside `Text.sizeThatFits` reached through `LayoutProxy.explicitAlignment`: SwiftUI asks a
+    /// layout for its size again and again while it works out the alignment of the stacks around it, and this layout re-measured every chip's text
+    /// on each of those asks (cards × chips × nesting). Measured once, a repeated ask costs a loop over numbers.
+    struct Cache {
+        var sizes: [CGSize] = []
+    }
+
+    func makeCache(subviews: Subviews) -> Cache {
+        Cache(sizes: subviews.map { $0.sizeThatFits(.unspecified) })
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout Cache) -> CGSize {
+        let result = arrangeSubviews(proposal: proposal, sizes: cache.sizes)
         return result.size
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let result = arrangeSubviews(proposal: proposal, subviews: subviews)
-        for (index, position) in result.positions.enumerated() {
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout Cache) {
+        let result = arrangeSubviews(proposal: proposal, sizes: cache.sizes)
+        for (index, position) in result.positions.enumerated() where index < subviews.count {
             subviews[index].place(at: CGPoint(x: bounds.minX + position.x, y: bounds.minY + position.y),
                                    proposal: .unspecified)
         }
@@ -997,7 +1009,7 @@ struct ChatFlowLayout: Layout {
         let size: CGSize
     }
 
-    private func arrangeSubviews(proposal: ProposedViewSize, subviews: Subviews) -> ArrangeResult {
+    private func arrangeSubviews(proposal: ProposedViewSize, sizes: [CGSize]) -> ArrangeResult {
         let maxWidth = proposal.width ?? .infinity
         var positions: [CGPoint] = []
         var x: CGFloat = 0
@@ -1005,8 +1017,7 @@ struct ChatFlowLayout: Layout {
         var rowHeight: CGFloat = 0
         var maxX: CGFloat = 0
 
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
+        for size in sizes {
             if x + size.width > maxWidth && x > 0 {
                 x = 0
                 y += rowHeight + spacing

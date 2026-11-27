@@ -9,8 +9,8 @@ import Darwin
 /// (framework frames such as SwiftUI show their symbol; the app's own frames show the image offset, which a dSYM can name later).
 /// Only code addresses and symbol names are recorded — nothing of a conversation.
 enum StallStackSampler {
-    private static let maxFrames = 40
-    nonisolated(unsafe) private static var buffer = UnsafeMutablePointer<UnsafeMutableRawPointer?>.allocate(capacity: 40)
+    private static let maxFrames = 96
+    nonisolated(unsafe) private static var buffer = UnsafeMutablePointer<UnsafeMutableRawPointer?>.allocate(capacity: 96)
     nonisolated(unsafe) private static var captured: Int32 = 0
     nonisolated(unsafe) private static var finished = false
     nonisolated(unsafe) private static var mainThread: pthread_t?
@@ -21,7 +21,7 @@ enum StallStackSampler {
         mainThread = pthread_self()
         var action = sigaction()
         action.__sigaction_u.__sa_handler = { _ in
-            StallStackSampler.captured = backtrace(StallStackSampler.buffer, 40)
+            StallStackSampler.captured = backtrace(StallStackSampler.buffer, 96)
             StallStackSampler.finished = true
         }
         sigemptyset(&action.sa_mask)
@@ -39,6 +39,7 @@ enum StallStackSampler {
         while !finished && waited < 60 { usleep(10_000); waited += 1 }
         guard finished else { return ["(the main thread did not take the signal within 0.6 s)"] }
         var lines: [String] = []
+        // SwiftUI frames come in long runs; only the frames of the app itself (image «TappyAI») say WHICH view, so they are never dropped.
         for i in 0..<Int(captured) {
             guard let address = buffer[i] else { continue }
             var info = Dl_info()
