@@ -10,9 +10,14 @@ final class ChatDiagnosticsTests: XCTestCase {
         watch.start()
         // Block THIS (the main) thread for 3 s, as a frozen screen does; the watch runs on a background task and must notice.
         Thread.sleep(forTimeInterval: 3.0)
-        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        // The watch writes on its own schedule (and CI runs are slow): wait for the lines to appear, up to 10 s, rather than a fixed pause.
+        var text = ""
+        for _ in 0..<100 {
+            text = DiagnosticSnapshot.shared.snapshot()
+            if text.contains("main thread stalled over 1.5 s") && text.contains("main thread answered again after") { break }
+            try? await Task.sleep(nanoseconds: 100_000_000)
+        }
         watch.stop()
-        let text = DiagnosticSnapshot.shared.snapshot()
         XCTAssertTrue(text.contains("main thread stalled over 1.5 s"), "the stall must be written while the main thread is blocked")
         XCTAssertTrue(text.contains("main thread answered again after"), "and how long it lasted, once it answers again")
     }
