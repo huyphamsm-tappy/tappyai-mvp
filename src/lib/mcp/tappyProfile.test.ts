@@ -46,9 +46,15 @@ describe('what the connector tells another AI about Tappy (model-facing)', () =>
   it('never presents an app-only feature as a connector feature: they are named only inside the "not available through this connector" sentence', () => {
     const m = TAPPY_INSTRUCTIONS.match(/Features of the Tappy app \(([^)]*)\) are not available through this connector; do not describe them as if they were/)
     expect(m, 'the app-only sentence must exist').not.toBeNull()
-    for (const f of ['Vexere', 'Lazada', 'deep research', 'social clips', 'messenger', 'Scam Shield', 'whole-trip plans']) expect(m![1], f).toContain(f)
+    // 27/11/2026 (owner): Scam Shield's LINK CHECK is now a connector tool (check_scam), so it leaves this list and is described below; the rest of the app stays app-only.
+    for (const f of ['Vexere', 'Lazada', 'deep research', 'social clips', 'messenger', 'whole-trip plans']) expect(m![1], f).toContain(f)
+    expect(m![1]).not.toContain('Scam Shield')
     const rest = TAPPY_INSTRUCTIONS.replace(m![0], '')
-    expect(rest).not.toMatch(/Vexere|Lazada|deep research|social clips|messenger|Scam Shield|whole-trip|newspaper|coach and train/i)
+    expect(rest).not.toMatch(/Vexere|Lazada|deep research|social clips|messenger|whole-trip|newspaper|coach and train/i)
+  })
+  it('names Scam Shield only as the check_scam link check, and never tells the model to call a link safe', () => {
+    for (const hit of TAPPY_INSTRUCTIONS.match(/[^.]*Scam Shield[^.]*\./g) ?? []) expect(hit).toMatch(/check_scam/)
+    expect(TAPPY_INSTRUCTIONS).toMatch(/never tell the user a link is safe/)
   })
   it('carries no subscription price, no plan name and no promotion; and tells the model not to bring plans up unasked', () => {
     expect(TAPPY_INSTRUCTIONS).not.toMatch(/\bCoco\b|225,?000|300,?000|\bUSD\b|\d+\s?%|per month|subscription|free plan|cheaper/i)

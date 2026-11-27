@@ -8,7 +8,7 @@ import { SCOPE_TEXT, UNKNOWN_SCOPE, IDENTITY_SCOPES, IDENTITY_TEXT, type Consent
 export const isAuthorizationId = (v: unknown): v is string => typeof v === 'string' && /^[A-Za-z0-9_-]{8,128}$/.test(v)
 
 /** Each requested scope in plain words (text in src/lib/i18n/mcpConsent.ts). An unknown scope is shown as such, never silently dropped: the user must see everything that was asked. */
-export function scopeLines(scope: string | undefined | null, locale: ConsentLocale): string[] {
+export function scopeLines(scope: string | undefined | null, locale: ConsentLocale, opts: { jobs?: boolean } = {}): string[] {
   const parts = (scope ?? '').split(/\s+/).filter(Boolean)
   const identity: readonly string[] = IDENTITY_SCOPES
   const lines: string[] = []
@@ -17,7 +17,8 @@ export function scopeLines(scope: string | undefined | null, locale: ConsentLoca
     if (!lines.includes(line)) lines.push(line)
   }
   // Supabase can only carry OpenID scopes, so a connector asks for "openid profile" and nothing else: what it may do is then the connector's full capability list (the registry default grant), shown in full.
-  if (parts.length > 0 && parts.every(s => identity.includes(s))) lines.push(...Object.keys(SCOPE_TEXT).map(k => SCOPE_TEXT[k][locale]))
+  // The itinerary line is listed only when the job tools exist (jobs on): at launch they are hidden (owner D2, 27/11/2026) and the screen must not promise a capability the connector does not have.
+  if (parts.length > 0 && parts.every(s => identity.includes(s))) lines.push(...Object.keys(SCOPE_TEXT).filter(k => opts.jobs === true || k !== 'itinerary:create').map(k => SCOPE_TEXT[k][locale]))
   return lines
 }
 

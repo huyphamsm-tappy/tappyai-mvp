@@ -12,7 +12,7 @@ import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
 import { admitToolCall, connectorLocation, shapeResult, type VerifiedClaims } from './connectorContract'
 import { admissionToCode, toolError, RPC, type GatewayErrorCode } from './gatewayErrors'
 import { catalogTool, isJobTool, listTools, parseArgs, type CatalogTool } from './toolCatalog'
-import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, type SearchToolName, type ServiceAdapters } from './serviceMap'
+import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, mapScamRow, type SearchToolName, type ServiceAdapters } from './serviceMap'
 import { TOOL_RESERVE_USD, type SpendPool } from './spendPool'
 import { dispatchPaid } from './dispatch'
 import { buildTrackedLink } from './attribution'
@@ -211,8 +211,39 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     if (!parsed.ok) return fail('INVALID_INPUT')
     const args = parsed.value
 
-    if (t.mode === 'SYNC') return search(t, args)
+    if (t.mode === 'SYNC') return t.name === 'check_scam' ? scam(t, args) : search(t, args)
     return job(t, args)
+  }
+
+  /**
+   * check_scam (27/11/2026): Scam Shield's link check. No location, no market gate, no LLM. The same paid-call discipline as a search: reserve, call, settle. The row carries the HOST that was checked and
+   * the public verdict (never "safe"); NO tracked redirect is ever built for it (the checked link may be the malicious one), and an unwired or failing provider is reported without its details.
+   */
+  async function scam(t: CatalogTool, args: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const adapter = deps.adapters['scam.check']
+    if (!adapter) return fail('PROVIDER_UNAVAILABLE')
+    const url = typeof args.url === 'string' ? args.url : ''
+    const verdict = deps.abuse.observe(claims.principalId, { tool: t.name, query: url })
+    if (verdict.level === 'high') return fail('ABUSE_RESTRICTED', { retryable: true })
+
+    const estimate = TOOL_RESERVE_USD[t.contract]
+    const limits = (deps.profileLimits ?? limitsFor)(claims.host)
+    const lang = (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en'
+    const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call: { query: url, lang, limit: 1 }, deadlineMs: Math.min(deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, limits.serverDeadlineMs), signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
+    if (r.kind === 'refused') return (r.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: r.reason === 'budget_exceeded' }))
+    meta.estimatedCostUsd = estimate
+    if (r.kind === 'cancelled_before') return fail('DEADLINE_EXCEEDED')
+    if (r.kind !== 'ok') return (r.kind === 'error' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('DEADLINE_EXCEEDED', { retryable: true }))
+
+    const mapped = r.output.rows.map(row => mapScamRow(row)).filter((x): x is Record<string, unknown> => x !== null).slice(0, 1)
+    if (mapped.length === 0) return fail('INVALID_INPUT') // the check refused this link (private address, unparseable): nothing about why is said
+    const shaped = trimToBytes(shapeResult(t.contract, mapped), limits.maxResponseBytes)
+    meta.status = 'success'; meta.resultCount = shaped.rows.length; meta.partial = shaped.partial; meta.market = 'vn'; meta.contextSource = 'service_default'
+    return success({
+      status: shaped.partial ? 'partial' : 'success',
+      query_context: { market: 'vn', language: lang, context_source: 'service_default', context_confidence: 'client_supplied', location_precision: 'none', needs_clarification: false },
+      results: shaped.rows, warnings: shaped.partial ? ['Some results were omitted to fit the response size limit.'] : [], next_action: null,
+    })
   }
 
   async function search(t: CatalogTool, args: Record<string, unknown>): Promise<Record<string, unknown>> {

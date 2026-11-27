@@ -12,7 +12,7 @@ export const CONNECTOR_CONTRACT_VERSION = 'connector-contract.v1'
 /** The ONE list of Hosts a connector can be registered for (22/11/2026: Cursor, Grok, DeepSeek and Meta added by the owner). Everything that names a Host derives from it. */
 export const HOST_PLATFORMS = ['claude', 'chatgpt', 'gemini', 'cursor', 'grok', 'deepseek', 'meta'] as const
 export type HostPlatform = typeof HOST_PLATFORMS[number]
-export type ToolName = 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions' | 'create_itinerary'
+export type ToolName = 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions' | 'check_scam' | 'create_itinerary'
 
 export interface ToolContract {
   name: ToolName
@@ -39,6 +39,8 @@ export const CONNECTOR_TOOLS: Readonly<Record<ToolName, ToolContract>> = {
   search_shopping: read('search_shopping', 'shopping:read', ['id', 'title', 'price', 'currency', 'merchant', 'url', 'rating']),
   search_hotels: read('search_hotels', 'hotels:read', [...ROW_PLACE, 'pricePerNight', 'currency', 'stars']),
   search_attractions: read('search_attractions', 'places:read', [...ROW_PLACE, 'ticketPrice', 'openingHours']),
+  // Scam Shield's link check (27/11/2026). `target` is the HOST that was checked, never the full link: no path, no query, no tracked redirect is ever built for it.
+  check_scam: read('check_scam', 'scam:check', ['target', 'verdict', 'verdictTitle', 'summary', 'signals', 'resemblesBrand', 'officialSite', 'officialHotline', 'nextSteps'], 1),
   create_itinerary: {
     name: 'create_itinerary', scope: 'itinerary:create', stateful: true, maxResults: 1, maxResponseBytes: 24_000,
     // honest annotation: it creates a durable job, so it is NOT read-only; it is still never destructive and never a purchase

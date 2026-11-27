@@ -11,6 +11,7 @@ import { createAbuseMonitor } from './abuseGuard'
 import { unavailableJobStore, type JobStore, type JobWorkerStore } from './jobs'
 import { createRpcJobStore } from './jobsRpc'
 import { hotelAdapter, hotelProviderFromEnv } from './providers'
+import { scamCheckAdapter } from './scamAdapter'
 import { attributionConfig } from './attribution'
 import { createMetrics } from './metrics'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
@@ -70,6 +71,8 @@ export function realAdapters(env: Env = process.env): ServiceAdapters {
     },
     // hotels: wired ONLY when the provider keys are present AND a real client has been plugged in (providers.ts); today no client exists, so this stays null. getHotelPrices (travel.ts) is deliberately not used.
     'hotels.prices': (() => { const p = hotelProviderFromEnv(env); return p ? hotelAdapter(p) : null })(),
+    // Scam Shield's link check (the web and app engine, no LLM): always wired, the engine is internal and uses the providers the web already has.
+    'scam.check': scamCheckAdapter,
   }
 }
 

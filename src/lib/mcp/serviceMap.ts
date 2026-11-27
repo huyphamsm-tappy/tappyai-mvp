@@ -7,7 +7,7 @@
 import type { ToolName } from './connectorContract'
 
 export type SearchToolName = Extract<ToolName, 'search_places' | 'search_restaurants' | 'search_shopping' | 'search_hotels' | 'search_attractions'>
-export type ServiceId = 'places.search' | 'shopping.search' | 'hotels.prices'
+export type ServiceId = 'places.search' | 'shopping.search' | 'hotels.prices' | 'scam.check'
 
 export interface ServiceCall {
   query: string
@@ -27,7 +27,7 @@ export interface ServiceOutput { rows: ReadonlyArray<Record<string, unknown>>; /
 export type ServiceAdapter = (c: ServiceCall) => Promise<ServiceOutput>
 export type ServiceAdapters = Record<ServiceId, ServiceAdapter | null>
 
-export const NO_ADAPTERS: ServiceAdapters = Object.freeze({ 'places.search': null, 'shopping.search': null, 'hotels.prices': null })
+export const NO_ADAPTERS: ServiceAdapters = Object.freeze({ 'places.search': null, 'shopping.search': null, 'hotels.prices': null, 'scam.check': null })
 
 export interface ToolServiceEntry { readonly service: ServiceId; readonly placeType?: string; /** the Market Capability Gate vertical */ readonly vertical: string; /** needs a destination (coordinates or a named Vietnamese place) */ readonly needsLocation: boolean }
 
@@ -110,6 +110,32 @@ export function mapProductRow(r: Record<string, unknown>): Record<string, unknow
   }
 }
 
+const SCAM_VERDICTS: ReadonlySet<string> = new Set(['familiar', 'suspicious', 'unrecognized'])
+
+/** A list of short strings, cleaned, at most `maxItems` of at most `max` characters each; undefined when nothing is left. */
+function cleanList(v: unknown, maxItems: number, max: number): string[] | undefined {
+  if (!Array.isArray(v)) return undefined
+  const out = v.map(x => cleanText(x, max)).filter((x): x is string => !!x).slice(0, maxItems)
+  return out.length > 0 ? out : undefined
+}
+
+/**
+ * The Scam Shield link check (adapter row) → check_scam DTO. Only the three PUBLIC verdict states pass (the engine's SAFE/LOW were already turned into "unrecognized" by the adapter; a row that still says
+ * anything else is dropped, never shown). The target is the host that was checked: no path, no query. The official site must be an https link without credentials. Text is data, bounded and cleaned.
+ */
+export function mapScamRow(r: Record<string, unknown>): Record<string, unknown> | null {
+  if (!isRow(r)) return null
+  const verdict = typeof r.verdict === 'string' ? r.verdict : ''
+  const target = cleanText(r.target, 253)
+  if (!SCAM_VERDICTS.has(verdict) || !target) return null
+  const site = safeUrl(r.official_site)
+  return {
+    target, verdict, verdictTitle: cleanText(r.verdict_title, 200), summary: cleanText(r.summary, 600), signals: cleanList(r.signals, 6, 200),
+    resemblesBrand: cleanText(r.resembles_brand, 80), officialSite: site && site.startsWith('https://') ? site : undefined, officialHotline: cleanText(r.official_hotline, 40),
+    nextSteps: cleanList(r.next_steps, 4, 160),
+  }
+}
+
 export const ROW_MAPPER: Readonly<Record<ServiceId, (r: Record<string, unknown>) => Record<string, unknown> | null>> = Object.freeze({
-  'places.search': mapPlaceRow, 'shopping.search': mapProductRow, 'hotels.prices': mapHotelRow,
+  'places.search': mapPlaceRow, 'shopping.search': mapProductRow, 'hotels.prices': mapHotelRow, 'scam.check': mapScamRow,
 })
