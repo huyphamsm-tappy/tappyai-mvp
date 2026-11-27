@@ -779,7 +779,8 @@ private struct ChatEndNoticeView: View {
                     Text("chat.recoverFailed").font(.footnote).foregroundColor(.secondary)
                 }
             }
-            if notice == .cut {
+            // «Trả lời lại» for a cut reply and for a reply whose connection dropped (the layout spec, step 2 §D).
+            if notice == .cut || notice == .connectionLost {
                 Button(action: onRegenerate) {
                     HStack(spacing: Spacing.xxs) {
                         Image(systemName: "arrow.counterclockwise")

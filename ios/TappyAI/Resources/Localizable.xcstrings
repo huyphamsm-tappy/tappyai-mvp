@@ -33083,7 +33083,7 @@
       "extractionState": "manual",
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "The connection was interrupted. The answer may be longer than what is shown." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Kết nối bị gián đoạn. Câu trả lời có thể dài hơn phần đang hiện." } }
+        "vi": { "stringUnit": { "state": "translated", "value": "Câu trả lời bị ngắt giữa chừng. Bạn thử lại nhé?" } }
       }
     },
     "chat.recover": {
