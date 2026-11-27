@@ -13,6 +13,7 @@ import copy
 import json
 import struct
 import sys
+import time
 import zlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -447,6 +448,8 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(data)
             return
+        if path == "/api/chat" and MODE.get("chat") == "stream":
+            return self._stream_chat()
         if path == "/api/chat" and MODE.get("chat") == "auth":
             # No usable session: the «sign in to continue» card (not the 18+ gate).
             return self._send(401, {"error": "unauthorized"})
@@ -457,6 +460,54 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(200, {})
 
     do_PUT = do_PATCH = do_DELETE = do_POST
+
+    TURN = [0]
+
+    def _stream_chat(self):
+        """A reply shaped like the production ones that froze the app (owner diagnostics 27/11): a progress line, one very large
+        `tappy.places.v1` annotation (~20 KB on ONE line), then the text word by word with bold, a link and follow-ups.
+        Odd turns are plain prose, even turns an article (headings, list, table) — the two drawing paths of a finished reply."""
+        Handler.TURN[0] += 1
+        turn = Handler.TURN[0]
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+
+        def line(s):
+            self.wfile.write((s + "\n").encode("utf-8"))
+            self.wfile.flush()
+
+        def text(t):
+            line("0:" + json.dumps(t, ensure_ascii=False))
+
+        line("8:" + json.dumps([{"kind": "tappy.progress.v1", "v": 1, "stage": "searching", "text": "Đang tìm quán gần bạn…"}], ensure_ascii=False))
+        time.sleep(0.4)
+        items = [{"id": "place:%d" % i, "domain": "food", "kind": "place", "rank": i,
+                  "name": "Quán số %d với một cái tên khá dài để dòng dữ liệu to ra" % i,
+                  "address": "%d Đường Nguyễn Văn Đậu, Phường %d, Quận Bình Thạnh, Thành phố Hồ Chí Minh" % (i, i % 9 + 1),
+                  "rating": 4.0 + (i % 10) / 10.0, "ratingCount": 100 + i * 17, "image": "http://127.0.0.1:3000/img/a.png",
+                  "actions": [{"kind": "maps", "urlKind": "direct", "url": "https://maps.example/%d" % i, "labelKey": "v3.action.maps"},
+                              {"kind": "review", "urlKind": "search", "url": "https://www.google.com/search?q=quan+%d+review" % i, "labelKey": "v3.action.reviewSearch"}],
+                  "summary": "Mô tả dài để mỗi thẻ nặng thêm. " * 8} for i in range(14)]
+        line("8:" + json.dumps([{"kind": "tappy.places.v1", "v": 1, "domain": "food", "ranked": True, "items": items,
+                                  "mapsSearchUrl": "https://maps.example/q", "shown": 3}], ensure_ascii=False))
+        time.sleep(1.0)
+        if turn % 2 == 1:
+            body = ("Có, **Bánh canh Bình Định trong hẻm 54 Đào Duy Anh, Phú Nhuận** là lựa chọn khớp nhất mình tìm được: bài tổng hợp cập nhật "
+                    "tháng 3/2026 ghi quán bán **06:00–10:00**, tô nhiều chả cá, nước dùng thanh ngọt. [HCMtoplist](https://hcmtoplist.example/banh-canh)\n\n"
+                    "Mình cũng thấy **Bánh Canh Chả Tôm Quy Nhơn ở 1B Lê Quý Đôn**, nhưng trang ShopeeFood hiện ghi quán **đã đóng**, nên chưa dám đề xuất.\n\n"
+                    "[FOLLOWUPS]Quán nào mở buổi tối|Giá khoảng bao nhiêu|Có chỗ gửi xe không")
+        else:
+            body = ("# Tiểu sử ngắn\n\n**Elon Musk** là doanh nhân sinh năm 1971. [1](https://vi.wikipedia.org/wiki/Elon_Musk)\n\n"
+                    "## Dòng thời gian\n" + "".join("- **Năm %d:** Một sự kiện, có [liên kết](https://example.com/%d).\n" % (y, y) for y in range(1995, 2012)) +
+                    "\n| Năm | Sự kiện | Công ty |\n|---|---|---|\n" + "".join("| %d | Thành lập hoặc mua lại | Công ty %d |\n" % (y, y) for y in range(1995, 2008)) +
+                    "\n1. Mục một\n2. Mục hai\n3. Mục ba\n\n[FOLLOWUPS]Hỏi về Tesla|Hỏi về SpaceX|Hỏi về xAI\n")
+        words = body.split(" ")
+        for i in range(0, len(words), 2):
+            text(" ".join(words[i:i + 2]) + " ")
+            time.sleep(0.03)
+        line('d:{"finishReason":"stop"}')
 
     def log_message(self, fmt, *args):
         sys.stderr.write("stub: " + (fmt % args) + "\n")
