@@ -2,6 +2,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
 import { accountQuotaFor, aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
 import { entitlementFromRow, SUBSCRIPTION_COLUMNS, type SubscriptionRow } from '@/lib/plans/entitlement'
+import { pipUsedFor } from '@/lib/payments/myPlan'
 import { clientIp } from '@/lib/security/rateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -46,6 +47,9 @@ export async function GET(req: Request) {
     const dailyLimit = quota.limit
     const todayMessageCount = acct.exempt ? 0 : (quota.used ?? quota.limit)
     const remaining = acct.exempt ? dailyLimit : Math.max(0, dailyLimit - todayMessageCount)
+    // Pip is one per account for life (store, web or staff grant): the database rule's own answer, so the iOS app can hide the pack before offering it.
+    // A guest has no Pip to have used; if the rule cannot be read, an account that holds Pip right now still counts as used.
+    const pipUsed = isAnonymous ? false : await pipUsedFor(user.id, (sub as { plan?: string | null } | null)?.plan === 'pip')
 
     return NextResponse.json({
       isPro,
@@ -70,6 +74,8 @@ export async function GET(req: Request) {
       /** Questions spent in the current period (field name kept for existing clients). */
       todayMessageCount,
       remaining,
+      /** True once this account has used its one-time Pip (any source). Additive. */
+      pipUsed,
     })
   } catch (e) {
     console.error('[subscription] Error:', e)

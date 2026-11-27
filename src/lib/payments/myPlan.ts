@@ -21,7 +21,7 @@ export interface MyPlan {
 
 /** THE Pip rule's own answer (p7_pip_used: any source, ledger + paid orders) — the same function create_order/apply_sepay use.
  *  Falls back to what the caller's own rows show only if that read fails, and then errs towards "used" never "unused". */
-async function pipUsedFor(userId: string, own: boolean): Promise<boolean> {
+export async function pipUsedFor(userId: string, own: boolean): Promise<boolean> {
   try {
     const { data, error } = await createAdminClient().rpc('p7_pip_used', { p_user: userId })
     if (!error && typeof data === 'boolean') return data
