@@ -64,10 +64,11 @@ private struct MarkdownBlockView: View {
                 .accessibilityAddTraits(.isHeader)
 
         case .paragraph(let text):
+            // No `.textSelection(.enabled)` on the blocks of a reply (27/11): a finished answer that switches to many selectable Texts at once
+            // was a suspect for the screen freezing at the end of a turn. Copy under the reply copies the whole text.
             inline(text)
                 .font(TappyFont.body)
                 .foregroundStyle(TappyColor.textPrimary)
-                .textSelection(.enabled)
                 .fixedSize(horizontal: false, vertical: true)
 
         case .bullet(let depth, let text):
@@ -79,7 +80,6 @@ private struct MarkdownBlockView: View {
                 inline(text)
                     .font(TappyFont.body)
                     .foregroundStyle(TappyColor.textPrimary)
-                    .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.leading, CGFloat(depth) * Spacing.md)
@@ -93,7 +93,6 @@ private struct MarkdownBlockView: View {
                 inline(text)
                     .font(TappyFont.body)
                     .foregroundStyle(TappyColor.textPrimary)
-                    .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.leading, CGFloat(depth) * Spacing.md)
