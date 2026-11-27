@@ -5,7 +5,15 @@
 name: iOS freeze hunt
 
 on:
+  # A manual workflow can only be started from the CLI once it exists on the default branch, and this one lives on the iOS branch: so a push to an
+  # ios/** branch runs it when the commit message contains [hunt].
+  push:
+    branches: ["ios/**"]
   workflow_dispatch:
+
+concurrency:
+  group: hunt-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -13,6 +21,7 @@ permissions:
 jobs:
   hunt:
     name: Chat freeze hunt (simulator)
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[hunt]')
     runs-on: macos-latest
     timeout-minutes: 40
     defaults:
