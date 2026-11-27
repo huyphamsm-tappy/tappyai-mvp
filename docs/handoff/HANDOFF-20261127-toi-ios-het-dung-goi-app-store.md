@@ -7,8 +7,8 @@ Luật vẫn giữ (đã bị phạt vì quên): **không push khi một lần T
 ## 1. Nhánh, bản dựng, CI
 
 - Nhánh: `ios/layout-buoc5-20261126` (repo `D:\TappyAI-wt\wt-ios-messenger`), chứa đợt layout bước 1–5 + mọi sửa hôm nay. **Chưa merge** vào `ios/consolidated-20261122` (chờ anh UAT xong và đồng ý).
-- Commit cuối lúc viết file: `4245cfc` (build 309). CI của nó (run 46003527896) đang chạy lúc anh tắt máy; nếu xanh thì **phải tự bấm TestFlight** (không còn ai tự bấm): `gh workflow run ios.yml --repo huyphamsm-tappy/tappyai-mvp --ref ios/layout-buoc5-20261126`. Kiểm trước: `gh run list --repo huyphamsm-tappy/tappyai-mvp --workflow ios.yml --limit 3`.
-- Bản TestFlight gần nhất đã lên: **build 306** (commit `1bcebf0`: danh sách chat dựng sẵn, cửa sổ 60 tin, màn Gói 5 gói, thông tin nhanh thực thể, thẻ lựa chọn…). Build 309 sẽ thêm 7 lỗi UAT dưới đây.
+- Mã cuối: `4245cfc` (CI build 309 **xanh**). Đã bấm TestFlight lúc 14:2x giờ VN từ commit `6f35ff3` (= `4245cfc` + tệp bàn giao): **build 310**, run 46005299277, chạy trên GitHub nên tắt PC không ảnh hưởng. Kiểm: `gh run view 46005299277 --repo huyphamsm-tappy/tappyai-mvp --json status,conclusion,jobs`. Bước "Archive + upload" thành công = bản đã lên TestFlight (Apple xử lý thêm vài phút).
+- Bản TestFlight trước đó: **build 306** (commit `1bcebf0`: danh sách chat dựng sẵn, cửa sổ 60 tin, màn Gói 5 gói, thông tin nhanh thực thể, thẻ lựa chọn…). **Build 310 thêm 7 lỗi UAT dưới đây.** Đừng đẩy commit chạm `ios/**` khi run 46005299277 còn `in_progress` (sẽ huỷ).
 - Bước "Archive + upload" của `ios.yml` KHÔNG chờ test: chạy `workflow_dispatch` là tải bản lên TestFlight dù test hỏng. Vì vậy chỉ bấm khi CI của đúng commit đã xanh.
 
 ## 2. Lỗi đứng app — đã đi đến đâu
