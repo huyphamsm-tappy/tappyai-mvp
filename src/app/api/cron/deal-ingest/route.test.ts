@@ -58,6 +58,20 @@ describe('GET /api/cron/deal-ingest', () => {
     expect(h.calls).toEqual([])
   })
 
+  it('a 429 is retried once and then used (Accesstrade rate-limits quick successive calls); an empty answer logs its shape', async () => {
+    let n = 0
+    const f = vi.fn(async () => (++n === 1 ? new Response('slow down', { status: 429 }) : new Response(JSON.stringify({ data: [goodOffer] }), { status: 200 })))
+    vi.stubGlobal('fetch', f)
+    const body = await (await call()).json()
+    expect(f.mock.calls.length).toBeGreaterThanOrEqual(2)
+    expect(body.outcomes[0]).toMatchObject({ partner: 'lazada', written: 1 })
+
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ data: [] }), { status: 200 })))
+    await call()
+    expect(warn.mock.calls.some(c => String(c[0]).includes('tappyai_deal_ingest_empty'))).toBe(true)
+  })
+
   it('a failed insert deletes nothing', async () => {
     h.insertError = { message: 'boom' }
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ data: [goodOffer] }), { status: 200 })))

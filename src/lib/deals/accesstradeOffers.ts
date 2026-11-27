@@ -89,6 +89,42 @@ export function offersOf(json: unknown): unknown[] {
 
 interface RawCoupon { coupon_code?: unknown; coupon_desc?: unknown }
 
+/**
+ * Why an offer would be dropped, or null when it is kept. Mirrors offerToRow so the cron can log what an unexpected answer looked like (counts by reason and the shape of the first
+ * offers: host names and key names only, never the key, a code or a full link).
+ */
+export function rejectReason(raw: unknown, src: DealSource, now: Date): 'not_object' | 'no_id' | 'no_link' | 'link_host' | 'link_not_https' | 'ended' | null {
+  const o = raw as Record<string, unknown> | null
+  if (!o || typeof o !== 'object') return 'not_object'
+  if (!str(o.id)) return 'no_id'
+  const link = str(o.aff_link) ?? str(o.prod_link)
+  if (!link) return 'no_link'
+  if (!isAllowedLink(link, src.linkHosts)) {
+    try { return new URL(link).protocol !== 'https:' ? 'link_not_https' : 'link_host' } catch { return 'link_host' }
+  }
+  const end = endOfOfferDay(o.end_time ?? o.end_date)
+  if (end && Date.parse(end) <= now.getTime()) return 'ended'
+  return null
+}
+
+/** A log-safe summary of one answer: how many offers, why they were refused, and the shape of the first three. */
+export function describeAnswer(json: unknown, src: DealSource, now: Date) {
+  const offers = offersOf(json)
+  const reasons: Record<string, number> = {}
+  for (const o of offers) { const r = rejectReason(o, src, now) ?? 'kept'; reasons[r] = (reasons[r] ?? 0) + 1 }
+  const hostOf = (u: unknown) => { try { return typeof u === 'string' ? new URL(u).hostname : null } catch { return null } }
+  const top = json && typeof json === 'object' ? Object.keys(json as object).slice(0, 8) : []
+  return {
+    topKeys: top,
+    offers: offers.length,
+    reasons,
+    sample: offers.slice(0, 3).map(o => {
+      const r = (o ?? {}) as Record<string, unknown>
+      return { keys: Object.keys(r).slice(0, 20), merchant: typeof r.merchant === 'string' ? r.merchant.slice(0, 30) : null, domain: typeof r.domain === 'string' ? r.domain.slice(0, 40) : null, affHost: hostOf(r.aff_link), linkHost: hostOf(r.link ?? r.prod_link), end: r.end_time ?? r.end_date ?? null, coupons: Array.isArray(r.coupons) ? r.coupons.length : 0 }
+    }),
+  }
+}
+
 /** One offer -> one row, or null when it must not be shown. */
 export function offerToRow(raw: unknown, src: DealSource, now: Date): DealRow | null {
   const o = raw as Record<string, unknown> | null

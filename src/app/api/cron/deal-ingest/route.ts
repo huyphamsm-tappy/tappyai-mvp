@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 import { accesstradeOffersRequest, isAccesstradeOffersConfigured } from '@/lib/ccp/tracking/accesstradeOffersApi'
-import { DEAL_SOURCES, rowsForSource, type DealRow, type DealSource } from '@/lib/deals/accesstradeOffers'
+import { DEAL_SOURCES, describeAnswer, rowsForSource, type DealRow, type DealSource } from '@/lib/deals/accesstradeOffers'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -19,15 +19,21 @@ export const dynamic = 'force-dynamic'
 
 type Outcome = { partner: string; kept: number; written: number; skipped?: string }
 
+// Accesstrade answered the second call of the first run (27/11/2026) with 429: the calls are spaced out and a 429 is retried once after a pause.
+const PAUSE_MS = process.env.NODE_ENV === 'test' ? 0 : 2500
+const pause = (ms: number) => (ms > 0 ? new Promise<void>(r => setTimeout(r, ms)) : Promise.resolve())
+
 async function fetchOffers(src: DealSource): Promise<unknown | null> {
   const req = accesstradeOffersRequest(src.partnerId)
   if (!req) return null
-  const res = await fetch(req.url, { headers: req.headers, cache: 'no-store', signal: AbortSignal.timeout(20_000) })
-  if (!res.ok) {
-    console.warn(JSON.stringify({ type: 'tappyai_deal_ingest', partner: src.partnerId, status: res.status }))
-    return null
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const res = await fetch(req.url, { headers: req.headers, cache: 'no-store', signal: AbortSignal.timeout(20_000) })
+    if (res.ok) return res.json()
+    console.warn(JSON.stringify({ type: 'tappyai_deal_ingest', partner: src.partnerId, status: res.status, attempt }))
+    if (res.status !== 429) return null
+    await pause(PAUSE_MS * 2)
   }
-  return res.json()
+  return null
 }
 
 export async function GET(req: Request) {
@@ -40,12 +46,17 @@ export async function GET(req: Request) {
 
   for (const src of DEAL_SOURCES) {
     const out: Outcome = { partner: src.partnerId, kept: 0, written: 0 }
+    if (src !== DEAL_SOURCES[0]) await pause(PAUSE_MS)
     try {
       const json = await fetchOffers(src)
       if (json === null) { out.skipped = 'fetch_failed'; outcomes.push(out); continue }
       const rows: DealRow[] = rowsForSource(json, src, now)
       out.kept = rows.length
-      if (rows.length === 0) { out.skipped = 'no_valid_offers'; outcomes.push(out); continue }
+      if (rows.length === 0) {
+        // The answer held nothing we may show: say what it looked like (counts by reason, key names, hosts; no key, no codes) so the next fix is not a guess.
+        console.warn(JSON.stringify({ type: 'tappyai_deal_ingest_empty', partner: src.partnerId, answer: describeAnswer(json, src, now) }))
+        out.skipped = 'no_valid_offers'; outcomes.push(out); continue
+      }
 
       // the importer's previous rows of this partner, read BEFORE inserting so only they are removed afterwards
       const { data: old } = await admin.from('partner_deals').select('id').eq('partner_slug', src.partnerId).eq('metadata->>source', 'accesstrade')

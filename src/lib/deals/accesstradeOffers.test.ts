@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { DEAL_SOURCES, MAX_DEALS_PER_PARTNER, endOfOfferDay, isAllowedLink, offerToRow, offersOf, rowsForSource } from './accesstradeOffers'
+import { DEAL_SOURCES, MAX_DEALS_PER_PARTNER, describeAnswer, endOfOfferDay, isAllowedLink, offerToRow, offersOf, rejectReason, rowsForSource } from './accesstradeOffers'
 
 const LAZADA = DEAL_SOURCES.find(s => s.partnerId === 'lazada')!
 const VEXERE = DEAL_SOURCES.find(s => s.partnerId === 'vexere')!
@@ -59,6 +59,20 @@ describe('Accesstrade offers -> partner_deals rows', () => {
     expect(rows).toHaveLength(MAX_DEALS_PER_PARTNER)
     expect(rows.every(r => r.metadata.promotion.voucherCode)).toBe(true)
     expect(rows.map(r => r.metadata.external_id)).toEqual(['o0', 'o2', 'o4', 'o6'])
+  })
+
+  it('describeAnswer explains an unexpected answer without leaking codes or links: counts by reason, key names, hosts only', () => {
+    const json = { data: [offer({ id: 'a' }), offer({ id: 'b', aff_link: 'https://other.example/x?c=SECRET' }), offer({ id: 'c', end_time: '2026-11-01' }), offer({ id: undefined })], extra: 1 }
+    const d = describeAnswer(json, LAZADA, NOW)
+    expect(d.offers).toBe(4)
+    expect(d.reasons).toEqual({ kept: 1, link_host: 1, ended: 1, no_id: 1 })
+    expect(d.topKeys).toEqual(['data', 'extra'])
+    expect(d.sample[0].affHost).toBe('go.isclix.com')
+    const text = JSON.stringify(d)
+    expect(text).not.toContain('SECRET')
+    expect(text).not.toContain('LZD50')
+    expect(describeAnswer(null, LAZADA, NOW)).toMatchObject({ offers: 0, topKeys: [] })
+    expect(rejectReason('x', LAZADA, NOW)).toBe('not_object')
   })
 
   it('link and date helpers', () => {
