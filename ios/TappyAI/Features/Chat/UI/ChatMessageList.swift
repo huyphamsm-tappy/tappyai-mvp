@@ -119,11 +119,15 @@ struct ChatMessageList: View {
                             let _ = parseTick
                             let parsed = parseCache.parsed(id: msg.id, content: msg.content, isStreaming: isStreaming && isLast,
                                                            now: ProcessInfo.processInfo.systemUptime)
+                            // The partner and «more» link lines leave the text and come back as tiles under the answer.
+                            let partner = PartnerLinks.extract(parsed.text)
                             AssistantBubble(
                                 msgId: msg.id,
                                 messageIndex: index,
                                 conversationId: conversationId,
-                                content: parsed.text,
+                                content: partner.text,
+                                partnerLinks: partner.partners,
+                                moreLinks: partner.more,
                                 images: parsed.images,
                                 // the Deep Research card: the reply's own, or the running turn's while this is the reply being built
                                 research: msg.research ?? (isLast && isStreaming ? liveResearch : nil),
@@ -379,6 +383,9 @@ private struct AssistantBubble: View {
     let messageIndex: Int
     let conversationId: String?
     let content: String
+    /// The partner links (Vexere, Agoda, Lazada) and the other platforms the text carried, as tiles under the answer.
+    var partnerLinks: [PartnerLink] = []
+    var moreLinks: [PartnerLink] = []
     let images: [ParsedImage]
     /// The Deep Research card of this reply; drawn above its text (nil on every other reply).
     var research: ResearchStatus? = nil
@@ -483,6 +490,11 @@ private struct AssistantBubble: View {
                     if !images.isEmpty {
                         ChatImageStrip(images: images, onZoom: onZoomImage)
                     }
+                }
+
+                // The partner links as tiles (owner UAT 27/11), once the reply is complete.
+                if !isStreaming, !(partnerLinks.isEmpty && moreLinks.isEmpty) {
+                    PartnerLinkTiles(partners: partnerLinks, more: moreLinks)
                 }
 
                 // "Nguồn · N": the pages the finished answer links to (web SourcesFooter). A research report lists its own sources on its card.

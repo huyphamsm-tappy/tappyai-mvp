@@ -217,8 +217,10 @@ struct TripAnswerView: View {
         pdfPreparing = true
         let plan = self.plan
         let labels = PlanPdf.labels(for: plan)
+        let pictures = stopImages
         Task { @MainActor in
-            let data = await Task.detached(priority: .userInitiated) { PlanPdf.data(for: plan, labels: labels) }.value
+            // The designed file: its pictures are downloaded, then the pages are drawn, both off the main thread.
+            let data = await Task.detached(priority: .userInitiated) { await PlanPdf.dataWithPictures(for: plan, labels: labels, stopImages: pictures) }.value
             pdfDocument = ReportFileDocument(data: data)
             pdfPreparing = false
             pdfExporting = true

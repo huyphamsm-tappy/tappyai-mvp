@@ -25,6 +25,8 @@ struct ResearchCardView: View {
     @State private var exportFormat: ResearchExportFormat = .markdown
     @State private var preparing = false
     @State private var notice: ReportSaveNotice? = nil
+    /// The list of sources is closed until the person taps «Nguồn · N».
+    @State private var sourcesOpen = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -71,12 +73,24 @@ struct ResearchCardView: View {
             }
 
             if !status.links.isEmpty {
+                // Only «Nguồn · N» (owner 27/11: a long list of sources fills the page and costs tokens to read): the list opens on a tap.
                 Divider()
-                Text("chat.research.sources")
-                    .font(TappyFont.caption)
-                    .foregroundStyle(TappyColor.textSecondary)
-                ForEach(status.links) { link in
-                    sourceRow(link)
+                Button { withAnimation(.easeOut(duration: 0.2)) { sourcesOpen.toggle() } } label: {
+                    HStack(spacing: 6) {
+                        Text(String(format: NSLocalizedString("chat.sources.title", comment: ""), status.links.count))
+                            .font(.system(size: 13)).foregroundStyle(TappyColor.textSecondary)
+                        Image(systemName: sourcesOpen ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 10, weight: .semibold)).foregroundStyle(TappyColor.textSecondary)
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 5)
+                    .overlay(Capsule().stroke(TappyColor.border, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("research-sources-toggle")
+                if sourcesOpen {
+                    ForEach(status.links) { link in
+                        sourceRow(link)
+                    }
                 }
             }
 

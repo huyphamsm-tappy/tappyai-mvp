@@ -63,6 +63,43 @@ final class PlanPdfTests: XCTestCase {
         XCTAssertEqual(String(decoding: data.prefix(5), as: UTF8.self), "%PDF-")
     }
 
+    // MARK: - The designed file (owner UAT 27/11: the PDF had no pictures and no layout)
+
+    private func words() -> TripPdfRenderer.Words {
+        TripPdfRenderer.Words(stays: "Where to stay", dishes: "What to try", budget: "Budget", item: "Item", cost: "Cost", total: "Total", tips: "Tips")
+    }
+
+    private func solid(_ color: UIColor) -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 40, height: 40)).image { ctx in color.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 40, height: 40)) }
+    }
+
+    private func occurrences(of needle: String, in data: Data) -> Int {
+        String(decoding: data, as: UTF8.self).components(separatedBy: needle).count - 1
+    }
+
+    func testTheDesignedPdfIsARealPdf() throws {
+        let data = TripPdfRenderer.render(plan: try plan(), facts: labels.facts, words: words(), images: [:])
+        XCTAssertEqual(String(decoding: data.prefix(5), as: UTF8.self), "%PDF-")
+        XCTAssertGreaterThan(data.count, 1500)
+    }
+
+    func testAPictureIsInTheFileAndAStopWithoutOneStillDraws() throws {
+        let p = try plan()
+        let without = TripPdfRenderer.render(plan: p, facts: labels.facts, words: words(), images: [:])
+        let key = SubjectImages.key("Bãi Kỳ Co")
+        XCTAssertEqual(PlanPdf.pictureKey(for: p.days[0].items[0]), key)
+        let with = TripPdfRenderer.render(plan: p, facts: labels.facts, words: words(), images: [key: solid(.red)])
+        XCTAssertGreaterThan(with.count, without.count, "the picture is in the file")
+    }
+
+    func testALongPlanSpillsOverToMorePages() throws {
+        let stops = (1...60).map { #"{"time":"\#($0):00","name":"Điểm số \#($0)","description":"Một đoạn mô tả khá dài để mỗi điểm dừng chiếm vài dòng trên trang A4.","address":"Địa chỉ \#($0), Quy Nhơn"}"# }.joined(separator: ",")
+        let big = try ResponseDecoder.json.decode(TappyPlan.self, from: Data(#"{"title":"Dài","days":[{"label":"Ngày 1","items":[\#(stops)]}]}"#.utf8))
+        let data = TripPdfRenderer.render(plan: big, facts: "1 day", words: words(), images: [:])
+        let pages = occurrences(of: "/Type /Page", in: data) - occurrences(of: "/Type /Pages", in: data)
+        XCTAssertGreaterThan(pages, 1, "60 stops do not fit one A4 page")
+    }
+
     func testTheFileNameComesFromTheTitle() throws {
         XCTAssertEqual(PlanPdf.fileName(for: try plan()), "Quy Nhơn 3 ngày.pdf")
     }

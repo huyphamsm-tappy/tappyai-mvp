@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// A trip plan as the report text the PDF writer already lays out (web `src/lib/answerDoc/planMarkdown.ts`, owner 19/11: "will the plan look this
 /// good as a PDF file?"): a title, the facts line, one `##` section per day, the stays and dishes, the budget as a table and the tips.
@@ -96,4 +96,60 @@ enum PlanPdf {
     }
 
     static func fileName(for plan: TappyPlan) -> String { reportFileName(plan.title, "pdf") }
+
+    /// The key a stop's picture is stored under: the same normalised name `tappy.subject_images.v1` uses for its stops.
+    static func pictureKey(for item: TappyPlan.PlanItem) -> String { SubjectImages.key(item.name) }
+
+    /// The DESIGNED file (header band, a photo beside each stop that has one, stays, dishes, budget table, tips, page numbers): the pictures are
+    /// downloaded first (at most 24, a few seconds each, a failed one is simply left out), then the pages are drawn. Heavy: call it off the main thread.
+    static func dataWithPictures(for plan: TappyPlan, labels: PlanMarkdown.Labels, stopImages: [String: URL]) async -> Data {
+        var urls: [String: URL] = [:]
+        for day in plan.days {
+            for item in day.items where urls.count < 24 {
+                let key = pictureKey(for: item)
+                guard urls[key] == nil else { continue }
+                if let own = item.photoUrl, let url = safeWebURL(own) { urls[key] = url }
+                else if let found = stopImages[key] { urls[key] = found }
+            }
+        }
+        let images = await TripPdfPictures.load(urls)
+        let words = TripPdfRenderer.Words(stays: labels.stays ?? "", dishes: labels.dishes ?? "", budget: labels.budget, item: labels.item,
+                                          cost: labels.cost, total: labels.total, tips: labels.tips)
+        return TripPdfRenderer.render(plan: plan, facts: labels.facts, words: words, images: images)
+    }
+}
+
+/// The pictures of a plan's stops for the PDF: downloaded concurrently, bounded in time and size, scaled down (a photo of 4000 px has no place in a
+/// file of a few hundred KB). A picture that does not arrive is not in the result.
+enum TripPdfPictures {
+    static let maxBytes = 3_000_000
+    static let maxSide: CGFloat = 260
+
+    static func load(_ urls: [String: URL]) async -> [String: UIImage] {
+        await withTaskGroup(of: (String, UIImage?).self) { group in
+            for (key, url) in urls {
+                group.addTask { (key, await fetch(url)) }
+            }
+            var out: [String: UIImage] = [:]
+            for await (key, image) in group { if let image { out[key] = image } }
+            return out
+        }
+    }
+
+    private static func fetch(_ url: URL) async -> UIImage? {
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 8
+        guard let (data, response) = try? await URLSession.shared.data(for: request),
+              (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? true,
+              data.count <= maxBytes, let image = UIImage(data: data) else { return nil }
+        return scaled(image)
+    }
+
+    private static func scaled(_ image: UIImage) -> UIImage {
+        let longest = max(image.size.width, image.size.height)
+        guard longest > maxSide else { return image }
+        let k = maxSide / longest
+        let size = CGSize(width: image.size.width * k, height: image.size.height * k)
+        return UIGraphicsImageRenderer(size: size).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+    }
 }

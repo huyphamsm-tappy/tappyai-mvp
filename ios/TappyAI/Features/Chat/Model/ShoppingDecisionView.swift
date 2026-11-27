@@ -263,7 +263,11 @@ struct ShoppingDecisionView: Codable, Equatable, Sendable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         v = (try? c.decode(Int.self, forKey: .v)) ?? 1
-        entities = c.lossyArray(ShoppingEntityView.self, forKey: .entities)
+        // A card that cannot say WHAT the product is (no configuration text, no specs, no picture) is only a seller and a price: it was the two
+        // «66.290đ / 494k» Shopee cards under a Toyota car answer (owner UAT 27/11). It is not drawn; with none left there is no decision.
+        entities = c.lossyArray(ShoppingEntityView.self, forKey: .entities).filter { entity in
+            !entity.config.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !entity.specs.isEmpty || entity.image != nil
+        }
         recommendation = try? c.decode(ShoppingRecommendationView.self, forKey: .recommendation)
     }
 }
