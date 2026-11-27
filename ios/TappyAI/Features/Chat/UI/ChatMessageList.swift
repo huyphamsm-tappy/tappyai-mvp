@@ -67,7 +67,7 @@ struct ChatMessageList: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                ChatRowsContainer(eager: ChatListMode.eagerRows) {
+                ChatRowsContainer(eager: ChatListMode.eagerRows(messageCount: messages.count)) {
                     Color.clear.frame(height: 1).id("top")
                         .onAppear { atTop = true }
                         .onDisappear { atTop = false }
@@ -980,7 +980,16 @@ private struct StreamingCursor: View {
 /// `LazyStack.measureEstimates` after a reply had been drawn (CI freeze hunt), so the freeze hunt runs both and the launch argument
 /// `-uitest-eager-list` picks the eager one for that comparison.
 enum ChatListMode {
-    static var eagerRows: Bool { ProcessInfo.processInfo.arguments.contains("-uitest-eager-list") }
+    /// CI freeze hunt (27/11, runs 45970726700 and 45973249100): with the lazy list the main thread hung for over a minute inside
+    /// `LazyStack.measureEstimates` after a reply was drawn (plain prose and an article, no place cards needed); with the eager list the same
+    /// replies, two turns each, did not hang. So the conversation is held eagerly, up to `maxEagerMessages` rows; a very long conversation falls
+    /// back to the lazy list (laying out hundreds of replies at once would be slow). `-uitest-lazy-list` forces the old behaviour for comparison.
+    static let maxEagerMessages = 60
+
+    static func eagerRows(messageCount: Int) -> Bool {
+        if ProcessInfo.processInfo.arguments.contains("-uitest-lazy-list") { return false }
+        return messageCount <= maxEagerMessages
+    }
 }
 
 struct ChatRowsContainer<Content: View>: View {

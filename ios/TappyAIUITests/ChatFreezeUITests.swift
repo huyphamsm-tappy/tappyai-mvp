@@ -17,20 +17,18 @@ final class ChatFreezeUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testLazyPlain() { scenario(shape: "none", kind: "plain", eager: false) }
-    func testLazyArticle() { scenario(shape: "none", kind: "article", eager: false) }
-    func testLazyFull() { scenario(shape: "full", kind: "plain", eager: false) }
-    func testEagerPlain() { scenario(shape: "none", kind: "plain", eager: true) }
-    func testEagerArticle() { scenario(shape: "none", kind: "article", eager: true) }
-    func testEagerFull() { scenario(shape: "full", kind: "plain", eager: true) }
+    // The app now holds the conversation eagerly by default (see `ChatListMode`); `lazy` forces the old list for comparison.
+    func testDefaultPlain() { scenario(shape: "none", kind: "plain", lazy: false) }
+    func testDefaultArticle() { scenario(shape: "none", kind: "article", lazy: false) }
+    func testDefaultFull() { scenario(shape: "full", kind: "plain", lazy: false) }
 
-    private func scenario(shape: String, kind: String, eager: Bool) {
-        let tag = "[\(eager ? "eager" : "lazy")/\(shape)/\(kind)]"
+    private func scenario(shape: String, kind: String, lazy: Bool) {
+        let tag = "[\(lazy ? "lazy" : "default")/\(shape)/\(kind)]"
         setStub(["chat": "stream", "shape": shape, "kind": kind])
         defer { setStub(["chat": "off", "shape": "full", "kind": "alt"]) }
         let app = XCUIApplication()
         app.launchArguments = ["-uitest-route", "chat", "-uitest-lang", "vi", "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN",
-                               "-uitest-theme", "dark"] + (eager ? ["-uitest-eager-list"] : [])
+                               "-uitest-theme", "dark"] + (lazy ? ["-uitest-lazy-list"] : [])
         app.launch()
         let input = any(app, "chat-input")
         XCTAssertTrue(input.waitForExistence(timeout: 60), "\(tag) the chat opens")
