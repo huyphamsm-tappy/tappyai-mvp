@@ -102,6 +102,15 @@ const PRIVACY: LegalDoc = {
       ],
     },
     {
+      id: 'ai-assistant-connectors',
+      headingKey: 'legal.privacy.s9.heading',
+      blocks: [
+        { kind: 'lead', key: 'legal.privacy.s9.lead' },
+        { kind: 'bullets', keys: bullets('legal.privacy.s9.b', 8) },
+        { kind: 'note', key: 'legal.privacy.s9.note' },
+      ],
+    },
+    {
       id: 'changes-to-this-policy',
       headingKey: 'legal.privacy.s6.heading',
       blocks: [
