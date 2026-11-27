@@ -8,6 +8,8 @@ final class StoreKitProvider: PaymentProvider {
     private let api: APIClient
     private let session: SessionStore?
     private var cachedProduct: Product?
+    /// The sold plans the store has served, by product id.
+    private var cachedPlanProducts: [String: Product] = [:]
     private let log = AppLogger.app
     /// Long-lived listener for transactions that StoreKit delivers outside the purchase sheet:
     /// renewals, Ask to Buy approvals, purchases made on another device, and unfinished transactions
@@ -39,16 +41,33 @@ final class StoreKitProvider: PaymentProvider {
         return AppProduct(id: p.id, displayName: p.displayName, displayPrice: p.displayPrice)
     }
 
+    func availableProducts() async throws -> [AppProduct] {
+        let started = Date()
+        DiagnosticSnapshot.shared.record("StoreKit request start ids=\(ProductCatalog.saleProductIds)")
+        let served = try await Product.products(for: ProductCatalog.saleProductIds)
+        let ms = Int(Date().timeIntervalSince(started) * 1000)
+        DiagnosticSnapshot.shared.record("StoreKit request returned count=\(served.count) ids=\(served.map(\.id)) ms=\(ms)")
+        for p in served { cachedPlanProducts[p.id] = p }
+        // The catalog's order, not the store's; a plan the store did not serve is left out (never shown with an invented price).
+        return ProductCatalog.saleProductIds.compactMap { id in
+            cachedPlanProducts[id].map { AppProduct(id: $0.id, displayName: $0.displayName, displayPrice: $0.displayPrice) }
+        }
+    }
+
     func purchase() async throws -> PurchaseResult {
+        try await purchase(productId: ProductCatalog.proMonthlyId)
+    }
+
+    func purchase(productId: String) async throws -> PurchaseResult {
         let product: Product
-        if let cached = cachedProduct {
+        if let cached = cachedPlanProducts[productId] ?? (productId == ProductCatalog.proMonthlyId ? cachedProduct : nil) {
             product = cached
         } else {
-            let loaded = try await Product.products(for: [ProductCatalog.proMonthlyId])
-            guard let p = loaded.first(where: { $0.id == ProductCatalog.proMonthlyId }) else {
-                throw AppError.unexpected(message: "Không tìm thấy sản phẩm \(ProductCatalog.proMonthlyId) trong App Store Connect")
+            let loaded = try await Product.products(for: [productId])
+            guard let p = loaded.first(where: { $0.id == productId }) else {
+                throw AppError.unexpected(message: "Không tìm thấy sản phẩm \(productId) trong App Store Connect")
             }
-            cachedProduct = p
+            cachedPlanProducts[productId] = p
             product = p
         }
 

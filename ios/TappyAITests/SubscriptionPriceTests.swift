@@ -18,6 +18,33 @@ final class SubscriptionPriceTests: XCTestCase {
         XCTAssertTrue(ProductCatalog.allProductIds.contains(ProductCatalog.proMonthlyId))
     }
 
+    // MARK: - Sold plans (the web's five, in order)
+
+    func testSalePlansAreTheWebsFiveInOrder() {
+        XCTAssertEqual(ProductCatalog.saleProductIds,
+                       ["tappy_pip_1w", "tappy_momo_1m", "tappy_coco_3m", "tappy_promax_1m", "tappy_promax_3m"])
+        // Milo and Sunny are not sold any more.
+        XCTAssertFalse(ProductCatalog.saleProductIds.contains("tappy_milo_6m"))
+        XCTAssertFalse(ProductCatalog.saleProductIds.contains("tappy_sunny_12m"))
+    }
+
+    func testOnlyPipIsOneTime() {
+        XCTAssertEqual(ProductCatalog.salePlans.filter(\.isOneTime).map(\.productId), [ProductCatalog.pipId])
+    }
+
+    func testEverySoldPlanIsRecognizedForRestoreAndUpdates() {
+        for id in ProductCatalog.saleProductIds {
+            XCTAssertTrue(ProductCatalog.allProductIds.contains(id), "\(id) must be accepted when a transaction arrives")
+        }
+        XCTAssertTrue(ProductCatalog.allProductIds.contains(ProductCatalog.proMonthlyId), "the first product keeps working for those who hold it")
+    }
+
+    func testBuyingASoldPlanPassesItsOwnProductId() async throws {
+        let mock = MockPaymentProvider()
+        _ = try await mock.purchase(productId: "tappy_coco_3m")
+        XCTAssertEqual(mock.purchasedIds, ["tappy_coco_3m"])
+    }
+
     // MARK: - AppProduct Model
 
     func testAppProductRetainsDynamicDisplayPrice() {
@@ -131,10 +158,28 @@ final class MockPaymentProvider: PaymentProvider {
         return productToReturn
     }
 
+    var productsToReturn: [AppProduct] = []
+    private(set) var purchasedIds: [String] = []
+
+    func availableProducts() async throws -> [AppProduct] {
+        if let err = errorToThrow {
+            throw err
+        }
+        return productsToReturn
+    }
+
     func purchase() async throws -> PurchaseResult {
         if let err = errorToThrow {
             throw err
         }
+        return purchaseResult
+    }
+
+    func purchase(productId: String) async throws -> PurchaseResult {
+        if let err = errorToThrow {
+            throw err
+        }
+        purchasedIds.append(productId)
         return purchaseResult
     }
 

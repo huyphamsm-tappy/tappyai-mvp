@@ -6,7 +6,11 @@ struct SubscriptionView: View {
     let deps: AppDependencies
 
     @State private var status: SubscriptionStatusResponse?
-    @State private var storeProduct: AppProduct?
+    /// The plans the App Store served, in the catalog's order.
+    @State private var plans: [AppProduct] = []
+    /// The server says this account already had its one Pip (`/api/payments/me`); absent until read, and then Pip is offered (the server still refuses).
+    @State private var pipUsed = false
+    @State private var buyingProductId: String?
     @State private var loading = true
     @State private var errorMessage: String?
 
@@ -60,8 +64,49 @@ struct SubscriptionView: View {
         .task {
             async let a: () = loadStatus()
             async let b: () = loadProduct()
-            await a; await b
+            async let c: () = loadPipUsed()
+            await a; await b; await c
         }
+    }
+
+    /// The plans offered now: Pip is left out once the account has had its one Pip.
+    private var visiblePlans: [AppProduct] {
+        plans.filter { !($0.id == ProductCatalog.pipId && pipUsed) }
+    }
+
+    @ViewBuilder
+    private func planRow(_ p: AppProduct) -> some View {
+        let plan = ProductCatalog.salePlan(for: p.id)
+        Button { Task { await doPurchase(productId: p.id) } } label: {
+            HStack(spacing: Spacing.sm) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(verbatim: plan?.name ?? p.displayName)
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(.white)
+                    if let plan {
+                        Text(verbatim: plan.isOneTime ? "\(plan.periodLabel), mua một lần, không tự gia hạn" : "\(plan.periodLabel), tự gia hạn")
+                            .font(.system(size: 11))
+                            .foregroundStyle(.white.opacity(0.75))
+                    }
+                }
+                Spacer()
+                if buyingProductId == p.id {
+                    ProgressView().tint(.white)
+                } else {
+                    Text(verbatim: p.displayPrice)
+                        .font(.system(size: 15, weight: .black))
+                        .foregroundStyle(.white)
+                }
+            }
+            .padding(.horizontal, Spacing.md)
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 52)
+            .background(Color.white.opacity(0.25))
+            .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+        }
+        .buttonStyle(.plain)
+        .disabled(purchaseLoading)
+        .accessibilityIdentifier("sub-plan-\(p.id)")
     }
 
     /// The buy button and the StoreKit price are shown only in a build that turns the purchase UI on.
@@ -234,33 +279,7 @@ struct SubscriptionView: View {
                             .foregroundStyle(.white.opacity(0.7))
                     }
                     Spacer()
-                    VStack(alignment: .trailing, spacing: 0) {
-                        if !purchaseUI {
-                            EmptyView()
-                        } else if productLoading && storeProduct == nil {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .frame(height: 26)
-                            Text("sub.perMonth")
-                                .font(.system(size: 11))
-                                .foregroundStyle(.white.opacity(0.7))
-                        } else if let p = storeProduct {
-                            Text(p.displayPrice)
-                                .font(.system(size: 22, weight: .black))
-                                .foregroundStyle(.white)
-                            Text("sub.perMonth")
-                                .font(.system(size: 11))
-                                .foregroundStyle(.white.opacity(0.7))
-                        } else {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                                .font(.system(size: 16))
-                                .foregroundStyle(Color(red: 252/255, green: 211/255, blue: 77/255))
-                                .frame(height: 26)
-                            Text("common.retry.action")
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundStyle(.white.opacity(0.8))
-                        }
-                    }
+                    // No single price up here any more: each plan below carries its own, from the App Store.
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
@@ -315,24 +334,8 @@ struct SubscriptionView: View {
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                 } else {
                     VStack(spacing: Spacing.xs) {
-                        if let p = storeProduct {
-                            Button { Task { await doPurchase() } } label: {
-                                Group {
-                                    if purchaseLoading {
-                                        ProgressView().tint(.white)
-                                    } else {
-                                        Text(String(format: NSLocalizedString("sub.upgradeProPrice", comment: ""), p.displayPrice))
-                                            .font(.system(size: 14, weight: .bold))
-                                            .foregroundStyle(.white)
-                                    }
-                                }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 44)
-                                .background(Color.white.opacity(0.25))
-                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
-                            }
-                            .buttonStyle(.plain)
-                            .disabled(purchaseLoading)
+                        if !visiblePlans.isEmpty {
+                            ForEach(visiblePlans, id: \.id) { p in planRow(p) }
                         } else if productLoading {
                             HStack(spacing: Spacing.xs) {
                                 ProgressView().tint(.white)
@@ -363,7 +366,7 @@ struct SubscriptionView: View {
                                 .foregroundStyle(.white.opacity(0.85))
                                 .multilineTextAlignment(.center)
                         }
-                        if storeProduct == nil && !productLoading {
+                        if plans.isEmpty && !productLoading {
                             diagnosticsButton(tint: .white.opacity(0.85))
                         }
                     }
@@ -536,16 +539,18 @@ struct SubscriptionView: View {
 
     // MARK: - Actions
 
-    private func doPurchase() async {
-        guard storeProduct != nil else {
+    private func doPurchase(productId: String) async {
+        guard plans.contains(where: { $0.id == productId }) else {
             productError = NSLocalizedString("sub.error.loadFailed", comment: "")
             return
         }
         purchaseLoading = true
+        buyingProductId = productId
+        defer { buyingProductId = nil }
         purchaseError = nil
         purchasePending = false
         do {
-            let result = try await deps.paymentProvider.purchase()
+            let result = try await deps.paymentProvider.purchase(productId: productId)
             switch result {
             case .success:
                 await loadStatus()
@@ -611,16 +616,16 @@ struct SubscriptionView: View {
         productError = nil
         var result = "success"
         do {
-            if let p = try await deps.paymentProvider.availableProduct() {
-                storeProduct = p
-                productError = nil
-            } else {
-                storeProduct = nil
+            let served = try await deps.paymentProvider.availableProducts()
+            plans = served
+            if served.isEmpty {
                 productError = NSLocalizedString("sub.error.loadFailed", comment: "")
                 result = "empty"
+            } else {
+                productError = nil
             }
         } catch let appErr as AppError {
-            storeProduct = nil
+            plans = []
             result = Self.productResult(appErr)
             switch appErr {
             case .offline:
@@ -631,13 +636,25 @@ struct SubscriptionView: View {
                 productError = appErr.localizedDescription
             }
         } catch {
-            storeProduct = nil
+            plans = []
             result = Self.productResult(error)
             productError = error.localizedDescription
         }
         productLoading = false
         let ms = Int(Date().timeIntervalSince(started) * 1000)
         DiagnosticSnapshot.shared.record("Product load result=\(result) ms=\(ms)", isError: result.hasPrefix("error"))
+    }
+
+    /// Whether this account already had its one Pip (the server's own rule: any source, ledger plus paid orders). Any failure leaves it false:
+    /// Pip is then shown and the server still refuses a second one.
+    private func loadPipUsed() async {
+        struct Me: Decodable { let pipUsed: Bool? }
+        do {
+            let data = try await deps.api.send(Endpoint(path: "/api/payments/me", method: .get, requiresAuth: true))
+            pipUsed = (try ResponseDecoder.json.decode(Me.self, from: data)).pipUsed ?? false
+        } catch {
+            pipUsed = false
+        }
     }
 
     /// Snapshot category for a thrown error: cancellation is its own outcome, anything else is a safe tag.

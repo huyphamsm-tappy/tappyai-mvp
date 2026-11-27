@@ -217,8 +217,13 @@ struct ChatMessageList: View {
                 .padding(.vertical, Spacing.md)
             }
             .onChange(of: messages.count) { _ in
-                withAnimation(.easeOut(duration: 0.2)) {
+                // No animation and not inside this layout pass: an animated jump to a not-yet-measured row of the lazy list, started in the
+                // same pass that adds the row, is the suspected cause of the list freezing when the second question is sent (diagnostics
+                // 27/11: main thread stalled at the start of turn 2 and never came back). The down arrow below keeps its own animated jump.
+                DiagnosticSnapshot.shared.record("chat list: message count changed, scrolling to the bottom")
+                DispatchQueue.main.async {
                     proxy.scrollTo("bottom", anchor: .bottom)
+                    DiagnosticSnapshot.shared.record("chat list: scrolled to the bottom")
                 }
             }
             // The error card is not a message: bring it into view when it appears (it sat below the fold, behind the keyboard).
