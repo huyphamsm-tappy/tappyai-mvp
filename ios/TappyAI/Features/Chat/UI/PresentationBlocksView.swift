@@ -140,38 +140,68 @@ private struct ProfileCardsView: View {
                 Text(title).font(TappyFont.callout.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
                     .accessibilityAddTraits(.isHeader)
             }
-            ForEach(Array(items.enumerated()), id: \.offset) { _, item in
-                card(item)
+            if PresentationRules.profilesAsTable(items) {
+                // Three or more subjects with one point each: a two-column table (subject | point), as web draws it.
+                profileTable
+            } else {
+                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                    card(item)
+                }
             }
         }
         .accessibilityIdentifier("present-profiles")
     }
 
+    private var profileTable: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(Array(items.enumerated()), id: \.offset) { i, item in
+                if i > 0 { Divider().overlay(TappyColor.separator) }
+                HStack(alignment: .top, spacing: Spacing.sm) {
+                    Text(item.name).font(TappyFont.footnote.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
+                        .frame(width: 110, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+                    if let point = item.points.first {
+                        Text(verbatim: (point.lead.map { $0 + ": " } ?? "") + point.text)
+                            .font(TappyFont.footnote).foregroundStyle(TappyColor.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                .padding(Spacing.xs)
+            }
+        }
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
+        .accessibilityIdentifier("present-profile-table")
+    }
+
+    /// One subject: the picture 104 pt on the left when the server found one (none when it did not), the name and the rest on the right.
     private func card(_ item: PresentationBlock.ProfileItem) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        HStack(alignment: .top, spacing: Spacing.sm) {
             if let url = images[SubjectImages.key(item.name)] {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image { image.resizable().scaledToFill() } else { Rectangle().fill(TappyColor.textSecondary.opacity(0.15)) }
                 }
-                .frame(height: 140).frame(maxWidth: .infinity).clipped()
+                .frame(width: 104, height: 104).clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .accessibilityHidden(true)
             }
-            Text(item.name).font(TappyFont.headline).foregroundStyle(TappyColor.textPrimary)
-            if let subtitle = item.subtitle {
-                Text(subtitle).font(TappyFont.footnote).foregroundStyle(TappyColor.textSecondary)
-            }
-            ForEach(Array(item.points.enumerated()), id: \.offset) { _, point in
-                Group {
-                    if let lead = point.lead { Text(verbatim: lead + ": ").bold() + Text(verbatim: point.text) } else { Text(verbatim: point.text) }
+            VStack(alignment: .leading, spacing: 6) {
+                Text(item.name).font(TappyFont.headline).foregroundStyle(TappyColor.textPrimary)
+                if let subtitle = item.subtitle {
+                    Text(subtitle).font(TappyFont.footnote).foregroundStyle(TappyColor.textSecondary)
                 }
-                .font(TappyFont.footnote).foregroundStyle(TappyColor.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
+                ForEach(Array(item.points.enumerated()), id: \.offset) { _, point in
+                    Group {
+                        if let lead = point.lead { Text(verbatim: lead + ": ").bold() + Text(verbatim: point.text) } else { Text(verbatim: point.text) }
+                    }
+                    .font(TappyFont.footnote).foregroundStyle(TappyColor.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+                if !item.sources.isEmpty {
+                    Text(String(format: NSLocalizedString("chat.present.sources", comment: ""), item.sources.joined(separator: ", ")))
+                        .font(.system(size: 11)).foregroundStyle(TappyColor.textSecondary)
+                }
             }
-            if !item.sources.isEmpty {
-                Text(String(format: NSLocalizedString("chat.present.sources", comment: ""), item.sources.joined(separator: ", ")))
-                    .font(.system(size: 11)).foregroundStyle(TappyColor.textSecondary)
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -196,30 +226,50 @@ private struct GalleryBlockView: View {
     }
 
     var body: some View {
-        if !shots.isEmpty {
+        // Layout by how many pictures were found (spec §3.3): one wide picture, two side by side, or three as one large and two small.
+        let layout = PresentationRules.galleryLayout(pictures: shots.count)
+        if layout != .none {
             VStack(alignment: .leading, spacing: 6) {
                 if let title {
                     Text(title).font(TappyFont.callout.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
                 }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: Spacing.xs) {
-                        ForEach(Array(shots.enumerated()), id: \.offset) { _, shot in
-                            VStack(alignment: .leading, spacing: 4) {
-                                AsyncImage(url: shot.url) { phase in
-                                    if let image = phase.image { image.resizable().scaledToFill() } else { Rectangle().fill(TappyColor.textSecondary.opacity(0.15)) }
-                                }
-                                .frame(width: 200, height: 140).clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                Text(shot.caption).font(.system(size: 11)).foregroundStyle(TappyColor.textSecondary).frame(width: 200, alignment: .leading)
-                            }
-                            .accessibilityElement(children: .combine)
-                            .accessibilityLabel(Text(verbatim: shot.caption))
+                switch layout {
+                case .wide:
+                    shotView(shots[0], height: 180)
+                case .pair:
+                    HStack(alignment: .top, spacing: Spacing.xs) {
+                        shotView(shots[0], height: 150)
+                        shotView(shots[1], height: 150)
+                    }
+                case .trio:
+                    HStack(alignment: .top, spacing: Spacing.xs) {
+                        shotView(shots[0], height: 210)
+                        VStack(spacing: Spacing.xs) {
+                            shotView(shots[1], height: 101)
+                            shotView(shots[2], height: 101)
                         }
                     }
+                case .none:
+                    EmptyView()
                 }
             }
             .accessibilityIdentifier("present-gallery")
         }
+    }
+
+    private func shotView(_ shot: (caption: String, url: URL), height: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            AsyncImage(url: shot.url) { phase in
+                if let image = phase.image { image.resizable().scaledToFill() } else { Rectangle().fill(TappyColor.textSecondary.opacity(0.15)) }
+            }
+            .frame(maxWidth: .infinity).frame(height: height).clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            Text(shot.caption).font(.system(size: 11)).foregroundStyle(TappyColor.textSecondary)
+                .lineLimit(2)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(verbatim: shot.caption))
     }
 }
 

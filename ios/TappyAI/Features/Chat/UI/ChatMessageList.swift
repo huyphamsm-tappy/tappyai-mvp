@@ -459,7 +459,9 @@ private struct AssistantBubble: View {
                 // The blocks the model declared: comparison table, subject cards, gallery, questions, booking (web `PresentationBlocks`).
                 // Drawn once the reply is complete; an older answer's questions send nothing.
                 if let presentation, !isStreaming {
-                    PresentationBlocksView(frame: presentation, onSend: { onFollowup($0) }, disabled: !isLastMessage,
+                    PresentationBlocksView(frame: PresentationRules.framed(presentation, hasPlaces: !places.isEmpty,
+                                                                          textHasTable: PresentationRules.textHasTable(content)),
+                                           onSend: { onFollowup($0) }, disabled: !isLastMessage,
                                            subjectImages: subjectImages?.images ?? [:], galleryImages: subjectImages?.gallery ?? [:])
                 }
 
