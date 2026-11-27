@@ -13,9 +13,12 @@ describe('consent screen: pure rules', () => {
     // 22/11/2026, the real Supabase request is "openid profile": it must not show "unknown permission"; it shows identity once, then everything the connector can do
     const real = scopeLines('openid profile', 'en')
     expect(real[0]).toBe('Know which Tappy account is yours (to handle your requests)')
-    expect(real.length).toBe(1 + MCP_SCOPES.length)
-    expect(real.join(' ')).not.toMatch(/Unknown/)
-    expect(real.join(' ')).toMatch(/no booking, no payment/)
+    // 27/11/2026: the long-running itinerary tools are hidden at launch (D2), so the full list does NOT promise "plan a trip itinerary" unless jobs are on; the scam link check IS listed
+    expect(real.length).toBe(1 + MCP_SCOPES.length - 1)
+    expect(real.join(' ')).not.toMatch(/Unknown|itinerary/)
+    expect(real.join(' ')).toMatch(/Check a link for signs of a scam/)
+    expect(scopeLines('openid profile', 'en', { jobs: true }).length).toBe(1 + MCP_SCOPES.length)
+    expect(scopeLines('openid profile', 'en', { jobs: true }).join(' ')).toMatch(/no booking, no payment/)
     // with a connector scope present, only what was asked is listed (no automatic full list); an OpenID name beside it is still just identity
     expect(scopeLines('openid places:read', 'en')).toEqual(['Know which Tappy account is yours (to handle your requests)', 'Search restaurants, places and attractions'])
     expect(scopeLines('openid mystery:write', 'en')).toEqual(['Know which Tappy account is yours (to handle your requests)', 'Unknown permission: mystery:write'])

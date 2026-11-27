@@ -46,9 +46,20 @@ describe('what the connector tells another AI about Tappy (model-facing)', () =>
   it('never presents an app-only feature as a connector feature: they are named only inside the "not available through this connector" sentence', () => {
     const m = TAPPY_INSTRUCTIONS.match(/Features of the Tappy app \(([^)]*)\) are not available through this connector; do not describe them as if they were/)
     expect(m, 'the app-only sentence must exist').not.toBeNull()
-    for (const f of ['Vexere', 'Lazada', 'deep research', 'social clips', 'messenger', 'Scam Shield', 'whole-trip plans']) expect(m![1], f).toContain(f)
+    // 27/11/2026 (owner): Scam Shield's link check (check_scam), the partner offers (search_deals), public clips (search_clips) and the Vexere coach booking page (search_coach) are now connector tools: they leave this list
+    // and are described below, each as what it is. Trains, flights, deep research, the messenger and whole-trip plans stay app-only.
+    for (const f of ['train and flight options', 'deep research', 'messenger', 'whole-trip plans']) expect(m![1], f).toContain(f)
+    for (const gone of ['Scam Shield', 'Lazada', 'social clips', 'Vexere']) expect(m![1], gone).not.toContain(gone)
     const rest = TAPPY_INSTRUCTIONS.replace(m![0], '')
-    expect(rest).not.toMatch(/Vexere|Lazada|deep research|social clips|messenger|Scam Shield|whole-trip|newspaper|coach and train/i)
+    expect(rest).not.toMatch(/deep research|messenger|whole-trip|newspaper|coach and train/i)
+    // the names of the merchants appear only inside the sentence of the tool that really has them, and that sentence denies what it does not have
+    for (const hit of rest.match(/[^.]*\b(?:Vexere|Lazada)\b[^.]*\./g) ?? []) expect(hit).toMatch(/search_coach|search_deals/)
+    expect(rest).toMatch(/search_coach gives the Vexere booking page for a coach route and day, a link only: it has no timetable, price or seat data, so state none/)
+    expect(rest).toMatch(/offers are published by partners/)
+  })
+  it('names Scam Shield only as the check_scam link check, and never tells the model to call a link safe', () => {
+    for (const hit of TAPPY_INSTRUCTIONS.match(/[^.]*Scam Shield[^.]*\./g) ?? []) expect(hit).toMatch(/check_scam/)
+    expect(TAPPY_INSTRUCTIONS).toMatch(/never tell the user a link is safe/)
   })
   it('carries no subscription price, no plan name and no promotion; and tells the model not to bring plans up unasked', () => {
     expect(TAPPY_INSTRUCTIONS).not.toMatch(/\bCoco\b|225,?000|300,?000|\bUSD\b|\d+\s?%|per month|subscription|free plan|cheaper/i)

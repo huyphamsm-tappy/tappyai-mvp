@@ -75,10 +75,10 @@ describe('transport and protocol', () => {
     expect(((await run(rpc('tasks/get', { id: 'x' }), deps)).body as any).error.code).toBe(-32601)
     expect(((await run(rpc('tools/call', { name: 5 }), deps)).body as any).error.code).toBe(-32602)
   })
-  it('tools/list publishes the ten tools with schema and annotations', async () => {
+  it('tools/list publishes the fourteen tools with schema and annotations', async () => {
     const r = await run(rpc('tools/list'), mk().deps)
     const tools = (result(r) as any).tools as Array<any>
-    expect(tools.map(t => t.name).sort()).toEqual(['cancel_itinerary_job', 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_result', 'get_itinerary_job_status', 'search_attractions', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
+    expect(tools.map(t => t.name).sort()).toEqual(['cancel_itinerary_job', 'check_scam', 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_result', 'get_itinerary_job_status', 'search_attractions', 'search_clips', 'search_coach', 'search_deals', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
     for (const t of tools) { expect(t.inputSchema.type).toBe('object'); expect(typeof t.annotations.readOnlyHint).toBe('boolean'); expect(t.description.length).toBeGreaterThan(10) }
     expect(tools.find(t => t.name === 'search_places').annotations.readOnlyHint).toBe(true)
     expect(tools.find(t => t.name === 'create_itinerary').annotations.readOnlyHint).toBe(false)
@@ -345,7 +345,7 @@ describe('itinerary jobs (fallback job tools; durable store not chosen yet)', ()
   it('the default (unavailable) job store hides every job tool: not listed, and a call is an unknown tool (invalid params), never a job error', async () => {
     const { deps } = mk({ jobs: unavailableJobStore })
     const tools = ((result(await run(rpc('tools/list'), deps)) as any).tools as Array<any>).map(t => t.name).sort()
-    expect(tools).toEqual(['search_attractions', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
+    expect(tools).toEqual(['check_scam', 'search_attractions', 'search_clips', 'search_coach', 'search_deals', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
     for (const n of ['create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job']) {
       const r = await run(call(n, { destination: 'Huế', days: 2, job_id: 'job_00000000-0000-4000-8000-000000000000' }), deps)
       expect((r.body as any).error).toMatchObject({ code: -32602, message: 'Unknown tool' })

@@ -329,7 +329,17 @@ describe('17.8 #16 analytics redact secrets and never count calls as users', () 
 
 describe('17.8 #17 no file or image payloads, no arbitrary URL fetching', () => {
   it('no tool accepts a file, image, URL or binary field, and attempts to send one are refused', async () => {
-    for (const t of listTools()) expect(Object.keys((t.inputSchema as { properties: object }).properties).join(' ')).not.toMatch(/image|file|attachment|binary|base64|url|uri|upload/i)
+    // 27/11/2026 (owner): ONE narrow exception, check_scam.url. It is a link the person RECEIVED and wants checked: a plain bounded string, never a format that makes a Host fetch it, and the Gateway fetches nothing itself:
+    // the check runs through Scam Shield's SSRF boundary (assertSafeTarget + the pinned safeFetch; src/lib/scam-shield, tested there). No other tool, and no other field name, may carry a URL.
+    for (const t of listTools()) {
+      const keys = Object.keys((t.inputSchema as { properties: object }).properties)
+      const allowed = t.name === 'check_scam' ? keys.filter(k => k !== 'url') : keys
+      expect(allowed.join(' '), t.name).not.toMatch(/image|file|attachment|binary|base64|url|uri|upload/i)
+    }
+    const scamUrl = (CATALOG.check_scam.inputSchema as { properties: { url: Record<string, unknown> } }).properties.url
+    expect(scamUrl).toMatchObject({ type: 'string', maxLength: 2048 })
+    expect(scamUrl).not.toHaveProperty('format')
+    expect(Object.keys((CATALOG.check_scam.inputSchema as { properties: object }).properties).sort()).toEqual(['preferred_language', 'url'])
     for (const extra of [{ image: 'data:image/png;base64,AAAA' }, { file_url: 'https://x.example/a.pdf' }, { attachment: 'x' }]) expect(sc(await call(deps(), jwt({}), 'search_places', { query: 'pho', ...HCMC, ...extra })).error.code).toBe('INVALID_INPUT')
   })
 })

@@ -71,7 +71,7 @@ describe('compatibility tests, one block per profile (offline: structure and beh
       })
       it('tool discovery: every tool name satisfies the name rule, has a description, an object schema without composition keywords, bounded size, and boolean annotations', async () => {
         const tools = ((await rpc(deps(p.host), 'tools/list')).body as { result: { tools: ReturnType<typeof listTools> } }).result.tools
-        expect(tools.length).toBe(10)
+        expect(tools.length).toBe(14)
         for (const t of tools) {
           expect(t.name, t.name).toMatch(p.toolNameRule); expect(t.description.length).toBeGreaterThan(10)
           expect(t.inputSchema.type).toBe('object')
@@ -110,6 +110,6 @@ describe('compatibility tests, one block per profile (offline: structure and beh
   }
   it('the read-only subset a read-only Host could allow still contains every search tool plus job status and result', () => {
     const readOnly = Object.values(CATALOG).filter(t => t.annotations.readOnlyHint).map(t => t.name).sort()
-    expect(readOnly).toEqual(['get_itinerary_job_result', 'get_itinerary_job_status', 'search_attractions', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
+    expect(readOnly).toEqual(['check_scam', 'get_itinerary_job_result', 'get_itinerary_job_status', 'search_attractions', 'search_clips', 'search_coach', 'search_deals', 'search_hotels', 'search_places', 'search_restaurants', 'search_shopping'])
   })
 })

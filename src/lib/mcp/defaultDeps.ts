@@ -11,6 +11,9 @@ import { createAbuseMonitor } from './abuseGuard'
 import { unavailableJobStore, type JobStore, type JobWorkerStore } from './jobs'
 import { createRpcJobStore } from './jobsRpc'
 import { hotelAdapter, hotelProviderFromEnv } from './providers'
+import { scamCheckAdapter } from './scamAdapter'
+import { dealsAdapter, clipsAdapterFromEnv } from './dataAdapters'
+import { coachAdapter } from './coachAdapter'
 import { attributionConfig } from './attribution'
 import { createMetrics } from './metrics'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
@@ -70,6 +73,13 @@ export function realAdapters(env: Env = process.env): ServiceAdapters {
     },
     // hotels: wired ONLY when the provider keys are present AND a real client has been plugged in (providers.ts); today no client exists, so this stays null. getHotelPrices (travel.ts) is deliberately not used.
     'hotels.prices': (() => { const p = hotelProviderFromEnv(env); return p ? hotelAdapter(p) : null })(),
+    // Scam Shield's link check (the web and app engine, no LLM): always wired, the engine is internal and uses the providers the web already has.
+    'scam.check': scamCheckAdapter,
+    // Partner offers (the Deal page's own reader) and public clips (the public Explore feed's rules, anon client): database reads of public data, no LLM, no paid provider.
+    'deals.search': dealsAdapter,
+    'clips.search': clipsAdapterFromEnv(env),
+    // The dated Vexere route page for a coach route (discovery + the commerce layer); one link or nothing.
+    'coach.link': coachAdapter,
   }
 }
 

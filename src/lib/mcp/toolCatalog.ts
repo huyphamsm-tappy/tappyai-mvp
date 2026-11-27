@@ -15,7 +15,8 @@ import { CONNECTOR_TOOLS, type ToolName } from './connectorContract'
 import { TOOL_TEXT } from './tappyProfile'
 
 // v1.2 (22/11/2026): DESCRIPTIONS ONLY (what Tappy has that a general AI does not: tappyProfile.ts). No field, bound or type changed, so it stays within major version 1.
-export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.2'
+// v1.3 (27/11/2026): ADDS the check_scam tool (Scam Shield's link check). A new tool changes no existing field, bound or type, so it stays within major version 1.
+export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.3'
 
 export type CatalogToolName = ToolName | 'create_itinerary_job' | 'get_itinerary_job_status' | 'get_itinerary_job_result' | 'cancel_itinerary_job'
 export type ExecutionMode = 'SYNC' | 'ASYNC' | 'JOB_CONTROL'
@@ -89,6 +90,22 @@ const itineraryFields: Fields = {
   currency: O(str(3, 'ISO 4217 display currency.', { pattern: '^[A-Z]{3}$' })),
 }
 const jobIdField: Fields = { job_id: R(str(64, 'The job_id returned when the job was created.', { pattern: JOB_ID })) }
+/** Deals and clips take a plain ask, an optional limit and a language: no location, no author, no file. */
+const dataFields = (what: string, maxResults: number): Fields => ({
+  query: R(str(200, what)),
+  preferred_language: O(str(2, 'Answer language of the result labels.', { enum: ['vi', 'en'] })),
+  limit: O({ kind: 'integer', min: 1, max: maxResults, description: `How many results, at most ${maxResults}. Default 5.` }),
+})
+const coachFields: Fields = {
+  origin: R(str(80, 'The place the user leaves from, in Vietnam, as they named it, for example Sài Gòn or Hà Nội.')),
+  destination: R(str(80, 'The place the user is going to, in Vietnam, as they named it, for example Đà Lạt.')),
+  depart_date: O(str(10, 'Day of travel, YYYY-MM-DD. Leave it out if the user did not say; the result states which day its link is for.', { pattern: DATE })),
+  preferred_language: O(str(2, 'Answer language of the result labels.', { enum: ['vi', 'en'] })),
+}
+const scamFields: Fields = {
+  url: R(str(2048, 'The website link to check, exactly as the user received it (a bare domain such as example.vn is fine). Never an address on a private network.')),
+  preferred_language: O(str(2, 'Language of the verdict text.', { enum: ['vi', 'en'] })),
+}
 
 // ── output schemas (connector doc §14.1, §13.6) ──────────────────────────────────────────────────────────────────────────
 
@@ -98,6 +115,13 @@ const N = { type: 'number' } as const
 export const DTO_FIELD_TYPES: Readonly<Record<string, Record<string, unknown>>> = Object.freeze({
   id: S, name: S, title: S, category: S, address: S, district: S, city: S, rating: N, priceLevel: S, openNow: { type: 'boolean' }, distanceMeters: N, url: S,
   cuisine: S, priceRange: S, openingHours: S, ticketPrice: { anyOf: [N, S] }, price: { anyOf: [N, S] }, currency: S, merchant: S, pricePerNight: N, stars: N,
+  // check_scam
+  target: S, verdict: { type: 'string', enum: ['familiar', 'suspicious', 'unrecognized'] }, verdictTitle: S, summary: S, signals: { type: 'array', maxItems: 6, items: S },
+  resemblesBrand: S, officialSite: S, officialHotline: S, nextSteps: { type: 'array', maxItems: 4, items: S },
+  // search_deals / search_clips
+  partner: S, description: S, discount: S, voucherCode: S, endsAt: S, caption: S, thumbnail: S, likes: N, comments: N, createdAt: S,
+  // search_coach
+  route: S, departDate: S,
 })
 const rowSchema = (fields: readonly string[]) => ({ type: 'object', properties: Object.fromEntries(fields.map(f => [f, DTO_FIELD_TYPES[f] ?? { type: 'null' }])), additionalProperties: false })
 const objectOf = (properties: Record<string, unknown>, required: string[]) => ({ type: 'object', properties, required, additionalProperties: false })
@@ -163,6 +187,10 @@ export const CATALOG: Readonly<Record<CatalogToolName, CatalogTool>> = Object.fr
     check_in: O(str(10, 'Check-in date, YYYY-MM-DD.', { pattern: DATE })), check_out: O(str(10, 'Check-out date, YYYY-MM-DD.', { pattern: DATE })),
   }),
   search_attractions: search('search_attractions', 'Search attractions', TOOL_TEXT.search_attractions),
+  check_scam: def('check_scam', { title: 'Check a link for scams', description: TOOL_TEXT.check_scam, fields: scamFields, annotations: CONNECTOR_TOOLS.check_scam.annotations, mode: 'SYNC', deadlineMs: SYNC_DEADLINE_MS, contract: 'check_scam' }),
+  search_deals: def('search_deals', { title: 'Search partner deals', description: TOOL_TEXT.search_deals, fields: dataFields('A partner or a kind of offer, for example Lazada, Grab, hotels or shopping. A general ask such as "deals" lists what is on now.', CONNECTOR_TOOLS.search_deals.maxResults), annotations: CONNECTOR_TOOLS.search_deals.annotations, mode: 'SYNC', deadlineMs: SYNC_DEADLINE_MS, contract: 'search_deals' }),
+  search_clips: def('search_clips', { title: 'Search Tappy clips', description: TOOL_TEXT.search_clips, fields: dataFields('A dish, place or topic to find in public clips, in the user\'s own words, for example pho Ha Noi.', CONNECTOR_TOOLS.search_clips.maxResults), annotations: CONNECTOR_TOOLS.search_clips.annotations, mode: 'SYNC', deadlineMs: SYNC_DEADLINE_MS, contract: 'search_clips' }),
+  search_coach: def('search_coach', { title: 'Find a coach booking page', description: TOOL_TEXT.search_coach, fields: coachFields, annotations: CONNECTOR_TOOLS.search_coach.annotations, mode: 'SYNC', deadlineMs: SYNC_DEADLINE_MS, contract: 'search_coach' }),
   create_itinerary: def('create_itinerary', { title: 'Create itinerary', description: ITINERARY_DESCRIPTION, fields: itineraryFields, annotations: CONNECTOR_TOOLS.create_itinerary.annotations, mode: 'ASYNC', deadlineMs: CONTROL_DEADLINE_MS, contract: 'create_itinerary' }),
   create_itinerary_job: def('create_itinerary_job', { title: 'Create itinerary job', description: ITINERARY_DESCRIPTION, fields: itineraryFields, annotations: CONNECTOR_TOOLS.create_itinerary.annotations, mode: 'ASYNC', deadlineMs: CONTROL_DEADLINE_MS, contract: 'create_itinerary' }),
   get_itinerary_job_status: def('get_itinerary_job_status', { title: 'Itinerary job status', description: 'Reads the status of an itinerary job you created. Read-only.', fields: jobIdField, annotations: CONTROL_READ, mode: 'JOB_CONTROL', deadlineMs: CONTROL_DEADLINE_MS, contract: 'create_itinerary' }),

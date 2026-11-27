@@ -12,7 +12,7 @@ import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
 import { admitToolCall, connectorLocation, shapeResult, type VerifiedClaims } from './connectorContract'
 import { admissionToCode, toolError, RPC, type GatewayErrorCode } from './gatewayErrors'
 import { catalogTool, isJobTool, listTools, parseArgs, type CatalogTool } from './toolCatalog'
-import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, type SearchToolName, type ServiceAdapters } from './serviceMap'
+import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, mapScamRow, type SearchToolName, type ServiceAdapters } from './serviceMap'
 import { TOOL_RESERVE_USD, type SpendPool } from './spendPool'
 import { dispatchPaid } from './dispatch'
 import { buildTrackedLink } from './attribution'
@@ -211,8 +211,39 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     if (!parsed.ok) return fail('INVALID_INPUT')
     const args = parsed.value
 
-    if (t.mode === 'SYNC') return search(t, args)
+    if (t.mode === 'SYNC') return t.name === 'check_scam' ? scam(t, args) : search(t, args)
     return job(t, args)
+  }
+
+  /**
+   * check_scam (27/11/2026): Scam Shield's link check. No location, no market gate, no LLM. The same paid-call discipline as a search: reserve, call, settle. The row carries the HOST that was checked and
+   * the public verdict (never "safe"); NO tracked redirect is ever built for it (the checked link may be the malicious one), and an unwired or failing provider is reported without its details.
+   */
+  async function scam(t: CatalogTool, args: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const adapter = deps.adapters['scam.check']
+    if (!adapter) return fail('PROVIDER_UNAVAILABLE')
+    const url = typeof args.url === 'string' ? args.url : ''
+    const verdict = deps.abuse.observe(claims.principalId, { tool: t.name, query: url })
+    if (verdict.level === 'high') return fail('ABUSE_RESTRICTED', { retryable: true })
+
+    const estimate = TOOL_RESERVE_USD[t.contract]
+    const limits = (deps.profileLimits ?? limitsFor)(claims.host)
+    const lang = (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en'
+    const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call: { query: url, lang, limit: 1 }, deadlineMs: Math.min(deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, limits.serverDeadlineMs), signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
+    if (r.kind === 'refused') return (r.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: r.reason === 'budget_exceeded' }))
+    meta.estimatedCostUsd = estimate
+    if (r.kind === 'cancelled_before') return fail('DEADLINE_EXCEEDED')
+    if (r.kind !== 'ok') return (r.kind === 'error' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('DEADLINE_EXCEEDED', { retryable: true }))
+
+    const mapped = r.output.rows.map(row => mapScamRow(row)).filter((x): x is Record<string, unknown> => x !== null).slice(0, 1)
+    if (mapped.length === 0) return fail('INVALID_INPUT') // the check refused this link (private address, unparseable): nothing about why is said
+    const shaped = trimToBytes(shapeResult(t.contract, mapped), limits.maxResponseBytes)
+    meta.status = 'success'; meta.resultCount = shaped.rows.length; meta.partial = shaped.partial; meta.market = 'vn'; meta.contextSource = 'service_default'
+    return success({
+      status: shaped.partial ? 'partial' : 'success',
+      query_context: { market: 'vn', language: lang, context_source: 'service_default', context_confidence: 'client_supplied', location_precision: 'none', needs_clarification: false },
+      results: shaped.rows, warnings: shaped.partial ? ['Some results were omitted to fit the response size limit.'] : [], next_action: null,
+    })
   }
 
   async function search(t: CatalogTool, args: Record<string, unknown>): Promise<Record<string, unknown>> {
@@ -220,7 +251,9 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     const adapter = entry ? deps.adapters[entry.service] : null
     if (!entry || !adapter) return fail('PROVIDER_UNAVAILABLE') // unwired: no key, no integration yet. Nothing is reserved.
 
-    const ctx = resolveContext(args, entry.needsLocation)
+    // search_coach names two PLACES (origin, destination): they are the question, not a market to look up, and Vexere's coaches are Vietnamese by construction. Reading `destination` as a location would refuse
+    // every place the city list does not know (a small town, a district); the other tools keep resolving their market from what the person named.
+    const ctx = resolveContext(t.name === 'search_coach' ? {} : args, entry.needsLocation)
     meta.market = ctx.marketId; meta.contextSource = ctx.source
     const gate = deps.market ?? ((q: GateQuery) => evaluateGate(q, DEFAULT_REGISTRY))
     const mErr = marketError(ctx, entry.vertical, gate)
@@ -228,7 +261,8 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
 
     const lat = typeof args.latitude === 'number' ? args.latitude : undefined
     const lng = typeof args.longitude === 'number' ? args.longitude : undefined
-    const verdict = deps.abuse.observe(claims.principalId, { lat, lng, tool: t.name, query: typeof args.query === 'string' ? args.query : undefined })
+    const askText = typeof args.query === 'string' ? args.query : [args.origin, args.destination].filter((x): x is string => typeof x === 'string').join(' ') || undefined
+    const verdict = deps.abuse.observe(claims.principalId, { lat, lng, tool: t.name, query: askText })
     if (verdict.level === 'high') return fail('ABUSE_RESTRICTED', { retryable: true })
 
     const requested = Math.min(typeof args.limit === 'number' ? args.limit : DEFAULT_LIMIT, 100)
@@ -237,7 +271,8 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
 
     const estimate = TOOL_RESERVE_USD[t.contract]
     const limits = (deps.profileLimits ?? limitsFor)(claims.host)
-    const call = { query: args.query as string, location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined }
+    // search_coach has no free-text query: its two places are the ask (and the abuse key above); every other field is optional and only copied when it is a string
+    const call = { origin: typeof args.origin === 'string' ? args.origin : undefined, destination: typeof args.destination === 'string' ? args.destination : undefined, departDate: typeof args.depart_date === 'string' ? args.depart_date : undefined, query: askText ?? '', location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined }
     const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call, deadlineMs: Math.min(deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, limits.serverDeadlineMs), signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
     if (r.kind === 'refused') return (r.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: r.reason === 'budget_exceeded' }))
     meta.estimatedCostUsd = estimate
