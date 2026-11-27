@@ -13,6 +13,7 @@ final class MainThreadStallWatch: @unchecked Sendable {
     /// Starts watching (nothing happens when it is already watching).
     func start(context: @escaping @Sendable () -> String = { "" }) {
         lock.lock(); defer { lock.unlock() }
+        stopGeneration += 1 // a new turn cancels a stop that was waiting
         guard task == nil else { return }
         task = Task.detached(priority: .utility) {
             while !Task.isCancelled {
@@ -35,9 +36,32 @@ final class MainThreadStallWatch: @unchecked Sendable {
 
     func stop() {
         lock.lock()
+        stopGeneration += 1
         task?.cancel()
         task = nil
         lock.unlock()
+    }
+
+    private var stopGeneration = 0
+
+    /// Keeps watching for a while after the turn ended: the final drawing of a finished answer (cards, follow-ups) happens AFTER the stream is
+    /// done, and a hang there left no line because the watch had already stopped (diagnostics 27/11 build 293: the stream finished, then silence).
+    /// A turn that starts meanwhile cancels the pending stop.
+    func stopLater(after seconds: Double) {
+        lock.lock()
+        stopGeneration += 1
+        let generation = stopGeneration
+        lock.unlock()
+        Task.detached { [weak self] in
+            try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            guard let self else { return }
+            self.lock.lock()
+            if self.stopGeneration == generation {
+                self.task?.cancel()
+                self.task = nil
+            }
+            self.lock.unlock()
+        }
     }
 }
 

@@ -236,6 +236,9 @@ struct ChatMessageList: View {
                     withAnimation(.easeOut(duration: 0.2)) { proxy.scrollTo("bottom", anchor: .bottom) }
                 }
             }
+            .onChange(of: isStreaming) { streaming in
+                DiagnosticSnapshot.shared.record("chat list: streaming=\(streaming), messages=\(messages.count)")
+            }
             .scrollDismissesKeyboard(.interactively)
             // The parse throttle holds back words that arrived inside its interval; when the tokens pause, draw once more so they show.
             .task(id: messages.last?.content.utf8.count ?? 0) { @MainActor in

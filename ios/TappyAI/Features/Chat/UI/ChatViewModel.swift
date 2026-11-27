@@ -1050,7 +1050,8 @@ final class ChatViewModel: AppObservableObject {
         thinkTimer?.cancel()
         thinkTimer = nil
         thinkHintIndex = 0
-        stallWatch.stop()
+        // Not stopped at once: the finished answer is drawn after the stream ends, and a hang there must leave a line too.
+        stallWatch.stopLater(after: 90)
     }
 
     private let stallWatch = MainThreadStallWatch()
