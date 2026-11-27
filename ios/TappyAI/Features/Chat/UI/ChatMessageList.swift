@@ -134,6 +134,7 @@ struct ChatMessageList: View {
                                 placesMapsURL: msg.livePlaces?.mapsSearchUrl,
                                 placesShown: msg.livePlaces?.shown,
                                 placesDomain: msg.livePlaces?.domain,
+                                hasRawText: !msg.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 media: parsed.media,
                                 isLastMessage: isLast,
@@ -381,6 +382,8 @@ private struct AssistantBubble: View {
     var placesShown: Int? = nil
     /// The live decision's domain («hotel», «food», ...): it names the section of a trip answer («Gợi ý chỗ ở»).
     var placesDomain: String? = nil
+    /// The reply has text on the wire (before the markers are removed); with nothing visible left, the message says it cannot be shown.
+    var hasRawText = false
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     /// The page of a tapped link that opens in the quick-read sheet (web LinkDrawer); nil when no sheet is open.
@@ -419,7 +422,9 @@ private struct AssistantBubble: View {
                                      onOpenLink: { UIApplication.shared.open($0) })
                 }
 
-                if research != nil, !isStreaming, !content.isEmpty {
+                if isUnreadable {
+                    UnreadableMessageView(onRetry: onRegenerate, onCopy: onCopy)
+                } else if research != nil, !isStreaming, !content.isEmpty {
                     // web: a finished research report shows as a summary card; the full text opens from it
                     ReportSummaryCard(title: research?.title ?? "", sourceCount: research?.sources ?? 0) { showFullReport = true }
                 } else if let parts = articleParts {
@@ -603,6 +608,14 @@ private struct AssistantBubble: View {
 
     private var attributedContent: AttributedString {
         ContentParser.renderMarkdown(content)
+    }
+
+    /// Layout step 2 (spec §D): a reply that has text on the wire but nothing the phone can show (every part of it is a marker or a block that
+    /// draws nothing) says so, with «Thử lại» and «Sao chép», instead of leaving an empty bubble. One message failing never breaks the others.
+    private var isUnreadable: Bool {
+        !isStreaming && hasRawText && content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && plan == nil && places.isEmpty && presentation == nil && research == nil && media.isEmpty
+            && safetyCards.isEmpty && shopping == nil && images.isEmpty && docMedia.isEmpty
     }
 
     /// The header of the places inside a trip answer, by what the decision is about; nil for a domain the app has no word for.

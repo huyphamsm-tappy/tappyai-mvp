@@ -10,8 +10,28 @@ struct MarkdownBlocksView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
-                MarkdownBlockView(block: block)
+            ForEach(Array(MarkdownPresentation.items(blocks).enumerated()), id: \.offset) { _, item in
+                switch item {
+                case .block(let block):
+                    MarkdownBlockView(block: block)
+                case .dataBox(let title, let rows, let caption):
+                    // Data box (spec §B): the title above, the grid that scrolls sideways, the caption below.
+                    VStack(alignment: .leading, spacing: Spacing.xxs) {
+                        if let title {
+                            Text(ContentParser.renderMarkdown(title))
+                                .font(TappyFont.bodyEmphasis)
+                                .foregroundStyle(TappyColor.textPrimary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        MarkdownTableView(rows: rows)
+                        if let caption {
+                            Text(ContentParser.renderMarkdown(caption))
+                                .font(TappyFont.footnote)
+                                .foregroundStyle(TappyColor.textSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

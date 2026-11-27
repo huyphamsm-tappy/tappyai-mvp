@@ -33093,6 +33093,27 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Tải câu trả lời" } }
       }
     },
+    "msg.unreadable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This message cannot be shown yet." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn này chưa hiển thị được." } }
+      }
+    },
+    "msg.unreadable.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Try again" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thử lại" } }
+      }
+    },
+    "msg.unreadable.copy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Copy" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Sao chép" } }
+      }
+    },
     "trip.seeMore": {
       "extractionState": "manual",
       "localizations": {
