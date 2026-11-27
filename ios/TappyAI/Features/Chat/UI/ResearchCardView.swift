@@ -12,6 +12,8 @@ struct ResearchCardView: View {
     /// "vi" or "en": the language the saved file's figures and captions are written in.
     var lang: String = "en"
     var onOpenLink: (URL) -> Void = { _ in }
+    /// «Thử lại» on a research that failed: asks the answer again (the reply's own retry).
+    var onRetry: (() -> Void)? = nil
 
     @State private var exporting = false
     @State private var document = ReportFileDocument()
@@ -46,6 +48,13 @@ struct ResearchCardView: View {
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
+                if let onRetry {
+                    Button(action: onRetry) {
+                        AnswerChip(text: NSLocalizedString("chat.research.retry", comment: ""), symbol: "arrow.counterclockwise")
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("research-retry")
+                }
             }
 
             if !status.links.isEmpty {

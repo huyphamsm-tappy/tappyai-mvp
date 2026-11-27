@@ -422,7 +422,8 @@ private struct AssistantBubble: View {
                 // Deep Research: the card above its report (web: the card before the message content)
                 if let research {
                     ResearchCardView(status: research, report: isStreaming ? nil : content, charts: charts, lang: chartLang,
-                                     onOpenLink: { UIApplication.shared.open($0) })
+                                     onOpenLink: { UIApplication.shared.open($0) },
+                                     onRetry: onRegenerate)
                 }
 
                 if isUnreadable {

@@ -33114,6 +33114,20 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Sao chép" } }
       }
     },
+    "chat.research.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Try again" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thử lại" } }
+      }
+    },
+    "chat.report.toc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Contents" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mục lục" } }
+      }
+    },
     "chat.report.fallbackTitle": {
       "extractionState": "manual",
       "localizations": {

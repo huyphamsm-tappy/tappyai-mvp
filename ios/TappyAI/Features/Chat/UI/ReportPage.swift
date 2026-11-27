@@ -146,6 +146,18 @@ struct ReportPageSheet: View {
     private var contentTab: some View {
         let sections = ResearchReportModel.sections(report)
         return VStack(alignment: .leading, spacing: Spacing.sm) {
+            // The contents: the report's own section titles, in order (spec §3 «mục lục từ ## của báo cáo»).
+            if sections.count > 1 {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("chat.report.toc").font(TappyFont.footnote.weight(.semibold)).foregroundStyle(AnswerStyle.secondary)
+                    ForEach(Array(sections.enumerated()), id: \.offset) { i, section in
+                        Text(verbatim: "\(i + 1). \(section.title)").font(TappyFont.footnote).foregroundStyle(AnswerStyle.text)
+                    }
+                }
+                .padding(Spacing.sm)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .answerSurface(radius: AnswerStyle.chipRadius)
+            }
             ForEach(Array(sections.enumerated()), id: \.offset) { _, section in
                 AnswerAccordion(title: section.title, symbol: "text.alignleft") {
                     MarkdownBlocksView(blocks: MarkdownBlocks.parse(section.body))
