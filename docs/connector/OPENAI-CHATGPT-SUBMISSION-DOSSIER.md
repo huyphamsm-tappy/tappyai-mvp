@@ -16,7 +16,7 @@ Where: OpenAI developer portal (plugin submission; apps are now submitted as plu
 | URLs (all four, HTTPS) | website, support, privacy policy, terms of service | `https://www.tappyai.com`, `https://www.tappyai.com/support`, `https://www.tappyai.com/privacy`, `https://www.tappyai.com/terms` (confirm each is live and in English too) |
 | Logo | PNG/JPEG/WebP/SVG, square, ≥ 48 px, ≤ 5 MiB | ✅ `public/branding/otter-logo.png` (512×512); owner confirms |
 | Screenshots | The three pages give no spec | 🚧 ask the portal; likely stills of ChatGPT answers using the connector |
-| Test cases | 5 positive (prompt, tools triggered, expected behaviour), 3 negative; pass on ChatGPT web and mobile; demo video URL | 🚧 to write after the four untested tools are run on production (see the Anthropic dossier); demo video is the owner's |
+| Test cases | 5 positive (prompt, tools triggered, expected behaviour), 3 negative; pass on ChatGPT web and mobile; demo video URL | 🚧 to write now that all nine tools have run on production (see the Anthropic dossier); demo video is the owner's |
 | Reviewer account | Demo account with sample data, **no MFA, no email/SMS code, no magic link**, must not expire; entered in the dashboard, never in the package | 🚧 owner creates a dedicated Tappy account (email + password) and confirms sign-in works without a code from outside the company network |
 | Tool annotations | readOnly/destructive/openWorld set explicitly and true to behaviour; `openWorldHint: true` for public or open-ended entities | 🚧 **check:** `src/lib/mcp/toolCatalog.ts` sets `openWorldHint: false` on the job-control tools; the nine launch tools must be reviewed one by one (places, hotels, shopping, deals, clips, coach, scam check read public, open-ended data, so `true` is the honest value) before any submission |
 | Tool output | Only data needed for the request; no internal ids, timestamps, trace ids | 🚧 audit each of the nine tool results against this (the connector page already says logs hold no question text) |
@@ -36,5 +36,5 @@ OpenAI's guidelines are stricter than Anthropic's on commerce. From the pages re
 ## 3. Steps once the owner has decided
 
 1. Owner: D4 (entity, verification), which tools to submit to ChatGPT, publication countries, reviewer account, demo video.
-2. Em: finish the four untested tools on production (blocked while the owner's Claude connector is disconnected), review the annotations and tool output of every tool to be submitted, build the challenge route and, if chosen, the per-host tool subset; write the five positive and three negative test cases.
+2. Em: (the four formerly untested tools were run on production on 28/11/2026, all fine) review the annotations and tool output of every tool to be submitted, build the challenge route and, if chosen, the per-host tool subset; write the five positive and three negative test cases.
 3. Owner submits in the portal; em prepares the field values above ready to paste.
