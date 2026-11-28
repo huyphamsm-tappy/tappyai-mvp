@@ -42,6 +42,10 @@ enum AppError: Error, Equatable {
         /// backend 403 from the 18+ gate (`age_declaration_required` | `age_verification_required`
         /// | `age_ineligible`); `message` is the server's localized sentence, when present.
         case ageGate(code: String, message: String?)
+        /// backend 401 `login_required` (no session) or 403 `account_required` (an anonymous guest session) on a route the web closed
+        /// to guests (28/11): only chatting with Tappy needs no account. The remedy is the sign-in screen, then the person comes back
+        /// to the screen they were on. `message` is the server's sentence in the request language.
+        case accountRequired(message: String?)
     }
 
     /// Whether the UI should offer a "Retry" affordance (see docs/ios/06 error states).
@@ -51,4 +55,9 @@ enum AppError: Error, Equatable {
         case .authentication, .validation, .cancellation: return false
         }
     }
+}
+
+extension Notification.Name {
+    /// Posted when a route closed to guests answered a guest (`AppError.AuthFailure.accountRequired`); the shell offers the sign-in screen.
+    static let accountRequired = Notification.Name("tappy.accountRequired")
 }

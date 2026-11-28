@@ -22,7 +22,7 @@ final class SubscriptionPriceTests: XCTestCase {
 
     func testSalePlansAreTheWebsFiveInOrder() {
         XCTAssertEqual(ProductCatalog.saleProductIds,
-                       ["tappy_pip_1w", "tappy_momo_1m", "tappy_coco_3m", "tappy_promax_1m", "tappy_promax_3m"])
+                       ["tappy_pip_1w", "tappy_momo_1m", "tappy_promax_1m", "tappy_coco_3m", "tappy_promax_3m"])
         // Milo and Sunny are not sold any more.
         XCTAssertFalse(ProductCatalog.saleProductIds.contains("tappy_milo_6m"))
         XCTAssertFalse(ProductCatalog.saleProductIds.contains("tappy_sunny_12m"))

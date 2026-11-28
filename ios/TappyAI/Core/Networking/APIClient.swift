@@ -97,7 +97,7 @@ final class URLSessionAPIClient: APIClient {
             if let retried = await auth.retryAfterUnauthorized(request) {
                 return try await execute(retried, endpoint: endpoint, didRetryAuth: true, attempt: attempt)
             }
-            throw Self.mapHTTP(status: 401, data: data)
+            throw Self.announceAccountRequired(Self.mapHTTP(status: 401, data: data), endpoint: endpoint)
 
         default:
             if retry.shouldRetry(status: http.statusCode, attempt: attempt, method: endpoint.method),
@@ -108,8 +108,19 @@ final class URLSessionAPIClient: APIClient {
                 try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
                 return try await execute(request, endpoint: endpoint, didRetryAuth: didRetryAuth, attempt: attempt + 1)
             }
-            throw Self.mapHTTP(status: http.statusCode, data: data)
+            throw Self.announceAccountRequired(Self.mapHTTP(status: http.statusCode, data: data), endpoint: endpoint)
         }
+    }
+
+    /// Reads a guest that touches a route closed to guests: the shell then offers the sign-in screen over whatever is on screen.
+    /// A READ is announced only for the screens a person opens on purpose (rates, bookings, price watch, people search, integrations);
+    /// any other read may be a background load, which must not pop a sign-in screen. Returns the error unchanged.
+    static func announceAccountRequired(_ error: AppError, endpoint: Endpoint) -> AppError {
+        guard case .authentication(.accountRequired) = error else { return error }
+        let opened = ["/api/rates", "/api/bookings", "/api/price-watch", "/api/users/search", "/api/integrations"]
+        if endpoint.method == .get, !opened.contains(where: { endpoint.path.hasPrefix($0) }) { return error }
+        NotificationCenter.default.post(name: .accountRequired, object: nil)
+        return error
     }
 
     // MARK: - Error mapping
@@ -153,6 +164,9 @@ final class URLSessionAPIClient: APIClient {
         case (403, "ai_consent_required"): return .authentication(reason: .aiConsentRequired(message: serverMessage(from: data)))
         // Explore video: the clip-conditions gate keeps its code (a sheet follows, not a sign-in or an AI-consent message).
         case (403, "video_consent_required"): return .network(status: 403, code: "video_consent_required")
+        // Web 28/11: «everything but chatting with Tappy needs an account». `login_required` = no session, `account_required` = a guest session.
+        case (401, "login_required"), (403, "account_required"):
+            return .authentication(reason: .accountRequired(message: serverMessage(from: data)))
         case (400, _): return .validation(message: errorMessage(from: data) ?? "Invalid request")
         case (401, _): return .authentication(reason: .unauthenticated)
         case (403, let code?) where AgeGateCode(rawValue: code) != nil:

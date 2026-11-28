@@ -42,11 +42,12 @@ struct SmartTool: Identifiable {
     /// The registry, in the web's order (minus `suggest`, as on Android): safety FIRST, then scan
     /// (Web registry.ts:75-77, «Phase 7 closeout 8J: Cảnh báo lừa đảo comes before Quét»).
     private static let catalogue: [SmartTool] = [
-        SmartTool(id: .safety, symbol: "checkmark.shield.fill", hue: .blue, mascot: "TappyRecommendation", group: .daily),
-        SmartTool(id: .scan, symbol: "doc.text.viewfinder", hue: .blue, mascot: "TappySearching", group: .daily),
-        SmartTool(id: .translate, symbol: "character.bubble", hue: .indigo, mascot: "TappySpeaking", group: .daily),
-        SmartTool(id: .currency, symbol: "arrow.left.arrow.right", hue: .emerald, mascot: "TappyDeals", group: .daily),
-        SmartTool(id: .split, symbol: "divide", hue: .amber, mascot: "TappyWelcome", group: .daily),
+        // Web registry (28/11): everything but chatting with Tappy needs an account; safety, scan, translate, currency and split are `auth`.
+        SmartTool(id: .safety, symbol: "checkmark.shield.fill", hue: .blue, mascot: "TappyRecommendation", group: .daily, auth: true),
+        SmartTool(id: .scan, symbol: "doc.text.viewfinder", hue: .blue, mascot: "TappySearching", group: .daily, auth: true),
+        SmartTool(id: .translate, symbol: "character.bubble", hue: .indigo, mascot: "TappySpeaking", group: .daily, auth: true),
+        SmartTool(id: .currency, symbol: "arrow.left.arrow.right", hue: .emerald, mascot: "TappyDeals", group: .daily, auth: true),
+        SmartTool(id: .split, symbol: "divide", hue: .amber, mascot: "TappyWelcome", group: .daily, auth: true),
         SmartTool(id: .together, symbol: "person.3.fill", hue: .rose, mascot: "TappyFood", group: .discover, auth: true),
         SmartTool(id: .fortune, symbol: "sparkles", hue: .violet, mascot: "TappyThinking", group: .fun),
         SmartTool(id: .captions, symbol: "pencil.line", hue: .pink, mascot: "TappyPhone", group: .fun),
@@ -122,6 +123,7 @@ struct SmartToolCard: View {
     let onTap: () -> Void
 
     @Environment(\.colorScheme) private var scheme
+    @AppEnvironmentState private var session: SessionStore
 
     var body: some View {
         let dark = scheme == .dark
@@ -149,7 +151,8 @@ struct SmartToolCard: View {
                     Text(LocalizedStringKey(tool.descKey))
                         .font(.system(size: compact ? 12 : 13)).foregroundStyle(fgMuted)
                         .lineLimit(3).padding(.top, compact ? 4 : 6).padding(.trailing, compact ? 24 : 28)
-                    if tool.auth {
+                    // Only for a visitor, as on the web (`tool.auth && !signedIn`).
+                    if tool.auth && !session.state.isAuthenticated {
                         Label { Text("smartTools.authHint") } icon: { Image(systemName: "lock.fill") }
                             .font(.system(size: 11, weight: .medium)).foregroundStyle(fgMuted).padding(.top, 6)
                     }

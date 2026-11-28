@@ -51,6 +51,8 @@ enum ErrorPresenter {
             return message ?? L("chat.error.rateLimited", "You're sending requests too fast. Wait a moment and try again.")
         case .aiConsentRequired(let message):
             return message ?? L("error.auth.aiConsent", "Agree to share data with AI in the TappyAI iPhone app to use this feature.")
+        case .accountRequired(let message):
+            return message ?? L("error.auth.accountRequired", "Sign in to use this feature. You can still browse, and chatting with Tappy needs no account.")
         case .forbidden:        return L("error.auth.forbidden", "You don't have access to this.")
         default:                return L("error.auth.generic", "Please sign in to continue.")
         }

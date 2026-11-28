@@ -363,7 +363,8 @@ final class ScreenshotTests: XCTestCase {
 
     /// Scam Shield: emergency block, the 25-scenario library with its source block, one scenario.
     func testScamShieldLibrary() {
-        let app = launch(route: "scam", extra: ["-uitest-theme", "dark"])
+        // Signed in: since 28/11 a visitor sees Scam Shield inert under a sign-in banner (web AccountGate).
+        let app = launch(route: "scam", signedIn: true, extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "scam-call-113").waitForExistence(timeout: 40), "the fixed 113 block")
         shot("75-scam-check")
         app.buttons["Tình huống"].tap()
@@ -379,7 +380,7 @@ final class ScreenshotTests: XCTestCase {
     // MARK: - Scam Shield: message check + QR (same on web, Android, iOS)
 
     private func scamLaunch(_ extra: [String]) -> XCUIApplication {
-        launch(route: "scam", extra: ["-uitest-theme", "dark"] + extra)
+        launch(route: "scam", signedIn: true, extra: ["-uitest-theme", "dark"] + extra)
     }
 
     func testScamMessageMatchedAndNormal() {

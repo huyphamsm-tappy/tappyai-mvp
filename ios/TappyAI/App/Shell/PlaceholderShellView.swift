@@ -144,8 +144,16 @@ struct PlaceholderShellView: View {
             await notificationCenter.sessionChanged()
             if session.state.isAuthenticated { await deps.paymentProvider.retryUnfinished() }
         }
+        // The Free-plan note under answers needs to know the plan: read it when the signed-in person changes.
+        .task(id: session.state.isAuthenticated) {
+            await ProUpsellState.shared.refresh(api: deps.api, signedIn: session.state.isAuthenticated)
+        }
         .onReceive(NotificationCenter.default.publisher(for: AIConsentStore.didChange)) { _ in
             Task { await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated) }
+        }
+        // A guest touched a feature the web closed to guests (401 login_required / 403 account_required): sign in over the current screen.
+        .onReceive(NotificationCenter.default.publisher(for: .accountRequired)) { _ in
+            if !session.state.isAuthenticated { router.requestLoginForAccount() }
         }
         .modifier(AgeGateModifier(deps: deps, signedIn: session.state.isAuthenticated))
         .fullScreenCover(isPresented: $router.showLogin) {
@@ -180,20 +188,28 @@ struct PlaceholderShellView: View {
                     switch dest {
                     case .conversation(let id):
                         ChatView(deps: deps, conversationId: id)
+                    // Tools the web closed to visitors (28/11): shown inert under a sign-in banner until someone is signed in.
                     case .currency:
                         CurrencyView(deps: deps)
+                            .accountGated(signedIn: session.state.isAuthenticated) { router.requestLogin() }
                     case .translate:
                         // Hidden by ProductFlags.showTranslate (owner decision 2026-10-25): nothing to show.
-                        if ProductFlags.showTranslate { TranslateView(deps: deps) } else { EmptyView() }
+                        if ProductFlags.showTranslate {
+                            TranslateView(deps: deps)
+                                .accountGated(signedIn: session.state.isAuthenticated) { router.requestLogin() }
+                        } else { EmptyView() }
                     case .scan:
                         ScanView(deps: deps)
+                            .accountGated(signedIn: session.state.isAuthenticated) { router.requestLogin() }
                     case .scamShield:
                         ScamShieldView(deps: deps)
+                            .accountGated(signedIn: session.state.isAuthenticated) { router.requestLogin() }
                     case .vietContent:
                         // Hidden by ProductFlags.showVietContent (owner decision 2026-10-25): nothing to show.
                         if ProductFlags.showVietContent { VietContentView(deps: deps) } else { EmptyView() }
                     case .splitBill:
                         SplitBillView()
+                            .accountGated(signedIn: session.state.isAuthenticated) { router.requestLogin() }
                     case .fortune:
                         FortuneHubView(deps: deps)
                     case .recommendations:

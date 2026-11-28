@@ -25,8 +25,9 @@ enum ProductCatalog {
         // The names are the ones the web shows (planConfig labels): the stored id `pip` is the 7-day «MoMo» trial; «Pip» is the Free plan.
         SalePlan(productId: pipId, name: "MoMo", periodLabel: "7 ngày", isOneTime: true),
         SalePlan(productId: momoMonthlyId, name: "Coco", periodLabel: "1 tháng", isOneTime: false),
-        SalePlan(productId: "tappy_coco_3m", name: "Coco", periodLabel: "3 tháng", isOneTime: false),
+        // The web's order (28/11): MoMo, Coco 1 month, Tappy 1 month, Coco 3 months, Tappy 3 months.
         SalePlan(productId: "tappy_promax_1m", name: "Tappy", periodLabel: "1 tháng", isOneTime: false),
+        SalePlan(productId: "tappy_coco_3m", name: "Coco", periodLabel: "3 tháng", isOneTime: false),
         SalePlan(productId: "tappy_promax_3m", name: "Tappy", periodLabel: "3 tháng", isOneTime: false),
     ]
 

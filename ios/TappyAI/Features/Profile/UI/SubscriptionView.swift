@@ -29,12 +29,18 @@ struct SubscriptionView: View {
     // (Guideline 3.1.2: the subscription must describe what the person gets).
     // The Free card states no daily count (owner 28/11). These are KEYS, resolved by `Text` in the app's own language: a string
     // read with `NSLocalizedString` follows the phone's language, not the one chosen in the app (English screen, Vietnamese lines).
-    private let proFeatures = ["sub.pro.messages", "sub.pro.allAI"]
+    // The web's lines (28/11): the paid plans' allowance is stated as on the web.
+    private let proFeatures = ["sub.plan.quota", "sub.plan.allAi"]
 
-    /// The line under a plan's name, in the app language: `sub.plan.desc.7d` / `.1m` / `.3m`.
-    private func planDescriptionKey(_ productId: String) -> LocalizedStringKey {
-        if productId == ProductCatalog.pipId { return "sub.plan.desc.7d" }
-        return productId.hasSuffix("_3m") ? "sub.plan.desc.3m" : "sub.plan.desc.1m"
+    /// The tagline and the extra line under a plan's name, in the app language (the web's `sub.plan.*.tagline` / `.extra`).
+    private func planLines(_ productId: String) -> (tagline: LocalizedStringKey, extra: LocalizedStringKey, trial: Bool) {
+        switch productId {
+        case ProductCatalog.pipId: return ("sub.plan.pip.tagline", "sub.plan.pip.extra", true)
+        case "tappy_promax_1m": return ("sub.plan.promax1m.tagline", "sub.plan.promax1m.extra", false)
+        case "tappy_coco_3m": return ("sub.plan.coco.tagline", "sub.plan.coco.extra", false)
+        case "tappy_promax_3m": return ("sub.plan.promax3m.tagline", "sub.plan.promax3m.extra", false)
+        default: return ("sub.plan.momo.tagline", "sub.plan.momo.extra", false)
+        }
     }
 
     var body: some View {
@@ -84,9 +90,19 @@ struct SubscriptionView: View {
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)
                     if plan != nil {
-                        Text(planDescriptionKey(p.id))
+                        let lines = planLines(p.id)
+                        Text(lines.tagline)
                             .font(.system(size: 11))
-                            .foregroundStyle(.white.opacity(0.75))
+                            .foregroundStyle(.white.opacity(0.85))
+                        // The one-time pack says so on its card, as on the web: one trial per account, no auto-renewal.
+                        if lines.trial {
+                            Text("sub.trial.once")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundStyle(.white)
+                        }
+                        Text(lines.extra)
+                            .font(.system(size: 10))
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                 }
                 Spacer()
@@ -116,30 +132,42 @@ struct SubscriptionView: View {
 
     private var heroSection: some View {
         VStack(spacing: Spacing.sm) {
-            ZStack {
-                RoundedRectangle(cornerRadius: Radius.xl)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(red: 251/255, green: 191/255, blue: 36/255),
-                                     Color(red: 249/255, green: 115/255, blue: 22/255)],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 64, height: 64)
-                    .shadow(color: Color.orange.opacity(0.25), radius: 12, x: 0, y: 4)
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 28))
-                    .foregroundStyle(.white)
-            }
-            Text("TappyAI Pro")
-                .font(.system(size: 22, weight: .black))
+            // The web's hero: badge «Nâng cấp Tappy», «Khám phá nhiều hơn cùng Tappy», one sentence and three benefits.
+            Text("sub.hero.badge")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(TappyColor.primary)
+                .padding(.horizontal, 12).padding(.vertical, 5)
+                .background(TappyColor.primary.opacity(0.12), in: Capsule())
+            (Text("sub.hero.title") + Text(" ") + Text("sub.hero.with") + Text(" ") + Text(verbatim: "Tappy").foregroundColor(TappyColor.primary))
+                .font(.system(size: 24, weight: .black))
                 .foregroundStyle(TappyColor.textPrimary)
-            Text("sub.hero.desc")
+                .multilineTextAlignment(.center)
+            Text("sub.hero.body")
                 .font(.system(size: 13))
                 .foregroundStyle(TappyColor.textSecondary)
+                .multilineTextAlignment(.center)
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                benefitRow("sparkles", "sub.benefit.ai", "sub.benefit.ai.desc")
+                benefitRow("heart.fill", "sub.benefit.personal", "sub.benefit.personal.desc")
+                benefitRow("star.fill", "sub.benefit.full", "sub.benefit.full.desc")
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, Spacing.xs)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, Spacing.sm)
+    }
+
+    private func benefitRow(_ icon: String, _ title: LocalizedStringKey, _ desc: LocalizedStringKey) -> some View {
+        HStack(spacing: Spacing.sm) {
+            Image(systemName: icon).font(.system(size: 15)).foregroundStyle(TappyColor.primary)
+                .frame(width: 36, height: 36)
+                .background(TappyColor.primary.opacity(0.10), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            VStack(alignment: .leading, spacing: 0) {
+                Text(title).font(.system(size: 14, weight: .bold)).foregroundStyle(TappyColor.textPrimary)
+                Text(desc).font(.system(size: 12)).foregroundStyle(TappyColor.textSecondary)
+            }
+        }
     }
 
     // MARK: - Status Card
@@ -196,22 +224,24 @@ struct SubscriptionView: View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("sub.free")
+                    // The free tier is called Pip, as on the web (the paid 7-day pack is MoMo).
+                    Text("sub.freeTier.name")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text("sub.free.desc")
+                    Text("sub.freeTier.tagline")
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    Text(verbatim: "0đ")
-                        .font(.system(size: 22, weight: .black))
+                    Text("sub.price.free")
+                        .font(.system(size: 18, weight: .black))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text("sub.perMonth")
-                        .font(.system(size: 11))
-                        .foregroundStyle(TappyColor.textSecondary)
                 }
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                featureRow("sub.free.quota", tint: TappyColor.textSecondary)
+                featureRow("sub.free.most", tint: TappyColor.textSecondary)
             }
             // «Current plan» only while the account really is on Free. With ANY paid plan (App Store or bought
             // elsewhere) the Free card carries no such mark: it would contradict «You're on Pro».
@@ -250,13 +280,10 @@ struct SubscriptionView: View {
                             Image(systemName: "crown.fill")
                                 .font(.system(size: 12))
                                 .foregroundStyle(Color(red: 252/255, green: 211/255, blue: 77/255))
-                            Text("sub.pro")
+                            Text("sub.list.title")
                                 .font(.system(size: 15, weight: .bold))
                                 .foregroundStyle(.white)
                         }
-                        Text("sub.pro.desc")
-                            .font(.system(size: 11))
-                            .foregroundStyle(.white.opacity(0.7))
                     }
                     Spacer()
                     // No single price up here any more: each plan below carries its own, from the App Store.
@@ -316,6 +343,15 @@ struct SubscriptionView: View {
                     VStack(spacing: Spacing.xs) {
                         if !visiblePlans.isEmpty {
                             ForEach(visiblePlans, id: \.id) { p in planRow(p) }
+                            // MoMo is a one-time trial: said again under the list, as the web's payment note does.
+                            if visiblePlans.contains(where: { $0.id == ProductCatalog.pipId }) {
+                                Text("sub.trial.note")
+                                    .font(.system(size: 11))
+                                    .foregroundStyle(.white.opacity(0.85))
+                                    .multilineTextAlignment(.center)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.top, Spacing.xs)
+                            }
                         } else if productLoading {
                             HStack(spacing: Spacing.xs) {
                                 ProgressView().tint(.white)
@@ -573,6 +609,7 @@ struct SubscriptionView: View {
             let endpoint = Endpoint(path: "/api/subscription", method: .get, requiresAuth: true)
             let data = try await deps.api.send(endpoint)
             status = try ResponseDecoder.json.decode(SubscriptionStatusResponse.self, from: data)
+            if let status { ProUpsellState.shared.apply(isPro: status.isPro, signedIn: deps.session.state.isAuthenticated) }
             DiagnosticSnapshot.shared.record("Subscription status=success")
         } catch AppError.authentication {
             DiagnosticSnapshot.shared.record("Subscription status=error AppError.authentication", isError: true)

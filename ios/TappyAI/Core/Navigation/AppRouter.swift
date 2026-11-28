@@ -31,6 +31,14 @@ final class AppRouter: AppObservableObject {
     @AppPublished var loginCompleted = 0
 
     func requestLogin() { showLogin = true }
+
+    private var lastAccountPrompt = Date.distantPast
+    /// A guest touched something closed to guests: offer the sign-in screen over the current one (never twice within 20 s, never while it is up).
+    func requestLoginForAccount() {
+        guard !showLogin, Date().timeIntervalSince(lastAccountPrompt) > 20 else { return }
+        lastAccountPrompt = Date()
+        showLogin = true
+    }
     func loginFinished(signedIn: Bool) {
         showLogin = false
         if signedIn { loginCompleted += 1 }

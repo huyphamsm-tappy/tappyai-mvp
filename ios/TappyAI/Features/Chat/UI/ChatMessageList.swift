@@ -503,6 +503,11 @@ private struct AssistantBubble: View {
                         .readerLinks { readerLink = $0 }
                 }
 
+                // «Dùng gói Pro…» under a finished answer of a Free account, while the plans are on sale (web ProUpsellNote).
+                if !isStreaming, status == .complete {
+                    ProUpsellNote()
+                }
+
                 // The blocks the model declared: comparison table, subject cards, gallery, questions, booking (web `PresentationBlocks`).
                 // Drawn once the reply is complete; an older answer's questions send nothing.
                 if let presentation, !isStreaming {
