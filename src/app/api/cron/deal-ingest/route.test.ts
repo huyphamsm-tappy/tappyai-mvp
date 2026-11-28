@@ -7,11 +7,16 @@ const h = vi.hoisted(() => ({
   inserted: [] as unknown[],
   insertError: null as null | { message: string },
   oldIds: ['old1'] as string[],
+  diag: [] as Array<Record<string, unknown>>,
+  diagThrows: false,
 }))
 vi.mock('@/lib/security/cronAuth', () => ({ isAuthorizedCronRequest: () => h.authorized }))
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: () => ({
-    from: () => ({
+    from: (table: string) => table === 'cron_diagnostics' ? ({
+      insert: async (row: Record<string, unknown>) => { if (h.diagThrows) throw new Error('relation "cron_diagnostics" does not exist'); h.diag.push(row); return { error: null } },
+      delete: () => ({ lt: async () => ({ error: null }) }),
+    }) : ({
       select: () => ({ eq: () => ({ eq: async () => { h.calls.push('select-old'); return { data: h.oldIds.map(id => ({ id })), error: null } } }) }),
       insert: (rows: unknown[]) => ({ select: async () => { h.calls.push('insert'); h.inserted.push(...rows); return h.insertError ? { data: null, error: h.insertError } : { data: rows.map((_, i) => ({ id: `n${i}` })), error: null } } }),
       delete: () => ({ in: async () => { h.calls.push('delete-old'); return { error: null } } }),
@@ -70,6 +75,40 @@ describe('GET /api/cron/deal-ingest', () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ data: [] }), { status: 200 })))
     await call()
     expect(warn.mock.calls.some(c => String(c[0]).includes('tappyai_deal_ingest_empty'))).toBe(true)
+  })
+
+  it('keeps the shape of an empty answer in cron_diagnostics (the Vercel log lives about an hour), without the key, a code or a full link', async () => {
+    h.diag = []; h.diagThrows = false
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const odd = { id: 'q1', name: 'Voucher', aff_link: 'https://pub.example-affiliate.vn/deep/1?secret=ZZZ', coupons: [{ coupon_code: 'SECRETCODE' }], end_time: '2099-01-01' }
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ data: [odd] }), { status: 200 })))
+    await call()
+    const row = h.diag.find(r => r.partner === 'lazada')
+    expect(row).toMatchObject({ job: 'deal-ingest', kind: 'no_valid_offers' })
+    const text = JSON.stringify(row)
+    expect(text).toContain('link_host')
+    expect(text).toContain('pub.example-affiliate.vn')
+    expect(text).not.toContain('test-key'); expect(text).not.toContain('SECRETCODE'); expect(text).not.toContain('ZZZ')
+  })
+
+  it('records the HTTP status of a failed fetch', async () => {
+    h.diag = []; h.diagThrows = false
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('forbidden', { status: 403 })))
+    await call()
+    expect(h.diag.find(r => r.partner === 'lazada')).toMatchObject({ kind: 'fetch_failed', detail: { status: 403 } })
+  })
+
+  it('a missing diagnostics table never breaks the import', async () => {
+    h.diag = []; h.diagThrows = true
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ data: [goodOffer] }), { status: 200 })))
+    const res = await call()
+    expect(res.status).toBe(200)
+    expect(h.inserted.length).toBeGreaterThan(0)
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ data: [] }), { status: 200 })))
+    expect((await call()).status).toBe(200)
+    h.diagThrows = false
   })
 
   it('a failed insert deletes nothing', async () => {
