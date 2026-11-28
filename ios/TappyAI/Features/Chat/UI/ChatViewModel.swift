@@ -105,7 +105,10 @@ final class ChatViewModel: AppObservableObject {
     typealias DateOfBirthSaver = @Sendable (String) async throws -> DateOfBirthUpdateResponse
     /// Reads the account's `ageStatus` / `canCorrectAge` (`GET /api/profile`).
     typealias AgeStatusLoader = @Sendable () async throws -> DateOfBirthUpdateResponse
+    /// Records a signed-in account's one-button 18+ answer (`POST /api/age-declaration`) and returns the verdict read back from the server.
+    typealias AgeDeclarer = @Sendable (Bool) async throws -> DateOfBirthUpdateResponse
     private let saveDateOfBirth: DateOfBirthSaver?
+    private let declareAgeRequest: AgeDeclarer?
     private let loadAgeStatus: AgeStatusLoader?
     private let guestAge: GuestAgeStore
 
@@ -218,9 +221,11 @@ final class ChatViewModel: AppObservableObject {
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
          planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
          loadAgeStatus: AgeStatusLoader? = nil,
+         declareAge: AgeDeclarer? = nil,
          guestAge: GuestAgeStore = GuestAgeStore(),
          consent: AIConsentCoordinator? = nil) {
         self.consent = consent
+        self.declareAgeRequest = declareAge
         self.service = service
         self.session = session
         self.planShare = planShare
@@ -284,6 +289,25 @@ final class ChatViewModel: AppObservableObject {
         guard !isStreaming else { return }
         guestAge.save(value)
         retry()
+    }
+
+    /// The one-button 18+ screen (web 18/11/2026): a guest's answer rides on the next request as `18plus` / `under18` and the turn is resent;
+    /// an account's answer is recorded on the account and the server's verdict decides (eligible → resend, under 18 → the blocked state).
+    func declareAge(adult: Bool) async {
+        guard !ageSubmitting, !isStreaming else { return }
+        if isGuest {
+            declareGuestAge(adult ? GuestAgeDeclaration.adult : "under18")
+            return
+        }
+        guard let declareAgeRequest else {
+            ageFormError = NSLocalizedString("chat.age.error.failed", comment: "")
+            return
+        }
+        ageSubmitting = true
+        defer { ageSubmitting = false }
+        let result: Result<DateOfBirthUpdateResponse, Error>
+        do { result = .success(try await declareAgeRequest(adult)) } catch { result = .failure(error) }
+        apply(AgeCorrectionOutcome.from(result))
     }
 
     /// The signed-in user entered (or corrected) a date of birth: save it, then resend the turn if

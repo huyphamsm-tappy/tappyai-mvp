@@ -21,8 +21,7 @@ struct AgeGateModifier: ViewModifier {
                     blocked: blocked,
                     submitting: submitting,
                     formError: formError,
-                    onSubmit: { day, month, year in Task { await submit(day, month, year) } },
-                    onEdit: { blocked = false; formError = nil },
+                    onDeclare: { adult in Task { await declare(adult: adult) } },
                     onClose: { Task { await deps.authRepository.signOut() } }
                 )
             }
@@ -45,16 +44,13 @@ struct AgeGateModifier: ViewModifier {
         }
     }
 
-    private func submit(_ day: String, _ month: String, _ year: String) async {
+    /// The one-button answer (web 18/11/2026); the server's verdict is read back and decides.
+    private func declare(adult: Bool) async {
         guard !submitting else { return }
-        guard let iso = DateOfBirthInput.iso(day: day, month: month, year: year) else {
-            formError = NSLocalizedString("chat.age.error.invalid", comment: "")
-            return
-        }
         submitting = true
         defer { submitting = false }
         do {
-            let result = try await ProfileService(api: deps.api).updateDateOfBirth(iso)
+            let result = try await ProfileService(api: deps.api).declareAge(adult: adult)
             formError = nil
             apply(result)
         } catch {

@@ -57,8 +57,7 @@ struct RecommendationsView: View {
                 blocked: ageBlocked,
                 submitting: ageSubmitting,
                 formError: ageFormError,
-                onSubmit: { d, m, y in Task { await submitAge(day: d, month: m, year: y) } },
-                onEdit: { ageFormError = nil },
+                onDeclare: { adult in Task { await declareAge(adult: adult) } },
                 onClose: { ageScreen = false; router.pop(on: .home) }
             )
         }
@@ -344,22 +343,23 @@ struct RecommendationsView: View {
         loading = false
     }
 
-    private func submitAge(day: String, month: String, year: String) async {
+    /// The one-button 18+ answer (web 18/11/2026): a guest's answer is stored for the request header, an account's is recorded by the server.
+    private func declareAge(adult: Bool) async {
         guard !ageSubmitting else { return }
-        guard let iso = DateOfBirthInput.iso(day: day, month: month, year: year) else {
-            ageFormError = NSLocalizedString("chat.age.error.invalid", comment: "")
-            return
-        }
         ageSubmitting = true
         defer { ageSubmitting = false }
         if isGuest {
-            GuestAgeStore().save(iso)
-            ageScreen = false
-            await loadRecommendations()
+            GuestAgeStore().save(adult ? GuestAgeDeclaration.adult : "under18")
+            if adult {
+                ageScreen = false
+                await loadRecommendations()
+            } else {
+                ageBlocked = true
+            }
             return
         }
         let result: Result<DateOfBirthUpdateResponse, Error>
-        do { result = .success(try await ProfileService(api: deps.api).updateDateOfBirth(iso)) } catch { result = .failure(error) }
+        do { result = .success(try await ProfileService(api: deps.api).declareAge(adult: adult)) } catch { result = .failure(error) }
         switch AgeCorrectionOutcome.from(result) {
         case .resend:
             ageScreen = false

@@ -21,13 +21,9 @@ struct AgeCheckView: View {
     let blocked: Bool
     let submitting: Bool
     let formError: String?
-    let onSubmit: (_ day: String, _ month: String, _ year: String) -> Void
-    let onEdit: () -> Void
+    /// `true` = "I confirm I am 18 or older"; `false` = the quiet "I am under 18".
+    let onDeclare: (_ adult: Bool) -> Void
     let onClose: () -> Void
-
-    @State private var day = ""
-    @State private var month = ""
-    @State private var year = ""
 
     private static let bg = Color(hex: 0x070B18)
     private static let line = Color.white.opacity(0.10)
@@ -36,8 +32,6 @@ struct AgeCheckView: View {
         colors: [Color(hex: 0x60A5FA), Color(hex: 0xA78BFA)], startPoint: .leading, endPoint: .trailing)
     private static let ctaGradient = LinearGradient(
         colors: [Color(hex: 0x3B82F6), Color(hex: 0x8B5CF6)], startPoint: .leading, endPoint: .trailing)
-
-    private var canSubmit: Bool { !submitting && !day.isEmpty && !month.isEmpty && !year.isEmpty }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -107,32 +101,18 @@ struct AgeCheckView: View {
                     .font(.system(size: 26, weight: .black)).foregroundStyle(.white).multilineTextAlignment(.center)
                 Text("agecheck.desc").font(.system(size: 14)).foregroundStyle(Self.muted)
                     .multilineTextAlignment(.center).padding(.top, 10)
-                // Fixed shares (1 : 1 : 1.25, as web/Android): a `Menu` label sizes to its content,
-                // so without explicit widths the day/month boxes collapsed (CI screenshot 30/09).
-                GeometryReader { geo in
-                    let unit = (geo.size.width - 20) / 3.25
-                    HStack(alignment: .top, spacing: 10) {
-                        dateField("agecheck.day", value: $day, placeholder: "DD", options: (1...31).map { String(format: "%02d", $0) }, id: "age-day")
-                            .frame(width: unit)
-                        dateField("agecheck.month", value: $month, placeholder: "MM", options: (1...12).map { String(format: "%02d", $0) }, id: "age-month")
-                            .frame(width: unit)
-                        dateField("agecheck.year", value: $year, placeholder: "YYYY", options: yearOptions, id: "age-year")
-                            .frame(width: unit * 1.25)
-                    }
-                }
-                .frame(height: 84)
-                .padding(.top, 20)
+                // ONE question, ONE button (the web's 18/11/2026 owner decision): no date of birth. The server alone judges the answer.
                 if let formError {
                     Text(formError).font(.system(size: 13)).foregroundStyle(Color(hex: 0xF87171))
-                        .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 12)
+                        .frame(maxWidth: .infinity, alignment: .center).padding(.top, 16)
                 }
-                Button { onSubmit(day, month, year) } label: {
+                Button { onDeclare(true) } label: {
                     HStack(spacing: 8) {
                         if submitting {
                             ProgressView().tint(.white)
                             Text("agecheck.submitting")
                         } else {
-                            Text("agecheck.submit")
+                            Text("agecheck.confirm")
                             Image(systemName: "arrow.right")
                         }
                     }
@@ -140,12 +120,22 @@ struct AgeCheckView: View {
                     .frame(maxWidth: .infinity).padding(.vertical, 14)
                     .background(Self.ctaGradient)
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .opacity(canSubmit || submitting ? 1 : 0.6)
+                    .opacity(submitting ? 0.6 : 1)
                 }
                 .buttonStyle(.plain)
-                .disabled(!canSubmit)
-                .padding(.top, 16)
+                .disabled(submitting)
+                .padding(.top, 24)
                 .accessibilityIdentifier("age-submit")
+
+                // The quiet refusal: honest, one tap, deliberately not a second primary button.
+                Button { onDeclare(false) } label: {
+                    Text("agecheck.minor").font(.system(size: 14)).foregroundStyle(.white.opacity(0.45))
+                        .frame(maxWidth: .infinity).padding(.vertical, 10)
+                }
+                .buttonStyle(.plain)
+                .disabled(submitting)
+                .padding(.top, 4)
+                .accessibilityIdentifier("age-minor")
 
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: "lock.fill").font(.system(size: 14)).foregroundStyle(Color(hex: 0x93C5FD))
@@ -169,39 +159,6 @@ struct AgeCheckView: View {
         .background(Color.white.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 28, style: .continuous).stroke(Self.line, lineWidth: 1))
-    }
-
-    private var yearOptions: [String] {
-        let now = Calendar(identifier: .gregorian).component(.year, from: Date())
-        return stride(from: now, through: now - 100, by: -1).map(String.init)
-    }
-
-    private func dateField(_ label: LocalizedStringKey, value: Binding<String>, placeholder: String,
-                           options: [String], id: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(label).font(.system(size: 13, weight: .semibold)).foregroundStyle(.white.opacity(0.7)).lineLimit(1)
-            Menu {
-                ForEach(options, id: \.self) { o in
-                    Button(o) { value.wrappedValue = o; onEdit() }
-                }
-            } label: {
-                HStack {
-                    Text(value.wrappedValue.isEmpty ? placeholder : value.wrappedValue)
-                        .font(.system(size: 16))
-                        .lineLimit(1).minimumScaleFactor(0.7)
-                        .foregroundStyle(value.wrappedValue.isEmpty ? .white.opacity(0.35) : .white)
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.down").font(.system(size: 12)).foregroundStyle(.white.opacity(0.6))
-                }
-                .padding(.horizontal, 12).padding(.vertical, 13)
-                .frame(maxWidth: .infinity)
-                .background(Color.white.opacity(0.05))
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Self.line, lineWidth: 1))
-            }
-            .accessibilityIdentifier(id)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: - Intro / trust

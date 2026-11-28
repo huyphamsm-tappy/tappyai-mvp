@@ -24,16 +24,18 @@ struct SubscriptionView: View {
     @State private var restoreLoading = false
     @State private var restoreMessage: String?
 
-    // ONLY what the server really differs on: the daily AI allowance (Free 10, Pro 30) and AI features open to both.
+    // ONLY what the server really differs on: the daily AI allowance and AI features open to paid plans.
     // No priority, voice, memory, history or search promises: the backend has no such plan difference
     // (Guideline 3.1.2: the subscription must describe what the person gets).
-    private let freeFeatures = [
-        NSLocalizedString("sub.free.messages", comment: ""),
-    ]
-    private let proFeatures = [
-        NSLocalizedString("sub.pro.messages", comment: ""),
-        NSLocalizedString("sub.pro.allAI", comment: ""),
-    ]
+    // The Free card states no daily count (owner 28/11). These are KEYS, resolved by `Text` in the app's own language: a string
+    // read with `NSLocalizedString` follows the phone's language, not the one chosen in the app (English screen, Vietnamese lines).
+    private let proFeatures = ["sub.pro.messages", "sub.pro.allAI"]
+
+    /// The line under a plan's name, in the app language: `sub.plan.desc.7d` / `.1m` / `.3m`.
+    private func planDescriptionKey(_ productId: String) -> LocalizedStringKey {
+        if productId == ProductCatalog.pipId { return "sub.plan.desc.7d" }
+        return productId.hasSuffix("_3m") ? "sub.plan.desc.3m" : "sub.plan.desc.1m"
+    }
 
     var body: some View {
         ScrollView {
@@ -81,8 +83,8 @@ struct SubscriptionView: View {
                     Text(verbatim: plan?.name ?? p.displayName)
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)
-                    if let plan {
-                        Text(verbatim: plan.isOneTime ? "\(plan.periodLabel), mua một lần, không tự gia hạn" : "\(plan.periodLabel), tự gia hạn")
+                    if plan != nil {
+                        Text(planDescriptionKey(p.id))
                             .font(.system(size: 11))
                             .foregroundStyle(.white.opacity(0.75))
                     }
@@ -174,23 +176,8 @@ struct SubscriptionView: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
             .overlay(RoundedRectangle(cornerRadius: Radius.xl)
                 .stroke(Color(red: 253/255, green: 230/255, blue: 138/255), lineWidth: 1))
-        } else {
-            HStack(spacing: 0) {
-                Text(NSLocalizedString("sub.freeBanner.prefix", comment: ""))
-                    .font(.system(size: 13, weight: .medium))
-                Text("\(s.remaining) / \(s.freeDailyLimit)")
-                    .font(.system(size: 13, weight: .bold))
-                Text(NSLocalizedString("sub.freeBanner.suffix", comment: ""))
-                    .font(.system(size: 13, weight: .medium))
-            }
-            .foregroundStyle(Color(red: 29/255, green: 78/255, blue: 216/255))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(Spacing.md)
-            .background(Color(red: 239/255, green: 246/255, blue: 255/255))
-            .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
-            .overlay(RoundedRectangle(cornerRadius: Radius.xl)
-                .stroke(Color(red: 219/255, green: 234/255, blue: 254/255), lineWidth: 1))
         }
+        // A Free account gets no banner: the Free plan states no daily message count (owner 28/11).
     }
 
     // MARK: - Pricing Cards
@@ -224,11 +211,6 @@ struct SubscriptionView: View {
                     Text("sub.perMonth")
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
-                }
-            }
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(freeFeatures, id: \.self) { f in
-                    featureRow(f, tint: TappyColor.textSecondary)
                 }
             }
             // «Current plan» only while the account really is on Free. With ANY paid plan (App Store or bought
@@ -387,7 +369,7 @@ struct SubscriptionView: View {
     private func featureRow(_ text: String, tint: Color, textColor: Color = TappyColor.textPrimary) -> some View {
         HStack(spacing: Spacing.sm) {
             Image(systemName: "checkmark").font(.system(size: 11)).foregroundStyle(tint)
-            Text(text).font(.system(size: 13)).foregroundStyle(textColor)
+            Text(LocalizedStringKey(text)).font(.system(size: 13)).foregroundStyle(textColor)
         }
     }
 

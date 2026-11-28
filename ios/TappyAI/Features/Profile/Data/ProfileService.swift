@@ -54,6 +54,16 @@ struct ProfileService {
         return try await api.send(endpoint, as: DateOfBirthUpdateResponse.self)
     }
 
+    /// The one-button 18+ answer of a signed-in account (`POST /api/age-declaration {"confirm18":true}` or `{"under18":true}`, the web's
+    /// 18/11/2026 decision: no date of birth is asked). The route records the answer; the verdict is then READ BACK from the server
+    /// (`GET /api/profile`) because only the server decides eligibility.
+    func declareAge(adult: Bool) async throws -> DateOfBirthUpdateResponse {
+        let body = try JSONSerialization.data(withJSONObject: adult ? ["confirm18": true] : ["under18": true])
+        let endpoint = Endpoint(path: "/api/age-declaration", method: .post, body: body, requiresAuth: true)
+        _ = try await api.send(endpoint)
+        return try await fetchAgeStatus()
+    }
+
     /// The account's age status (`GET /api/profile` → `ageStatus`, `canCorrectAge`); the raw date of
     /// birth is never returned.
     func fetchAgeStatus() async throws -> DateOfBirthUpdateResponse {

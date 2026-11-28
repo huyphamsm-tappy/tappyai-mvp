@@ -37,6 +37,9 @@ struct ChatView: View {
             loadAgeStatus: { [api = deps.api] in
                 try await ProfileService(api: api).fetchAgeStatus()
             },
+            declareAge: { [api = deps.api] adult in
+                try await ProfileService(api: api).declareAge(adult: adult)
+            },
             consent: deps.aiConsent
         ))
     }
@@ -223,18 +226,7 @@ struct ChatView: View {
                 blocked: vm.isAgeBlocked,
                 submitting: vm.ageSubmitting,
                 formError: vm.ageFormError,
-                onSubmit: { d, m, y in
-                    if vm.isGuest {
-                        if let iso = DateOfBirthInput.iso(day: d, month: m, year: y) {
-                            vm.declareGuestAge(iso)
-                        } else {
-                            vm.ageFormError = NSLocalizedString("chat.age.error.invalid", comment: "")
-                        }
-                    } else {
-                        Task { await vm.submitDateOfBirth(day: d, month: m, year: y) }
-                    }
-                },
-                onEdit: { vm.clearAgeFormError() },
+                onDeclare: { adult in Task { await vm.declareAge(adult: adult) } },
                 onClose: { ageScreen = false }
             )
         }

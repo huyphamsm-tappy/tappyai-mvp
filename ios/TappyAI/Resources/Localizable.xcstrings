@@ -23213,6 +23213,57 @@
         }
       }
     },
+    "sub.plan.desc.7d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days, one-time purchase, does not renew"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 ngày, mua một lần, không tự gia hạn"
+          }
+        }
+      }
+    },
+    "sub.plan.desc.1m": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 month, auto-renews"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 tháng, tự gia hạn"
+          }
+        }
+      }
+    },
+    "sub.plan.desc.3m": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 months, auto-renews"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 tháng, tự gia hạn"
+          }
+        }
+      }
+    },
     "sub.pro.allAI": {
       "extractionState": "manual",
       "localizations": {
@@ -25570,13 +25621,47 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "TappyAI provides services and content for people aged 18 and over. Please tell us your date of birth so we can confirm you are old enough to use it."
+            "value": "TappyAI provides services and content for people aged 18 and over. Please confirm you are old enough to continue."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng cho chúng tôi biết ngày sinh để xác nhận bạn đủ tuổi sử dụng."
+            "value": "TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng xác nhận bạn đủ tuổi để tiếp tục."
+          }
+        }
+      }
+    },
+    "agecheck.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I confirm I am 18 or older"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi xác nhận mình đã đủ 18 tuổi"
+          }
+        }
+      }
+    },
+    "agecheck.minor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I am under 18"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi chưa đủ 18 tuổi"
           }
         }
       }
@@ -25672,13 +25757,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your date of birth is kept private"
+            "value": "Your confirmation is stored"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ngày sinh của bạn được giữ riêng tư"
+            "value": "Xác nhận của bạn được lưu lại"
           }
         }
       }
@@ -25689,13 +25774,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "We use this only to confirm you are 18 or over, and we never show your date of birth on your profile."
+            "value": "We store when you confirmed and which version of the Terms you saw. We do not ask for your date of birth and we never show this on your profile."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chúng tôi chỉ sử dụng thông tin này để xác nhận bạn đủ 18 tuổi và không hiển thị ngày sinh trên hồ sơ của bạn."
+            "value": "Chúng tôi lưu thời điểm bạn xác nhận và phiên bản Điều khoản bạn đã xem. Chúng tôi không hỏi ngày sinh và không hiển thị thông tin này trên hồ sơ của bạn."
           }
         }
       }
