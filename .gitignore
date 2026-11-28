@@ -18,6 +18,10 @@
 .DS_Store
 *.pem
 
+# python bytecode (the iOS UI-test stub server leaves one; it was tracked by mistake)
+__pycache__/
+*.pyc
+
 # debug
 npm-debug.log*
 yarn-debug.log*
