@@ -148,10 +148,22 @@ describe('the verdict still leaks nothing', () => {
     ['decodable', DECODABLE],
     ['undecodable', UNDECODABLE],
   ])('carries no token material for %s', async (_l, token) => {
-    const text = JSON.stringify(await health(token).run())
+    const verdict = await health(token).run()
+    const text = JSON.stringify(verdict)
     expect(text).not.toContain(token)
-    expect(text).not.toContain(String(token.length))
     expect(text).not.toContain('ya29')
     expect(text).not.toContain('Bearer')
+    // The token's LENGTH must not leak either. This used to be `not.toContain(String(token.length))` on the whole JSON text, which failed by chance whenever the
+    // ever-changing `expiresInSeconds` happened to contain those digits (a ~100-second window each time the countdown passed e.g. 230800..230899, hit twice on CI 28/11).
+    // Same intent without the clock: no leaf of the verdict is that number, and no text leaf has it as a standalone number.
+    const len = token.length
+    const standalone = new RegExp(`(?<![0-9])${len}(?![0-9])`)
+    const leaves: unknown[] = []
+    const walk = (v: unknown) => { if (v && typeof v === 'object') Object.values(v).forEach(walk); else leaves.push(v) }
+    walk(verdict)
+    for (const leaf of leaves) {
+      if (typeof leaf === 'number') expect(leaf).not.toBe(len)
+      if (typeof leaf === 'string') expect(leaf).not.toMatch(standalone)
+    }
   })
 })

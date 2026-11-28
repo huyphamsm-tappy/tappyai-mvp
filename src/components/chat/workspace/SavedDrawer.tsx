@@ -28,7 +28,8 @@ export default function SavedDrawer({ onClose }: { onClose: () => void }) {
   const load = useCallback(async () => {
     try {
       const res = await fetch('/api/favorites', { cache: 'no-store' })
-      if (res.status === 401) { setState('signedOut'); return }
+      // 401 = no session; 403 = a visitor session (everything except the chat needs an account, owner 28/11/2026): both mean "sign in", neither is a failure to load
+      if (res.status === 401 || res.status === 403) { setState('signedOut'); return }
       if (!res.ok) throw new Error(String(res.status))
       const body = (await res.json()) as { favorites?: Favorite[] }
       setFavorites(Array.isArray(body.favorites) ? body.favorites : [])

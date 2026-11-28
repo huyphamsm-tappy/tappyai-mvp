@@ -20,6 +20,7 @@ import { ProfileTab, ClipViewer } from './ProfileTab'
 import ExploreStage from './ExploreStage'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
+import { redirectIfAccountRequired } from '@/lib/auth/accountRequiredClient'
 import { CATEGORY_STYLE, mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
 
 // ADR-014: notifications now come from the app-level NotificationProvider (server
@@ -782,7 +783,10 @@ function ReviewsPageInner() {
     setUserSearching(true)
     try {
       const res = await fetch('/api/users/search?q=' + encodeURIComponent(q))
-      if (!res.ok) throw new Error('user_search_failed')
+      if (!res.ok) {
+        if (await redirectIfAccountRequired(res)) return // owner 28/11/2026: searching people needs an account; a visitor is taken to sign in, not shown "search failed"
+        throw new Error('user_search_failed')
+      }
       const d = await res.json()
       setUserResults(d.users || [])
       setUserSearchError(false)

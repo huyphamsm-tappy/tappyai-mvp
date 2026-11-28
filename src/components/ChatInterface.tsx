@@ -160,6 +160,7 @@ import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 import { checkAttachment, checkAddition, attachableList, shrinkImage, pastedAttachment, dragHasFiles, normalizedType, docIcon, ATTACH_ACCEPT } from '@/components/chat/composerAttachment'
 import UserMessageCopy from '@/components/chat/UserMessageCopy'
+import { redirectIfAccountRequired } from '@/lib/auth/accountRequiredClient'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -499,7 +500,7 @@ function OnboardingModal({ onClose }: { onClose: (prefs: string[]) => void }) {
   )
 }
 
-function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
+export function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
   placeId: string; placeName: string; placeAddress: string; placeType: string
 }) {
   const { t } = useTranslation()
@@ -513,11 +514,17 @@ function FavoriteToggle({ placeId, placeName, placeAddress, placeType }: {
     setLoading(true)
     setSaved(s => !s)
     try {
-      await fetch('/api/favorites', {
+      const res = await fetch('/api/favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ placeId, placeName, placeAddress, placeType }),
       })
+      // The heart flipped before the answer: put it back unless the server accepted the save. A visitor session is refused (owner 28/11/2026: everything except the chat needs
+      // an account): take them to sign in and back here instead of leaving a place shown as saved that was not.
+      if (!res.ok) {
+        setSaved(s => !s)
+        await redirectIfAccountRequired(res)
+      }
     } catch { setSaved(s => !s) }
     setLoading(false)
   }
