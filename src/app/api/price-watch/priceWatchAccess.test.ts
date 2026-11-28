@@ -154,19 +154,21 @@ describe('F03 — an anonymous identity cannot mutate price watches', () => {
 
 // ── Reading stays open ─────────────────────────────────────────────────────────────────────────
 
-describe('F03 — anonymous is read-only, not locked out', () => {
-  it('GET still succeeds for an anonymous identity', async () => {
+describe('owner 28/11/2026 — everything except the chat needs an account: a visitor cannot even read price watches', () => {
+  it('GET is refused 403 for an anonymous identity and the table is never read', async () => {
     h.state.user = { ...ANONYMOUS }
+    const res = await GET(req('GET'))
+    expect(res.status).toBe(403)
+    expect((await res.json()).error).toBe('account_required')
+    expect(touchedDatabase()).toBe(false)
+  })
+
+  it('an account reads its own watches, scoped to its own id, never to a client-supplied one', async () => {
     h.state.selectResult = { data: [], error: null }
     const res = await GET(req('GET'))
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ watches: [] })
-  })
-
-  it('and the read is scoped to that identity, never to a client-supplied id', async () => {
-    h.state.user = { ...ANONYMOUS }
-    await GET(req('GET'))
-    expect(h.state.filters).toContainEqual(['user_id', 'anon-1'])
+    expect(h.state.filters).toContainEqual(['user_id', 'u1'])
   })
 })
 

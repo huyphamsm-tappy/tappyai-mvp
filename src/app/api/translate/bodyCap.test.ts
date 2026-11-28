@@ -5,7 +5,7 @@ import { describe, it, expect, vi } from 'vitest'
 
 const h = vi.hoisted(() => ({ modelCalls: 0 }))
 vi.mock('@/lib/ai/llm', () => ({ AI: { generate: async () => { h.modelCalls++; return { text: 'x' } } } }))
-vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: null, supabase: {} }) }))
+vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: { id: 'u-test', is_anonymous: false }, supabase: {} }) }))
 vi.mock('@/lib/ai/consent/aiConsentGuard', () => ({ refuseWithoutAiConsent: async () => null }))
 vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: async () => ({ ok: true }), publicDailyRateLimit: async () => ({ ok: true }) }))
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { pw, resolveUserLang } from '@/lib/priceWatch/messages'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -18,6 +19,8 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 export async function GET(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   const lang = await resolveUserLang(supabase, user.id)
 
   const { data, error } = await supabase
@@ -36,6 +39,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   // 🚨 F03 — a price watch is not an inert private row, and that is why it is refused here while
   // favourites, bookings and preferences are not. Every active watch is picked up by the daily
   // `/api/cron/price-check` worker, which spends a paid Serper search AND a paid model call on it,
@@ -86,6 +91,8 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   // An anonymous identity can no longer own a watch, so it has nothing here to cancel. Refusing
   // rather than letting it run keeps ONE answer to "may this identity mutate price watches?" —
   // a guard on create alone would leave the mutating surface half-covered.

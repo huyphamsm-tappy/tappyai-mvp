@@ -1,3 +1,5 @@
+import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
@@ -34,6 +36,9 @@ const Body = z.object({
 })
 
 export async function POST(req: NextRequest) {
+  const { user } = await getRequestUser(req)
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   if (!rateLimit(`booking-recheck:${clientIp(req)}`, 20, 60_000).ok) return NextResponse.json({ error: 'rate_limited', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   let parsed: z.infer<typeof Body>
   try { parsed = Body.parse(await req.json()) } catch { return NextResponse.json({ error: 'bad_request', message: serverMessage('validation.badBody', requestLocale(req)) }, { status: 400 }) }

@@ -6,6 +6,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import ShareMenu from '@/components/share/ShareMenu'
 import { emitResultAction, emitShareCreated } from '@/lib/analytics/g1Events'
 import type { CheckResult } from '@/lib/scam-shield/types'
+import { redirectIfAccountRequired } from '@/lib/auth/accountRequiredClient'
 
 // "Cảnh báo cho mọi người" — the wedge's share-out.
 //
@@ -29,6 +30,7 @@ export default function ScamShareButton({ result }: { result: CheckResult }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: result.url, locale }),
       })
+      if (!res.ok && await redirectIfAccountRequired(res)) return
       const body = await res.json().catch(() => null)
       if (!res.ok || !body?.url) {
         setError(typeof body?.message === 'string' ? body.message : t('share.publishFailed'))

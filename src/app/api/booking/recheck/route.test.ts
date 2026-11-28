@@ -2,6 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 import { POST } from './route'
 
+// Owner 28/11/2026: everything except the chat needs an account. The user is mocked; the default is a registered account.
+const who = vi.hoisted(() => ({ user: { id: 'u1', is_anonymous: false } as null | { id: string; is_anonymous?: boolean } }))
+vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: who.user, supabase: {} }) }))
+
 const STAY = { destination: 'Đà Lạt', checkIn: '2026-10-20', checkOut: '2026-10-22', adults: 2 }
 const body = (over: Record<string, unknown> = {}) => ({ provider: 'agoda', providerItemId: '4942635', previousPrice: 1_800_000, currency: 'VND', stay: STAY, ...over })
 const call = (b: unknown, ip = '10.0.0.1') => POST(new NextRequest('http://localhost/api/booking/recheck', { method: 'POST', headers: { 'content-type': 'application/json', 'x-forwarded-for': ip, 'x-real-ip': ip }, body: JSON.stringify(b) }))
@@ -14,6 +18,17 @@ const on = () => { Object.assign(process.env, { CCP_REALTIME_AGODA: '1', AGODA_D
 const provider = (inclusive: number | null) => vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ searchId: 's', properties: inclusive === null ? [] : [{ propertyId: 4942635, rooms: [{ totalPayment: { inclusive, currency: 'VND' }, landingUrl: 'https://www.agoda.com/x?hid=4942635' }] }] }), { status: 200 })))
 
 describe('POST /api/booking/recheck', () => {
+  it('a signed-out caller (401) and a visitor session (403) are refused before any provider call', async () => {
+    const f = vi.fn(); vi.stubGlobal('fetch', f)
+    on()
+    who.user = null
+    expect((await call(body(), '10.0.0.9')).status).toBe(401)
+    who.user = { id: 'visitor', is_anonymous: true }
+    expect((await call(body(), '10.0.0.9')).status).toBe(403)
+    who.user = { id: 'u1', is_anonymous: false }
+    expect(f).not.toHaveBeenCalled()
+  })
+
   it('provider OFF: 200 unchecked — the CTA still works, the page re-checks', async () => {
     const r = await call(body())
     expect(r.status).toBe(200)

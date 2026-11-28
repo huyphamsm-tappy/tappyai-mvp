@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react'
 import { Bookmark, BookmarkCheck, ExternalLink, Globe, Map as MapIcon, Phone, Ticket, Utensils, BedDouble, CalendarCheck, UserRound } from 'lucide-react'
 import '../v206.css'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { redirectIfAccountRequired } from '@/lib/auth/accountRequiredClient'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
 import { commerceTap } from '@/lib/recommendation/handoff'
 import { stayOfferLine } from '@/lib/recommendation/stayOffer'
@@ -37,7 +38,11 @@ function SaveButton({ place }: { place: LivePlace }) {
       const res = removing
         ? await fetch(`/api/favorites?placeId=${encodeURIComponent(body.placeId)}`, { method: 'DELETE' })
         : await fetch('/api/favorites', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-      if (!res.ok) throw new Error(String(res.status))
+      if (!res.ok) {
+        // owner 28/11/2026: saving a place needs an account; a visitor is taken to sign in and brought back to the chat
+        if (await redirectIfAccountRequired(res)) { setState(removing ? 'saved' : 'idle'); return }
+        throw new Error(String(res.status))
+      }
       if (!removing) track('search_result_saved', { place_type: 'saved' })
       setState(removing ? 'idle' : 'saved')
       window.dispatchEvent(new Event(FAVORITES_CHANGED_EVENT))

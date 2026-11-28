@@ -1,6 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIpKey } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
@@ -28,6 +29,9 @@ const LANG_NAMES: Record<string, string> = {
 export const maxDuration = 30
 
 export async function POST(req: NextRequest) {
+  const { user } = await getRequestUser(req).catch(() => ({ user: null }))
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   // B04 — resolved once per request; the `error` codes below are unchanged machine contract and
   // only the human sentence follows the caller's language.
   const locale = requestLocale(req)
@@ -63,7 +67,7 @@ export async function POST(req: NextRequest) {
 
   // App Review 5.1.2(i): a signed-in account that uses the iOS app sends its text to the AI provider only with a
   // current agreement, whichever client calls. A signed-out caller has no account to check (see aiConsentGuard notes).
-  const { user } = await getRequestUser(req).catch(() => ({ user: null }))
+  // (the account is already resolved above: since 28/11/2026 a visitor never reaches this point)
   if (user) {
     const aiConsentRefusal = await refuseWithoutAiConsent(user.id, locale)
     if (aiConsentRefusal) return aiConsentRefusal

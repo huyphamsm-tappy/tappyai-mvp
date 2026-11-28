@@ -56,7 +56,7 @@ const post = (body: unknown, headers: Record<string, string> = {}) =>
 beforeEach(() => {
   // The AI switch is OFF by default (owner 02/10); these route tests exercise the AI-on path.
   vi.stubEnv('SCAM_SHIELD_AI_ENABLED', 'true')
-  h.state.user = null
+  h.state.user = { id: 'u-default', is_anonymous: false } // owner 28/11/2026: only an account may analyze; the visitor cases are asserted below
   h.state.restricted = false
   h.state.quotaOk = true
   h.state.pro = false
@@ -141,15 +141,13 @@ describe('the allowance — ONE shared Tappy AI question pool, no Scam Alerts qu
     expect(h.consume).toHaveBeenCalledWith({ kind: 'user', id: 'u-1' })
     expect((await res.json()).quota).toEqual({ kind: 'user', limit: 15, period: 'day', used: 1, remaining: 14, exhausted: false, pro: false })
   })
-  it('an anonymous session spends from its LIFETIME trial, keyed by the verified anonymous id', async () => {
+  it('owner 28/11/2026: a visitor session (403) and a caller with no identity (401) cannot analyze, and nothing is spent or analyzed', async () => {
     h.state.user = { id: 'anon-123', is_anonymous: true }
-    const res = await post({ text: TELEGRAM_SCAM })
-    expect(h.consume).toHaveBeenCalledWith({ kind: 'anon', id: 'anon-123' })
-    expect((await res.json()).quota).toMatchObject({ kind: 'anon', limit: 5, period: 'lifetime' })
-  })
-  it('an identity-less caller is keyed by IP — a fresh session is not a fresh allowance', async () => {
-    await post({ text: TELEGRAM_SCAM })
-    expect(h.consume).toHaveBeenCalledWith({ kind: 'guest', id: '203.0.113.9' })
+    expect((await post({ text: TELEGRAM_SCAM })).status).toBe(403)
+    h.state.user = null
+    expect((await post({ text: TELEGRAM_SCAM })).status).toBe(401)
+    expect(h.consume).not.toHaveBeenCalled()
+    expect(h.analyze).not.toHaveBeenCalled()
   })
   it('a Pro account is exempt and spends nothing', async () => {
     h.state.user = { id: 'u-pro' }

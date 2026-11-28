@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { searchParam } from '@/lib/http/searchParams'
@@ -12,6 +13,8 @@ const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/zalo/c
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   const action = searchParam(req, 'action')
 

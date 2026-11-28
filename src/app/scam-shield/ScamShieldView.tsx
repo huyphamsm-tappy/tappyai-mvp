@@ -26,6 +26,7 @@ import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from
 /** Reading a screenshot is a model call; it is offered only when the deployment turned the AI switch on (default OFF). */
 const SCREENSHOT_ENABLED = process.env.NEXT_PUBLIC_SCAM_SHIELD_AI_ENABLED === 'true'
 import { readScamShieldPrefill } from '@/lib/scam-shield/deepLink'
+import { redirectIfAccountRequired } from '@/lib/auth/accountRequiredClient'
 
 /**
  * Three capabilities, three tabs. `message` is Analyze Message — the SAME URL engine over every
@@ -193,6 +194,7 @@ export default function ScamShieldView({ knowledge }: { knowledge?: KnowledgeMet
         body: JSON.stringify({ url: target }),
       })
       if (!res.ok) {
+        if (await redirectIfAccountRequired(res)) return // owner 28/11/2026: checking a link needs an account
         const data = await res.json().catch(() => ({} as Record<string, string>))
         const key = ERROR_I18N[data.error as string]
         setError(key ? t(key) : t('scamShield.error.checkFailed'))
@@ -258,6 +260,7 @@ export default function ScamShieldView({ knowledge }: { knowledge?: KnowledgeMet
         body: JSON.stringify(body),
       })
       if (!res.ok) {
+        if (await redirectIfAccountRequired(res)) return // owner 28/11/2026: analyzing a message needs an account
         const data = await res.json().catch(() => ({} as Record<string, string>))
         const key = ERROR_I18N[data.error as string]
         setError(key ? t(key) : t('v3.scam.msg.errFailed'))

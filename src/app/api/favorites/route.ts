@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -7,6 +8,8 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   const { data, error } = await supabase
     .from('favorites')
@@ -21,6 +24,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   let placeId: string, placeName: string, placeAddress: string, placeType: string
   try {
@@ -48,6 +53,8 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   const placeId = searchParam(req, 'placeId')
   if (!placeId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })

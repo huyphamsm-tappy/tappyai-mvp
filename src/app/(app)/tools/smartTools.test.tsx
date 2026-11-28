@@ -153,11 +153,13 @@ describe('accessibility basics', () => {
     }
   })
 
-  it('an open tool carries no sign-in hint', () => {
-    const { container } = renderTools()
-    const open = smartTools().find((t) => !t.auth)!
-    const card = container.querySelector(`[data-tool="${open.id}"]`) as HTMLElement
-    expect(card.textContent).not.toContain('Sign-in required')
+  // owner 28/11/2026: everything except the chat needs an account, so most tools now carry the hint; any tool left without `auth` must not.
+  it('a signed-out visitor sees the sign-in hint on a tool exactly when it needs an account', () => {
+    const { container } = render(<ToolsView user={undefined} />)
+    for (const tool of smartTools()) {
+      const card = container.querySelector(`[data-tool="${tool.id}"]`) as HTMLElement
+      expect(card.textContent!.includes('Sign-in required'), tool.id).toBe(Boolean(tool.auth))
+    }
   })
 })
 

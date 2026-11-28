@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useRouter } from 'next/navigation'
+import { redirectIfAccountRequired } from '@/lib/auth/accountRequiredClient'
 import { CalendarDays, Clock, Users, MessageSquare, Loader2, CheckCircle2, Share2 } from 'lucide-react'
 
 interface Props {
@@ -60,6 +61,8 @@ export default function BookingForm({ serviceId, serviceName, serviceType, place
         setDone(true)
         // Auto-back sau 8s — đủ thời gian user đọc + bấm chia sẻ
         autoBackTimer.current = setTimeout(() => router.back(), 8000)
+      } else if (await redirectIfAccountRequired(res)) {
+        return // owner 28/11/2026: booking needs an account
       } else {
         const d = await res.json()
         setError(d.message || d.error || t('bookings.genericError'))

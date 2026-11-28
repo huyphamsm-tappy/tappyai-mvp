@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
@@ -20,6 +21,8 @@ export async function POST(req: Request) {
   try {
     const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+    const accountRefusal = refuseWithoutAccount(req, user)
+    if (accountRefusal) return accountRefusal
     // SEC4 slice 5: this route calls Stripe, so a signed-in caller is capped (shared store): 10 per minute.
     const rl = await publicRateLimit(`stripe-portal:${user.id}`, 10, 60_000)
     if (!rl.ok) return rateLimitedResponse(req, rl, 'stripe_portal')
