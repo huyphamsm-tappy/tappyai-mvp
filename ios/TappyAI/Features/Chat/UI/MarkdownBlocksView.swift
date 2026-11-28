@@ -148,6 +148,54 @@ private struct MarkdownTableView: View {
     private var columnCount: Int { rows.first?.count ?? 0 }
 
     var body: some View {
+        // Owner 28/11: a wide table made the person slide left and right to read it. On a phone a table of three or more columns is read as
+        // CARDS, one per row: the first cell is the title, the others follow as «Header: value» lines. Two columns still fit and stay a grid.
+        if columnCount >= 3, rows.count > 1 {
+            cards
+        } else {
+            grid
+        }
+    }
+
+    private var cards: some View {
+        let header = rows[0]
+        return VStack(alignment: .leading, spacing: Spacing.xs) {
+            ForEach(Array(rows.dropFirst().enumerated()), id: \.offset) { _, row in
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(ContentParser.renderMarkdown(row.first ?? ""))
+                        .font(TappyFont.body.weight(.semibold))
+                        .foregroundStyle(TappyColor.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    ForEach(Array(row.enumerated().dropFirst()), id: \.offset) { i, cell in
+                        let value = cell.trimmingCharacters(in: .whitespaces)
+                        if !value.isEmpty, value != "-", value != "—" {
+                            VStack(alignment: .leading, spacing: 0) {
+                                if i < header.count, !header[i].isEmpty {
+                                    Text(ContentParser.renderMarkdown(header[i]))
+                                        .font(TappyFont.footnote.weight(.semibold))
+                                        .foregroundStyle(TappyColor.textSecondary)
+                                }
+                                Text(ContentParser.renderMarkdown(cell))
+                                    .font(TappyFont.footnote)
+                                    .foregroundStyle(TappyColor.textPrimary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+                    }
+                }
+                .padding(Spacing.sm)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(TappyColor.surface)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Text("chat.table.label"))
+        .accessibilityValue(Text("chat.table.size \(rows.count) \(columnCount)"))
+    }
+
+    private var grid: some View {
         HStack(alignment: .top, spacing: 0) {
             // The pinned column: the first cell of every row.
             VStack(alignment: .leading, spacing: 0) {
