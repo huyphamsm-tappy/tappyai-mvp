@@ -23,17 +23,32 @@ type Outcome = { partner: string; kept: number; written: number; skipped?: strin
 const PAUSE_MS = process.env.NODE_ENV === 'test' ? 0 : 2500
 const pause = (ms: number) => (ms > 0 ? new Promise<void>(r => setTimeout(r, ms)) : Promise.resolve())
 
-async function fetchOffers(src: DealSource): Promise<unknown | null> {
+type Fetched = { json: unknown } | { status: number | null }
+
+async function fetchOffers(src: DealSource): Promise<Fetched> {
   const req = accesstradeOffersRequest(src.partnerId)
-  if (!req) return null
+  if (!req) return { status: null }
+  let status: number | null = null
   for (let attempt = 0; attempt < 2; attempt++) {
     const res = await fetch(req.url, { headers: req.headers, cache: 'no-store', signal: AbortSignal.timeout(20_000) })
-    if (res.ok) return res.json()
+    if (res.ok) return { json: await res.json() }
+    status = res.status
     console.warn(JSON.stringify({ type: 'tappyai_deal_ingest', partner: src.partnerId, status: res.status, attempt }))
-    if (res.status !== 429) return null
+    if (res.status !== 429) return { status }
     await pause(PAUSE_MS * 2)
   }
-  return null
+  return { status }
+}
+
+// The Vercel log of this cron lives about an hour, so what a run saw is also kept in cron_diagnostics (service role only; counts, key names and host names, never the key,
+// a code or a full link). Best effort: a missing table or a failed write never touches the import. Rows older than 30 days are removed.
+async function recordDiagnostic(admin: ReturnType<typeof createAdminClient>, partner: string, kind: string, detail: unknown) {
+  try {
+    await admin.from('cron_diagnostics').insert({ job: 'deal-ingest', partner, kind, detail })
+    await admin.from('cron_diagnostics').delete().lt('created_at', new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString())
+  } catch (e) {
+    console.warn('[deal-ingest] diagnostics not stored:', e instanceof Error ? e.message : e)
+  }
 }
 
 export async function GET(req: Request) {
@@ -48,13 +63,19 @@ export async function GET(req: Request) {
     const out: Outcome = { partner: src.partnerId, kept: 0, written: 0 }
     if (src !== DEAL_SOURCES[0]) await pause(PAUSE_MS)
     try {
-      const json = await fetchOffers(src)
-      if (json === null) { out.skipped = 'fetch_failed'; outcomes.push(out); continue }
+      const fetched = await fetchOffers(src)
+      if (!('json' in fetched)) {
+        await recordDiagnostic(admin, src.partnerId, 'fetch_failed', { status: fetched.status })
+        out.skipped = 'fetch_failed'; outcomes.push(out); continue
+      }
+      const json = fetched.json
       const rows: DealRow[] = rowsForSource(json, src, now)
       out.kept = rows.length
       if (rows.length === 0) {
         // The answer held nothing we may show: say what it looked like (counts by reason, key names, hosts; no key, no codes) so the next fix is not a guess.
-        console.warn(JSON.stringify({ type: 'tappyai_deal_ingest_empty', partner: src.partnerId, answer: describeAnswer(json, src, now) }))
+        const answer = describeAnswer(json, src, now)
+        console.warn(JSON.stringify({ type: 'tappyai_deal_ingest_empty', partner: src.partnerId, answer }))
+        await recordDiagnostic(admin, src.partnerId, 'no_valid_offers', answer)
         out.skipped = 'no_valid_offers'; outcomes.push(out); continue
       }
 

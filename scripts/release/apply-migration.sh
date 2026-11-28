@@ -151,6 +151,9 @@ policy_of() {
     # Message requests (owner 26/11/2026): strangers may write, the thread lands in the recipient's waiting list; 3 text-only messages until a reply; 10 new requests/day. Additive columns + replaced chat_start_direct/chat_thread_summaries (same signatures). Rollback in supabase/migrations/rollback/.
     20261210_message_requests.sql)
       echo APPLY ;;
+    # Cron diagnostics (owner 28/11/2026): one service-role-only table; the deal importer writes to it best effort and works without it. Rollback in supabase/migrations/rollback/.
+    20261211_cron_diagnostics.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
