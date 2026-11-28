@@ -6,13 +6,13 @@ Source of the field list: Anthropic's submission and review-criteria pages (read
 ## Hard blockers before submitting (🚧)
 
 1. ✅ **Stable public HTTPS URL**: `https://www.tappyai.com/api/mcp` (note `www`; the bare domain redirects 308). Live on production since 27/11/2026: `MCP_GATEWAY=1`, OAuth Server on, shared store on, spend ceilings set. Metadata: `https://www.tappyai.com/.well-known/oauth-protected-resource`.
-2. 🚧 **Data-source declaration (D3).** Sources by tool:
-   - Hotels: Agoda (partner, affiliate agreement, Lite API). 🚧 confirm the right to serve it through a public listing.
-   - Places, restaurants, attractions, shopping, coach page: a third-party search provider (Serper / Google results) plus Tappy's own ranking. 🚧 confirm the right.
-   - Deals: Tappy's own table of partner offers (Accesstrade feed for Lazada and Vexere, once the daily job has data) and partner cards with tracked links.
-   - Clips: Tappy's own public user clips (first-party; no author, no video file returned).
-   - Scam check: Tappy's Scam Shield (public warnings; third-party reputation and WHOIS/DNS lookups on the domain only).
-   The owner decides the wording of "first-party / proxied with permission / third-party".
+2. 🟡 **Data-source declaration (D3): wording approved by the owner 28/11/2026 (declare in full); rights confirmation stays with the owner and the lawyer.** Declared as:
+   - **Hotels (`search_hotels`): proxied with permission.** Rates come from Agoda through Tappy's affiliate partnership (Agoda Lite API); links carry Tappy's Agoda partner id. 🚧 the owner confirms the partnership allows serving rates through a public listing (agreement text is not in this repository).
+   - **Places, restaurants, attractions, shopping, coach page: third-party.** Results are retrieved live from a third-party search provider (Serper, which returns Google Search/Maps data) and ranked by Tappy; nothing is persisted beyond a 24-hour shared cache (hard expiry). 🚧 the owner confirms the provider terms allow this use; the lawyer reads the Maps-content caveat in `src/lib/ai/tools/serperCache.ts`.
+   - **Deals (`search_deals`): proxied with permission.** Tappy's own table of partner offers (partner cards with tracked affiliate links) plus an Accesstrade offers feed for Lazada and Vexere. The Accesstrade feed has produced no rows yet (daily job under investigation, diagnostics table `cron_diagnostics` since 28/11/2026): until it does, deals show partner cards with no amounts, as stated in the honest limits below.
+   - **Clips (`search_clips`): first-party.** Tappy users' public clips only; no author, no video file returned.
+   - **Scam check (`check_scam`): first-party plus third-party lookups.** Tappy's Scam Shield rules and the scam warnings published on the public website of Vietnam's Ministry of Public Security (reviewed weekly; no connection to the Ministry's databases), plus third-party reputation and WHOIS/DNS lookups on the domain only. It never says "safe".
+   Prerequisite wording for the portal: a free Tappy account (signed in on Tappy's own consent screen).
 3. 🚧 **Company name, website and primary contact (D4)** — owner to provide; not invented here.
 4. 🟡 **Public documentation**: `https://www.tappyai.com/connector` is live (setup for Claude/ChatGPT, tools and limits, link to privacy). Owner and lawyer read it before submission.
 5. 🚧 **Icon**: Tappy otter logo `public/branding/otter-logo.png` (512×512); owner confirms.
@@ -48,7 +48,7 @@ Source of the field list: Anthropic's submission and review-criteria pages (read
 **Prerequisites:** a free Tappy account (sign-in on Tappy's own consent screen).
 **Reads / writes:** reads only. Nothing is booked, paid or changed.
 **Authentication:** OAuth 2.0 (Supabase OAuth Server, dynamic client registration). No Anthropic-held credentials.
-**Data handling:** 🚧 (blocker 2). No health data. Partner links are tracked affiliate links and are disclosed as partner links. Logs hold tool, time, duration, result count and hashed install and account references, never the question text.
+**Data handling:** see blocker 2 (sources declared 28/11/2026; rights confirmation open). No health data. Partner links are tracked affiliate links and are disclosed as partner links. Logs hold tool, time, duration, result count and hashed install and account references, never the question text.
 
 **Honest limits to state (do not overclaim):**
 - Coach: one booking-page link; no times, prices or seats; coach only (no train or flight).
