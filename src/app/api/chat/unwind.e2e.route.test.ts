@@ -893,13 +893,16 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const Q: Msg[] = [{ role: 'user', content: 'thoi tiet Da Lat cuoi tuan nay the nao' }]
     const free = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
     // 20/11 (owner: a person who does not know how to use Tappy most needs to be told): the ONE tool a Free turn keeps is explain_feature (Tappy's own guide: no provider, no cost); no paid tool
-    expect(free.toolNames).toEqual(['explain_feature'])
+    // 28/11 (owner: a Free answer should at least give the name and address of a place, or a short list with sources): the second, capped tool is free_lookup (lib/ai/tools/freeLookup.ts); still no paid tool
+    expect(free.toolNames).toEqual(['explain_feature', 'free_lookup'])
     expect(free.system).toContain('the explain_feature tool is available')
+    expect(free.system).toContain('the free_lookup tool')
     expect(free.system).toContain('Mode: Plain')
     expect(free.system).not.toContain('Mode: Chat.')
     for (const plan of ['momo', 'coco']) {
       const paid = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', plan, subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
       expect(paid.toolNames, plan).toEqual(expect.arrayContaining(['web_search', 'get_weather_forecast']))
+      expect(paid.toolNames, plan).not.toContain('free_lookup') // a paid plan has the full tools: the light capped one is for Free only
       expect(paid.system, plan).toContain('Mode: Chat.')
     }
     const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', luna: intent('chat', []), reply: 'x' })
