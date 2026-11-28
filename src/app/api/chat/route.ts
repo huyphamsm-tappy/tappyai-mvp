@@ -3817,7 +3817,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // 31/10 (mode "Nghiên cứu sâu", owner): plan → parallel research branches → one report (lib/ai/research). Here, after the identity, consent,
   // age and quota checks every turn passes, and in place of the single answer call. A run that produces nothing gives the question back.
   if (oneBrain && chatMode === 'deep') {
-    // Owner 01/11/2026, changed 11/11/2026: Deep Research reports per VN month by tier and kind (Pro 5 Standard + 5 Advanced, Promax 10 + 15) on the quota store, with the plans on sale; a run that
+    // Deep Research reports per VN month on the quota store, ONE allowance per account (owner 20/11/2026: Coco 15, Tappy 30, tiers.ts DEEP_RESEARCH_MONTHLY); a run that
     // produces nothing gives the run back with the question.
     let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
     // Security audit 04/11 (D-09): the day's ceiling across every account - a breaker for many accounts used together.
@@ -3825,8 +3825,6 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       await refundQuotaOnFailure('deep_research_global_ceiling')
       return new Response(JSON.stringify({ error: 'deep_research_unavailable', message: serverMessage('rate.retryTomorrow', requestLocale(req)) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
     }
-    // Owner 11/11/2026: two separate monthly allowances (Standard and Advanced, tiers.ts). The Advanced one is tried first when the request is an Advanced report (below); every other run, and an Advanced
-    // request past its allowance, spends from the Standard one, which is taken right after the tier is known.
     const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
     const cost = { usd: 0, calls: 0 }
     // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
