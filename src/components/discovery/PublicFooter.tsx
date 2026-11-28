@@ -146,7 +146,7 @@ export default function PublicFooter() {
             {/* eslint-disable-next-line @next/next/no-img-element -- the brand mark from /public */}
             <img src="/branding/otter-logo.png" alt="" width={52} height={52} className="h-[52px] w-[52px] object-contain" />
             {/* "Tappy" white, "AI" brand blue — the same split as the sidebar (owner 21/11/2026). */}
-            <TappyWordmark fontSize={28} />
+            <TappyWordmark fontSize={28} adaptive />
           </Link>
           <p className="mt-3 max-w-[270px] text-[14px] text-gray-500 dark:text-gray-300">{t('footer.brandTagline')}</p>
           <div className="mt-5 flex items-center gap-5" data-footer-social>

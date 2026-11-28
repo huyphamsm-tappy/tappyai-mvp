@@ -4,7 +4,7 @@
 // after Huy's mockups (web page + app screens 3–9). Written by the security session (p8/subscriptions).
 //
 //   home        hero (badge, title, 3 benefits) + "Gói hiện tại" when ACTIVE
-//               desktop: 7 columns — Welcome Guest, Pip (free), then the plans on sale: MoMo (trial), Coco 1/3 months,
+//               desktop: 6 columns — Pip (free; no "Welcome Guest" plan since 28/11/2026), then the plans on sale: MoMo (trial), Coco 1/3 months,
 //               Tappy 1/3 months (owner 01/11/2026; no badge)
 //               mobile:  "Quyền truy cập hiện tại" + the 5 plans as app-style list cards
 //               + 4 trust tiles
@@ -426,15 +426,13 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
       {me.signedIn && me.pipUsed && <PipUsedNotice />}
 
       <div className="space-y-4 lg:hidden">
-        {!active && (
+        {!active && me.signedIn && (
           <div className={`${card} p-4`} data-testid="sub-access">
             <p className="text-xs font-semibold uppercase tracking-wide text-content-secondary">{t('sub.access.title')}</p>
             <div className="mt-1 flex items-center justify-between">
               <span>
-                <span className="block font-bold text-gray-900 dark:text-white">{me.signedIn ? t('sub.freeTier.name') : t('sub.guest.name')}</span>
-                <span className="block text-sm text-content-secondary">{me.signedIn
-                  ? t('sub.free.quota', { count: String(catalog.free.dailyAiQuestions) })
-                  : t('sub.guest.quota', { count: String(catalog.guest.aiQuestions) })}</span>
+                <span className="block font-bold text-gray-900 dark:text-white">{t('sub.freeTier.name')}</span>
+                <span className="block text-sm text-content-secondary">{t('sub.free.quota', { count: String(catalog.free.dailyAiQuestions) })}</span>
               </span>
               <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-content-secondary dark:bg-gray-800">{t('sub.card.current')}</span>
             </div>
@@ -470,14 +468,7 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
         </ul>
       </div>
 
-      <div className={`hidden gap-3 lg:grid ${plans.length === catalog.plans.length ? 'lg:grid-cols-7' : 'lg:grid-cols-6'}`} data-testid="sub-columns">
-        <AccessColumn
-          image="/subscription/guest.webp" name={t('sub.guest.name')} tagline={t('sub.guest.tagline')}
-          lines={[t('sub.guest.quota', { count: String(catalog.guest.aiQuestions) }), t('sub.guest.basic')]}
-          action={me.signedIn
-            ? <Link href="/chat" className="block rounded-2xl border border-gray-300 py-2.5 text-center text-sm font-semibold text-gray-900 dark:border-gray-600 dark:text-white">{t('sub.guest.cta')}</Link>
-            : <span className="block rounded-2xl bg-gray-100 py-2.5 text-center text-sm font-semibold text-content-secondary dark:bg-gray-800">{t('sub.card.current')}</span>}
-        />
+      <div className={`hidden gap-3 lg:grid ${plans.length === catalog.plans.length ? 'lg:grid-cols-6' : 'lg:grid-cols-5'}`} data-testid="sub-columns">
         <AccessColumn
           image="/subscription/pip.webp" name={t('sub.freeTier.name')} tagline={t('sub.freeTier.tagline')}
           lines={[t('sub.free.quota', { count: String(catalog.free.dailyAiQuestions) }), t('sub.free.most')]}
