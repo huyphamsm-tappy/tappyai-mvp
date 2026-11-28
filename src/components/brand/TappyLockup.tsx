@@ -57,11 +57,14 @@ export default function TappyLockup({ size = 28, className, style, markOnly = fa
 }
 
 /** "Tappy" white, "AI" brand blue — the exact split the sidebar renders. */
-export function TappyWordmark({ fontSize = 16, className }: { fontSize?: number; className?: string }) {
+export function TappyWordmark({ fontSize = 16, className, adaptive = false }: { fontSize?: number; className?: string; adaptive?: boolean }) {
+  // adaptive: for a surface that follows the theme (the public footer): dark "Tappy" on the light theme, white on the dark one (owner 28/11/2026).
+  // Default stays literal white for the dark-by-design surfaces (plan brochure, share card).
+  const cls = adaptive ? `text-gray-900 dark:text-white${className ? ` ${className}` : ''}` : className
   return (
     <span
-      className={className}
-      style={{ fontSize, fontWeight: 800, letterSpacing: '-0.01em', color: TAPPY_WORDMARK_WHITE, whiteSpace: 'nowrap' }}
+      className={cls}
+      style={{ fontSize, fontWeight: 800, letterSpacing: '-0.01em', ...(adaptive ? {} : { color: TAPPY_WORDMARK_WHITE }), whiteSpace: 'nowrap' }}
       data-tappy-wordmark
     >
       Tappy<span style={{ color: TAPPY_WORDMARK_BLUE }} data-tappy-wordmark-ai>AI</span>

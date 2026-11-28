@@ -68,7 +68,7 @@ describe('plan list', () => {
     expect(screen.getAllByText('Không giới hạn câu hỏi AI').length).toBeGreaterThan(0) // Free = no visible limit
     expect(document.body.textContent).not.toMatch(/câu hỏi AI mỗi ngày/) // the hidden ceiling is never shown as a daily number
     expect(document.body.textContent).not.toMatch(new RegExp(`(^|\\D)(${FREE_DAILY_LIMIT}|${PAID_DAILY_CEILING}) câu`))
-    expect(screen.getAllByText(`${ANON_LIFETIME_LIMIT} câu hỏi AI trọn đời`).length).toBe(1)
+    expect(screen.queryAllByText(`${ANON_LIFETIME_LIMIT} câu hỏi AI trọn đời`)).toHaveLength(0) // owner 28/11/2026: no Welcome Guest plan any more
     // Standardized VND prices on the plans; no price per day, no %, no USD
     // Owner 01/11/2026: new plan catalog
     expect(document.body.textContent).toMatch(/25\.000đ \/ 7 ngày/)
@@ -231,15 +231,20 @@ describe('Pip — one-time trial', () => {
     expect([...document.querySelectorAll('[data-plan]')].map((e) => e.getAttribute('data-plan'))).toEqual(['momo', 'promax1m', 'coco', 'promax3m'])
   })
 
-  it(`a guest is shown as "Welcome Guest" with ${ANON_LIFETIME_LIMIT} questions for life — never as the Free tier — and Free asks them to sign in`, () => {
+  it('owner 28/11/2026: there is no "Welcome Guest" plan any more; a signed-out visitor sees the plans only, and Pip asks them to sign in', () => {
     const guest: MyPlanResponse = { signedIn: false, pipUsed: false, subscription: mySubscription(null), quota: { limit: ANON_LIFETIME_LIMIT, used: 0, remaining: ANON_LIFETIME_LIMIT, period: 'lifetime' } }
     render(<SubscriptionFlow catalog={catalog} initialMe={guest} />)
-    const access = screen.getByTestId('sub-access').textContent!
-    expect(access).toMatch(/Welcome Guest/)
-    expect(access).toMatch(new RegExp(`(^|\\D)${ANON_LIFETIME_LIMIT} câu hỏi AI trọn đời`))
-    // the Free tier's wording is now "Không giới hạn câu hỏi AI" (was "10 câu ... mỗi ngày"): a guest must see neither
-    expect(access).not.toMatch(/Miễn phí|Không giới hạn|mỗi ngày/)
+    expect(document.body.textContent).not.toMatch(/Welcome Guest|trọn đời/)
+    expect(document.querySelector('img[src="/subscription/guest.webp"]')).toBeNull()
+    expect(screen.queryByTestId('sub-access')).toBeNull()
     expect(screen.getByRole('link', { name: 'Đăng nhập miễn phí' }).getAttribute('href')).toBe('/login?returnTo=%2Fsubscription')
+  })
+
+  it('owner 28/11/2026: the MoMo trial says it is one time only and does not renew itself', () => {
+    render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
+    expect(document.querySelector('[data-plan="pip"]')!.textContent).toMatch(/Dùng thử 1 lần/)
+    expect(document.querySelector('[data-plan="pip"]')!.textContent).toMatch(/không tự gia hạn/i)
+    expect(document.querySelector('[data-plan-col="pip"]')!.textContent).toMatch(/không tự gia hạn/i)
   })
 
   it('a guest still sees Pip as available; buying sends them to sign in first', () => {
@@ -266,7 +271,7 @@ describe('naming — the free plan is "Pip", "Miễn phí" is only its price', (
     expect(paragraphs).toContain('Miễn phí')
     expect(screen.getByTestId('sub-access').textContent).toMatch(/Pip/)
     expect(screen.getByTestId('sub-access').textContent).not.toMatch(/Miễn phí/)
-    expect([...cols.querySelectorAll('p')].filter((p) => p.textContent === 'Miễn phí').length).toBe(2) // the two free columns' price lines (guest + Pip)
+    expect([...cols.querySelectorAll('p')].filter((p) => p.textContent === 'Miễn phí').length).toBe(1) // the free column's price line (Pip; the Welcome Guest column is gone, owner 28/11/2026)
   })
 })
 
