@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import { apiError } from '@/lib/http/apiError'
 import { clientIp } from '@/lib/security/rateLimit'
@@ -48,6 +49,8 @@ export async function POST(req: NextRequest) {
   // page (unlisted), a real account owns a listed one. No identity at all is
   // fine too — the content is the server's, not the caller's.
   const { user } = await getRequestUser(req)
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   try {
     const result = await checkUrl(parsed.data.url)

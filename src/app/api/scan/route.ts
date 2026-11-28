@@ -1,6 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIpKey } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
@@ -59,6 +60,8 @@ export async function POST(req: NextRequest) {
   // App Review 5.1.2(i): a signed-in iOS-used account sends its image only with a current agreement. Signed-out
   // callers have no account to check (see aiConsentGuard notes).
   const { user } = await getRequestUser(req).catch(() => ({ user: null }))
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   if (user) {
     const aiConsentRefusal = await refuseWithoutAiConsent(user.id, requestLocale(req))
     if (aiConsentRefusal) return aiConsentRefusal

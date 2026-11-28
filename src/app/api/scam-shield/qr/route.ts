@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { clientIp } from '@/lib/security/rateLimit'
 import { SCAM_SHIELD_DAILY_LIMIT_AUTH, SCAM_SHIELD_DAILY_LIMIT_ANON } from '@/lib/config/product'
 import { checkQr } from '@/lib/scam-shield'
@@ -19,6 +20,8 @@ export async function POST(req: Request) {
   }
 
   const { user } = await getRequestUser(req)
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   const dailyLimit = user ? SCAM_SHIELD_DAILY_LIMIT_AUTH : SCAM_SHIELD_DAILY_LIMIT_ANON
   const dailyKey = user ? `ss:daily:${user.id}` : `ss:daily:anon:${ip}`
 

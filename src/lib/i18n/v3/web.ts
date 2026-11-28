@@ -96,6 +96,8 @@ export const vi: Record<string, string> = {
   // The header's compact CTA — it opens the assistant on Home, the one place that "does more".
   'v3.tools.cta': 'Làm nhiều hơn cùng TappyAI',
   'v3.tools.authHint': 'Cần đăng nhập',
+  'v3.gate.banner': 'Cần đăng nhập để sử dụng. Bạn có thể xem; chỉ chat với Tappy là không cần tài khoản.',
+  'v3.gate.cta': 'Đăng nhập',
   'v3.tools.daily': 'Hằng ngày',
   'v3.tools.discover': 'Khám phá',
   'v3.tools.fun': 'Giải trí',
@@ -860,6 +862,8 @@ export const en: Record<string, string> = {
   'v3.tools.blurb': 'Useful utilities, built to help you every day',
   'v3.tools.cta': 'Do more with TappyAI',
   'v3.tools.authHint': 'Sign-in required',
+  'v3.gate.banner': 'Sign in to use this. You can look around; only chatting with Tappy needs no account.',
+  'v3.gate.cta': 'Sign in',
   'v3.tools.daily': 'Everyday',
   'v3.tools.discover': 'Discover',
   'v3.tools.fun': 'Fun',

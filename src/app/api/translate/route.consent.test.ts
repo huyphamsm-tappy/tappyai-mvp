@@ -81,9 +81,11 @@ describe('POST /api/translate — AI consent gate', () => {
     expect(state.generateCalls).toBe(1)
   })
 
-  it('signed-out caller: no account to check, translates as before (residual gap, reported)', async () => {
+  it('owner 28/11/2026: a signed-out caller and a visitor session are refused before anything is spent (the old "residual gap" is closed)', async () => {
     state.user = null
-    expect((await post({ text: 'hello' })).status).toBe(200)
-    expect(state.generateCalls).toBe(1)
+    expect((await post({ text: 'hello' })).status).toBe(401)
+    state.user = { id: 'visitor', is_anonymous: true } as never
+    expect((await post({ text: 'hello' })).status).toBe(403)
+    expect(state.generateCalls).toBe(0)
   })
 })

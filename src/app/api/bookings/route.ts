@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -32,6 +33,8 @@ export async function POST(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+    const accountRefusal = refuseWithoutAccount(req, user)
+    if (accountRefusal) return accountRefusal
 
     const { serviceId, serviceName, serviceType, date, time, guests, name, phone, notes, placeId } = await req.json()
 
@@ -77,6 +80,8 @@ export async function GET(req: Request) {
   try {
     const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+    const accountRefusal = refuseWithoutAccount(req, user)
+    if (accountRefusal) return accountRefusal
 
     const { data } = await supabase
       .from('bookings')

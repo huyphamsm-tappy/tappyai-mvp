@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { getAccountRestriction, accountRestrictionCode, accountRestrictionMessage, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
@@ -76,6 +77,8 @@ export async function POST(req: Request) {
   }
 
   const { user, supabase } = await getRequestUser(req)
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   // A suspended account cannot use AI anywhere in the app (Module 08). Anonymous sessions have no
   // account_status row to read.

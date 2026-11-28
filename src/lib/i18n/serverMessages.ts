@@ -100,6 +100,11 @@ const MESSAGES = {
   'auth.forbidden': { vi: 'Bạn không có quyền thực hiện thao tác này', en: "You don't have permission to do that" },
   // B17. Says what to DO, not what the caller is — "you are anonymous" is a fact about them, not
   // an action they can take. The visitor is one tap from being allowed.
+  // Owner 28/11/2026: everything except the chat with Tappy needs an account; a visitor may look, not use.
+  'auth.useRequiresAccount': {
+    vi: 'Hãy đăng nhập để sử dụng tính năng này. Bạn vẫn có thể xem, và chat với Tappy không cần tài khoản.',
+    en: 'Sign in to use this feature. You can still browse, and chatting with Tappy needs no account.',
+  },
   'auth.accountRequired': {
     vi: 'Hãy đăng nhập để đăng bài, bình luận và theo dõi.',
     en: 'Sign in to post, comment and follow.',

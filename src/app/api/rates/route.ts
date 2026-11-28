@@ -1,3 +1,5 @@
+import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { NextResponse } from 'next/server'
 
 export const revalidate = 3600 // revalidate tỷ giá mỗi 1 giờ
@@ -10,7 +12,10 @@ const FALLBACK_RATES: Record<string, number> = {
   HKD: 7.82, TWD: 32.2,
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { user } = await getRequestUser(req)
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
   try {
     const res = await fetch('https://open.er-api.com/v6/latest/USD', {
       next: { revalidate: 3600 },

@@ -251,6 +251,8 @@ describe('D. "phim đang chiếu"', () => {
 
 // ── E. the whole user path with a mocked provider: search → realtime result → recheck → booking CTA ──────────────────────────────────────────
 import { NextRequest } from 'next/server'
+// owner 28/11/2026: the recheck needs an account; this path is the signed-in one.
+vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: { id: 'u1', is_anonymous: false }, supabase: {} }) }))
 import { POST as recheckRoute } from '@/app/api/booking/recheck/route'
 import { parseRecheckHref, runRecheck } from '@/lib/providers/realtime/recheckLink'
 

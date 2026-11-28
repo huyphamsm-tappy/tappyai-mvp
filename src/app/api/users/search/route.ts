@@ -1,5 +1,6 @@
 import { userBlocksEnabled, blockedPeers } from '@/lib/safety/userBlocks'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAccount } from '@/lib/auth/accountRequired'
 import { clientIp } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
@@ -24,6 +25,8 @@ function checkSearchRL(ip: string): boolean {
 export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+  const accountRefusal = refuseWithoutAccount(req, user)
+  if (accountRefusal) return accountRefusal
 
   // S-2. `clientIp`, not the raw header.
   //

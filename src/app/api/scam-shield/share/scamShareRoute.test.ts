@@ -30,17 +30,25 @@ const verdict = {
 }
 const row = { id: 'sid', slug: 'AbCdEfGh12', payload: { title: 'T' }, domain: 'scam', owner_is_anonymous: true, parent_id: null }
 
-beforeEach(() => { vi.clearAllMocks(); auth.user = null })
+beforeEach(() => { vi.clearAllMocks(); auth.user = { id: 'u1', is_anonymous: false } })
 
 describe('POST /api/scam-shield/share', () => {
-  it('lets a caller with NO identity publish a verdict page (server-generated content), unlisted', async () => {
-    check.mockResolvedValueOnce(verdict); store.createSharedResult.mockResolvedValueOnce(row)
+  it('owner 28/11/2026: nobody signed in (401) and a visitor session (403) cannot publish a verdict page; the checker and the store are never touched', async () => {
+    auth.user = null
+    expect((await POST(req({ url: 'bad.example/x' }))).status).toBe(401)
+    auth.user = { id: 'visitor', is_anonymous: true }
+    expect((await POST(req({ url: 'bad.example/x' }))).status).toBe(403)
+    expect(check).not.toHaveBeenCalled()
+    expect(store.createSharedResult).not.toHaveBeenCalled()
+  })
+  it('an account publishes a verdict page (server-generated content) and never sees the raw token in the answer', async () => {
+    check.mockResolvedValueOnce(verdict); store.createSharedResult.mockResolvedValueOnce({ ...row, owner_is_anonymous: false })
     const res = await POST(req({ url: 'bad.example/x?token=SECRET' }))
     expect(res.status).toBe(201)
     const out = await res.json()
-    expect(out).toMatchObject({ slug: 'AbCdEfGh12', host: 'bad.example', level: 'HIGH', listed: false })
+    expect(out).toMatchObject({ slug: 'AbCdEfGh12', host: 'bad.example', level: 'HIGH', listed: true })
     expect(JSON.stringify(out)).not.toContain('SECRET')
-    expect(store.createSharedResult).toHaveBeenCalledWith(expect.objectContaining({ ownerId: null, ownerIsAnonymous: true }))
+    expect(store.createSharedResult).toHaveBeenCalledWith(expect.objectContaining({ ownerId: 'u1', ownerIsAnonymous: false }))
     const payload = store.createSharedResult.mock.calls[0][0].payload
     expect(payload.kind).toBe('scam_check'); expect(payload.domain).toBe('scam')
     expect(JSON.stringify(payload)).not.toContain('SECRET')
