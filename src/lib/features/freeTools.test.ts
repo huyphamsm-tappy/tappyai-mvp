@@ -3,18 +3,18 @@ import { toolsForFreePlan, FREE_TOOL_NAMES } from './freeTools'
 import { isLookupTool } from '@/lib/config/consultFlags'
 import { EXPLAIN_FEATURE_DESCRIPTION } from '@/lib/ai/consultative/oneBrain'
 
-describe('a Free turn keeps only explain_feature', () => {
-  const all = { search_places: 1, web_search: 2, get_hotel_prices: 3, present_plan: 4, explain_feature: 5 }
-  it('every paid tool is dropped, explain_feature stays, and the input is not changed', () => {
-    expect(toolsForFreePlan(all)).toEqual({ explain_feature: 5 })
-    expect(Object.keys(all)).toHaveLength(5)
+describe('a Free turn keeps only explain_feature and the capped free_lookup', () => {
+  const all = { search_places: 1, web_search: 2, get_hotel_prices: 3, present_plan: 4, explain_feature: 5, free_lookup: 6 }
+  it('every paid tool is dropped, explain_feature and free_lookup stay, and the input is not changed', () => {
+    expect(toolsForFreePlan(all)).toEqual({ explain_feature: 5, free_lookup: 6 })
+    expect(Object.keys(all)).toHaveLength(6)
   })
-  it('with no explain_feature among them the Free turn has no tool at all, as before', () => {
+  it('with neither among them the Free turn has no tool at all, as before', () => {
     expect(toolsForFreePlan({ search_places: 1, web_search: 2 })).toEqual({})
     expect(toolsForFreePlan({})).toEqual({})
   })
-  it('the only name allowed is explain_feature (a new name here is a decision about Free plan cost)', () => {
-    expect([...FREE_TOOL_NAMES]).toEqual(['explain_feature'])
+  it('the only names allowed are explain_feature and free_lookup (a new name here is a decision about Free plan cost; owner 28/11/2026 added free_lookup, capped per day)', () => {
+    expect([...FREE_TOOL_NAMES]).toEqual(['explain_feature', 'free_lookup'])
   })
 })
 

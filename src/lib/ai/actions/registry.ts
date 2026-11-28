@@ -95,6 +95,8 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   { tool: 'present_failed', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   // CONSULT_ONE_BRAIN only (20/11): explains how to use Tappy from Tappy's own guide (lib/features/explainFeature.ts); no provider call, no I/O, no state, nothing leaves the server
   { tool: 'explain_feature', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // Free plan only (28/11): ONE light lookup, capped per person per day (lib/ai/tools/freeLookup.ts): one Serper request, names and addresses or a short list of results with links
+  { tool: 'free_lookup', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_gold_price', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_market_rate', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },

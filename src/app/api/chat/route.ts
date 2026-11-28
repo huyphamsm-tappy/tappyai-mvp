@@ -136,7 +136,8 @@ import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { explainFeature } from '@/lib/features/explainFeature'
 import { toolsForFreePlan } from '@/lib/features/freeTools'
-import { ONE_BRAIN_CORE, EXPLAIN_FEATURE_DESCRIPTION, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { runFreeLookup } from '@/lib/ai/tools/freeLookup'
+import { ONE_BRAIN_CORE, EXPLAIN_FEATURE_DESCRIPTION, FREE_LOOKUP_DESCRIPTION, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { verifyDeclaredFacts } from '@/lib/ai/answerV4/factSense'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
@@ -3208,6 +3209,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         description: EXPLAIN_FEATURE_DESCRIPTION,
         parameters: z.object({ topic: z.string().describe('what the person asks about, in a few words (e.g. "deep research", "share a trip plan", "upgrade my plan", "save a place")') }),
         execute: async ({ topic }) => explainFeature(String(topic ?? '').slice(0, 200), lang === 'en' ? 'en' : 'vi'),
+      }) } : {}),
+      // 28/11 (owner: a Free answer should at least give the name and address of a place, or a short list with sources): ONE light, capped lookup, registered only on a Free turn
+      // (a paid plan has the full tools). The model decides when; the server holds the daily cap and the one-request limit (lib/ai/tools/freeLookup.ts).
+      ...(oneBrain && !planHasTools ? { free_lookup: tool({
+        description: FREE_LOOKUP_DESCRIPTION,
+        parameters: z.object({
+          kind: z.enum(['places', 'web']).describe('"places": names and addresses of venues in an area. "web": a recent or disputed fact, with sources.'),
+          query: z.string().describe('the precise search text, with the area for places (e.g. "cơm tấm đường Phan Xích Long Phú Nhuận") or the exact question for the web'),
+        }),
+        execute: async ({ kind, query }) => runFreeLookup({ kind, query: String(query ?? ''), identity: authedUserId ?? clientIp(req) }),
       }) } : {}),
       ...(oneBrain ? { present_plan: tool({
         description: PRESENT_PLAN_DESCRIPTION,
