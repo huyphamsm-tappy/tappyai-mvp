@@ -6,13 +6,13 @@ Source of the field list: Anthropic's submission and review-criteria pages (read
 ## Hard blockers before submitting (🚧)
 
 1. ✅ **Stable public HTTPS URL**: `https://www.tappyai.com/api/mcp` (note `www`; the bare domain redirects 308). Live on production since 27/11/2026: `MCP_GATEWAY=1`, OAuth Server on, shared store on, spend ceilings set. Metadata: `https://www.tappyai.com/.well-known/oauth-protected-resource`.
-2. 🚧 **Data-source declaration (D3).** Sources by tool:
-   - Hotels: Agoda (partner, affiliate agreement, Lite API). 🚧 confirm the right to serve it through a public listing.
-   - Places, restaurants, attractions, shopping, coach page: a third-party search provider (Serper / Google results) plus Tappy's own ranking. 🚧 confirm the right.
-   - Deals: Tappy's own table of partner offers (Accesstrade feed for Lazada and Vexere, once the daily job has data) and partner cards with tracked links.
-   - Clips: Tappy's own public user clips (first-party; no author, no video file returned).
-   - Scam check: Tappy's Scam Shield (public warnings; third-party reputation and WHOIS/DNS lookups on the domain only).
-   The owner decides the wording of "first-party / proxied with permission / third-party".
+2. ✅ **Data-source declaration (D3): wording approved by the owner 28/11/2026 (declare in full), and the owner confirmed on 28/11/2026 that Tappy has the right to serve the Agoda and Serper data through a public listing.** Declared as:
+   - **Hotels (`search_hotels`): proxied with permission.** Rates come from Agoda through Tappy's affiliate partnership (Agoda Lite API); links carry Tappy's Agoda partner id. The owner confirmed the partnership allows this (28/11/2026; the agreement text is not in this repository).
+   - **Places, restaurants, attractions, shopping, coach page: third-party.** Results are retrieved live from a third-party search provider (Serper, which returns Google Search/Maps data) and ranked by Tappy; nothing is persisted beyond a 24-hour shared cache (hard expiry). The owner confirmed the provider terms allow this use (28/11/2026); the Maps-content caveat in `src/lib/ai/tools/serperCache.ts` stays on the lawyer's reading list.
+   - **Deals (`search_deals`): proxied with permission.** Tappy's own table of partner offers (partner cards with tracked affiliate links) plus an Accesstrade offers feed for Lazada and Vexere. The Accesstrade feed has produced no rows yet (daily job under investigation, diagnostics table `cron_diagnostics` since 28/11/2026): until it does, deals show partner cards with no amounts, as stated in the honest limits below.
+   - **Clips (`search_clips`): first-party.** Tappy users' public clips only; no author, no video file returned.
+   - **Scam check (`check_scam`): first-party plus third-party lookups.** Tappy's Scam Shield rules and the scam warnings published on the public website of Vietnam's Ministry of Public Security (reviewed weekly; no connection to the Ministry's databases), plus third-party reputation and WHOIS/DNS lookups on the domain only. It never says "safe".
+   Prerequisite wording for the portal: a free Tappy account (signed in on Tappy's own consent screen).
 3. 🚧 **Company name, website and primary contact (D4)** — owner to provide; not invented here.
 4. 🟡 **Public documentation**: `https://www.tappyai.com/connector` is live (setup for Claude/ChatGPT, tools and limits, link to privacy). Owner and lawyer read it before submission.
 5. 🚧 **Icon**: Tappy otter logo `public/branding/otter-logo.png` (512×512); owner confirms.
@@ -25,7 +25,7 @@ Source of the field list: Anthropic's submission and review-criteria pages (read
 - The five itinerary tools (`create_itinerary` and four job tools) are hidden and not callable at launch (`MCP_JOBS_ENABLED` unset); definitions are kept in code. Do NOT list them in the portal.
 - OAuth 2.0 through Supabase OAuth Server with dynamic client registration and RFC 9728 metadata; verified end to end in Claude.ai on production 27/11/2026. Only Claude, ChatGPT and Cursor callbacks are approved at the consent screen and the gateway.
 - Production checks 27/11/2026 in Claude.ai: `check_scam`, `search_deals` (10 items; tracked links for Traveloka, Agoda, Booking.com, Vexere, Lazada, Shopee), `search_clips` (0 results is correct today), `search_coach` (one Vexere route page, no times or prices), `search_hotels` (Đà Nẵng, 15–17/12/2026: 10 hotels with Agoda prices, all links carry Tappy's Agoda `cid`).
-- 🚧 Not yet run on production: `search_places`, `search_restaurants`, `search_attractions`, `search_shopping` (run on UAT 23/11/2026). Run them before ticking the confirmation.
+- ✅ Run on production 28/11/2026 through the connector (after re-authorising it): `search_places` ("spa thư giãn", Đà Nẵng: 3 results with address, rating, open-now flag and a Tappy tracked link to the Google Maps page), `search_restaurants` ("bún bò Huế", Huế: 3 results, same fields), `search_attractions` ("điểm tham quan nổi tiếng", Hội An: 3 results, one with opening hours; two entries are the same old town under slightly different names, a Google Maps data quirk), `search_shopping` ("tai nghe bluetooth", no location: 3 products with price in VND, merchant, one with rating; links are Google Shopping result pages wrapped in a Tappy tracked link). None returned an error or warnings. Earlier UAT run: 23/11/2026. Run them before ticking the confirmation.
 - Specific errors with actionable messages; no tool reads conversation history, memory or user files.
 - Privacy policy `https://www.tappyai.com/privacy` (section 7 covers the connector). Support `support@tappyai.com`.
 
@@ -48,7 +48,7 @@ Source of the field list: Anthropic's submission and review-criteria pages (read
 **Prerequisites:** a free Tappy account (sign-in on Tappy's own consent screen).
 **Reads / writes:** reads only. Nothing is booked, paid or changed.
 **Authentication:** OAuth 2.0 (Supabase OAuth Server, dynamic client registration). No Anthropic-held credentials.
-**Data handling:** 🚧 (blocker 2). No health data. Partner links are tracked affiliate links and are disclosed as partner links. Logs hold tool, time, duration, result count and hashed install and account references, never the question text.
+**Data handling:** see blocker 2 (sources declared 28/11/2026; rights confirmation open). No health data. Partner links are tracked affiliate links and are disclosed as partner links. Logs hold tool, time, duration, result count and hashed install and account references, never the question text.
 
 **Honest limits to state (do not overclaim):**
 - Coach: one booking-page link; no times, prices or seats; coach only (no train or flight).
@@ -57,6 +57,6 @@ Source of the field list: Anthropic's submission and review-criteria pages (read
 - Scam check: never says "safe"; "not recognised" does not mean safe.
 - Hotel prices are per night before taxes and fees; availability is not confirmed.
 
-**Test & launch:** the owner confirms every tool was run as a custom connector in Claude. Done on production 27/11/2026 for five of the nine (see above); run the other four first. Do not put credentials in the portal; Anthropic emails for test access.
+**Test & launch:** the owner confirms every tool was run as a custom connector in Claude. Done on production for all nine: five on 27/11/2026 and the other four on 28/11/2026 (see above). Do not put credentials in the portal; Anthropic emails for test access.
 
 **Compliance acknowledgments (7):** the owner ticks them personally after reading them: directory guidelines, first-party API use, financial transactions (Tappy does none), AI media generation (none), prompt injection, conversation data collection (none), public documentation.
