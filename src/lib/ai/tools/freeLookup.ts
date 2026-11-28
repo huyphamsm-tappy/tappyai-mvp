@@ -42,7 +42,9 @@ const dailyCap = (env: NodeJS.ProcessEnv = process.env): number => {
   return Number.isInteger(n) && n >= 0 && n <= 50 ? n : FREE_LOOKUP_DAILY_CAP
 }
 
-const CAP_NOTE = 'The person has used today\'s free lookups. Say so in one short sentence (a Pro plan has no such limit) and answer from what you reliably know, without inventing places, addresses, figures or sources.'
+// Owner 28/11/2026: at the limit Tappy says the day's search allowance is used and offers three ways on: upgrade (the paid plans include search), come back tomorrow, or keep chatting without search.
+// The number is deliberately not in this text (no digit): the model cannot repeat what it never saw.
+const CAP_NOTE = 'The person has used the search allowance of their plan for today. Say so in one or two short, friendly sentences and offer these ways on, in their language: upgrade to a paid plan, which includes search; come back tomorrow, when the allowance is back; or keep chatting, without search. Do not state the number or count of lookups. Then, if you can, answer what they asked from what you reliably know, without inventing places, addresses, figures or sources.'
 const NONE_NOTE = 'The lookup found nothing usable. Say so plainly and answer from what you reliably know, without inventing places, addresses, figures or sources.'
 const OK_NOTE = 'List only what is in these results, each with its own source link when it has one; do not add places, addresses, figures or links that are not here, and say what the results do not cover.'
 

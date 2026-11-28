@@ -54,6 +54,20 @@ describe('runFreeLookup', () => {
     expect(d.web).not.toHaveBeenCalled(); expect(d.places).not.toHaveBeenCalled()
   })
 
+  it('owner 28/11/2026: at the limit the model is told to say the day\'s search allowance is used and to offer the three ways on (upgrade, come back tomorrow, keep chatting without search), and never to state the number', async () => {
+    const d = mk()
+    for (let i = 0; i < FREE_LOOKUP_DAILY_CAP; i++) await runFreeLookup({ kind: 'web', query: `q${i}`, identity: 'u1' }, d)
+    const refused = await runFreeLookup({ kind: 'web', query: 'x', identity: 'u1' }, d)
+    expect(refused.ok).toBe(false)
+    const note = refused.note
+    expect(note).toMatch(/search allowance/i)
+    expect(note).toMatch(/upgrade/i)
+    expect(note).toMatch(/tomorrow/i)
+    expect(note).toMatch(/without search/i)
+    expect(note).toMatch(/do not (state|say|mention) (the|any) (number|count)/i)
+    expect(note).not.toMatch(/[0-9]/) // the limit is never written into what the model sees, so it cannot be repeated to the person
+  })
+
   it('the cap is per person: another identity has its own', async () => {
     const d = mk()
     for (let i = 0; i < FREE_LOOKUP_DAILY_CAP + 1; i++) await runFreeLookup({ kind: 'web', query: `q${i}`, identity: 'u1' }, d)
