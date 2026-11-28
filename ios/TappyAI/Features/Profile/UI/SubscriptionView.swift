@@ -29,8 +29,9 @@ struct SubscriptionView: View {
     // (Guideline 3.1.2: the subscription must describe what the person gets).
     // The Free card states no daily count (owner 28/11). These are KEYS, resolved by `Text` in the app's own language: a string
     // read with `NSLocalizedString` follows the phone's language, not the one chosen in the app (English screen, Vietnamese lines).
-    // The web's lines (28/11): the paid plans' allowance is stated as on the web.
-    private let proFeatures = ["sub.plan.quota", "sub.plan.allAi"]
+    // The web says «unlimited AI questions» on its plans; the app states NO allowance until the owner confirms what the backend really gives
+    // (a promise App Review can check, Guideline 3.1.2; `ExternalPurchaseGuardTests` keeps «unlimited» out of the old Pro keys).
+    private let proFeatures = ["sub.plan.allAi"]
 
     /// The tagline and the extra line under a plan's name, in the app language (the web's `sub.plan.*.tagline` / `.extra`).
     private func planLines(_ productId: String) -> (tagline: LocalizedStringKey, extra: LocalizedStringKey, trial: Bool) {
@@ -240,7 +241,6 @@ struct SubscriptionView: View {
                 }
             }
             VStack(alignment: .leading, spacing: 8) {
-                featureRow("sub.free.quota", tint: TappyColor.textSecondary)
                 featureRow("sub.free.most", tint: TappyColor.textSecondary)
             }
             // «Current plan» only while the account really is on Free. With ANY paid plan (App Store or bought
