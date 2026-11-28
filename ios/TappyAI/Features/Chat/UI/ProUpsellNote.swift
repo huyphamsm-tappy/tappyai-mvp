@@ -5,8 +5,8 @@ import SwiftUI
 /// build's purchase switch (`ProductFlags.iapPurchaseUI`). Until the plan has been read nothing is drawn, and any failure reads as "not
 /// Free": the note is an offer, never shown on a guess.
 ///
-/// A signed-out visitor does not see it yet: web decides «Free» by `plan == 'free'` and the server reports a guest as `guest`, so the web
-/// note is not drawn for guests either. Whether guests should see it is the owner's call.
+/// A signed-out visitor sees it too (owner 28/11). On the web it is not drawn for guests (the server reports a guest as `guest`, not
+/// `free`); the web is to be changed to match.
 @MainActor
 final class ProUpsellState: ObservableObject {
     static let shared = ProUpsellState()
@@ -14,7 +14,9 @@ final class ProUpsellState: ObservableObject {
 
     /// Reads the plan once per sign-in change (the shell calls this) and after the subscription screen has read it.
     func refresh(api: APIClient, signedIn: Bool) async {
-        guard ProductFlags.iapPurchaseUI, signedIn else { showsNote = false; return }
+        guard ProductFlags.iapPurchaseUI else { showsNote = false; return }
+        // A visitor (owner 28/11: guests see it too) has no plan to read: they are on the free tier.
+        guard signedIn else { showsNote = true; return }
         do {
             let endpoint = Endpoint(path: "/api/subscription", method: .get, requiresAuth: true)
             let data = try await api.send(endpoint)
@@ -27,7 +29,7 @@ final class ProUpsellState: ObservableObject {
 
     /// The subscription screen just read the account's plan: keep the note in step (a purchase made there removes it).
     func apply(isPro: Bool, signedIn: Bool) {
-        showsNote = ProductFlags.iapPurchaseUI && signedIn && !isPro
+        showsNote = ProductFlags.iapPurchaseUI && !isPro
     }
 }
 
