@@ -46,12 +46,12 @@ struct HomeView: View {
                 if ProductFlags.showRecommendations, case .loaded(let recs) = vm.recommendations {
                     HomeRecommendationsSection(items: recs) { router.push(HomeDestination.recommendations, on: .home) }
                 }
-                // Web order: ask box → "Hỏi Tappy thử" cards → Smart Tools → "Tiếp tục".
+                // Order (owner 28/11, differs from the web): ask box → Smart Tools → "Hỏi Tappy thử" cards → "Tiếp tục".
                 // Not drawn on Home any more (web has none of them): discover banner, Scam Shield
                 // section (reachable from Smart Tools), community videos, category row.
-                HomeSuggestionsSection(suggestions: suggestions) { ask($0) }
                 HomeQuickActionsSection(onOpen: { router.push($0.destination, on: .home) },
                                       onSeeAll: { router.push(HomeDestination.smartTools, on: .home) })
+                HomeSuggestionsSection(suggestions: suggestions) { ask($0) }
                 HomeRecentConversationsSection(rail: vm.recent, language: localization.language.rawValue) {
                     router.push(HomeDestination.conversation(id: $0), on: .home)
                 }

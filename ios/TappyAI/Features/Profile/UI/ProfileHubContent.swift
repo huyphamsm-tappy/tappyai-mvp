@@ -170,7 +170,9 @@ struct ProfileHeroView: View {
 
 struct ProfileHubContentPanel: View {
     @ObservedObject var vm: ProfileHubViewModel
-    let onOpenReview: (String) -> Void
+    /// The author's own clips as one swipeable sequence, opened at `start`.
+    let onOpenPosts: ([Review], Int) -> Void
+    let onOpenCollection: ([CollectionReview], CollectionReview) -> Void
     let onOpenPlace: (Favorite) -> Void
     let onCompose: () -> Void
 
@@ -223,7 +225,10 @@ struct ProfileHubContentPanel: View {
                     ForEach(rows) { r in
                         let t = tile(thumb: ReviewPoster.url(photos: r.photos, thumbnail: r.thumbnail, order: .ownProfile), body: r.body, video: r.contentType == "video", badge: badge)
                         if openable {
-                            Button { onOpenReview(r.id) } label: { t }.buttonStyle(.plain)
+                            Button {
+                                let start = rows.firstIndex { $0.id == r.id } ?? 0
+                                onOpenPosts(rows, start)
+                            } label: { t }.buttonStyle(.plain)
                         } else {
                             t
                         }
@@ -243,7 +248,7 @@ struct ProfileHubContentPanel: View {
             } else {
                 LazyVGrid(columns: columns, spacing: 4) {
                     ForEach(rows) { r in
-                        Button { onOpenReview(r.id) } label: {
+                        Button { onOpenCollection(rows, r) } label: {
                             tile(thumb: ReviewPoster.url(photos: r.photos, thumbnail: r.thumbnail, order: .ownProfile), body: r.body, video: r.isVideo, badge: nil)
                         }
                         .buttonStyle(.plain)

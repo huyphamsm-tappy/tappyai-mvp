@@ -188,23 +188,7 @@ struct MyPostsView: View {
     /// time and the person had to go back to the grid for the next). The full posts are fetched by id, in parallel, a window around the tapped one;
     /// a post that cannot be fetched (hidden since) is simply not in the sequence. When nothing can be fetched the single detail screen opens as before.
     private func openCollection(_ rows: [CollectionReview], tapped: CollectionReview) {
-        guard let at = rows.firstIndex(where: { $0.id == tapped.id }) else { return }
-        let window = Array(rows[max(0, at - 5)...min(rows.count - 1, at + 14)])
-        let service = ReviewsService(api: deps.api)
-        Task { @MainActor in
-            let loaded: [Review?] = await withTaskGroup(of: (Int, Review?).self) { group in
-                for (i, r) in window.enumerated() { group.addTask { (i, try? await service.fetchReview(id: r.id)) } }
-                var out = [Review?](repeating: nil, count: window.count)
-                for await (i, review) in group { out[i] = review }
-                return out
-            }
-            let posts = loaded.compactMap { $0 }
-            guard let start = posts.firstIndex(where: { $0.id == tapped.id }) else {
-                router.push(ReviewsDestination.reviewDetail(id: tapped.id), on: .profile)
-                return
-            }
-            router.push(ClipSeedStore.destination(posts: posts, start: start), on: .profile)
-        }
+        ClipSeedStore.openCollection(rows, tapped: tapped, api: deps.api, router: router)
     }
 
     private func collectionTile(_ row: CollectionReview) -> some View {

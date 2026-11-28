@@ -42,6 +42,28 @@ enum ClipSeedStore {
 
     static func posts(for id: String) -> [Review] { seeds[id] ?? [] }
 
+    /// Opens a tile of Liked / Saved / Shared WITH its neighbours as one swipeable sequence: the full posts are fetched by id, in parallel, a window
+    /// around the tapped one; a post that cannot be fetched (hidden since) is left out. When nothing can be fetched the single detail screen opens.
+    static func openCollection(_ rows: [CollectionReview], tapped: CollectionReview, api: APIClient, router: AppRouter) {
+        guard let at = rows.firstIndex(where: { $0.id == tapped.id }) else { return }
+        let window = Array(rows[max(0, at - 5)...min(rows.count - 1, at + 14)])
+        let service = ReviewsService(api: api)
+        Task { @MainActor in
+            let loaded: [Review?] = await withTaskGroup(of: (Int, Review?).self) { group in
+                for (i, r) in window.enumerated() { group.addTask { (i, try? await service.fetchReview(id: r.id)) } }
+                var out = [Review?](repeating: nil, count: window.count)
+                for await (i, review) in group { out[i] = review }
+                return out
+            }
+            let posts = loaded.compactMap { $0 }
+            guard let start = posts.firstIndex(where: { $0.id == tapped.id }) else {
+                router.push(ReviewsDestination.reviewDetail(id: tapped.id), on: .profile)
+                return
+            }
+            router.push(destination(posts: posts, start: start), on: .profile)
+        }
+    }
+
     /// The destination that opens `posts[start]` with the rest of `posts` one swipe away.
     static func destination(posts: [Review], start: Int) -> ReviewsDestination {
         .clipViewer(seedId: put(posts), start: max(0, min(start, max(0, posts.count - 1))))

@@ -46,7 +46,8 @@ struct ProfileMainView: View {
                                     onQR: { showQR = true })
                     ProfileHubContentPanel(
                         vm: hub,
-                        onOpenReview: { router.push(ReviewsDestination.reviewDetail(id: $0), on: .profile) },
+                        onOpenPosts: { posts, start in router.push(ClipSeedStore.destination(posts: posts, start: start), on: .profile) },
+                        onOpenCollection: { rows, tapped in ClipSeedStore.openCollection(rows, tapped: tapped, api: deps.api, router: router) },
                         onOpenPlace: { _ in router.push(ProfileDestination.favorites, on: .profile) },
                         onCompose: { showCompose = true })
                     accountSection
