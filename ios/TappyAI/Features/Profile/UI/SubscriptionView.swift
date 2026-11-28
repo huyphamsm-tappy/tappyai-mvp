@@ -242,6 +242,7 @@ struct SubscriptionView: View {
             }
             VStack(alignment: .leading, spacing: 8) {
                 featureRow("sub.free.most", tint: TappyColor.textSecondary)
+                featureRow("sub.free.lookup", tint: TappyColor.textSecondary)
             }
             // «Current plan» only while the account really is on Free. With ANY paid plan (App Store or bought
             // elsewhere) the Free card carries no such mark: it would contradict «You're on Pro».

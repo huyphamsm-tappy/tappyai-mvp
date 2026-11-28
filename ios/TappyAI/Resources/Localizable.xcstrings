@@ -23467,6 +23467,23 @@
         }
       }
     },
+    "sub.free.lookup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light lookup of places and information"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tra cứu nhẹ địa điểm và thông tin"
+          }
+        }
+      }
+    },
     "sub.free.most": {
       "extractionState": "manual",
       "localizations": {
@@ -23592,13 +23609,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thinking, Search and 15 Deep Research a month"
+            "value": "Thinking, online search, place lookup and 15 Deep Research a month"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suy nghĩ, Tìm kiếm và 15 lượt Nghiên cứu sâu mỗi tháng"
+            "value": "Suy nghĩ, tìm kiếm trực tuyến, tra cứu địa điểm và 15 lượt Nghiên cứu sâu mỗi tháng"
           }
         }
       }
@@ -23609,13 +23626,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thinking, Search and 15 Deep Research a month"
+            "value": "Thinking, online search, place lookup and 15 Deep Research a month"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suy nghĩ, Tìm kiếm và 15 lượt Nghiên cứu sâu mỗi tháng"
+            "value": "Suy nghĩ, tìm kiếm trực tuyến, tra cứu địa điểm và 15 lượt Nghiên cứu sâu mỗi tháng"
           }
         }
       }
@@ -23626,13 +23643,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thinking, Search and 15 Deep Research a month"
+            "value": "Thinking, online search, place lookup and 15 Deep Research a month"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suy nghĩ, Tìm kiếm và 15 lượt Nghiên cứu sâu mỗi tháng"
+            "value": "Suy nghĩ, tìm kiếm trực tuyến, tra cứu địa điểm và 15 lượt Nghiên cứu sâu mỗi tháng"
           }
         }
       }
@@ -23643,13 +23660,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thinking, Search and 30 Deep Research a month"
+            "value": "Thinking, online search, place lookup and 30 Deep Research a month"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suy nghĩ, Tìm kiếm và 30 lượt Nghiên cứu sâu mỗi tháng"
+            "value": "Suy nghĩ, tìm kiếm trực tuyến, tra cứu địa điểm và 30 lượt Nghiên cứu sâu mỗi tháng"
           }
         }
       }
@@ -23660,13 +23677,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thinking, Search and 30 Deep Research a month"
+            "value": "Thinking, online search, place lookup and 30 Deep Research a month"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suy nghĩ, Tìm kiếm và 30 lượt Nghiên cứu sâu mỗi tháng"
+            "value": "Suy nghĩ, tìm kiếm trực tuyến, tra cứu địa điểm và 30 lượt Nghiên cứu sâu mỗi tháng"
           }
         }
       }
