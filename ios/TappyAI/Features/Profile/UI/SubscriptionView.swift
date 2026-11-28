@@ -4,6 +4,7 @@ import UIKit
 /// Mirrors the web /subscription page. Full purchase flow via StoreKit 2 (ADR-006).
 struct SubscriptionView: View {
     let deps: AppDependencies
+    @AppEnvironmentState private var router: AppRouter
 
     @State private var status: SubscriptionStatusResponse?
     /// The plans the App Store served, in the catalog's order.
@@ -246,7 +247,19 @@ struct SubscriptionView: View {
             }
             // «Current plan» only while the account really is on Free. With ANY paid plan (App Store or bought
             // elsewhere) the Free card carries no such mark: it would contradict «You're on Pro».
-            if s.freePlanIsCurrent {
+            // A visitor is offered the free sign-in (web «Đăng nhập miễn phí»); a signed-in Free account sees its current plan.
+            if !deps.session.state.isAuthenticated {
+                Button { router.requestLogin() } label: {
+                    Text("sub.free.signIn")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(TappyColor.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, Spacing.sm + 2)
+                        .overlay(RoundedRectangle(cornerRadius: Radius.lg).stroke(TappyColor.primary, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("sub-free-signin")
+            } else if s.freePlanIsCurrent {
                 Text("sub.current")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(TappyColor.textSecondary)
@@ -557,6 +570,12 @@ struct SubscriptionView: View {
     // MARK: - Actions
 
     private func doPurchase(productId: String) async {
+        // A visitor may look at the plans (web 28/11) but buys only with an account: Apple must never take money for a plan the server
+        // cannot attach to anyone. The sign-in screen opens over this one and the person comes back here.
+        guard deps.session.state.isAuthenticated else {
+            router.requestLogin()
+            return
+        }
         guard plans.contains(where: { $0.id == productId }) else {
             productError = NSLocalizedString("sub.error.loadFailed", comment: "")
             return
@@ -614,7 +633,15 @@ struct SubscriptionView: View {
             DiagnosticSnapshot.shared.record("Subscription status=success")
         } catch AppError.authentication {
             DiagnosticSnapshot.shared.record("Subscription status=error AppError.authentication", isError: true)
-            errorMessage = NSLocalizedString("sub.error.signInRequired", comment: "")
+            if !deps.session.state.isAuthenticated,
+               let visitor = try? ResponseDecoder.json.decode(
+                SubscriptionStatusResponse.self,
+                from: Data(#"{"isPro":false,"freeDailyLimit":0,"todayMessageCount":0,"remaining":0,"pipUsed":false}"#.utf8)) {
+                // A visitor sees the plans like the web shows them (no plan to read, no numbers drawn); buying asks them to sign in.
+                status = visitor
+            } else {
+                errorMessage = NSLocalizedString("sub.error.signInRequired", comment: "")
+            }
         } catch AppError.offline {
             DiagnosticSnapshot.shared.record("Subscription status=error AppError.offline", isError: true)
             errorMessage = NSLocalizedString("sub.error.offline", comment: "")

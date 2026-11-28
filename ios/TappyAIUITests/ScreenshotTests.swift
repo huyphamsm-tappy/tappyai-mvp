@@ -1017,8 +1017,9 @@ final class ScreenshotTests: XCTestCase {
     func testProScreenOfAFreeAccountShowsRestoreAndTerms() {
         setStub(["pro": "off"])
         let app = launch(route: "subscription", signedIn: true, extra: ["-uitest-theme", "dark"])
-        XCTAssertTrue(app.staticTexts["TappyAI Pro"].firstMatch.waitForExistence(timeout: 60), "the Pro screen")
-        XCTAssertTrue(app.staticTexts["30 câu hỏi AI mỗi ngày"].firstMatch.exists, "Pro states the real allowance")
+        // 28/11: the screen follows the web (hero «Khám phá nhiều hơn cùng Tappy», «Chọn gói Tappy»); it states NO daily allowance.
+        XCTAssertTrue(app.staticTexts["Chọn gói Tappy"].firstMatch.waitForExistence(timeout: 60), "the plans screen")
+        XCTAssertFalse(labelled(app, containing: "câu hỏi AI mỗi ngày").exists, "no daily allowance is promised")
         XCTAssertFalse(labelled(app, containing: "ưu tiên").exists, "no promise the backend does not keep")
         XCTAssertFalse(labelled(app, containing: "không giới hạn").exists, "no «unlimited» promise")
         XCTAssertTrue(any(app, "sub-free-card").exists, "on Free, the Free card is shown")

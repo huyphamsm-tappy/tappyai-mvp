@@ -23484,6 +23484,23 @@
         }
       }
     },
+    "sub.free.signIn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in for free"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập miễn phí"
+          }
+        }
+      }
+    },
     "sub.free.most": {
       "extractionState": "manual",
       "localizations": {
