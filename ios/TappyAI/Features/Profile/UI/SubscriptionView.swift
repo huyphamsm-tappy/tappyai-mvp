@@ -34,6 +34,15 @@ struct SubscriptionView: View {
     // (a promise App Review can check, Guideline 3.1.2; `ExternalPurchaseGuardTests` keeps «unlimited» out of the old Pro keys).
     private let proFeatures = ["sub.plan.allAi"]
 
+    /// The character art of a plan (web `/subscription/*.webp`): the 7-day pack is MoMo, the 1- and 3-month Coco plans share Coco, Tappy has Tappy.
+    private func planMascot(_ productId: String) -> String {
+        switch productId {
+        case ProductCatalog.pipId: return "PlanMomo"
+        case "tappy_promax_1m", "tappy_promax_3m": return "PlanTappy"
+        default: return "PlanCoco"
+        }
+    }
+
     /// The tagline and the extra line under a plan's name, in the app language (the web's `sub.plan.*.tagline` / `.extra`).
     private func planLines(_ productId: String) -> (tagline: LocalizedStringKey, extra: LocalizedStringKey, trial: Bool) {
         switch productId {
@@ -87,6 +96,11 @@ struct SubscriptionView: View {
         let plan = ProductCatalog.salePlan(for: p.id)
         Button { Task { await doPurchase(productId: p.id) } } label: {
             HStack(spacing: Spacing.sm) {
+                // The character of the plan, as on the web (MoMo, Coco, Tappy each have their own).
+                Image(planMascot(p.id))
+                    .resizable().scaledToFit()
+                    .frame(width: 48, height: 48)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(verbatim: plan?.name ?? p.displayName)
                         .font(.system(size: 14, weight: .bold))
@@ -224,7 +238,8 @@ struct SubscriptionView: View {
 
     private func freeCard(_ s: SubscriptionStatusResponse) -> some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
-            HStack(alignment: .top) {
+            HStack(alignment: .center, spacing: Spacing.sm) {
+                Image("PlanPip").resizable().scaledToFit().frame(width: 56, height: 56).accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     // The free tier is called Pip, as on the web (the paid 7-day pack is MoMo).
                     Text("sub.freeTier.name")

@@ -51,8 +51,18 @@ struct ReviewsFeedView: View {
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 40)
                             .onEnded { value in
-                                guard seed == nil,
-                                      let target = FeedTab.neighbour(of: vm.activeTab, dx: value.translation.width, dy: value.translation.height)
+                                // A profile's clip viewer hides the navigation bar, which also loses the system swipe-back: a sideways swipe
+                                // leaves it (owner UAT 28/11). A post with several photos keeps its own sideways swipe between photos, so
+                                // there only a swipe that starts at the left edge leaves.
+                                if seed != nil {
+                                    let dx = value.translation.width, dy = value.translation.height
+                                    guard abs(dx) >= 60, abs(dx) > abs(dy) * 2 else { return }
+                                    let post = vm.reviews.indices.contains(vm.activeIndex) ? vm.reviews[vm.activeIndex] : nil
+                                    let hasPhotoPages = (post?.photos?.count ?? 0) > 1
+                                    if !hasPhotoPages || (dx > 0 && value.startLocation.x < 40) { router.pop() }
+                                    return
+                                }
+                                guard let target = FeedTab.neighbour(of: vm.activeTab, dx: value.translation.width, dy: value.translation.height)
                                 else { return }
                                 vm.switchTab(target)
                             }
