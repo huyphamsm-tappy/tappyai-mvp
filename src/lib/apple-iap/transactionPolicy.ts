@@ -81,6 +81,20 @@ export function checkAppleTransaction(
   return null
 }
 
+/**
+ * Which of the two checks behind `transaction_mismatch` refused, as a plain label for the server log (never an id or a token): the
+ * subscription the caller named is not the one in the JWS, or the JWS was bought by another account (its `appAccountToken` is not the
+ * caller's). Same comparisons as `checkAppleTransaction`; null when neither refuses. Pure.
+ */
+export function transactionMismatchKind(
+  tx: Pick<JWSTransaction, 'originalTransactionId'> & { appAccountToken?: string },
+  opts: { originalTransactionId?: string; appAccountToken?: string } = {},
+): 'original_transaction_id' | 'app_account_token' | null {
+  if (opts.originalTransactionId !== undefined && String(tx.originalTransactionId) !== String(opts.originalTransactionId)) return 'original_transaction_id'
+  if (opts.appAccountToken && tx.appAccountToken && tx.appAccountToken.toLowerCase() !== opts.appAccountToken.toLowerCase()) return 'app_account_token'
+  return null
+}
+
 /** The same bundle/environment rule for a notification's envelope (`data`). */
 export function checkAppleNotificationEnvelope(
   data: { bundleId?: string; environment?: string } | undefined,

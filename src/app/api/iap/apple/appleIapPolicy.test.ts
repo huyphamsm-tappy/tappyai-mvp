@@ -53,7 +53,7 @@ vi.mock('@/lib/apple-iap/jws', () => {
 
 import { POST as verify } from './verify/route'
 import { POST as notify } from './notifications/route'
-import { checkAppleTransaction } from '@/lib/apple-iap/transactionPolicy'
+import { checkAppleTransaction, transactionMismatchKind } from '@/lib/apple-iap/transactionPolicy'
 
 const FUTURE = Date.now() + 30 * 86_400_000
 const OURS = {
@@ -104,6 +104,25 @@ describe('checkAppleTransaction', () => {
   it('refuses product mismatch between expectedProductId and transaction productId', () => {
     expect(checkAppleTransaction(OURS, { expectedProductId: 'tappy_sunny_1m' })).toBe('product_mismatch')
     expect(checkAppleTransaction(OURS, { expectedProductId: OURS.productId })).toBeNull()
+  })
+  // 02/11: a purchase refused as transaction_mismatch (production, 7 times at app start) said only that - not WHICH check failed. The kind is a
+  // plain label (never an id, never a token), so a refusal in App Review can be told apart: another account's transaction, or another subscription.
+  it('transactionMismatchKind says which of the two checks refused: the subscription, or the account that bought it', () => {
+    const USER = '7d5a2b33-bb75-422e-b49a-7e2f0c1d9a11'
+    expect(transactionMismatchKind({ ...OURS, appAccountToken: USER }, { originalTransactionId: '999', appAccountToken: USER })).toBe('original_transaction_id')
+    expect(transactionMismatchKind({ ...OURS, appAccountToken: USER }, { originalTransactionId: OURS.originalTransactionId, appAccountToken: '0b9a5c1e-2f3d-4a6b-8c7d-1e2f3a4b5c6d' })).toBe('app_account_token')
+    expect(transactionMismatchKind({ ...OURS, appAccountToken: USER.toUpperCase() }, { originalTransactionId: OURS.originalTransactionId, appAccountToken: USER })).toBeNull()
+    expect(transactionMismatchKind(OURS, { originalTransactionId: OURS.originalTransactionId, appAccountToken: USER })).toBeNull()
+  })
+  it('the label is the same decision as checkAppleTransaction: whenever it refuses with transaction_mismatch the kind is not null', () => {
+    const USER = '7d5a2b33-bb75-422e-b49a-7e2f0c1d9a11'
+    for (const [tx, opts] of [
+      [{ ...OURS, appAccountToken: 'aaaaaaaa-0000-4000-8000-000000000001' }, { appAccountToken: USER }],
+      [OURS, { originalTransactionId: '123' }],
+    ] as const) {
+      expect(checkAppleTransaction(tx, opts)).toBe('transaction_mismatch')
+      expect(transactionMismatchKind(tx, opts)).not.toBeNull()
+    }
   })
 })
 
